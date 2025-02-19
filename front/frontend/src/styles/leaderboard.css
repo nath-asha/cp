@@ -1,0 +1,105 @@
+.leaderboard-container {
+    font-family: sans-serif;
+    margin-top: 70px;
+  }
+  .leaderboard-container h2{
+    color: rgb(26, 18, 137);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 100px;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  th,
+  td {
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  td img{
+  height: 50px;
+  width: 50px;
+  }
+  
+  th {
+    color: white;
+    background-color: #37438e;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  tr:hover {
+    background-color: #ddd;
+  }
+  
+  .toppers-container {
+    display: flex; 
+    gap: 100px; 
+    margin-bottom: 20px; 
+    justify-content: center;
+   }
+  
+  .topper-card {
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    border-radius: 8px; 
+    box-shadow: 4px 12px 25px rgba(0, 0, 0, 0.1); 
+    width: 200px; 
+    text-align: center;
+    background-color: #f9f9f9; 
+    color: #37438e;
+    height: 250px;
+  }
+  
+  .topper-card h3 {
+    margin-top: 0; 
+    color: #37438e;
+  }
+  
+  .topper-card img {
+    width: 30px;
+    height: 30px;
+    margin-top: 10px;
+  }
+  
+  .github-logo {
+    width: 20px; 
+    height: 20px;
+    margin-left: 5px; 
+    vertical-align: middle; 
+  }
+  
+  .topper {
+    margin: 10px;
+    border: 10px solid;
+    width: 25%;
+    height: 300px;
+    border-color:bisque;
+    color:brown;
+    text-align: center;
+    background-color: rgb(238, 241, 243);
+    border-width: 10px;
+    border-color: #ffffff;
+    text-decoration: double;
+  }
+  
+  .per {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 100px;
+    background-color: rgb(238, 241, 243);
+    scroll-padding-top: 60px;
+  } 
+  

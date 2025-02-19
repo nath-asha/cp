@@ -1,0 +1,27 @@
+[
+    {
+      "score": 95,
+      "name": "Alice Johnson",
+      "github_url": "https://github.com/alicejohnson"
+    },
+    {
+      "score": 88,
+      "name": "Bob Williams",
+      "github_url": "https://github.com/bobwilliams"
+    },
+    {
+      "score": 76,
+      "name": "Charlie Davis",
+      "github_url": "https://github.com/charliedavis"
+    },
+    {
+      "score": 92,
+      "name": "David Garcia",
+      "github_url": "https://github.com/davidgarcia"
+    },
+    {
+      "score": 81,
+      "name": "Eve Rodriguez",
+      "github_url": "https://github.com/everodriguez"
+    }
+  ]
