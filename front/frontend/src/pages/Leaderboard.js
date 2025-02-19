@@ -32,7 +32,7 @@ function Leaderboard({ leaderboardData, toppers }) {
                     <tr key={participant.name}>
                         <td>{index + 1}</td>
                         <td>{participant.name}</td>
-                        <td><a href={participant.github_url} target='_blank' rel="noopener noreferrer"></a>
+                        <td><a href={participant.github_url} target="_blank" rel="noopener noreferrer"><img src='logo.png' alt="github logo" className="github-logo"></img></a>
                         </td>
                         <td>{participant.score}</td> 
                       </tr>
