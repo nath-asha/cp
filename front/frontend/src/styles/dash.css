@@ -1,0 +1,49 @@
+.dash{
+    background-color: bisque;
+    display: flex;
+}
+
+.profile,.mentor{
+    background-color: #b0d7c8eb;
+    margin: 0;
+    padding: 0;
+    width: 20%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.submissions{
+    background-color: #b0d7c8eb;
+    margin: 0;
+    padding: 0;
+    width: 80%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.team-requests{
+    background-color: rgb(134, 86, 182);
+    margin: auto;
+}
+
+.scores{
+    background-color: seashell;
+}
+
+leaderboard{
+    background-color: #b0d7c8eb;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

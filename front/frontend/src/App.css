@@ -6,10 +6,9 @@ body {
 
 .App {
   text-align: center;
-  padding: 20px;
+  margin-top: 0%;
 }
 
 .App h1{
   color: rgb(26, 18, 137);
 }
-

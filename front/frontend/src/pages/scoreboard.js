@@ -1,19 +1,17 @@
 import { useState,useEffect } from 'react';
-import './App.css';
-import Navbar from './pages/navbar';
-import Leaderboard from './pages/Leaderboard';
-import Scoreboard from './pages/scoreboard';
+import { BrowserRouter } from 'react-router-dom';
+import '../App.css';
+import Navbar from './navbar';
+import Leaderboard from './Leaderboard';
 
-function App() {
+function scoreboard() {
   const [LeaderboardData, setLeaderboardData] = useState([]);
   const [sortedLeaderboardData, setSortedLeaderboardData] =useState([]);
   const [toppers, setToppers] = useState([]);
-  // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {  
-      // setLoading(true); 
       setError(null); 
 
       try {
@@ -27,7 +25,6 @@ function App() {
       } catch (err) {
         console.error('Error fetching leaderboard data:', err);
         setError(err.message); 
-        // setLoading(false); 
       }
     };
 
@@ -51,10 +48,14 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <Scoreboard />
-    </div>
+    <BrowserRouter>  
+      <div className="App">
+        <Navbar/>
+        <h1>Leaderboard</h1>
+        <Leaderboard leaderboardData={sortedLeaderboardData} toppers={toppers} />
+      </div>
+    </BrowserRouter>
   );
 }
 
-export default App;
+export default scoreboard;
