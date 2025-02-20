@@ -1,5 +1,6 @@
 import { useState,useEffect } from 'react';
 import '../src/App.css';
+import Navbar from './pages/navbar';
 import Leaderboard from './pages/Leaderboard';
 
 function App() {

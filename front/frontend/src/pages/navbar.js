@@ -1,29 +1,21 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import "../styles/navbar.css";
+import { Link } from 'react-router-dom';
+import './navbar.css'; 
 
-const VerticalNavbar = () => {
-  return (
-    <nav className="navbar navbar-expand-lg navbar-light">
-      <ul className="navbar-nav d-flex flex-column">
-        <li className="nav-item">
-          <a className="nav-link" href="#">Dashboard</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="#">My Courses</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="#">Messages</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="#">Reports</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="#">Settings</a>
-        </li>
-      </ul>
-    </nav>
-  );
+const Navbar = () => {
+    return (
+        <nav className="navbar">
+            <div className="navbar-logo">
+                <Link to="/">MyApp</Link>
+            </div>
+            <ul className="navbar-links">
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/about">About</Link></li>
+                <li><Link to="/services">Services</Link></li>
+                <li><Link to="/contact">Contact</Link></li>
+            </ul>
+        </nav>
+    );
 };
 
-export default VerticalNavbar;
+export default Navbar;
