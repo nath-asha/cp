@@ -3,6 +3,8 @@ import './App.css';
 import Navbar from './pages/navbar';
 import Leaderboard from './pages/Leaderboard';
 import Scoreboard from './pages/scoreboard';
+import Dashboard from './pages/dash';
+import Home from './pages/home';
 
 function App() {
   const [LeaderboardData, setLeaderboardData] = useState([]);
@@ -52,7 +54,7 @@ function App() {
 
   return (
     <div className="App">
-      <Scoreboard />
+      <Home/>
     </div>
   );
 }
