@@ -1,5 +1,5 @@
 import React from 'react';
-
+import RegistrationForm from './register';
 const Home = () => {
     return (
         <div style={{ textAlign: 'center', padding: '50px' }}>
@@ -15,10 +15,11 @@ const Home = () => {
                     border: 'none', 
                     borderRadius: '5px' 
                 }}
-                onClick={() => alert('Register Now!')}
-            >
+                onClick={() => window.location.href = '/register'}
+            > 
                 Register Now
             </button>
+            
         </div>
     );
 };

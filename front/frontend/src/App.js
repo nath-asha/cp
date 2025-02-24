@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
 import Leaderboard from './components/Leaderboard';
-// import Scoreboard from './components/Scoreboard';
-// import Dashboard from './components/Dashboard';
+import Dashboard from './components/dash';
 import Home from './components/home';
+import Challenges from './components/challenges';
 
 function App() {
   // const [leaderboardData, setLeaderboardData] = useState([]);
@@ -55,9 +55,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/leaderboard" element={<Leaderboard leaderboardData={sortedLeaderboardData} toppers={toppers} />} /> */}
-          {/* <Route path="/scoreboard" element={<Scoreboard />} /> */}
-          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+       {/* <Route path="/leaderboard" element={<Leaderboard leaderboardData={sortedLeaderboardData} toppers={toppers} />} />  */}
+        <Route path="/challenges" element={<Challenges />} /> 
+          <Route path="/dashboard" element={<Dashboard />} /> 
         </Routes>
       </div>
     </Router>
