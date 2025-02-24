@@ -13,9 +13,9 @@ const Navbar = () => {
             </div> */}
             <ul className="navbar-links">
                 <li><Link to="/" >Home</Link></li>
-                <li><Link to="/">problem statement</Link></li>
+                <li><Link to="/challenges">problem statement</Link></li>
                 <li><Link to="/services">winners</Link></li>
-                {/* <li><Link to="/contact">Register</Link></li> */}
+                <li><Link to="/dashboard">Dashboard</Link></li>
                 <li><Link to="/">Gallery</Link></li>
                 <li><Link to="/leaderboard">Leaderboard</Link></li>
                 <li><Link to="/services">Impact</Link></li>

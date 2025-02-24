@@ -12,3 +12,37 @@ body {
 .App h1{
   color: rgb(26, 18, 137);
 }
+
+.timeline{
+  display: block;
+}
+
+.timeline h2{
+  color: rgb(26, 18, 137);
+  padding: 5%;
+}
+
+.timeli{
+  display: flex; 
+  gap: 100px; 
+  margin-bottom: 20px; 
+  justify-content: center;
+  background-color:rgb(103, 103, 203);
+}
+.time{
+  background-color: rgb(162, 103, 216);
+  border: 1px solid #ccc; 
+  padding: 20px; 
+  border-radius: 8px; 
+  box-shadow: 4px 12px 25px rgba(0, 0, 0, 0.1); 
+  width: 200px; 
+  text-align: center;
+  background-color: #f9f9f9; 
+  color: #37438e;
+  height: 250px;
+}
+
+.home{ 
+  text-align: 'center';
+   padding : '50px';
+   }
