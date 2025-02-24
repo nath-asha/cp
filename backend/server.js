@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
+
+// const leaderboardRoutes = require("./routes/leaderboardRoutes");
 dotenv.config();
 // const bodyParser = require("body-parser");
 // const Leader = require("./models/leaderModel");
@@ -20,6 +22,7 @@ app.get("/", (req, res) => {
     res.send(data);
 });
 
+// app.use('/api/leaderboard', leaderboardRoutes); 
 // router.get("/", async (req, res) => {
 //     let results = await Leader.find();
 //     res.send(results).status(200);

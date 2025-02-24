@@ -10,7 +10,6 @@ const useLeaderboard = (apiUrl) => {
   useEffect(() => {
     const fetchData = async () => {
       setError(null);
-
       try {
         const response = await fetch(apiUrl);
         if (!response.ok) {

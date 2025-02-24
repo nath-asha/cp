@@ -1,7 +1,7 @@
 import { useState,useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import '../App.css';
-import Navbar from './navbar';
+import Navbar from './Navbar';
 import Leaderboard from './Leaderboard';
 
 function scoreboard() {
