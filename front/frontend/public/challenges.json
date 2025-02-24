@@ -1,0 +1,52 @@
+[
+    {
+      "track_id": "T001",
+      "title": "Database Query Optimization",
+      "description": "Analyze slow-performing SQL queries and implement optimization techniques to improve database response time."
+    },
+    {
+      "track_id": "T002",
+      "title": "Frontend Performance Bottleneck",
+      "description": "Identify and resolve performance issues in the frontend application, focusing on rendering speed and resource loading."
+    },
+    {
+      "track_id": "T003",
+      "title": "API Rate Limiting Implementation",
+      "description": "Design and implement a robust rate-limiting system for the public API to prevent abuse and ensure fair usage."
+    },
+    {
+      "track_id": "T004",
+      "title": "Memory Leak Detection and Resolution",
+      "description": "Diagnose and fix a memory leak in the backend service, leading to increased resource consumption and potential crashes."
+    },
+    {
+      "track_id": "T005",
+      "title": "Cross-Browser Compatibility Issue",
+      "description": "Address a layout and functionality issue that occurs specifically in older versions of Internet Explorer."
+    },
+    {
+      "track_id": "T006",
+      "title": "Data Inconsistency in Distributed System",
+      "description": "Investigate and resolve data inconsistencies across multiple nodes in a distributed database system."
+    },
+    {
+      "track_id": "T007",
+      "title": "Security Vulnerability: SQL Injection",
+      "description": "Identify and patch a potential SQL injection vulnerability in the user authentication module."
+    },
+      {
+      "track_id": "T008",
+      "title": "Scalability Issues with Message Queue",
+      "description": "Improve the scalability of the message queue system to handle increasing traffic and message volume."
+    },
+    {
+      "track_id": "T009",
+      "title": "File Upload Failure on Mobile Devices",
+      "description": "Troubleshoot and fix file upload failures that occur specifically on mobile devices with limited network connectivity."
+    },
+    {
+      "track_id": "T010",
+      "title": "Automated Testing Coverage Improvement",
+      "description": "Increase the automated test coverage for critical components of the application to improve overall code quality and reduce regression risks."
+    }
+  ]
