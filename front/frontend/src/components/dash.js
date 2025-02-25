@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../styles/dash.css'; 
+import Card from 'react-bootstrap/Card';
 
 const Dashboard = () => {
     const [data, setData] = useState({
@@ -38,21 +39,32 @@ const Dashboard = () => {
                 <p>Name: {data.mentor.name}</p>
                 <p>Email: {data.mentor.email}</p>
             </section>
+
             <section className="submissions">
                 <h2>Submissions</h2>
-                <ul>
+                <Card style={{ width: '18rem' }}>
+                    {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
                     {data.submissions.map((submission, index) => (
+                        <Card.Body>
+                        <Card.Text>
                         <li key={index}>{submission.title}</li>
+                        </Card.Text>
+                        </Card.Body>
                     ))}
-                </ul>
+                </Card>
             </section>
+
             <section className="team-requests">
                 <h2>Team Requests</h2>
-                <ul>
+                <Card style={{ width: '18rem' }}>
                     {data.teamRequests.map((request, index) => (
+                        <Card.Body>
+                        <Card.Text>
                         <li key={index}>{request.title}</li>
+                        </Card.Text>
+                        </Card.Body>
                     ))}
-                </ul>
+                    </Card>
             </section>
             <section className="scores">
                 <h2>Scores</h2>
