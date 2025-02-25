@@ -3,6 +3,7 @@ import axios from 'axios';
 import '../styles/dash.css'; 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import Stack from 'react-bootstrap/Stack';
 
 const Dashboard = () => {
     const [data, setData] = useState({
@@ -57,19 +58,6 @@ const Dashboard = () => {
                 </Card>
             </section>
 
-            <div class="container">
-  <div class="row">
-    <div class="col-sm">
-      One of three columns
-    </div>
-    <div class="col-sm">
-      One of three columns
-    </div>
-    <div class="col-sm">
-      One of three columns
-    </div>
-  </div>
-</div>
 
             <section className="team-requests">
                 <h2>Team Requests</h2>
