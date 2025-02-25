@@ -30,13 +30,22 @@
 }
 
 .team-requests{
-    background-color: rgb(134, 86, 182);
+    /* background-color: rgb(134, 86, 182); */
     margin: auto;
     padding: 10px;
 }
+ 
+.team-requests Card{
+       background-color: rgb(134, 86, 182);
+} 
 
-.scores{
+/* .scores{
     background-color: seashell;
+    padding:0%;
+}  */
+
+table{
+    margin: 0%;
 }
 
 leaderboard{
@@ -49,4 +58,15 @@ leaderboard{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.cardcontainer{
+    display: flexbox;
+   
+} 
+.teamm{
+height: 20%;
+width: 20%;
+background-color:rgb(134, 86, 182);
+justify-self: center;
 }

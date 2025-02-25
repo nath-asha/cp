@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../styles/dash.css'; 
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 
 const Dashboard = () => {
     const [data, setData] = useState({
@@ -31,56 +32,86 @@ const Dashboard = () => {
             <h1>Student Dashboard</h1>
             <section className="profile">
                 <h2>Profile</h2>
+                <img src='Favicon.png' height='80px' width='80px'></img>
                 <p>Name: {data.profile.username}</p>
                 <p>Email: {data.profile.email}</p>
+                <p>Team: {data.profile.team}</p>
             </section>
             <section className="mentor">
                 <h2>Mentor</h2>
+                <img src='Favicon.png' height='80px' width='80px'></img>
                 <p>Name: {data.mentor.name}</p>
                 <p>Email: {data.mentor.email}</p>
             </section>
 
             <section className="submissions">
                 <h2>Submissions</h2>
-                <Card style={{ width: '18rem' }}>
-                    {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
+                <Card style={{ width: '18rem' }} cl>
                     {data.submissions.map((submission, index) => (
                         <Card.Body>
                         <Card.Text>
-                        <li key={index}>{submission.title}</li>
+                        <p key={index}>{submission.title}</p>
                         </Card.Text>
                         </Card.Body>
                     ))}
                 </Card>
             </section>
 
+            <div class="container">
+  <div class="row">
+    <div class="col-sm">
+      One of three columns
+    </div>
+    <div class="col-sm">
+      One of three columns
+    </div>
+    <div class="col-sm">
+      One of three columns
+    </div>
+  </div>
+</div>
+
             <section className="team-requests">
                 <h2>Team Requests</h2>
-                <Card style={{ width: '18rem' }}>
+                <Card class='cardcontainer'>
                     {data.teamRequests.map((request, index) => (
-                        <Card.Body>
+                        <Card.Body  class='teamm'> 
+                            <Card.Title> 
+                            <p key={index}> Requested by : {request.requestedBy} </p>
+                            </Card.Title>
                         <Card.Text>
-                        <li key={index}>{request.title}</li>
+                        <p key={index}>{request.teamName}     {request.status}   </p>
                         </Card.Text>
+                        <Button variant="primary">Accept</Button>
                         </Card.Body>
                     ))}
-                    </Card>
+                </Card>
             </section>
+
             <section className="scores">
                 <h2>Scores</h2>
-                <ul>
-                    {data.scores.map((score, index) => (
-                        <li key={index}>{score.title}: {score.value}</li>
+                <table>
+                    <tr>
+                        <td>
+                    {data.scores.map((scores, index) => (
+                        <p key={index}>{scores.team}: {scores.score}</p>
                     ))}
-                </ul>
+                    </td>
+                    </tr>
+                </table>
             </section>
+
             <section className="leaderboard">
                 <h2>Leaderboard</h2>
-                <ul>
+                <table>
+                    <tr>
+                        <td>
                     {data.leaderboard.map((entry, index) => (
-                        <li key={index}>{entry.name}: {entry.score}</li>
+                        <p key={index}>{entry.team}: {entry.score}</p>
                     ))}
-                </ul>
+               </td>
+                    </tr>
+                </table>
             </section>
         </div>
     );
