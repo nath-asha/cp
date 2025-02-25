@@ -37,7 +37,7 @@ import '../styles/leaderboard.css'
 function Leaderboard({ leaderboardData, toppers }) {
     return (
         <div className="leaderboard-container">
-            <h2>Top 3 Participants</h2>
+            <h2>🏆 Top 3 Participants</h2>
             <div className="toppers-container">
                 {toppers.map((participant,index) => (
                     <div key={participant.name} className='topper-card'>

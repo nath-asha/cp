@@ -2,6 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const data = require('../front/frontend/public/scores.json');
+const challenges = require('../front/frontend/public/challenges.json');
+const dash = require('../front/frontend/public/dashboarddata.json');
 
 dotenv.config();
 
@@ -24,6 +27,7 @@ const connectDB = async () => {
 };
 
 connectDB();
+
 
 const scoresSchema = new mongoose.Schema({
     name: {
@@ -58,25 +62,35 @@ const challengesSchema = new mongoose.Schema({
 const scores = mongoose.model("scores", scoresSchema);
 const chall = mongoose.model("challenges", challengesSchema);
 
-app.get("/", async (req, res) => {
-    try {
-        const data = await scores.find();
-        res.json(data);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Internal Server Error");
-    }
+// app.get("/", async (req, res) => {
+//     try {
+//         const data = await scores.find();
+//         res.json(data);
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).send("Internal Server Error");
+//     }
+// });
+app.get("/", (req, res) => {
+    // res.send("API is running");
+    res.send(data);
 });
-
 app.get("/challenges", async (req, res) => {
-    try {
-        const ps = await challenges.find();
-        res.json(ps);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Internal Server Error");
-    }
+    // res.send("API is running");
+    res.send(challenges);
 });
+app.get("/api/dashboard-data", async (req, res) => {
+    res.send(dash);
+});
+// app.get("/challenges", async (req, res) => {
+//     try {
+//         const ps = await challenges.find();
+//         res.json(ps);
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).send("Internal Server Error");
+//     }
+// });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

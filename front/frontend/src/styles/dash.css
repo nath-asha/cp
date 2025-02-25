@@ -4,11 +4,11 @@
 }
 
 .profile,.mentor{
-    background-color: #b0d7c8eb;
+    background-color: #8d95f0a4;
     margin: 0;
     padding: 0;
     width: 20%;
-    height: 100vh;
+    height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -16,11 +16,13 @@
 }
 
 .submissions{
-    background-color: #b0d7c8eb;
+    background-color: #8d95f0a4;
     margin: 0;
     padding: 0;
     width: 80%;
-    height: 100vh;
+    height: 80vh;
+    border: #010101a4;
+    border-style: double;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -30,6 +32,7 @@
 .team-requests{
     background-color: rgb(134, 86, 182);
     margin: auto;
+    padding: 10px;
 }
 
 .scores{

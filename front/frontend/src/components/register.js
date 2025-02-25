@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+
 function RegistrationForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-    const response = await fetch('/api/register', {
+    const response = await fetch('/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -25,6 +26,7 @@ function RegistrationForm() {
     <div>
     <form onSubmit={handleSubmit}>
       <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <br></br>
       <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       <button type="submit">Register</button>
     </form>

@@ -1,0 +1,132 @@
+{
+    "submissions": [
+      {
+        "id": 1,
+        "name": "tim",
+        "title": "Project Alpha Submission",
+        "team": "Team A",
+        "status": "Reviewed",
+        "score": 85,
+        "submittedAt": "2023-11-15T10:30:00.000Z"
+      },
+      {
+        "id": 2,
+        "title": "Beta Challenge Submission",
+        "name": "tim",
+        "team": "Team B",
+        "status": "Pending Review",
+        "score": null,
+        "submittedAt": "2023-11-18T14:00:00.000Z"
+      },
+      {
+        "id": 3,
+        "title": "Gamma Feature Submission",
+        "name": "tim",
+        "team": "Team A",
+        "status": "Accepted",
+        "score": 92,
+        "submittedAt": "2023-11-20T16:00:00.000Z"
+      },
+       {
+         "id": 4,
+         "title": "Delta Bugfix Submission",
+         "name": "tim",
+         "team": "Team C",
+         "status": "Rejected",
+         "score": 60,
+         "submittedAt": "2023-11-21T11:30:00.000Z"
+       },
+        {
+         "id": 5,
+         "title": "Epsilon Improvement Submission",
+         "name": "tim",
+         "team": "Team B",
+         "status": "Reviewed",
+         "score": 78,
+         "submittedAt": "2023-11-22T09:00:00.000Z"
+       }
+    ],
+    "teamRequests": [
+      {
+        "id": 1,
+        "teamName": "Team C",
+        "requestedBy": "User4",
+        "status": "Pending",
+        "requestedAt": "2023-11-19T12:00:00.000Z"
+      },
+      {
+        "id": 2,
+        "teamName": "Team D",
+        "requestedBy": "User5",
+        "status": "Accepted",
+        "requestedAt": "2023-11-20T18:00:00.000Z"
+      },
+      {
+        "id": 3,
+        "teamName": "Team E",
+        "requestedBy": "User6",
+        "status": "Rejected",
+        "requestedAt": "2023-11-21T10:00:00.000Z"
+      }
+    ],
+    "scores": [
+      {
+        "team": "Team A",
+        "score": 92,
+        "date": "2023-11-20T00:00:00.000Z"
+      },
+      {
+        "team": "Team B",
+        "score": 88,
+        "date": "2023-11-21T00:00:00.000Z"
+      },
+      {
+        "team": "Team C",
+        "score": 75,
+        "date": "2023-11-22T00:00:00.000Z"
+      },
+      {
+        "team": "Team A",
+        "score": 85,
+        "date": "2023-11-15T00:00:00.000Z"
+      },
+      {
+        "team": "Team B",
+        "score": 78,
+        "date": "2023-11-22T00:00:00.000Z"
+      },
+      {
+        "team": "Team C",
+        "score": 60,
+        "date": "2023-11-21T00:00:00.000Z"
+      }
+    ],
+    "leaderboard": [
+      {
+        "team": "Team A",
+        "score": 92
+      },
+      {
+        "team": "Team B",
+        "score": 88
+      },
+      {
+        "team": "Team C",
+        "score": 75
+      }
+    ],
+    "profile": {
+      "username": "User1",
+      "email": "user1@example.com",
+      "team": "Team A",
+      "role": "Developer",
+      "avatar": "https://via.placeholder.com/150"
+    },
+    "mentor": {
+      "name": "Mentor Smith",
+      "email": "mentor@example.com",
+      "expertise": "Fullstack Development",
+      "availability": "Mon-Fri, 9am-5pm",
+      "avatar": "https://via.placeholder.com/150"
+    }
+  }

@@ -15,7 +15,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('/api/dashboard-data');
+                const response = await axios.get('http://localhost:5000/api/dashboard-data');
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching dashboard data', error);
@@ -30,7 +30,7 @@ const Dashboard = () => {
             <h1>Student Dashboard</h1>
             <section className="profile">
                 <h2>Profile</h2>
-                <p>Name: {data.profile.name}</p>
+                <p>Name: {data.profile.username}</p>
                 <p>Email: {data.profile.email}</p>
             </section>
             <section className="mentor">
