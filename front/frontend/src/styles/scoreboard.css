@@ -1,0 +1,30 @@
+.toppers-container {
+    display: flex; 
+    gap: 100px; 
+    margin-bottom: 20px; 
+    justify-content: center;
+   }
+  
+  .topper-card {
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    border-radius: 8px; 
+    box-shadow: 4px 12px 25px rgba(0, 0, 0, 0.1); 
+    width: 200px; 
+    text-align: center;
+    background-color: #f9f9f9; 
+    color: #37438e;
+    height: 250px;
+  }
+  
+  .topper-card h3 {
+    margin-top: 0; 
+    color: #37438e;
+  }
+  
+  .topper-card img {
+    width: 30px;
+    height: 30px;
+    margin-top: 10px;
+  }
+  

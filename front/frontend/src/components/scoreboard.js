@@ -1,25 +1,27 @@
 import React from 'react'
 import '../App.css'
-import '../styles/leaderboard.css'
+import '../styles/scoreboard.css'
 
-function scoreboard({ leaderboardData, toppers }) {
+function Scoreboard({ leaderboardData, toppers }) {
     return (
         <div className="leaderboard-container">
             <h2>🏆 Top 3 Participants</h2>
             <div className="toppers-container">
-                {toppers.map((participant,index) => (
+                {toppers.map((participant) => {
+                  return (
                     <div key={participant.name} className='topper-card'>
-                        <h3>{participant.name}</h3>
-                        <p>Score: {participant.score}</p>
-                        <a href={participant.github_url} target="_blank" rel="noopener noreferrer"><img src='logo.png' alt="github logo" className="github-logo"></img></a>
+                      <h3>{participant.name}</h3>
+                      <p>Score: {participant.score}</p>
+                      <a href={participant.github_url} target="_blank" rel="noopener noreferrer"><img src='logo.png' alt="github logo" className="github-logo"></img></a>
                     </div>
-                ))}
+                  );
+                })}
             </div>
         </div>
     );
 }
 
-export default scoreboard;
+export default Scoreboard;
 
 
 
