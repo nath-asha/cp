@@ -9,7 +9,7 @@ import Home from './components/home';
 import Challenges from './components/challenges';
 import RegistrationForm from './components/register';
 
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+// import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 function App() {
   const [leaderboardData, setLeaderboardData] = useState([]);
@@ -54,7 +54,7 @@ function App() {
   }
 
   // Create the theme object here
-  const theme = createMuiTheme();
+  // const theme = createMuiTheme();
 
   return (
     <Router>
@@ -64,14 +64,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/leaderboard" element={<Leaderboard leaderboardData={sortedLeaderboardData} toppers={toppers} />} />
           <Route path="/scoreboard" element={<Scoreboard leaderboardData={sortLeaderboard} toppers={toppers} />} />
-          <Route
-            path="/challenges"
-            element={
-              <ThemeProvider theme={theme}>
-                <Challenges />
-              </ThemeProvider>
-            }
-          />
+          <Route  path="/challenges"  element={<Challenges />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/register" element={<RegistrationForm />} />
         </Routes>
