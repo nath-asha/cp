@@ -7,6 +7,10 @@ import Dashboard from './components/dash';
 import Home from './components/home';
 import Challenges from './components/challenges';
 import RegistrationForm from './components/register';
+import RotatingTimeline from "./components/header";
+import FerrisWheelTimeline from "./components/FerrisWheelTimeline";
+
+
 
 function App() {
   const [leaderboardData, setLeaderboardData] = useState([]);
@@ -61,6 +65,8 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} /> 
           <Route path="/register" element={<RegistrationForm/>} />
         </Routes>
+        <RotatingTimeline />
+        {/* <FerrisWheelTimeline /> */}
       </div>
     </Router>
   );
