@@ -5,6 +5,8 @@ const dotenv = require("dotenv");
 const data = require('../front/frontend/public/scores.json');
 const challenges = require('../front/frontend/public/challenges.json');
 const dash = require('../front/frontend/public/dashboarddata.json');
+const connectDB = require("./config/db");
+
 
 dotenv.config();
 
@@ -13,18 +15,18 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const connectDB = async () => {
-    try {
-        await mongoose.connect(process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log("MongoDB connected");
-    } catch (err) {
-        console.error(err.message);
-        process.exit(1);
-    }
-};
+// const connectDB = async () => {
+//     try {
+//         await mongoose.connect(process.env.MONGO_URI, {
+//             useNewUrlParser: true,
+//             useUnifiedTopology: true,
+//         });
+//         console.log("MongoDB connected");
+//     } catch (err) {
+//         console.error(err.message);
+//         process.exit(1);
+//     }
+// };
 
 connectDB();
 
