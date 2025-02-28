@@ -76,7 +76,7 @@ const Dashboard = () => {
                     <div className="grid-item submissions-section">
                         <section className="submissions">
                             <h2>Submissions</h2>
-                            <Card style={{ width: '18rem' }}>
+                            <Card>
                                 {data.submissions.map((submission, index) => (
                                     <Card.Body key={index}>
                                         <Card.Text>
