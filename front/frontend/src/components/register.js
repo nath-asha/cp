@@ -1,5 +1,7 @@
 import "../styles/register.css";
 import React, { useState } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 export default function App() {
   const [values, setValues] = useState({

@@ -3,6 +3,8 @@ import axios from 'axios';
 import '../styles/dash.css'; 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Stack from 'react-bootstrap/Stack';
 
 const Dashboard = () => {
@@ -31,6 +33,11 @@ const Dashboard = () => {
     return (
         <div className="dashboard">
             <h1>Student Dashboard</h1>
+            <div className="container">
+                <div className='Row'>
+                    <div className='col'></div>
+                </div>
+            </div>
             <section className="profile">
                 <h2>Profile</h2>
                 <img src='Favicon.png' height='80px' width='80px'></img>
@@ -43,6 +50,25 @@ const Dashboard = () => {
                 <img src='Favicon.png' height='80px' width='80px'></img>
                 <p>Name: {data.mentor.name}</p>
                 <p>Email: {data.mentor.email}</p>
+            </section>
+
+            <section className='progress-indicator'>
+                <h2>Your Progress Metric</h2>
+                    <div class="progress" role="progressbar" aria-label="Default striped example" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-striped" style={{width: "10%"}}></div>
+                    </div>
+                    <div class="progress" role="progressbar" aria-label="Success striped example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-striped bg-success" style={{width: "25%"}}></div>
+                    </div>
+                    <div class="progress" role="progressbar" aria-label="Info striped example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-striped bg-info" style={{width: "50%"}}></div>
+                    </div>
+                    <div class="progress" role="progressbar" aria-label="Warning striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-striped bg-warning" style={{width: "75%"}}></div>
+                    </div>
+                    <div class="progress" role="progressbar" aria-label="Danger striped example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-striped bg-danger" style={{width: "100%"}}></div>
+                    </div>
             </section>
 
             <section className="submissions">

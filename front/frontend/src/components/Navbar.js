@@ -20,7 +20,7 @@ const Navbar = () => {
                 <li><Link to="/leaderboard">Leaderboard</Link></li>
                 <li><Link to="/impact">Impact</Link></li>
                 <li><Link to="/contact">Contact</Link></li>
-                <li><Link to="/login-page">Login</Link></li>
+                <li><Link to="/login-page">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Login</Link></li>
             </ul>
         </nav>
     );

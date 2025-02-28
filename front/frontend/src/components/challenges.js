@@ -29,10 +29,14 @@ function Challenges() {
         {challenges.map((challenge) => (
           <div className="col-md-4" key={challenge.track_id}>
             <div className="card mb-4">
+            <div class="card-header">
+            Track ID: {challenge.track_id}</div>
+            <img src="download.png" class="card-img-top" alt="problem statement image"/>
               <div className="card-body">
                 <h5 className="card-title">{challenge.title}</h5>
                 <h6 className="card-subtitle mb-2 text-muted">{challenge.description}</h6>
-                <p className="card-text">Track ID: {challenge.track_id}</p>
+                <button>Choose</button>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
               </div>
             </div>
           </div>
