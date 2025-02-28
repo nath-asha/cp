@@ -30,19 +30,7 @@ app.use(cors());
 
 connectDB();
 
-// app.get('/api/leaderboard', async (req, res) => {
-//     try {
-//         const database = client.db('your_database_name'); // Replace with your database name
-//         const leaderboard = database.collection('leaderboard'); // Replace with your collection name
 
-//         const leaderboardData = await leaderboard.find().sort({ score: -1 }).toArray(); // Sort by score descending
-
-//         res.json(leaderboardData);
-//     } catch (err) {
-//         console.error('Error fetching leaderboard data:', err);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// });
 const scoresSchema = new mongoose.Schema({
     name: {
         type: String,
