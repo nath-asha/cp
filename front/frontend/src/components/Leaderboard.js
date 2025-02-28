@@ -31,6 +31,7 @@
 // export default Leaderboard;
 
 import React from 'react'
+import axios from 'axios';
 import '../App.css'
 import '../styles/leaderboard.css'
 
