@@ -2,17 +2,25 @@ import "../styles/register.css";
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 export default function App() {
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
-    email: ""
+    email: "",
+    password: "",
+    phone: "",
+    role: "",
+    team: "",
+    address: "",
+    organization: "",
+    description: "",
+    skills: "",
+    github_url: "",
+    linkedin_url: "",
+    twitter_url: "",
   });
 
   const handleInputChange = (event) => {
-    event.preventDefault();
-
     const { name, value } = event.target;
     setValues((values) => ({
       ...values,
@@ -25,7 +33,7 @@ export default function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (values.firstName && values.lastName && values.email) {
+    if (Object.values(values).every(value => value)) {
       setValid(true);
     }
     setSubmitted(true);
@@ -33,125 +41,155 @@ export default function App() {
 
   return (
     <div className="form-container">
+      <div className="container">
+        
       <form className="register-form" onSubmit={handleSubmit}>
         {submitted && valid && (
           <div className="success-message">
-            <h3>
-              {" "}
-              Welcome {values.firstName} {values.lastName}{" "}
-            </h3>
-            <div> Your registration was successful! </div>
+            <h3>Welcome {values.firstName} {values.lastName}</h3>
+            <div>Your registration was successful!</div>
           </div>
         )}
         {!valid && (
-          <input
-            class="form-field"
-            type="text"
-            placeholder="First Name"
-            name="firstName"
-            value={values.firstName}
-            onChange={handleInputChange}
-          />
-        )}
+          <>
+            <input
+              className="form-field"
+              type="text"
+              placeholder="First Name"
+              name="firstName"
+              value={values.firstName}
+              onChange={handleInputChange}
+            />
+            {submitted && !values.firstName && (
+              <span id="first-name-error">Please enter a first name</span>
+            )}
 
-        {submitted && !values.firstName && (
-          <span id="first-name-error">Please enter a first name</span>
-        )}
+            <input
+              className="form-field"
+              type="text"
+              placeholder="Last Name"
+              name="lastName"
+              value={values.lastName}
+              onChange={handleInputChange}
+            />
+            {submitted && !values.lastName && (
+              <span id="last-name-error">Please enter a last name</span>
+            )}
 
-        {!valid && (
-          <input
-            class="form-field"
-            type="text"
-            placeholder="Last Name"
-            name="lastName"
-            value={values.lastName}
-            onChange={handleInputChange}
-          />
-        )}
+            <input
+              className="form-field"
+              type="email"
+              placeholder="Email"
+              name="email"
+              value={values.email}
+              onChange={handleInputChange}
+            />
+            {submitted && !values.email && (
+              <span id="email-error">Please enter an email address</span>
+            )}
 
-        {submitted && !values.lastName && (
-          <span id="last-name-error">Please enter a last name</span>
-        )}
+            <input
+              className="form-field"
+              type="text"
+              placeholder="Phone"
+              name="phone"
+              value={values.phone}
+              onChange={handleInputChange}
+              pattern="\d{10}"
+              title="Please enter a valid 10 digit phone number"
+            />
+            {submitted && !values.phone && (
+              <span id="phone-error">Please enter a phone number</span>
+            )}
 
-        {!valid && (
-          <input
-            class="form-field"
-            type="email"
-            placeholder="Email"
-            name="email"
-            value={values.email}
-            onChange={handleInputChange}
-          />
-        )}
+            <input
+              className="form-field"
+              type="text"
+              placeholder="Role"
+              name="role"
+              value={values.role}
+              onChange={handleInputChange}
+            />
 
-        {submitted && !values.email && (
-          <span id="email-error">Please enter an email address</span>
-        )}
-        {!valid && (
-          <button class="form-field" type="submit">
-            Register
-          </button>
+            <input
+              className="form-field"
+              type="text"
+              placeholder="Team"
+              name="team"
+              value={values.team}
+              onChange={handleInputChange}
+            />
+
+            <input
+              className="form-field"
+              type="text"
+              placeholder="Address"
+              name="address"
+              value={values.address}
+              onChange={handleInputChange}
+            />
+
+            <input
+              className="form-field"
+              type="text"
+              placeholder="Organization"
+              name="organization"
+              value={values.organization}
+              onChange={handleInputChange}
+            />
+
+            <input
+              className="form-field"
+              type="text"
+              placeholder="Description"
+              name="description"
+              value={values.description}
+              onChange={handleInputChange}
+            />
+
+            <input
+              className="form-field"
+              type="text"
+              placeholder="Skills"
+              name="skills"
+              value={values.skills}
+              onChange={handleInputChange}
+            />
+
+            <input
+              className="form-field"
+              type="text"
+              placeholder="GitHub URL"
+              name="github_url"
+              value={values.github_url}
+              onChange={handleInputChange}
+            />
+
+            <input
+              className="form-field"
+              type="text"
+              placeholder="LinkedIn URL"
+              name="linkedin_url"
+              value={values.linkedin_url}
+              onChange={handleInputChange}
+            />
+
+            <input
+              className="form-field"
+              type="text"
+              placeholder="Twitter URL"
+              name="twitter_url"
+              value={values.twitter_url}
+              onChange={handleInputChange}
+            />
+
+            <button className="form-field" type="submit">
+              Register
+            </button>
+          </>
         )}
       </form>
     </div>
+    </div>
   );
 }
-
-// import React, { useState } from 'react';
-
-// function RegistrationForm() {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [message, setMessage] = useState('');
-
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-//     try {
-//       const response = await fetch('/register', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ email, password })
-//       });
-//       if (response.ok) {
-//         const user = await response.json();
-//         setMessage('Registration successful');
-//         console.log('Registration successful', user);
-//       } else {
-//         setMessage('Registration failed');
-//         console.error('Registration failed');
-//       }
-//     } catch (error) {
-//       setMessage('An error occurred');
-//       console.error('An error occurred', error);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <form onSubmit={handleSubmit}>
-//         <input
-//           type="email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//           placeholder="Email"
-//           required
-//         />
-//         <br />
-//         <input
-//           type="password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//           placeholder="Password"
-//           required
-//         />
-//         <br />
-//         <button type="submit">Register</button>
-//       </form>
-//       {message && <p>{message}</p>}
-//     </div>
-//   );
-// }
-
-// export default RegistrationForm;
