@@ -4,4 +4,7 @@ fl.txt
 faq.txt
 mongo.txt
 .env
-public
+scores.json
+challenges.json
+dashboarddata.json
+teams.json
