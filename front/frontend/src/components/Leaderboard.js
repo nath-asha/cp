@@ -38,6 +38,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Leaderboard({ leaderboardData, toppers }) {
     return (
+        <div className='container'>
         <div className="leaderboard-container">
             <h2>🏆 Top 3 Participants</h2>
             <div className="toppers-container">
@@ -73,6 +74,7 @@ function Leaderboard({ leaderboardData, toppers }) {
                      ))}
                 </tbody>
             </table>
+        </div>
         </div>
     );
 }

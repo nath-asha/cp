@@ -2,12 +2,12 @@ import React from "react";
 import '../App.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
-const footer = () => {
+const Footer = () => {
     return(
         <footer>
-            <p>Footer content goes here</p>
+            <p>Footer</p>
         </footer>
     );
 };
 
-export default footer;
+export default Footer;

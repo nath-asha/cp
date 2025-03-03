@@ -1,10 +1,12 @@
 import React from 'react';
 import '../App.css';
 import RotatingTimeline from "./header";
+import Footer from './footer';
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // Import Bootstrap's JS
 
 const Home = () => {
     return (
+        <div className='container'>
         <div className='home'>
             <h1>Welcome to the Hack A Fest!</h1>
             <p>Join us for an exciting event full of coding, collaboration, and creativity.</p>
@@ -99,7 +101,9 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
+    </div>
     );
 };
 

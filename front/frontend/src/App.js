@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Login from './components/login';
 
 import './App.css';
 import Navbar from './components/Navbar';
@@ -11,7 +12,7 @@ import Dashboard from './components/dash';
 import Home from './components/home';
 import Challenges from './components/challenges';
 import RegistrationForm from './components/register';
-import login from './components/login';
+import Gallery from './components/gallery';
 
 // import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -71,7 +72,8 @@ function App() {
           <Route  path="/challenges"  element={<Challenges />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/register" element={<RegistrationForm />} />
-          <Route path="/login-page" element={<login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path='/gallery' element={<Gallery/>} />
         </Routes>
       </div>
     </Router>
