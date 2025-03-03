@@ -1,9 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/navbar.css'; 
-import Leaderboard from './Leaderboard';
-import Dashboard from './dash';
-import Challenges from './challenges';
 
 const Navbar = () => {
     return (
@@ -20,7 +17,7 @@ const Navbar = () => {
                 <li><Link to="/leaderboard">Leaderboard</Link></li>
                 <li><Link to="/impact">Impact</Link></li>
                 <li><Link to="/contact">Contact</Link></li>
-                <li><Link to="/login-page">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Login</Link></li>
+                <li><Link to="/login-page">&nbsp;Login</Link></li>
             </ul>
         </nav>
     );

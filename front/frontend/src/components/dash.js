@@ -4,6 +4,7 @@ import '../styles/dash.css';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import DynamicChart from './charts';
 
 const Dashboard = () => {
     const [data, setData] = useState({
@@ -40,18 +41,24 @@ const Dashboard = () => {
                             <p>Name: {data.profile.username}</p>
                             <p>Email: {data.profile.email}</p>
                             <p>Team: {data.profile.team}</p>
+                            <br></br>
+                            <h2>Mentor</h2>
+                            <p>Name: {data.mentor.name}</p>
+                            <p>Email: {data.mentor.email}</p>
                         </section>
                     </div>
 
-                    <div className="grid-item mentor-section">
+                    {/* <div className="grid-item mentor-section">
                         <section className="mentor">
                             <h2>Mentor</h2>
                             <img src='Favicon.png' height='80px' width='80px' alt="Mentor"></img>
                             <p>Name: {data.mentor.name}</p>
                             <p>Email: {data.mentor.email}</p>
                         </section>
-                    </div>
+                    </div> */}
 
+                    <div className='container'>
+                    <DynamicChart /></div>
                     <div className="grid-item progress-section">
                         <section className='progress-indicator'>
                             <h2>Your Progress Metric</h2>
@@ -76,7 +83,7 @@ const Dashboard = () => {
                     <div className="grid-item submissions-section">
                         <section className="submissions">
                             <h2>Submissions</h2>
-                            <Card>
+                            <Card style={{ width: '18rem' }}>
                                 {data.submissions.map((submission, index) => (
                                     <Card.Body key={index}>
                                         <Card.Text>
@@ -86,6 +93,20 @@ const Dashboard = () => {
                                 ))}
                             </Card>
                         </section>
+                        {/* <section>
+                            <Card style={{ width: '18rem' }}>
+                                <Card.Body>
+                                    <Card.Title>Card Title</Card.Title>
+                                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                                    <Card.Text>
+                                    Some quick example text to build on the card title and make up the
+                                    bulk of the card's content.
+                                    </Card.Text>
+                                    <Card.Link href="#">Check submission</Card.Link>
+                                    <Card.Link href="#">Edit submission</Card.Link>
+                                </Card.Body>
+                            </Card>
+                        </section>                     */}
                     </div>
 
                     <div className="grid-item team-requests-section">
@@ -107,7 +128,7 @@ const Dashboard = () => {
                         </section>
                     </div>
 
-                    <div className="grid-item scores-section">
+                    {/* <div className="grid-item scores-section">
                         <section className="scores">
                             <h2>Scores</h2>
                             <table>
@@ -122,9 +143,9 @@ const Dashboard = () => {
                                 </tbody>
                             </table>
                         </section>
-                    </div>
+                    </div> */}
 
-                    <div className="grid-item leaderboard-section">
+                    {/* <div className="grid-item leaderboard-section">
                         <section className="leaderboard">
                             <h2>Leaderboard</h2>
                             <table>
@@ -139,7 +160,7 @@ const Dashboard = () => {
                                 </tbody>
                             </table>
                         </section>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

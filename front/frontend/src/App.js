@@ -11,6 +11,7 @@ import Dashboard from './components/dash';
 import Home from './components/home';
 import Challenges from './components/challenges';
 import RegistrationForm from './components/register';
+import login from './components/login';
 
 // import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -70,6 +71,7 @@ function App() {
           <Route  path="/challenges"  element={<Challenges />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/register" element={<RegistrationForm />} />
+          <Route path="/login-page" element={<login />} />
         </Routes>
       </div>
     </Router>
