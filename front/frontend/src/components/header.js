@@ -24,6 +24,7 @@ const events = [
   
 const RotatingTimeline = () => {
   return (
+    <div className="container">
     <div className="timeline-container">
       <h2>Event Schedule</h2>
 
@@ -48,6 +49,7 @@ const RotatingTimeline = () => {
           </div>
         ))}
       </motion.div>
+    </div>
     </div>
   );
 };

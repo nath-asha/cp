@@ -13,6 +13,7 @@ import Home from './components/home';
 import Challenges from './components/challenges';
 import RegistrationForm from './components/register';
 import Gallery from './components/gallery';
+import Submissions from './components/submissions';
 
 // import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -74,6 +75,7 @@ function App() {
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<Login />} />
           <Route path='/gallery' element={<Gallery/>} />
+          <Route path='/submissions' element={<Submissions />} />
         </Routes>
       </div>
     </Router>

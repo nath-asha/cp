@@ -14,6 +14,7 @@ body {
 
 .App h1{
   color: rgb(26, 18, 137);
+  margin-top: 50px;
 }
 
 .timeline{
