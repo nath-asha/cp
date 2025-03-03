@@ -7,4 +7,7 @@ mongo.txt
 scores.json
 challenges.json
 dashboarddata.json
-teams.json
+/public/frontend/scores.json
+/public/frontend/challenges.json
+/public/frontend/dashboarddata.json
+/public/frontend/teams.json

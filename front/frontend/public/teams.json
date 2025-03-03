@@ -1,0 +1,192 @@
+[
+    {
+      "name": "Frontend Wizards",
+      "members": [
+        "65e0123456789abcdef01234",
+        "65e0123456789abcdef01235",
+        "65e0123456789abcdef01236"
+      ],
+      "project": "65d0987654321fedcba98765",
+      "createdAt": "2024-03-01T10:00:00.000Z"
+    },
+    {
+      "name": "Backend Titans",
+      "members": [
+        "65e0123456789abcdef01237",
+        "65e0123456789abcdef01238"
+      ],
+      "project": "65d0987654321fedcba98765",
+      "createdAt": "2024-03-01T10:30:00.000Z"
+    },
+    {
+      "name": "Mobile Mavericks",
+      "members": [
+        "65e0123456789abcdef01239",
+        "65e0123456789abcdef01240",
+        "65e0123456789abcdef01241"
+      ],
+      "project": "65d10123456789abcdef01234",
+      "createdAt": "2024-03-02T11:00:00.000Z"
+    },
+    {
+      "name": "Data Dynamos",
+      "members": [
+        "65e0123456789abcdef01242",
+        "65e0123456789abcdef01243"
+      ],
+      "project": "65d10123456789abcdef01234",
+      "createdAt": "2024-03-02T11:30:00.000Z"
+    },
+    {
+      "name": "QA Gladiators",
+      "members": [
+        "65e0123456789abcdef01244",
+        "65e0123456789abcdef01245",
+        "65e0123456789abcdef01246"
+      ],
+      "project": "65d10987654321fedcba9876",
+      "createdAt": "2024-03-03T12:00:00.000Z"
+    },
+    {
+      "name": "DevOps Defenders",
+      "members": [
+        "65e0123456789abcdef01247",
+        "65e0123456789abcdef01248"
+      ],
+      "project": "65d10987654321fedcba9876",
+      "createdAt": "2024-03-03T12:30:00.000Z"
+    },
+    {
+      "name": "Design Dreamers",
+      "members": [
+        "65e0123456789abcdef01249",
+        "65e0123456789abcdef01250"
+      ],
+      "project": "65d1123456789abcdef01234",
+      "createdAt": "2024-03-04T10:00:00.000Z"
+    },
+    {
+      "name": "Product Pioneers",
+      "members": [
+        "65e0123456789abcdef01251",
+        "65e0123456789abcdef01252",
+        "65e0123456789abcdef01253"
+      ],
+      "project": "65d1123456789abcdef01234",
+      "createdAt": "2024-03-04T11:30:00.000Z"
+    },
+    {
+      "name": "Cloud Conquerors",
+      "members": [
+        "65e0123456789abcdef01254",
+        "65e0123456789abcdef01255"
+      ],
+      "project": "65d120987654321fedcba987",
+      "createdAt": "2024-03-05T14:00:00.000Z"
+    },
+    {
+      "name": "Security Sentinels",
+      "members": [
+        "65e0123456789abcdef01256",
+        "65e0123456789abcdef01257",
+        "65e0123456789abcdef01258"
+      ],
+      "project": "65d120987654321fedcba987",
+      "createdAt": "2024-03-05T15:30:00.000Z"
+    },
+    {
+      "name": "Analytics Aces",
+      "members": [
+        "65e0123456789abcdef01259",
+        "65e0123456789abcdef01260"
+      ],
+      "project": "65d12987654321fedcba9876",
+      "createdAt": "2024-03-06T09:00:00.000Z"
+    },
+    {
+      "name": "UX Unicorns",
+      "members": [
+        "65e0123456789abcdef01261",
+        "65e0123456789abcdef01262",
+        "65e0123456789abcdef01263"
+      ],
+      "project": "65d12987654321fedcba9876",
+      "createdAt": "2024-03-06T10:30:00.000Z"
+    },
+    {
+      "name": "Content Crafters",
+      "members": [
+        "65e0123456789abcdef01264",
+        "65e0123456789abcdef01265"
+      ],
+      "project": "65d13123456789abcdef01234",
+      "createdAt": "2024-03-07T12:00:00.000Z"
+    },
+    {
+      "name": "Growth Guerrillas",
+      "members": [
+        "65e0123456789abcdef01266",
+        "65e0123456789abcdef01267",
+        "65e0123456789abcdef01268"
+      ],
+      "project": "65d13123456789abcdef01234",
+      "createdAt": "2024-03-07T14:30:00.000Z"
+    },
+    {
+      "name": "Research Rockstars",
+      "members": [
+        "65e0123456789abcdef01269",
+        "65e0123456789abcdef01270"
+      ],
+      "project": "65d200987654321fedcba987",
+      "createdAt": "2024-03-08T11:00:00.000Z"
+    },
+    {
+      "name": "Innovation Incubator",
+      "members": [
+        "65e0123456789abcdef01271",
+        "65e0123456789abcdef01272",
+        "65e0123456789abcdef01273"
+      ],
+      "project": "65d200987654321fedcba987",
+      "createdAt": "2024-03-08T12:30:00.000Z"
+    },
+    {
+      "name": "Support Superstars",
+      "members": [
+        "65e0123456789abcdef01274",
+        "65e0123456789abcdef01275"
+      ],
+      "project": "65d20987654321fedcba9876",
+      "createdAt": "2024-03-09T10:00:00.000Z"
+    },
+    {
+      "name": "Community Champions",
+      "members": [
+        "65e0123456789abcdef01276",
+        "65e0123456789abcdef01277",
+        "65e0123456789abcdef01278"
+      ],
+      "project": "65d20987654321fedcba9876",
+      "createdAt": "2024-03-09T11:30:00.000Z"
+    },
+    {
+      "name": "Partnerships Powerhouse",
+      "members": [
+        "65e0123456789abcdef01279",
+        "65e0123456789abcdef01280"
+      ],
+      "project": "65d2123456789abcdef01234",
+      "createdAt": "2024-03-10T14:00:00.000Z"
+    },
+    {
+      "name": "Marketing Masters",
+      "members": [
+        "65e0123456789abcdef01281",
+        "65e0123456789abcdef01282",
+        "65e0123456789abcdef01283"
+      ],
+      "project": "65d2123456789abcdef01234",
+      "createdAt": "2024-03-10T16:30:00.000Z"
+    }
+  ]
