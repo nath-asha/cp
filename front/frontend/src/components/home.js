@@ -25,7 +25,7 @@ const Home = () => {
                 Register Now
             </button>
 
-            <div className="timeline">
+            {/* <div className="timeline">
                 <h2>Event Schedule</h2>
                 <div className='timeli'>
                     <div className='time'>
@@ -57,7 +57,7 @@ const Home = () => {
                         <p>Work through the night to complete your projects.</p>
                     </div>
                 </div>
-            </div>
+            </div> */}
             <RotatingTimeline />
             <div className='faq'>
                 <div className="accordion accordion-flush" id="accordionFlushExample">

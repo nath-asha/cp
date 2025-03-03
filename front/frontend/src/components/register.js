@@ -18,6 +18,7 @@ export default function App() {
     github_url: "",
     linkedin_url: "",
     twitter_url: "",
+    USN: ""
   });
 
   const handleInputChange = (event) => {
@@ -88,6 +89,12 @@ export default function App() {
               <span id="email-error">Please enter an email address</span>
             )}
 
+            <input 
+              className="form-field"
+              type="text"
+              placeholder="Batch"
+            />
+
             <input
               className="form-field"
               type="text"
@@ -100,6 +107,18 @@ export default function App() {
             />
             {submitted && !values.phone && (
               <span id="phone-error">Please enter a phone number</span>
+            )}
+
+            <input
+              className="form-field"
+              type="text"
+              placeholder="USN"
+              name="USN"
+              value={values.USN}
+              onChange={handleInputChange}
+            />
+            {submitted && !values.lastName && (
+              <span id="last-name-error">Please enter a last name</span>
             )}
 
             <input
