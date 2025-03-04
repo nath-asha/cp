@@ -92,3 +92,8 @@ body {
     display: block;
     margin-bottom: 5px;
 }
+
+.card-header h2{
+  color:blue;
+  margin-top: 20px;
+}

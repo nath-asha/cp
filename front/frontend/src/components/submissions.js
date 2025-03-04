@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../App.css'
 
 const Submissions = () => {
     const [submissions,setSubmissions] = useState([]);
@@ -10,7 +11,7 @@ const Submissions = () => {
     })
     return (
         <div className="container mt-5">
-            <h1 className="text-center mb-4">Project Submissions</h1>
+            <h1 className="text-center mb-4" >Project Submissions</h1>
             <div className="card mb-3">
                 <div className="card-header">
                     <h2>Project Title</h2>
@@ -31,7 +32,7 @@ const Submissions = () => {
                     </ul>
                 </div>
                 <div className="card-footer text-right">
-                    <button className="btn btn-primary mr-2">Add Participant</button>
+                    {/* <button className="btn btn-primary mr-2">Add Participant</button> */}
                     <button className="btn btn-secondary">Manage Submission</button>
                 </div>
             </div>
