@@ -101,3 +101,7 @@ body {
 h3{
   justify-content: left;
 }
+
+.container md-5 h3{
+  justify-content: left;
+}

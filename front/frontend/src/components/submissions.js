@@ -5,13 +5,32 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css'
 
 const Submissions = () => {
-    const [submissions,setSubmissions] = useState([]);
-
+    const [submissions, setSubmissions] = useState({});
+    // const [submitted, setSubmitted] = useState(false);
+    // const [valid, setValid] = useState(false);
+  
     useEffect(() => {
 
     })
+    // const handleInputChange = (event) => {
+    //     const { name, submissions } = event.target;
+    //     setSubmissions((values) => ({
+    //       ...submissions,
+    //       [name]: setSubmissions
+    //     }));
+    //   };
+    
+     
+    //   const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     if (Object.submissions(submissions).every(submissions => submissions)) {
+    //       setValid(true);
+    //     }
+    //     setSubmitted(true);
+    //   };
     return (
-        <div className="container mt-5">
+        <div className="container md-5">
+            <h3>Team Name</h3>
             <h3>Project Title</h3>
             <Form.Control type="text" placeholder='title' />
             <br />
