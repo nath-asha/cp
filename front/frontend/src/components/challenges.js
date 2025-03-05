@@ -31,7 +31,7 @@ function Challenges() {
             <div className="card mb-4">
             <div class="card-header">
             Track ID: {challenge.track_id}</div>
-            <img src="download.png" class="card-img-top" alt="problem statement image"/>
+            <img src="https://img.freepik.com/free-vector/hackathon-doodle-hand-drawing-team-programmers-web-developers-managers-graphic-designers-deve_88138-1348.jpg?t=st=1741146510~exp=1741150110~hmac=aa36e1836d63a2fa40cf74e6d2efca9fe0c2bb91bbfb7d1a27f71d9d91a5486a&w=1380" class="card-img-top" alt="problem statement image"/>
               <div className="card-body">
                 <h5 className="card-title">{challenge.title}</h5>
                 <h6 className="card-subtitle mb-2 text-muted">{challenge.description}</h6>
