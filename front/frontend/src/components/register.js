@@ -41,9 +41,9 @@ export default function App() {
   };
 
   return (
-    <div className="form-container">
-      <div className="container">
-        
+   
+      <div className="container-md">
+        <div className="form-container"> 
       <form className="register-form" onSubmit={handleSubmit}>
         {submitted && valid && (
           <div className="success-message">

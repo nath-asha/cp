@@ -6,6 +6,7 @@ const data = require('../front/frontend/public/scores.json');
 const challenges = require('../front/frontend/public/challenges.json');
 const dash = require('../front/frontend/public/dashboarddata.json');
 const teams = require('../front/frontend/public/teams.json');
+const users = require('../front/frontend/public/users.json');
 const connectDB = require("./config/db");
 
 
@@ -88,6 +89,9 @@ app.get("/api/dashboard-data", async (req, res) => {
 app.get("/teams", async (req,res) => {
     res.send(teams);
 });
+app.get("/users", async (req,res) =>{
+    res.send(users);
+})
 // app.get("/challenges", async (req, res) => {
 //     try {
 //         const ps = await challenges.find();
