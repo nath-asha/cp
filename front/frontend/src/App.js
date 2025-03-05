@@ -11,7 +11,7 @@ import Scoreboard from './components/scoreboard';
 import Dashboard from './components/dash';
 import Home from './components/home';
 import Challenges from './components/challenges';
-import RegistrationForm from './components/register';
+import RegistrationForm from './components/register1';
 import Gallery from './components/gallery';
 import Submissions from './components/submissions';
 import Footer from './components/footer';
@@ -73,7 +73,7 @@ function App() {
           <Route path="/scoreboard" element={<Scoreboard leaderboardData={sortLeaderboard} toppers={toppers} />} />
           <Route  path="/challenges"  element={<Challenges />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/register" element={<RegistrationForm />} />
+          <Route path="//api/users" element={<RegistrationForm />} />
           <Route path="/login" element={<Login />} />
           <Route path='/gallery' element={<Gallery/>} />
           <Route path='/submissions' element={<Submissions />} />

@@ -3,8 +3,8 @@
       "firstName": "Aarav",
       "lastName": "Sharma",
       "email": "aarav.sharma@example.com",
-      "password": "SecurePassword123!",
-      "phone": "9876543210",
+      "password": "!",
+      "phone": "9876543210",SecurePassword123
       "role": "Team Leader",
       "team": "Analytics Team",
       "address": "456 Elm St, Bangalore, Karnataka 560001",

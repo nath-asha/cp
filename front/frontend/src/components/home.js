@@ -22,7 +22,7 @@ const Home = () => {
                     border: 'none',
                     borderRadius: '5px'
                 }}
-                onClick={() => window.location.href = '/register'}
+                onClick={() => window.location.href = '/api/users'}
             >
                 Register Now
             </button>

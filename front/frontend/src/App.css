@@ -8,9 +8,21 @@ body {
   background-repeat: no-repeat; */
 }
 
+body {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* padding: 1rem; */
+}
+
 .App {
   text-align: center;
-  margin-top: 0%;
+  /* margin: 0%;
+  padding: 0%; */
 }
 
 .App h1{

@@ -2,7 +2,7 @@ import "../styles/register.css";
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function App() {
+export default function RegistrationForm() {
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
@@ -20,7 +20,7 @@ export default function App() {
     twitter_url: "",
     USN: ""
   });
-
+  
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setValues((values) => ({
@@ -36,26 +36,27 @@ export default function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (Object.values(values).every(value => value)) {
-      setValid(true);
-      try {
-        const response = await fetch('http://localhost:5000/users', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(values)
-        });
-        if (response.ok) {
-          console.log('User registered successfully');
-        } else {
-          console.error('Failed to register user');
-        }
-      } catch (error) {
-        console.error('Error:', error);
+     setValid(true);
+     try {
+      const response = await fetch('http://localhost:5000/api/users', {
+        method: 'POST',
+        headers: {
+         'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      });
+      if (response.ok) {
+        console.log('User registered successfully');
+      } else {
+        console.error('Failed to register user');
       }
+     } catch (error) {
+      console.error('Error:', error);
+     }
     }
     setSubmitted(true);
   };
+
 
   return (
     <div className="container-md">
@@ -218,7 +219,7 @@ export default function App() {
                 onChange={handleInputChange}
               />
 
-              <button className="form-field" type="submit">
+              <button className="form-field" type="submit" onClick={handleSubmit}>
                 Register
               </button>
             </>

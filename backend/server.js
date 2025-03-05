@@ -1,12 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require('body-parser');
 const cors = require("cors");
 const dotenv = require("dotenv");
 const data = require('../front/frontend/public/scores.json');
 const challenges = require('../front/frontend/public/challenges.json');
 const dash = require('../front/frontend/public/dashboarddata.json');
 const teams = require('../front/frontend/public/teams.json');
-const users = require('../front/frontend/public/users.json');
+// const users = require('../front/frontend/public/users.json');
 const connectDB = require("./config/db");
 
 
@@ -16,6 +17,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use(bodyParser.json());
 
 // const connectDB = async () => {
 //     try {
@@ -29,6 +31,14 @@ app.use(cors());
 //         process.exit(1);
 //     }
 // };
+
+
+// const db = mongoose.connection;
+//   db.on('error', console.error.bind(console, 'connection error:'));
+//   db.once('open', () => {
+//     console.log('Connected to MongoDB');
+//   });
+
 
 connectDB();
 
@@ -63,8 +73,28 @@ const challengesSchema = new mongoose.Schema({
     },
 });
 
+const userSchema = new mongoose.Schema({
+    firstName: String,
+    lastName: String,
+    email: String,
+    password: String,
+    phone: String,
+    role: String,
+    team: String,
+    address: String,
+    organization: String,
+    description: String,
+    skills: String,
+    github_url: String,
+    linkedin_url: String,
+    twitter_url: String,
+    USN: String
+  });
+
 const scores = mongoose.model("scores", scoresSchema);
 const chall = mongoose.model("challenges", challengesSchema);
+const User = mongoose.model('User', userSchema);
+
 
 // app.get("/", async (req, res) => {
 //     try {
@@ -89,9 +119,29 @@ app.get("/api/dashboard-data", async (req, res) => {
 app.get("/teams", async (req,res) => {
     res.send(teams);
 });
-app.get("/users", async (req,res) =>{
-    res.send(users);
+// app.get("/users", async (req,res) =>{
+//     res.send(users);
+// })
+
+app.get("/api/users", async (req,res) =>{
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
 })
+app.post('/api/users', async (req, res) => {
+    const user = new User(req.body);
+    try {
+     await user.save();
+     res.status(201).send('User registered successfully');
+    } catch (error) {
+     res.status(400).send('Failed to register user');
+    }
+  });
+
 // app.get("/challenges", async (req, res) => {
 //     try {
 //         const ps = await challenges.find();
