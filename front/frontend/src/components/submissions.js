@@ -30,19 +30,19 @@ const Submissions = () => {
     //   };
     return (
         <div className="container md-5">
-            <h3>Team Name</h3>
-            <h3>Project Title</h3>
+            <h4>Team Name</h4>
+            <h4>Project Title</h4>
             <Form.Control type="text" placeholder='title' />
             <br />
-            <h3>Github link</h3>
+            <h4>Github link</h4>
             <Form.Control type="text" placeholder='github.com/username'/>
             <br />
-            <h3>Built with?(Description)</h3>
+            <h4>Built with?(Description)</h4>
             <Form.Group className="mb-3">
             <Form.Control as="textarea" rows={3} placeholder='describe your project what it does and how it helps or anything you would like us to know' />
             </Form.Group>
 
-            <h3>Select Problem Statement</h3>
+            <h4>Select Problem Statement</h4>
             <Form.Select>
                 <option>select problem statement</option>
                 <option value='1'>ps 1</option>
@@ -50,18 +50,21 @@ const Submissions = () => {
                 <option value='3'>ps 3</option>
                 <option value='4'>ps 4</option>
             </Form.Select>
-            <h3>PPT /Link Upload</h3>
+            <h4>PPT /Link Upload</h4>
             <Form.Control type="text" placeholder='drive link here ps:change permissions to editor'/>
             <br />
-            <h3>Report Upload</h3>
+            <h4>Thumbnail link(OR Screenshot of the main page)</h4>
+            <Form.Control type="text" placeholder='drive link here ps:change permissions to editor'/>
+            <br />
+            <h4>Report Upload</h4>
             <Form.Group controlId="formFile" className="mb-3">
             <Form.Control type="file" />
             </Form.Group>
 
-            <h3>Document link</h3>
+            <h4>Document link</h4>
             <Form.Control type="text" placeholder='drive link here ps:change permissions to editor'/>
             <br />
-            <h3>Video Link</h3>
+            <h4>Video Link</h4>
             <Form.Control type="text" placeholder='drive link here ps:change permissions to editor'/>
             <br />
 

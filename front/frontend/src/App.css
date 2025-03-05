@@ -99,10 +99,24 @@ body {
   margin-top: 20px;
 }
 
-h3{
+h4{
   justify-content: left;
+  color:   rgb(26, 18, 137);
 }
 
 .container md-5 h3{
   justify-content: left;
+}
+
+footer{ 
+  background-color: #038a7f;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+FontAwesomeIcon icon{
+  font-size: 24px;
+  color: white;
+  margin-left: 10px;
 }

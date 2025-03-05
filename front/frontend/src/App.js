@@ -14,6 +14,7 @@ import Challenges from './components/challenges';
 import RegistrationForm from './components/register';
 import Gallery from './components/gallery';
 import Submissions from './components/submissions';
+import Footer from './components/footer';
 
 // import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -78,6 +79,7 @@ function App() {
           <Route path='/submissions' element={<Submissions />} />
         </Routes>
       </div>
+      <Footer />
     </Router>
   );
 }
