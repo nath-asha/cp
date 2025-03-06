@@ -93,9 +93,22 @@ const userSchema = new mongoose.Schema({
     USN: String
   });
 
+const subSchema = new mongoose.Schema({
+    title: String,
+    gitrepo: String,
+    projectdesc: String,
+    ps: String,
+    ppt: String,
+    thumbnail: String,
+    preport: File,
+    doc: String,
+    vid: String
+})
+
 const scores = mongoose.model("scores", scoresSchema,"scores");
 const chall = mongoose.model("challenges", challengesSchema,"challenges");
 const User = mongoose.model('User', userSchema,"users");
+const submissions = mongoose.model("sub",subSchema,"submissions")
 
 
 // app.get("/", async (req, res) => {
@@ -145,7 +158,16 @@ app.post('/api/users', async (req, res) => {
      res.status(400).send('Failed to register user');
     }
   });
-
+app.post('/api/submissions', async (req, res) => {
+    const submission = new submission(req.body);
+    // const savedUser = await user.save();
+    try {
+     await submission.save();
+     res.status(201).send('submitted successfully');
+    } catch (error) {
+     res.status(400).send('Failed to submit');
+    }
+  });
 app.get("/challenges", async (req, res) => {
     try {
         const ps = await chall.find();
