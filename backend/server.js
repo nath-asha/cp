@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const dotenv = require("dotenv");
-const data = require('../front/frontend/public/scores.json');
-const challenges = require('../front/frontend/public/challenges.json');
+// const data = require('../front/frontend/public/scores.json');
+// const challenges = require('../front/frontend/public/challenges.json');
 const dash = require('../front/frontend/public/dashboarddata.json');
 const teams = require('../front/frontend/public/teams.json');
 // const users = require('../front/frontend/public/users.json');
@@ -18,6 +18,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
+
+const PORT = process.env.PORT || 5000;
 
 // const connectDB = async () => {
 //     try {
@@ -91,9 +93,9 @@ const userSchema = new mongoose.Schema({
     USN: String
   });
 
-const scores = mongoose.model("scores", scoresSchema);
-const chall = mongoose.model("challenges", challengesSchema);
-const User = mongoose.model('User', userSchema);
+const scores = mongoose.model("scores", scoresSchema,"scores");
+const chall = mongoose.model("challenges", challengesSchema,"challenges");
+const User = mongoose.model('User', userSchema,"users");
 
 
 // app.get("/", async (req, res) => {
@@ -105,14 +107,14 @@ const User = mongoose.model('User', userSchema);
 //         res.status(500).send("Internal Server Error");
 //     }
 // });
-app.get("/", (req, res) => {
-    // res.send("API is running");
-    res.send(data);
-});
-app.get("/challenges", async (req, res) => {
-    // res.send("API is running");
-    res.send(challenges);
-});
+// app.get("/", (req, res) => {
+//     // res.send("API is running");
+//     res.send(data);
+// });
+// app.get("/challenges", async (req, res) => {
+//     // res.send("API is running");
+//     res.send(challenges);
+// });
 app.get("/api/dashboard-data", async (req, res) => {
     res.send(dash);
 });
@@ -123,7 +125,8 @@ app.get("/teams", async (req,res) => {
 //     res.send(users);
 // })
 
-app.get("/api/users", async (req,res) =>{
+
+app.get("/users", async (req,res) =>{
     try {
         const users = await User.find();
         res.json(users);
@@ -134,6 +137,7 @@ app.get("/api/users", async (req,res) =>{
 })
 app.post('/api/users', async (req, res) => {
     const user = new User(req.body);
+    // const savedUser = await user.save();
     try {
      await user.save();
      res.status(201).send('User registered successfully');
@@ -142,17 +146,26 @@ app.post('/api/users', async (req, res) => {
     }
   });
 
-// app.get("/challenges", async (req, res) => {
-//     try {
-//         const ps = await challenges.find();
-//         res.json(ps);
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).send("Internal Server Error");
-//     }
-// });
+app.get("/challenges", async (req, res) => {
+    try {
+        const ps = await chall.find();
+        res.json(ps);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
-const PORT = process.env.PORT || 5000;
+app.get("/", async (req,res) => {
+    try {
+        const data = await scores.find();
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // const express = require("express");

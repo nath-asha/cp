@@ -7,7 +7,8 @@ export default function App() {
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
-    email: ""
+    email: "",
+    password: ""
   });
 
   const handleInputChange = (event) => {
@@ -25,7 +26,7 @@ export default function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (values.firstName && values.lastName && values.email) {
+    if (values.firstName && values.lastName && values.email && values.password) {
       setValid(true);
     }
     setSubmitted(true);
@@ -89,6 +90,18 @@ export default function App() {
         {submitted && !values.email && (
           <span id="email-error">Please enter an email address</span>
         )}
+
+        {!valid && (
+          <input 
+            className="form-field"
+            type="password"
+            placeholder="password"
+            name="password"
+            value={values.password}
+            onChange={handleInputChange}
+          />
+        )}
+
         {!valid && (
           <button class="form-field" type="submit">
             Login
