@@ -106,11 +106,23 @@ export default function RegistrationForm() {
                 <span id="email-error">Please enter an email address</span>
               )}
 
-              <input 
+              {/* <input 
                 className="form-field"
                 type="text"
                 placeholder="Batch"
+              /> */}
+
+              <input
+                className="form-field"
+                type="password"
+                placeholder="password"
+                name="password"
+                value={values.password}
+                onChange={handleInputChange}
               />
+              {submitted && !values.password && (
+                <span id="passwprd-error">Please enter a password</span>
+              )}
 
               <input
                 className="form-field"
@@ -146,6 +158,9 @@ export default function RegistrationForm() {
                 value={values.role}
                 onChange={handleInputChange}
               />
+              {submitted && !values.role && (
+                <span id="role-error">Please select your role</span>
+              )}
 
               <input
                 className="form-field"
@@ -155,6 +170,9 @@ export default function RegistrationForm() {
                 value={values.team}
                 onChange={handleInputChange}
               />
+              {submitted && !values.team && (
+                <span id="team-error">Please enter your team</span>
+              )}
 
               <input
                 className="form-field"
@@ -164,6 +182,9 @@ export default function RegistrationForm() {
                 value={values.address}
                 onChange={handleInputChange}
               />
+              {submitted && !values.address && (
+                <span id="address-error">Please enter your address</span>
+              )}
 
               <input
                 className="form-field"
@@ -173,6 +194,9 @@ export default function RegistrationForm() {
                 value={values.organization}
                 onChange={handleInputChange}
               />
+              {submitted && !values.organization && (
+                <span id="organisation-error">Please enter organisation</span>
+              )}
 
               <input
                 className="form-field"
@@ -182,6 +206,9 @@ export default function RegistrationForm() {
                 value={values.description}
                 onChange={handleInputChange}
               />
+              {submitted && !values.description && (
+                <span id="description-error">Please enter a description</span>
+              )}
 
               <input
                 className="form-field"
@@ -191,6 +218,9 @@ export default function RegistrationForm() {
                 value={values.skills}
                 onChange={handleInputChange}
               />
+              {submitted && !values.skills && (
+                <span id="skills-error">Please enter skills</span>
+              )}
 
               <input
                 className="form-field"
@@ -200,6 +230,9 @@ export default function RegistrationForm() {
                 value={values.github_url}
                 onChange={handleInputChange}
               />
+              {submitted && !values.github_url && (
+                <span id="github_url-error">Please enter github profile</span>
+              )}
 
               <input
                 className="form-field"
@@ -209,6 +242,9 @@ export default function RegistrationForm() {
                 value={values.linkedin_url}
                 onChange={handleInputChange}
               />
+              {submitted && !values.linkedin_url && (
+                <span id="linkedin_url-error">Please enter linkedin_url</span>
+              )}
 
               <input
                 className="form-field"
@@ -218,6 +254,9 @@ export default function RegistrationForm() {
                 value={values.twitter_url}
                 onChange={handleInputChange}
               />
+              {submitted && !values.twitter_url && (
+                <span id="twitter-error">Please enter X url</span>
+              )}
 
               <button className="form-field" type="submit" onClick={handleSubmit}>
                 Register
