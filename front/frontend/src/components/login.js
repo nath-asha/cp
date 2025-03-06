@@ -5,8 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function App() {
   const [values, setValues] = useState({
-    firstName: "",
-    lastName: "",
     email: "",
     password: ""
   });
@@ -26,7 +24,7 @@ export default function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (values.firstName && values.lastName && values.email && values.password) {
+    if (values.email && values.password) {
       setValid(true);
     }
     setSubmitted(true);
@@ -43,10 +41,11 @@ export default function App() {
               {" "}
               Welcome {values.firstName} {values.lastName}{" "}
             </h3>
-            <div> Your registration was successful! </div>
+            <div> Your are logged in! </div>
           </div>
         )}
-        {!valid && (
+
+        {/* {!valid && (
           <input
             class="form-field"
             type="text"
@@ -74,7 +73,7 @@ export default function App() {
 
         {submitted && !values.lastName && (
           <span id="last-name-error">Please enter a last name</span>
-        )}
+        )} */}
 
         {!valid && (
           <input

@@ -19,46 +19,46 @@ import Footer from './components/footer';
 // import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 function App() {
-  const [leaderboardData, setLeaderboardData] = useState([]);
-  const [sortedLeaderboardData, setSortedLeaderboardData] = useState([]);
-  const [toppers, setToppers] = useState([]);
-  const [error, setError] = useState(null);
+  // const [leaderboardData, setLeaderboardData] = useState([]);
+  // const [sortedLeaderboardData, setSortedLeaderboardData] = useState([]);
+  // const [toppers, setToppers] = useState([]);
+  // const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setError(null);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setError(null);
 
-      try {
-        const response = await fetch('http://localhost:5000/'); // Updated API route
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setLeaderboardData(data);
-        sortLeaderboard(data);
-      } catch (err) {
-        console.error('Error fetching leaderboard data:', err);
-        setError(err.message);
-      }
-    };
+  //     try {
+  //       const response = await fetch('http://localhost:5000/'); // Updated API route
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! Status: ${response.status}`);
+  //       }
+  //       const data = await response.json();
+  //       setLeaderboardData(data);
+  //       sortLeaderboard(data);
+  //     } catch (err) {
+  //       console.error('Error fetching leaderboard data:', err);
+  //       setError(err.message);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  useEffect(() => {
-    if (sortedLeaderboardData.length > 0) {
-      setToppers(sortedLeaderboardData.slice(0, 3));
-    }
-  }, [sortedLeaderboardData]);
+  // useEffect(() => {
+  //   if (sortedLeaderboardData.length > 0) {
+  //     setToppers(sortedLeaderboardData.slice(0, 3));
+  //   }
+  // }, [sortedLeaderboardData]);
 
-  const sortLeaderboard = (data) => {
-    const sortedData = [...data].sort((a, b) => b.score - a.score);
-    setSortedLeaderboardData(sortedData);
-  };
+  // const sortLeaderboard = (data) => {
+  //   const sortedData = [...data].sort((a, b) => b.score - a.score);
+  //   setSortedLeaderboardData(sortedData);
+  // };
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  // if (error) {
+  //   return <div>Error: {error}</div>;
+  // }
 
   // Create the theme object here
   // const theme = createMuiTheme();
@@ -69,8 +69,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/leaderboard" element={<Leaderboard leaderboardData={sortedLeaderboardData} toppers={toppers} />} />
-          <Route path="/scoreboard" element={<Scoreboard leaderboardData={sortLeaderboard} toppers={toppers} />} />
+          <Route path="/leaderboard" element={<Leaderboard  />} />
+          <Route path="/scoreboard" element={<Scoreboard />} />
           <Route  path="/challenges"  element={<Challenges />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="//api/users" element={<RegistrationForm />} />
