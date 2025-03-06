@@ -100,7 +100,7 @@ const subSchema = new mongoose.Schema({
     ps: String,
     ppt: String,
     thumbnail: String,
-    preport: File,
+    preport: String,
     doc: String,
     vid: String
 })
@@ -158,16 +158,17 @@ app.post('/api/users', async (req, res) => {
      res.status(400).send('Failed to register user');
     }
   });
-app.post('/api/submissions', async (req, res) => {
-    const submission = new submission(req.body);
-    // const savedUser = await user.save();
+  app.post('/api/submissions', async (req, res) => {
     try {
-     await submission.save();
-     res.status(201).send('submitted successfully');
+        const submission = new submissions(req.body);
+        const savedSubmission = await submission.save(); 
+        res.status(201).json(savedSubmission); 
     } catch (error) {
-     res.status(400).send('Failed to submit');
+        console.error(error);
+        res.status(400).json({ error: 'Failed to submit' });
     }
-  });
+});
+
 app.get("/challenges", async (req, res) => {
     try {
         const ps = await chall.find();

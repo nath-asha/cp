@@ -1,0 +1,57 @@
+[
+    {
+      "title": "Personal Portfolio Website",
+      "gitrepo": "https://github.com/yourusername/portfolio",
+      "projectdesc": "A responsive personal portfolio website built with React and Tailwind CSS to showcase my projects and skills.",
+      "ps": "Photoshop design files for the website layout.",
+      "ppt": "Presentation slides outlining the website's features and development process.",
+      "thumbnail": "images/portfolio_thumbnail.png",
+      "preport": "docs/portfolio_project_report.pdf",
+      "doc": "docs/portfolio_documentation.docx",
+      "vid": "videos/portfolio_demo.mp4"
+    },
+    {
+      "title": "E-commerce Product Listing API",
+      "gitrepo": "https://github.com/yourusername/ecommerce-api",
+      "projectdesc": "A RESTful API built with Node.js and Express.js to manage product listings for an e-commerce platform.",
+      "ps": null,
+      "ppt": "presentations/ecommerce_api.pptx",
+      "thumbnail": "images/ecommerce_api_thumbnail.jpg",
+      "preport": "reports/ecommerce_api_report.pdf",
+      "doc": "api_docs/ecommerce_api_documentation.md",
+      "vid": null
+    },
+    {
+      "title": "Machine Learning Image Classifier",
+      "gitrepo": "https://github.com/yourusername/image-classifier",
+      "projectdesc": "A machine learning model trained using TensorFlow to classify images into predefined categories.",
+      "ps": null,
+      "ppt": "presentations/image_classifier_presentation.pptx",
+      "thumbnail": "images/classifier_thumbnail.png",
+      "preport": "reports/image_classifier_report.pdf",
+      "doc": "docs/image_classifier_documentation.pdf",
+      "vid": "videos/classifier_demo.avi"
+    },
+    {
+      "title": "Real-time Chat Application",
+      "gitrepo": "https://github.com/yourusername/chat-app",
+      "projectdesc": "A real-time chat application built with Socket.IO and React, allowing users to communicate in real time.",
+      "ps": "design/chat_app_ui.psd",
+      "ppt": "presentations/chat_app_presentation.pptx",
+      "thumbnail": "images/chat_app_thumbnail.png",
+      "preport": "reports/chat_app_report.pdf",
+      "doc": "docs/chat_app_documentation.md",
+      "vid": "videos/chat_app_demo.mov"
+    },
+    {
+      "title": "Data Visualization Dashboard",
+      "gitrepo": "https://github.com/yourusername/data-dashboard",
+      "projectdesc": "A data visualization dashboard using Python and Plotly to display key metrics and insights from a dataset.",
+      "ps": null,
+      "ppt": "presentations/dashboard_presentation.pptx",
+      "thumbnail": "images/dashboard_thumbnail.jpg",
+      "preport": "reports/dashboard_report.pdf",
+      "doc": "docs/dashboard_documentation.ipynb",
+      "vid": null
+    }
+  ]

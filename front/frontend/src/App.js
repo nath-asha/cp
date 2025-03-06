@@ -73,10 +73,10 @@ function App() {
           <Route path="/scoreboard" element={<Scoreboard />} />
           <Route  path="/challenges"  element={<Challenges />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="//api/users" element={<RegistrationForm />} />
+          <Route path="/api/users" element={<RegistrationForm />} />
           <Route path="/login" element={<Login />} />
           <Route path='/gallery' element={<Gallery/>} />
-          <Route path='/submissions' element={<Submissions />} />
+          <Route path='/api/submissions' element={<Submissions />} />
         </Routes>
       </div>
       <Footer />
