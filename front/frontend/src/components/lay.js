@@ -7,7 +7,7 @@ const Lay = () => {
         <Container>
             <Row className="justify-content-center">
                 <Col md={5}>
-                <div class="p-3">
+                <div className="p-3">
                     <Card className="mb-3">
                         <Card.Body>
                             <Card.Title>Participant Registration</Card.Title>
@@ -24,12 +24,12 @@ const Lay = () => {
                     </div>
                 </Col>
                 <Col md={5}>
-                <div class="p-3">
+                <div className="p-3">
                     <Card className="mb-3">
                         <Card.Body>
                             <Card.Title>Mentor Registration</Card.Title>
                             <Card.Subtitle className="mb-2 text-muted">Mentors register here</Card.Subtitle>
-                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/api/users'}>
+                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/api/users/mentor'}>
                                 Register
                             </Button>
                             <Card.Text>Already have an account? <br></br>Login below</Card.Text>

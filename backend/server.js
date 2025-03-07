@@ -160,6 +160,16 @@ app.post('/api/users', async (req, res) => {
      res.status(400).send('Failed to register user');
     }
   });
+  app.post('/api/users/mentor', async (req, res) => {
+    const user = new User(req.body);
+    // const savedUser = await user.save();
+    try {
+     await user.save();
+     res.status(201).send('User registered successfully');
+    } catch (error) {
+     res.status(400).send('Failed to register user');
+    }
+  });
 //   app.post('/api/submissions', async (req, res) => {
 //     try {
 //         const submission = new submissions(req.body);

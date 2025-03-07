@@ -77,7 +77,7 @@ export default function App() {
 
         {!valid && (
           <input
-            class="form-field"
+            className="form-field"
             type="email"
             placeholder="Email"
             name="email"
@@ -102,7 +102,7 @@ export default function App() {
         )}
 
         {!valid && (
-          <button class="form-field" type="submit">
+          <button className="form-field" type="submit">
             Login
           </button>
         )}

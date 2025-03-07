@@ -11,10 +11,13 @@ export default function App() {
     phone: "",
     role: "",
     team: "",
+    address: "",
     organization: "",
     description: "",
     skills: "",
+    github_url: "",
     linkedin_url: "",
+    twitter_url: "",
     USN: ""
   });
 
@@ -38,9 +41,9 @@ export default function App() {
   };
 
   return (
-    <div className="form-container">
-      <div className="container">
-        
+   
+      <div className="container-md">
+        <div className="form-container"> 
       <form className="register-form" onSubmit={handleSubmit}>
         {submitted && valid && (
           <div className="success-message">
@@ -139,6 +142,15 @@ export default function App() {
             <input
               className="form-field"
               type="text"
+              placeholder="Address"
+              name="address"
+              value={values.address}
+              onChange={handleInputChange}
+            />
+
+            <input
+              className="form-field"
+              type="text"
               placeholder="Organization"
               name="organization"
               value={values.organization}
@@ -166,9 +178,27 @@ export default function App() {
             <input
               className="form-field"
               type="text"
+              placeholder="GitHub URL"
+              name="github_url"
+              value={values.github_url}
+              onChange={handleInputChange}
+            />
+
+            <input
+              className="form-field"
+              type="text"
               placeholder="LinkedIn URL"
               name="linkedin_url"
               value={values.linkedin_url}
+              onChange={handleInputChange}
+            />
+
+            <input
+              className="form-field"
+              type="text"
+              placeholder="Twitter URL"
+              name="twitter_url"
+              value={values.twitter_url}
               onChange={handleInputChange}
             />
 

@@ -38,13 +38,13 @@ const Dashboard = () => {
                         <section className="profile">
                             <h2>Profile</h2>
                             <img src='Favicon.png' height='80px' width='80px' alt="Profile"></img>
-                            <p>Name: {data.profile.username}</p>
-                            <p>Email: {data.profile.email}</p>
-                            <p>Team: {data.profile.team}</p>
+                            <span>Name: {data.profile.username}</span>
+                            <span>Email: {data.profile.email}</span>
+                            <span>Team: {data.profile.team}</span>
                             <br></br>
                             <h2>Mentor</h2>
-                            <p>Name: {data.mentor.name}</p>
-                            <p>Email: {data.mentor.email}</p>
+                            <span>Name: {data.mentor.name}</span>
+                            <span>Email: {data.mentor.email}</span>
                         </section>
                     </div>
 
