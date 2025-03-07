@@ -75,6 +75,10 @@ const challengesSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    imgurl: {
+        type: String,
+        required: true
+    }
 });
 
 const userSchema = new mongoose.Schema({

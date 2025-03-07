@@ -17,6 +17,7 @@ import Submissions from './components/submissions';
 import Footer from './components/footer';
 import Lay from './components/lay';
 import Mentor from './components/registerm';
+import DisplayChallenge from './components/displaychallenge';
 
 // import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -81,6 +82,7 @@ function App() {
           <Route path='/api/submissions' element={<Submissions />} />
           <Route path='/lay' element={<Lay />} />
           <Route path='/api/users/mentor' element={<Mentor/>} />
+          <Route path='/displaychallenge/${challenge.track_id}' element={<DisplayChallenge />} />
         </Routes>
       </div>
       <Footer />
