@@ -7,26 +7,40 @@ const Lay = () => {
         <Container>
             <Row className="justify-content-center">
                 <Col md={5}>
+                <div class="p-3">
                     <Card className="mb-3">
                         <Card.Body>
                             <Card.Title>Participant Registration</Card.Title>
                             <Card.Subtitle className="mb-2 text-muted">Participants register here</Card.Subtitle>
-                            <Button variant="primary" onClick={() => window.location.href = '/api/users'}>
+                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/api/users'}>
                                 Register
+                            </Button>
+                            <Card.Text>Already have an account?</Card.Text>
+                            <Card.Text>Login below</Card.Text>
+                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/api/users'}>
+                                Login
                             </Button>
                         </Card.Body>
                     </Card>
+                    </div>
                 </Col>
                 <Col md={5}>
+                <div class="p-3">
                     <Card className="mb-3">
                         <Card.Body>
                             <Card.Title>Mentor Registration</Card.Title>
                             <Card.Subtitle className="mb-2 text-muted">Mentors register here</Card.Subtitle>
-                            <Button variant="primary" onClick={() => window.location.href = '/api/users'}>
+                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/api/users'}>
                                 Register
+                            </Button>
+                            <Card.Text>Already have an account?</Card.Text>
+                            <Card.Text>Login below</Card.Text>
+                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/api/users'}>
+                                Login
                             </Button>
                         </Card.Body>
                     </Card>
+                </div>
                 </Col>
             </Row>
         </Container>
