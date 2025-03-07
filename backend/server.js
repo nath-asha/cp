@@ -9,6 +9,8 @@ const dash = require('../front/frontend/public/dashboarddata.json');
 const teams = require('../front/frontend/public/teams.json');
 // const users = require('../front/frontend/public/users.json');
 const connectDB = require("./config/db");
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 
 dotenv.config();
@@ -158,11 +160,35 @@ app.post('/api/users', async (req, res) => {
      res.status(400).send('Failed to register user');
     }
   });
-  app.post('/api/submissions', async (req, res) => {
+//   app.post('/api/submissions', async (req, res) => {
+//     try {
+//         const submission = new submissions(req.body);
+//         const savedSubmission = await submission.save(); // Save once
+//         res.status(201).json(savedSubmission); // Send the full saved object
+//     } catch (error) {
+//         console.error(error);
+//         res.status(400).json({ error: 'Failed to submit' });
+//     }
+// });
+
+app.post('/api/submissions', upload.single('preport'), async (req, res) => {
     try {
-        const submission = new submissions(req.body);
-        const savedSubmission = await submission.save(); 
-        res.status(201).json(savedSubmission); 
+        const submissionData = {
+            title: req.body.title,
+            gitrepo: req.body.gitrepo,
+            projectdesc: req.body.projectdesc,
+            ps: req.body.ps,
+            ppt: req.body.ppt,
+            thumbnail: req.body.thumbnail,
+            // preport: req.file ? req.file.path : null, // Save file path
+            preport: req.body.preport,
+            doc: req.body.doc,
+            vid: req.body.vid,
+        };
+
+        const submission = new submissions(submissionData);
+        const savedSubmission = await submission.save();
+        res.status(201).json(savedSubmission);
     } catch (error) {
         console.error(error);
         res.status(400).json({ error: 'Failed to submit' });

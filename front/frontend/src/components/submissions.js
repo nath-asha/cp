@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
@@ -11,26 +11,21 @@ const Submissions = () => {
     ps: '',
     ppt: '',
     thumbnail: '',
-    preport: null, // Change to null for file
+    preport: '', 
     doc: '',
     vid: '',
   });
 
-  const handleInputChange = (event) => {
-    const { name, value, type, files } = event.target;
+  const [submitted, setSubmitted] = useState(false);
+  const [valid, setValid] = useState(false);
 
-    if (type === 'file') {
-      setSubmissions((prevSubmissions) => ({
-        ...prevSubmissions,
-        [name]: files[0],
-      }));
-    } else {
+  const handleInputChange = (event) => {
+    const { name, value} = event.target;
       setSubmissions((prevSubmissions) => ({
         ...prevSubmissions,
         [name]: value,
       }));
-    }
-  };
+    };
 
   const handleSelectChange = (event) => {
     setSubmissions((prevSubmissions) => ({
@@ -39,9 +34,7 @@ const Submissions = () => {
     }));
   };
 
-  const [submitted, setSubmitted] = useState(false);
-  const [valid, setValid] = useState(false);
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (Object.values(submissions).every((value) => value || value === null)) {
@@ -134,8 +127,10 @@ const Submissions = () => {
       <br />
       <h4>Report Upload</h4>
       <Form.Control
-        type="file"
+        type="text"
+        placeholder="drive link here ps:change permissions to editor"
         name="preport"
+        value={submissions.preport}
         onChange={handleInputChange}
       />
 
