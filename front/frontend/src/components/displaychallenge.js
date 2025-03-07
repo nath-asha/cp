@@ -48,6 +48,7 @@ const DisplayChallenge = ({ title, description, details }) => {
             <button className="btn btn-primary mt-3" onClick={handleNextChallenge}>
                 Next Challenge
             </button>
+            <a href='/challenges'><button>Back to challenges</button></a>
         </div>
     );
 };
