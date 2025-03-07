@@ -72,17 +72,17 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/leaderboard" element={<Leaderboard  />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/scoreboard" element={<Scoreboard />} />
-          <Route  path="/challenges"  element={<Challenges />} />
+          <Route path="/challenges" element={<Challenges />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/api/users" element={<RegistrationForm />} />
           <Route path="/login" element={<Login />} />
-          <Route path='/gallery' element={<Gallery/>} />
-          <Route path='/api/submissions' element={<Submissions />} />
-          <Route path='/lay' element={<Lay />} />
-          <Route path='/api/users/mentor' element={<Mentor/>} />
-          <Route path='/displaychallenge/${challenge.track_id}' element={<DisplayChallenge />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/api/submissions" element={<Submissions />} />
+          <Route path="/lay" element={<Lay />} />
+          <Route path="/api/users/mentor" element={<Mentor />} />
+          <Route path="/displaychallenge/:track_id" element={<DisplayChallenge />} />
         </Routes>
       </div>
       <Footer />
