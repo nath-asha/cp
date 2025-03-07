@@ -15,9 +15,8 @@ const Lay = () => {
                             <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/api/users'}>
                                 Register
                             </Button>
-                            <Card.Text>Already have an account?</Card.Text>
-                            <Card.Text>Login below</Card.Text>
-                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/api/users'}>
+                            <Card.Text>Already have an account? <br></br> Login below</Card.Text>
+                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/login'}>
                                 Login
                             </Button>
                         </Card.Body>
@@ -33,9 +32,8 @@ const Lay = () => {
                             <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/api/users'}>
                                 Register
                             </Button>
-                            <Card.Text>Already have an account?</Card.Text>
-                            <Card.Text>Login below</Card.Text>
-                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/api/users'}>
+                            <Card.Text>Already have an account? <br></br>Login below</Card.Text>
+                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/login'}>
                                 Login
                             </Button>
                         </Card.Body>

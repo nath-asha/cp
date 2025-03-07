@@ -9,6 +9,9 @@ const Navbar = () => {
                 <img src={logo.png} alt="logo"/> 
             </div> */}
             <ul className="navbar-links">
+                {/* <a class="navbar-brand" href="#">
+                    <img src='download.png' alt="Logo" width="30" height="24" class="d-inline-block align-text-top" />
+                </a> */}
                 <li><Link to="/" >Home</Link></li>
                 <li><Link to="/challenges">problem statement</Link></li>
                 <li><Link to="/scoreboard">winners</Link></li>
@@ -18,8 +21,7 @@ const Navbar = () => {
                 <li><Link to="/api/submissions">Impact</Link></li>
                 <li><Link to="/contact">Contact</Link></li>
                 <li><Link to="/login">&nbsp;Login</Link></li>
-                <li><Link to="/lay">Lay</Link></li>
-
+                {/* <li><Link to="/lay">Lay</Link></li> */}
             </ul>
         </nav>
     );
