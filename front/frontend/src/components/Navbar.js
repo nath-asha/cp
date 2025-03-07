@@ -18,6 +18,8 @@ const Navbar = () => {
                 <li><Link to="/api/submissions">Impact</Link></li>
                 <li><Link to="/contact">Contact</Link></li>
                 <li><Link to="/login">&nbsp;Login</Link></li>
+                <li><Link to="/lay">Lay</Link></li>
+
             </ul>
         </nav>
     );

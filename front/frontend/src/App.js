@@ -15,6 +15,7 @@ import RegistrationForm from './components/register1';
 import Gallery from './components/gallery';
 import Submissions from './components/submissions';
 import Footer from './components/footer';
+import Lay from './components/lay';
 
 // import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -77,6 +78,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path='/gallery' element={<Gallery/>} />
           <Route path='/api/submissions' element={<Submissions />} />
+          <Route path='/lay' element={<Lay />} />
         </Routes>
       </div>
       <Footer />

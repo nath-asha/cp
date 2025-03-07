@@ -1,7 +1,6 @@
 import React from 'react';
 import '../App.css';
 import RotatingTimeline from "./header";
-import Footer from './footer';
 import Timer from './CountDown';
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // Import Bootstrap's JS
 
