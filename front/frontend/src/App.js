@@ -76,8 +76,8 @@ function App() {
           <Route path="/scoreboard" element={<Scoreboard />} />
           <Route path="/challenges" element={<Challenges />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/api/users" element={<RegistrationForm />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/api/auth/register" element={<RegistrationForm />} />
+          <Route path="/api/auth/login" element={<Login />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/api/submissions" element={<Submissions />} />
           <Route path="/lay" element={<Lay />} />

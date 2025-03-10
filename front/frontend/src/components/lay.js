@@ -12,11 +12,11 @@ const Lay = () => {
                         <Card.Body>
                             <Card.Title>Participant Registration</Card.Title>
                             <Card.Subtitle className="mb-2 text-muted">Participants register here</Card.Subtitle>
-                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/api/users'}>
+                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/api/auth/register'}>
                                 Register
                             </Button>
                             <Card.Text>Already have an account? <br></br> Login below</Card.Text>
-                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/login'}>
+                            <Button variant="btn btn-outline-primary" onClick={() => window.location.href = '/api/auth/login'}>
                                 Login
                             </Button>
                         </Card.Body>

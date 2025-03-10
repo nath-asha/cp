@@ -40,6 +40,7 @@ const Dashboard = () => {
                             <img src='Favicon.png' height='80px' width='80px' alt="Profile"></img>
                             <span>Name: {data.profile.username}</span>
                             <span>Email: {data.profile.email}</span>
+                            <span>PArticipant ID: {data.profile._id}</span>
                             <span>Team: {data.profile.team}</span>
                             <br></br>
                             <h2>Mentor</h2>
