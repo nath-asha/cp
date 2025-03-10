@@ -39,8 +39,8 @@ const DisplayChallenge = ({ title, description, details }) => {
                         <p className="card-text">{challenges[currentChallengeIndex].description}</p>
                         <div className="mt-4">
                             <h2>Details:</h2>
-                            <p>Image URL: {challenges[currentChallengeIndex].imgurl}</p>
-                            <p>Track ID: {challenges[currentChallengeIndex].trackid}</p>
+                            <img src={challenges[currentChallengeIndex].imgurl} alt='p' height='50%' width='25%'/>
+                            <p>Track ID: {challenges[currentChallengeIndex].track_id}</p>
                         </div>
                     </div>
                 </div>
