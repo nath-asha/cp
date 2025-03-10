@@ -5,26 +5,50 @@ import '../styles/navbar.css';
 const Navbar = () => {
     return (
         <nav className="navbar">
-            {/* <div className="navbar-logo">
-                <img src={logo.png} alt="logo"/> 
-            </div> */}
             <ul className="navbar-links">
-                {/* <a class="navbar-brand" href="#">
-                    <img src='download.png' alt="Logo" width="30" height="24" class="d-inline-block align-text-top" />
-                </a> */}
-                <li><Link to="/" >Home</Link></li>
-                <li><Link to="/challenges">problem statement</Link></li>
-                <li><Link to="/scoreboard">winners</Link></li>
-                <li><Link to="/dashboard">Dashboard</Link></li>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/challenges">Problem Statement</Link></li>
+                <li><Link to="/scoreboard">Winners</Link></li>
+                <li><Link to="api/dashboard">Dashboard</Link></li>
                 <li><Link to="/gallery">Gallery</Link></li>
                 <li><Link to="/leaderboard">Leaderboard</Link></li>
-                <li><Link to="/api/submissions">Impact</Link></li>
+                <li><Link to="api/impact">Impact</Link></li> {/* Fixed Route */}
                 <li><Link to="/contact">Contact</Link></li>
-                <li><Link to="/login">&nbsp;Login</Link></li>
-                {/* <li><Link to="/lay">Lay</Link></li> */}
+                <li><Link to="/api/auth/login">Login</Link></li>
             </ul>
         </nav>
     );
 };
 
 export default Navbar;
+
+// import React from 'react';
+// import { Link } from 'react-router-dom';
+// import '../styles/navbar.css'; 
+
+// const Navbar = () => {
+//     return (
+//         <nav className="navbar">
+//             {/* <div className="navbar-logo">
+//                 <img src={logo.png} alt="logo"/> 
+//             </div> */}
+//             <ul className="navbar-links">
+//                 {/* <a class="navbar-brand" href="#">
+//                     <img src='download.png' alt="Logo" width="30" height="24" class="d-inline-block align-text-top" />
+//                 </a> */}
+//                 <li><Link to="/" >Home</Link></li>
+//                 <li><Link to="/challenges">problem statement</Link></li>
+//                 <li><Link to="/scoreboard">winners</Link></li>
+//                 <li><Link to="/dashboard">Dashboard</Link></li>
+//                 <li><Link to="/gallery">Gallery</Link></li>
+//                 <li><Link to="/leaderboard">Leaderboard</Link></li>
+//                 <li><Link to="/api/submissions">Impact</Link></li>
+//                 <li><Link to="/contact">Contact</Link></li>
+//                 <li><Link to="/login">&nbsp;Login</Link></li>
+//                 {/* <li><Link to="/lay">Lay</Link></li> */}
+//             </ul>
+//         </nav>
+//     );
+// };
+
+// export default Navbar;

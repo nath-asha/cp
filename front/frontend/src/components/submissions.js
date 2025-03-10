@@ -68,6 +68,11 @@ const Submissions = () => {
 
   return (
     <div className="container md-5">
+      <ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">Members</a>
+  </li>
+  </ul>
       <h4>Team Name</h4>
       <h4>Project Title</h4>
       <Form.Control

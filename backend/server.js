@@ -14,7 +14,8 @@ app.use(helmet());
 // Routes
 app.use("/api/auth", require("./routes/authrouter"));
 app.use("/api", require("./routes/userroutes"));
-app.use("/api/public", require("./routes/publicroutes"));
+app.use("/", require("./routes/publicroutes"));
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
