@@ -16,33 +16,9 @@ const mongoose = require("mongoose");
 // });
 
 const scoresSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    score: {
-        type: Number,
-        required: true,
-    },
-    github_url: {
-        type: String,
-        required: true,
-    },
+    name: String,
+    score: Number,
+    github_url: String,
 });
 
-const Score = mongoose.model("Score", scoresSchema);
-
-async function getScores() {
-    try {
-        const scores = await Score.find({});
-        return scores;
-    } catch (error) {
-        console.error("Error fetching scores:", error);
-        throw error;
-    }
-}
-
-module.exports = {
-    Score,
-    getScores
-};
+module.exports = mongoose.model("Score", scoresSchema);
