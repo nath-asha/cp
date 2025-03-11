@@ -8,4 +8,4 @@ const teamSchema = new mongoose.Schema({
 "mentor" : String
 });
 
-module.exports = mongoose.model("teams",teamSchema,teams);
+module.exports = mongoose.model("teams",teamSchema);

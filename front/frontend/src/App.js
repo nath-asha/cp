@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './components/login';
 
-import './App.css';
+// import './App.css';
 import Navbar from './components/Navbar';
 import Leaderboard from './components/Leaderboard';
 import Scoreboard from './components/scoreboard';
@@ -18,6 +18,8 @@ import Footer from './components/footer';
 import Lay from './components/lay';
 import Mentor from './components/registerm';
 import DisplayChallenge from './components/displaychallenge';
+import ContactUS from './components/contactus';
+import Teammanager from './components/teammanager';
 
 // import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -84,6 +86,8 @@ function App() {
           <Route path="/api/users/mentor" element={<Mentor />} />
           <Route path="/displaychallenge/:track_id" element={<DisplayChallenge />} />
           <Route path="/dashboard/:role" element={<Dashboard />} />
+          <Route path='/contact' element={<ContactUS />}/>
+          <Route path='/teams' element={<Teammanager />} />
         </Routes>
       </div>
       <Footer />
