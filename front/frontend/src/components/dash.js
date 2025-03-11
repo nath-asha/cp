@@ -37,10 +37,10 @@ const Dashboard = () => {
                     <div className="grid-item profile-section">
                         <section className="profile">
                             <h2>Profile</h2>
-                            <img src='Favicon.png' height='80px' width='80px' alt="Profile"></img>
+                            <img src='/Favicon.png' height='80px' width='80px' alt="Profile"></img>
                             <span>Name: {data.profile.username}</span>
                             <span>Email: {data.profile.email}</span>
-                            <span>PArticipant ID: {data.profile._id}</span>
+                            <span>Participant ID: {data.profile._id}</span>
                             <span>Team: {data.profile.team}</span>
                             <br></br>
                             <h2>Mentor</h2>
@@ -88,7 +88,7 @@ const Dashboard = () => {
                                 {data.submissions.map((submission, index) => (
                                     <Card.Body key={index}>
                                         <Card.Text>
-                                            <p>{submission.title}</p>
+                                            <span>{submission.title}</span>
                                         </Card.Text>
                                     </Card.Body>
                                 ))}
@@ -117,10 +117,10 @@ const Dashboard = () => {
                                 {data.teamRequests.map((request, index) => (
                                     <Card.Body className='teamm' key={index}>
                                         <Card.Title>
-                                            <p> Requested by : {request.requestedBy} </p>
+                                            <span> Requested by : {request.requestedBy} </span>
                                         </Card.Title>
                                         <Card.Text>
-                                            <p>{request.teamName} {request.status} </p>
+                                            <span>{request.teamName} {request.status} </span>
                                         </Card.Text>
                                         <Button variant="primary">Accept</Button>
                                     </Card.Body>

@@ -72,9 +72,26 @@ const Submissions = () => {
   <li class="nav-item">
     <a class="nav-link active" aria-current="page" href="#">Members</a>
   </li>
+  <li>
+    <a class='nav-link active' aria-current='step' href='#'>Project details</a>
+  </li>
+  <li>
+    <a> Attachments</a>
+  </li>
   </ul>
       <h4>Team Name</h4>
       <h4>Project Title</h4>
+      <p>Manage team
+Add, remove, and look for teammates.
+
+Invite teammates
+Either share the link below privately with your teammates or send an invite link via email
+Add team members via email 
+someone@example.com
+Send invite
+Secret invite link </p>
+https://devpost.com/software/884540/joins/1RBybDRmBCT79vm8aDBlGg
+ Copy
       <Form.Control
         type="text"
         placeholder="title"

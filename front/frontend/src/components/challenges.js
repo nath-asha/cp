@@ -22,7 +22,9 @@ function Challenges() {
 
     fetchData();
   }, []);
-
+  //choosing the problem statement function yet to be added
+  //mentors can be assigned randomly or with a preference of skills
+  //long length descriptions for challenges
   return (
     <div className="container">
       <div className="row">

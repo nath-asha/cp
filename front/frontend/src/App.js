@@ -75,7 +75,7 @@ function App() {
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/scoreboard" element={<Scoreboard />} />
           <Route path="/challenges" element={<Challenges />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/api/:role" element={<Dashboard />} />
           <Route path="/api/auth/register" element={<RegistrationForm />} />
           <Route path="/api/auth/login" element={<Login />} />
           <Route path="/gallery" element={<Gallery />} />
@@ -83,6 +83,7 @@ function App() {
           <Route path="/lay" element={<Lay />} />
           <Route path="/api/users/mentor" element={<Mentor />} />
           <Route path="/displaychallenge/:track_id" element={<DisplayChallenge />} />
+          <Route path="/dashboard/:role" element={<Dashboard />} />
         </Routes>
       </div>
       <Footer />

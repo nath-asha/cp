@@ -45,6 +45,8 @@ function Scoreboard() {
     return <div>Error: {error}</div>;
   }
 
+  // the score will be decided after all the mentorrs evaluate the teams and mark teams for next round
+  //this score will be stored and sorted and marks 'finalized' or freezed
     return (
         <div className="leaderboard-container">
             <h2>🏆 Top 3 Participants</h2>
