@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DynamicChart from './charts';
 
-const Dashboard = () => {
+const Dashboard1 = () => {
     const [data, setData] = useState({
         submissions: [],
         teamRequests: [],
@@ -168,7 +168,7 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Dashboard1;
 
 //structure is not fixed yet needs alignment
 // import React, { useEffect, useState } from 'react';

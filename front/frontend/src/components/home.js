@@ -9,7 +9,7 @@ const Home = () => {
         <div className='container'>
         <div className='home'>
         <Timer />
-            <h1 className='center'>Welcome to the Hack A Fest!</h1>
+            <h1>Welcome to the Hack A Fest!</h1>
             <p>Join us for an exciting event full of coding, collaboration, and creativity.</p>
 
             <button
@@ -20,7 +20,8 @@ const Home = () => {
                     backgroundColor: '#007BFF',
                     color: '#fff',
                     border: 'none',
-                    borderRadius: '5px'
+                    borderRadius: '5px',
+                    justifyContent: "center"
                 }}
                 onClick={() => window.location.href = '/lay'}
             >
