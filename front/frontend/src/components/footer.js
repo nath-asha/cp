@@ -18,7 +18,7 @@ const Footer = () => {
                 </a>
             </p>
             <p>&copy; {new Date().getFullYear()} All rights reserved.</p>
-            <p>This site uses cookies to enhance your experience. 🍪</p>
+            {/* <p>This site uses cookies to enhance your experience. 🍪</p> */}
         </footer>
     );
 };

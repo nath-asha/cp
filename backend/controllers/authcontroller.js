@@ -16,7 +16,7 @@ exports.registerUser = async (req, res) => {
     }
 };
 
-exports.loginUser = async (req, res) => {
+exports.loginUser1 = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
@@ -27,3 +27,25 @@ exports.loginUser = async (req, res) => {
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
     res.json({ token, role: user.role });
 };
+
+exports.loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        
+        if (!email || !password) {
+            return res.status(400).json({ success: false, message: "Missing credentials" });
+        }
+        
+        // Example user authentication logic
+        const user = await User.findOne({ email });
+        if (!user || user.password !== password) {
+            return res.status(401).json({ success: false, message: "Invalid credentials" });
+        }
+
+        res.json({ success: true, message: "Login successful", user });
+    } catch (error) {
+        console.error("Login error:", error);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+

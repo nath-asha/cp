@@ -2,11 +2,10 @@ import "../styles/register.css";
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 export default function App() {
   const [values, setValues] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   const handleInputChange = (event) => {
@@ -15,106 +14,93 @@ export default function App() {
     const { name, value } = event.target;
     setValues((values) => ({
       ...values,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const [submitted, setSubmitted] = useState(false);
   const [valid, setValid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(values)
-    });
-    const data = await response.json();
-    if (data.success) {
-      setValid(true);
+    setErrorMessage(""); 
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setValid(true);
+        setSubmitted(true);
+      } else {
+        setErrorMessage(data.message || "Login failed. Please check your credentials.");
+        setValid(false);
+        setSubmitted(true);
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred during login.");
+      setValid(false);
+      setSubmitted(true);
+      console.error("Login error:", error);
     }
-    setSubmitted(true);
   };
 
   return (
-
     <div className="container">
-    <div className="form-container">
-      <form className="register-form" onSubmit={handleSubmit}>
-        {submitted && valid && (
-          <div className="success-message">
-            <h3>
-              {" "}
-              Welcome {values.firstName} {values.lastName}{" "}
-            </h3>
-            <div> Your are logged in! </div>
-          </div>
-        )}
+      <div className="form-container">
+        <form className="register-form" onSubmit={handleSubmit}>
+          {submitted && valid && (
+            <div className="success-message">
+              <h3>Welcome!</h3>
+              <div>You are logged in!</div>
+            </div>
+          )}
 
-        {/* {!valid && (
-          <input
-            class="form-field"
-            type="text"
-            placeholder="First Name"
-            name="firstName"
-            value={values.firstName}
-            onChange={handleInputChange}
-          />
-        )}
+          {!valid && (
+            <input
+              className="form-field"
+              type="email"
+              placeholder="Email"
+              name="email"
+              value={values.email}
+              onChange={handleInputChange}
+            />
+          )}
 
-        {submitted && !values.firstName && (
-          <span id="first-name-error">Please enter a first name</span>
-        )}
+          {submitted && !values.email && (
+            <span id="email-error">Please enter an email address</span>
+          )}
 
-        {!valid && (
-          <input
-            class="form-field"
-            type="text"
-            placeholder="Last Name"
-            name="lastName"
-            value={values.lastName}
-            onChange={handleInputChange}
-          />
-        )}
+          {!valid && (
+            <input
+              className="form-field"
+              type="password"
+              placeholder="Password"
+              name="password"
+              value={values.password}
+              onChange={handleInputChange}
+            />
+          )}
 
-        {submitted && !values.lastName && (
-          <span id="last-name-error">Please enter a last name</span>
-        )} */}
+          {submitted && errorMessage && !valid && (
+            <div className="error-message">
+              {errorMessage}
+            </div>
+          )}
 
-        {!valid && (
-          <input
-            className="form-field"
-            type="email"
-            placeholder="Email"
-            name="email"
-            value={values.email}
-            onChange={handleInputChange}
-          />
-        )}
-
-        {submitted && !values.email && (
-          <span id="email-error">Please enter an email address</span>
-        )}
-
-        {!valid && (
-          <input 
-            className="form-field"
-            type="password"
-            placeholder="password"
-            name="password"
-            value={values.password}
-            onChange={handleInputChange}
-          />
-        )}
-
-        {!valid && (
-          <button className="form-field" type="submit">
-            Login
-          </button>
-        )}
-      </form>
+          {!valid && (
+            <button className="form-field" type="submit">
+              Login
+            </button>
+          )}
+        </form>
       </div>
     </div>
   );

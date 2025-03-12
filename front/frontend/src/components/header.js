@@ -8,7 +8,6 @@ const events = [
   { time: "1:00 PM", title: "Lunch Break", description: "Enjoy a variety of food options and network with other participants." },
   { time: "2:00 PM", title: "Coding Workshops", description: "Participate in hands-on workshops to learn new skills and techniques." },
   { time: "5:00 PM", title: "Hackathon Begins", description: "Form teams and start working on your projects." },
-  { time: "8:00 PM", title: "Dinner Break", description: "Take a break and enjoy a delicious dinner." },
   { time: "9:00 PM", title: "Continue Hacking", description: "Work through the night to complete your projects." },
 ];
 
