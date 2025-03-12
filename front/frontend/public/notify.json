@@ -1,0 +1,12 @@
+[
+    { "message": "New team request received", "read": false, "userid": 1, "teamid": 101 },
+    { "message": "Submission deadline approaching", "read": false, "userid": 2, "teamid": 102 },
+    { "message": "Your code was reviewed by mentor", "read": true, "userid": 3, "teamid": 103 },
+    { "message": "New comment on your post", "read": false, "userid": 4, "teamid": 104 },
+    { "message": "You have a new follower", "read": true, "userid": 5, "teamid": 105 },
+    { "message": "Your password was changed", "read": false, "userid": 6, "teamid": 106 },
+    { "message": "New message from support", "read": true, "userid": 7, "teamid": 107 },
+    { "message": "Your subscription is about to expire", "read": false, "userid": 8, "teamid": 108 },
+    { "message": "New feature released", "read": true, "userid": 9, "teamid": 109 },
+    { "message": "Your profile was updated", "read": false, "userid": 10, "teamid": 110 }
+]

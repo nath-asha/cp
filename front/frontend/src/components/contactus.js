@@ -2,51 +2,52 @@ import React, { useState } from 'react';
 
 const ContactUS = () => {
     const [buttonText, setButtonText] = useState('Sign in');
-    const [buttonClass, setButtonClass] = useState('w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500');
+    const [buttonClass, setButtonClass] = useState(' text-black');
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const originalText = buttonText;
         setButtonText('Success!');
-        setButtonClass('w-full px-4 py-2 text-sm font-medium text-white bg-green-500 border border-transparent rounded-md shadow-sm');
+        setButtonClass('text-black');
 
         setTimeout(() => {
             setButtonText(originalText);
-            setButtonClass('w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500');
+            setButtonClass('w-full px-4 py-2 text-black');
             e.target.reset();
         }, 2000);
     };
 
     return (
         <div className="min-h-screen bg-gray-100 p-8" id='contact'>
-               <div class="max-w-md mx-auto mb-8 overflow-hidden rounded-lg shadow-lg bg-gradient-to-r from-purple-600 to-pink-600">
+               <div className="max-w-md mx-auto mb-8 overflow-hidden">
         <div class="p-8">
-            <h2 class="mb-6 text-2xl font-bold text-white">Contact Us</h2>
-            <form class="space-y-6">
-                <div class="grid grid-cols-2 gap-4">
+            <h2 className="mb-6 text-black">Contact Us</h2>
+            <form className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-white">First Name</label>
+                        <label className="block text-sm text-black">First Name</label>
                         <input type="text" 
-                               class="block w-full px-3 py-2 mt-1 bg-white border-0 rounded-md shadow-sm bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-white" />
+                               className="block w-full px-3 py-2 mt-1 bg-whitetext-black" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-white">Last Name</label>
+                        <label className="block text-sm text-black">Last Name</label>
                         <input type="text" 
-                               class="block w-full px-3 py-2 mt-1 bg-white border-0 rounded-md shadow-sm bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-white" />
+                               className="block w-full px-3 py-2 mt-1 bg-white text-black" />
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-white">Email</label>
+                    <label className="block text-sm text-black">Email</label>
                     <input type="email" 
-                           class="block w-full px-3 py-2 mt-1 bg-white border-0 rounded-md shadow-sm bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-white"/>
+                           className="block w-full px-3 py-2 mt-1text-black"/>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-white">Message</label>
-                    <textarea rows="4" 
-                              class="block w-full px-3 py-2 mt-1 bg-white border-0 rounded-md shadow-sm bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-white"></textarea>
+                    <label className="block text-sm text-black">Message</label>
+                    <br></br>
+                    <textarea className="form-control" style={{ minWidth: '100%' }}></textarea>
+                   
                 </div>
                 <button type="submit" 
-                        class="w-full px-4 py-2 text-sm font-medium text-white border-2 border-white rounded-md hover:bg-white hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition-colors duration-200">
+                        className="w-full px-4 py-2 text-black ">
                     Send Message
                 </button>
             </form>

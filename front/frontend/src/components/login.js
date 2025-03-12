@@ -22,9 +22,17 @@ export default function App() {
   const [submitted, setSubmitted] = useState(false);
   const [valid, setValid] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (values.email && values.password) {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(values)
+    });
+    const data = await response.json();
+    if (data.success) {
       setValid(true);
     }
     setSubmitted(true);

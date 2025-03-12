@@ -62,7 +62,9 @@ body {
 .home{ 
   text-align: 'center';
    padding : '50px';
+   justify-content: center;
    }
+
 
    .timeline-container {
     width: 300px; /* Adjust as needed */

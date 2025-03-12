@@ -39,7 +39,8 @@ function Challenges() {
                 <h5 className="card-title">{challenge.title}</h5>
                 <h6 className="card-subtitle mb-2 text-muted">{challenge.description}</h6>
                 {/* <button onClick={() => window.location.href = `/displaychallenge/${challenge.track_id}`}>Choose</button> */}
-                <a href={`/displaychallenge/${challenge.track_id}`} className="btn btn-primary">Go somewhere</a>
+                <a href={`/displaychallenge/${challenge.track_id}`}><button>Know more</button></a>
+                <button>Choose</button>
               </div>
             </div>
           </div>

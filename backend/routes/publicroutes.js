@@ -2,6 +2,7 @@ const express = require("express");
 const Challenge = require("../models/challengesmodel");
 const Score = require("../models/Scoremodel");
 const team = require("../models/teamsmodel");
+const notify = require("../models/notificationsmodel");
 const dash = require('../../front/frontend/public/dashboarddata.json');
 
 const router = express.Router();
@@ -36,4 +37,14 @@ router.get("/teams", async (req, res) => {
         res.status(500).send("Internal server error");
     }
 });
+
+router.get("/notifications", async (req,res) => {
+    try{
+        const notif = await notify.find();
+        res.json(notif); 
+    }catch(err){
+        res.status(500).send("Internal server error");
+    }
+})
+
 module.exports = router;

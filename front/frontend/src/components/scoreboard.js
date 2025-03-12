@@ -3,6 +3,8 @@ import { useState,useEffect } from 'react';
 import '../App.css'
 import '../styles/scoreboard.css'
 
+import Confetti from 'react-confetti';
+
 function Scoreboard() {
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [sortedLeaderboardData, setSortedLeaderboardData] = useState([]);
@@ -49,7 +51,8 @@ function Scoreboard() {
   //this score will be stored and sorted and marks 'finalized' or freezed
     return (
         <div className="leaderboard-container">
-            <h2>🏆 Top 3 Participants</h2>
+          <Confetti />
+            <h2>🏆 Winners</h2>
             <div className="toppers-container">
                 {toppers.map((participant) => {
                   return (
