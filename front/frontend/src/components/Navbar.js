@@ -4,19 +4,18 @@ import '../styles/navbar.css';
 
 const Navbar = () => {
     return (
-        <nav className="navbar">
+        <nav className="navbar sticky-top">
             <ul className="navbar-links">
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/challenges">Problem Statement</Link></li>
-                <li><Link to="/scoreboard">Winners</Link></li>
-                <li><Link to="/dashboard">Dashboard</Link></li>  
+                {/* <li><Link to="/scoreboard">Winners</Link></li> */}
+                {/* <li><Link to="/dashboard">Dashboard</Link></li> */}
                 <li><Link to="/gallery">Gallery</Link></li>
                 <li><Link to="/leaderboard">Leaderboard</Link></li>
-                <li><Link to="/submissions">Impact</Link></li> 
+                {/* <li><Link to="/submissions">Impact</Link></li> */}
                 <li><Link to="/contact">Contact</Link></li>
                 <li><Link to="/login">Login</Link></li>
-                <li><Link to="/demodash">demo</Link></li>
-
+                {/* <li><Link to="/demodash">demo</Link></li> */}
             </ul>
         </nav>
     );

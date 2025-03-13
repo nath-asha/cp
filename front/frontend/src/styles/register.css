@@ -50,6 +50,7 @@
     background:#3f89f8;
     color: white;
     cursor: pointer;
+    justify-content: center;
   }
   
   button:disabled {
