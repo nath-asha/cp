@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 
 const EvaluationPortal = () => {
-    const [teams, setTeams] = useState([
-        { id: 1, name: 'Team A', submission: 'Submission A', rating: 0 },
-        { id: 2, name: 'Team B', submission: 'Submission B', rating: 0 },
-        { id: 3, name: 'Team C', submission: 'Submission C', rating: 0 },
-    ]);
+    const [teams, setTeams] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch('http://localhost:5000/teams'); // Updated API route
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const team = await response.json();
+            setTeams(team);
+            console.log(team);
+          } catch (err) {
+            console.error('Error fetching problem statement data:', err);
+          }
+        };
+    
+        fetchData();
+      }, []);
 
     const handleRatingChange = (id, rating) => {
         setTeams(teams.map(team => 
@@ -17,9 +30,12 @@ const EvaluationPortal = () => {
         <div>
             <h1>Evaluation Portal</h1>
             {teams.map(team => (
-                <div key={team.id} style={{ marginBottom: '20px' }}>
-                    <h2>{team.name}</h2>
-                    <p>{team.submission}</p>
+                <div key={team.id}>
+                    <h2 className='text-black'>{team.name}</h2>
+                    <h4>{team.members[0]}</h4>
+                    <h4>{team.members[1]}</h4>
+                    <h4>{team.members[2]}</h4>
+                    <p>{team.project}</p>
                     <label>
                         Rating:
                         <input 

@@ -40,7 +40,7 @@ function Challenges() {
                 <h6 className="card-subtitle mb-2 text-muted">{challenge.description}</h6>
                 {/* <button onClick={() => window.location.href = `/displaychallenge/${challenge.track_id}`}>Choose</button> */}
                 <a href={`/displaychallenge/${challenge.track_id}`}><button>Know more</button></a>
-                <button>Choose</button>
+                {/* <button>Choose</button> */}
               </div>
             </div>
           </div>

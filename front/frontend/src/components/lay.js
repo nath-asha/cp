@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 
 const Lay = () => {
-    const navigate = useNavigate(); // ✅ Use React Router for navigation
+    const navigate = useNavigate(); 
 
     return (
         <Container>

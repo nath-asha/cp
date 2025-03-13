@@ -5,32 +5,62 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function Demodash() {
+     const [data, setData] = useState({
+            submissions: [],
+            teamRequests: [],
+            scores: [],
+            leaderboard: [],
+            profile: {},
+            mentor: {}
+        });
     const [users, setUsers] = useState([]);
     const [submissions, setSubmissions] = useState([]);
     const [teams, setTeams] = useState([]);
     const [notifications, setNotifications] = useState([]);
 
-    const fetchData = async () => {
-        try {
-            const response = await fetch('http://localhost:5000/api/submissions'); // Updated API route
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch('http://localhost:5000/notifications');
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const data = await response.json();
-            setTeams(data);
+            setSubmissions(data);
             console.log(data);
           } catch (err) {
             console.error('Error fetching problem statement data:', err);
           }
         };
+    
+        fetchData();
+      }, []);
 
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch('http://localhost:5000/submissions');
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            setSubmissions(data);
+            console.log(data);
+          } catch (err) {
+            console.error('Error fetching problem statement data:', err);
+          }
+        };
+    
+        fetchData();
+      }, []);
     return(
     <div className='container-md '>
         <div className='Grid'>
             <div className='Row'>
                 <div className='col'>
                     <h2 className='text-black'>Dashboard</h2>
-
+                    
                 </div>
             </div>
         </div>
