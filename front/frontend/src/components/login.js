@@ -2,6 +2,8 @@ import "../styles/register.css";
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const token = sessionStorage.getItem('token');
+
 export default function App() {
   const [values, setValues] = useState({
     email: "",
@@ -26,10 +28,11 @@ export default function App() {
     e.preventDefault();
     setErrorMessage(""); 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch('http://localhost:5000/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(values),
       });

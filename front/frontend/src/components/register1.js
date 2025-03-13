@@ -2,6 +2,8 @@ import "../styles/register.css";
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const token = sessionStorage.getItem('token');
+
 export default function RegistrationForm() {
   const [values, setValues] = useState({
     firstName: "",
@@ -38,10 +40,11 @@ export default function RegistrationForm() {
     if (Object.values(values).every(value => value)) {
      setValid(true);
      try {
-      const response = await fetch('http://localhost:5000/api/users', {
+      const response = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: {
-         'Content-Type': 'application/json'
+         'Content-Type': 'application/json',
+         'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(values)
       });

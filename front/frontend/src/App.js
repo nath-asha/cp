@@ -18,12 +18,14 @@ import Mentor from './components/registerm';
 import DisplayChallenge from './components/displaychallenge';
 import ContactUS from './components/contactus';
 import Teammanager from './components/teammanager';
-import Dashboard1 from './components/udashboard';
 
-// 🔹 Import JWT helper
+import Dashboard1 from './components/udashboard';
+import ParticipantDashboard
+ from './components/userdash';
+//Import JWT helper
 import { getAuthToken, isAuthenticated } from './utils/auth'; // Helper for token
 
-// 🔹 Protected Route Component
+//Protected Route Component
 const ProtectedRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
 };
@@ -43,14 +45,19 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/submissions" element={<ProtectedRoute element={<Submissions />} />} />
+          {/* <Route path="/submissions" element={<ProtectedRoute element={<Submissions />} />} /> */}
+          <Route path="/submissions" element={<Submissions />} />
+
           <Route path="/lay" element={<Lay />} />
           <Route path="/mentor" element={<Mentor />} />
           <Route path="/displaychallenge/:track_id" element={<DisplayChallenge />} />
 
         
-          <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+          {/* <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} /> */}
+          <Route path="/dashboard" element={<Dashboard />} />
+
           <Route path="/dash1" element={<Dashboard1/>}/>
+          <Route path="/dash2" element={<ParticipantDashboard />} />
           
           <Route path="/contact" element={<ContactUS />} />
           <Route path="/teams" element={<Teammanager />} />
