@@ -68,7 +68,7 @@ const Submissions = () => {
 
   return (
     <div className="container md-5">
-      <ul class="nav nav-tabs">
+      {/* <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="nav-link active" aria-current="page" href="#">Members</a>
   </li>
@@ -78,9 +78,8 @@ const Submissions = () => {
   <li>
     <a> Attachments</a>
   </li>
-  </ul>
+  </ul> */}
       <h4>Team Name</h4>
-      <h4>Project Title</h4>
       <p>Manage team
 Add, remove, and look for teammates.
 
@@ -89,9 +88,11 @@ Either share the link below privately with your teammates or send an invite link
 Add team members via email 
 someone@example.com
 Send invite
-Secret invite link </p>
+Secret invite link 
 https://devpost.com/software/884540/joins/1RBybDRmBCT79vm8aDBlGg
- Copy
+ Copy</p>
+
+      <h4>Project Title</h4>
       <Form.Control
         type="text"
         placeholder="title"

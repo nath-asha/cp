@@ -21,7 +21,8 @@ import Teammanager from './components/teammanager';
 
 import Dashboard1 from './components/udashboard';
 import ParticipantDashboard from './components/userdash';
-import Demodash from './components/userboard';
+import Demodash from './components/Demodash';
+import EvaluationPortal from './components/evaluationportal';
 //Import JWT helper
 import { getAuthToken, isAuthenticated } from './utils/auth'; // Helper for token
 
@@ -61,7 +62,9 @@ function App() {
 
           <Route path="/demodash" element={<Demodash/>}/>
 
-          
+          <Route path="/evaluation" element={<EvaluationPortal/>}/>
+
+
           <Route path="/contact" element={<ContactUS />} />
           <Route path="/teams" element={<Teammanager />} />
         </Routes>
