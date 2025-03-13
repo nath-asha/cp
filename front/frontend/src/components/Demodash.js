@@ -1,5 +1,6 @@
 import { useState,useEffect} from 'react';
 import React from "react";
+import axios from 'axios';
 import { Clock, Calendar, Award, Users, Code, Coffee, Bell } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -13,47 +14,38 @@ function Demodash() {
             profile: {},
             mentor: {}
         });
-    const [users, setUsers] = useState([]);
-    const [submissions, setSubmissions] = useState([]);
-    const [teams, setTeams] = useState([]);
-    const [notifications, setNotifications] = useState([]);
-
     const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await fetch('http://localhost:5000/notifications');
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const data = await response.json();
-            setSubmissions(data);
-            console.log(data);
-          } catch (err) {
-            console.error('Error fetching problem statement data:', err);
-          }
-        };
-    
-        fetchData();
-      }, []);
+
 
     useEffect(() => {
-        const fetchData = async () => {
+      const fetchAllData = async () => {
+          setLoading(true);
           try {
-            const response = await fetch('http://localhost:5000/submissions');
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const data = await response.json();
-            setSubmissions(data);
-            console.log(data);
-          } catch (err) {
-            console.error('Error fetching problem statement data:', err);
+              const [dashboardData, teamData, submissionData] = await Promise.all([
+                  axios.get('http://localhost:5000/api/dashboard-data'),
+                  axios.get('http://localhost:5000/teams'),
+                  axios.get('http://localhost:5000/api/submissions')
+              ]);
+              
+              // Merge all the data
+                setData({
+                  ...dashboardData.data,
+                  teams: teamData.data,
+                  submissions: submissionData.data,
+                  teamRequests: dashboardData.data.teamRequests,
+                  profile: dashboardData.data.profile,
+                  mentor: dashboardData.data.mentor
+                });
+          } catch (error) {
+              console.error('Error fetching dashboard data', error);
+          } finally {
+              setLoading(false);
           }
-        };
-    
-        fetchData();
-      }, []);
+      };
+
+      fetchAllData();
+  }, [data]);
+
     return(
     <div className='container-md '>
         <div className='Grid'>
