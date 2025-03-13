@@ -38,13 +38,13 @@ router.get("/teams", async (req, res) => {
     }
 });
 
-router.get("/notifications", async (req,res) => {
-    try{
-        const notif = await notify.find();
-        res.json(notif); 
-    }catch(err){
-        res.status(500).send("Internal server error");
-    }
-})
+// router.get("/notifications", async (req,res) => {
+//     try{
+//         const notifications = await notify.find();
+//         res.json(notifications); 
+//     }catch(err){
+//         res.status(500).send("Internal server error");
+//     }
+// })
 
 module.exports = router;

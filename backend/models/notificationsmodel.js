@@ -7,4 +7,4 @@ const notifySchema = new mongoose.Schema({
     teamid : Number,
 });
 
-module.exports = mongoose.model("notify", notifySchema);
+module.exports = mongoose.model("notification", notifySchema);
