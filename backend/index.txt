@@ -1,0 +1,237 @@
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const connectDB = require("./config/db");
+
+const dash = require('../front/frontend/public/dashboarddata.json');
+const teams = require('../front/frontend/public/teams.json');
+const multer = require('multer');
+//const upload = multer({ dest: 'uploads/' });
+
+dotenv.config();
+connectDB();
+
+const app = express();
+app.use(express.json());
+app.use(cors());
+app.use(bodyParser.json());
+
+const PORT = process.env.PORT || 5000;
+const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
+
+const subSchema = new mongoose.Schema({
+    title: String,
+    gitrepo: String,
+    projectdesc: String,
+    ps: String,
+    ppt: String,
+    thumbnail: String,
+    preport: String,
+    doc: String,
+    vid: String
+})
+
+const challengesSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    trackId: {
+        type: String,
+        required: true,
+    },
+    imgurl: {
+        type: String,
+        required: true
+    }
+});
+
+const scoresSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    score: {
+        type: Number,
+        required: true,
+    },
+    github_url: {
+        type: String,
+        required: true,
+    },
+});
+
+const scores = mongoose.model("scores", scoresSchema,"scores");
+const chall = mongoose.model("challenges", challengesSchema,"challenges");
+const submissions = mongoose.model("sub",subSchema,"submissions")
+
+
+// User Schema with role-based authentication
+const userSchema = new mongoose.Schema({
+    firstName: String,
+    lastName: String,
+    email: { type: String, unique: true, required: true },
+    password: { type: String, required: true },
+    role: { type: String, enum: ["user", "mentor", "admin"], default: "user" },
+    phone: String,
+    team: String,
+    address: String,
+    organization: String,
+    description: String,
+    skills: String,
+    github_url: String,
+    linkedin_url: String,
+    twitter_url: String,
+    USN: String
+});
+const User = mongoose.model("User", userSchema);
+
+// Middleware to authenticate token
+const authenticate = (req, res, next) => {
+    const token = req.header("Authorization");
+    if (!token) return res.status(401).json({ message: "Access Denied" });
+
+    try {
+        const verified = jwt.verify(token, JWT_SECRET);
+        req.user = verified;
+        next();
+    } catch (error) {
+        res.status(400).json({ message: "Invalid Token" });
+    }
+};
+
+// Middleware for role-based authorization
+const authorize = (roles) => (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+        return res.status(403).json({ message: "Access Forbidden" });
+    }
+    next();
+};
+
+// User registration
+app.post("/api/register", async (req, res) => {
+    const { firstName, lastName, email, password, role } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+        const newUser = new User({ firstName, lastName, email, password: hashedPassword, role });
+        await newUser.save();
+        res.status(201).json({ message: "User registered successfully" });
+    } catch (error) {
+        res.status(400).json({ message: "Error registering user" });
+    }
+});
+
+// User login
+app.post("/api/login", async (req, res) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "User not found" });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+
+    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: "1h" });
+    res.json({ token, role: user.role });
+});
+
+// Protected rout
+app.get("/api/user-dashboard", authenticate, authorize(["user", "mentor", "admin"]), (req, res) => {
+    res.json({ message: "Welcome to the user dashboard" });
+});
+
+app.get("/api/mentor-dashboard", authenticate, authorize(["mentor", "admin"]), (req, res) => {
+    res.json({ message: "Welcome to the mentor dashboard" });
+});
+
+app.get("/api/admin-dashboard", authenticate, authorize(["admin"]), (req, res) => {
+    res.json({ message: "Welcome to the admin dashboard" });
+});
+
+app.get("/teams", async (req,res) => {
+    res.send(teams);
+});
+
+
+app.get("/users", async (req,res) =>{
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
+})
+
+app.post('/api/users', async (req, res) => {
+    const user = new User(req.body);
+    // const savedUser = await user.save();
+    try {
+     await user.save();
+     res.status(201).send('User registered successfully');
+    } catch (error) {
+     res.status(400).send('Failed to register user');
+    }
+  });
+  app.post('/api/users/mentor', async (req, res) => {
+    const user = new User(req.body);
+    // const savedUser = await user.save();
+    try {
+     await user.save();
+     res.status(201).send('User registered successfully');
+    } catch (error) {
+     res.status(400).send('Failed to register user');
+    }
+  });
+
+app.post('/api/submissions', upload.single('preport'), async (req, res) => {
+    try {
+        const submissionData = {
+            title: req.body.title,
+            gitrepo: req.body.gitrepo,
+            projectdesc: req.body.projectdesc,
+            ps: req.body.ps,
+            ppt: req.body.ppt,
+            thumbnail: req.body.thumbnail,
+            // preport: req.file ? req.file.path : null, // Save file path
+            preport: req.body.preport,
+            doc: req.body.doc,
+            vid: req.body.vid,
+        };
+const submission = new submissions(submissionData);
+        const savedSubmission = await submission.save();
+        res.status(201).json(savedSubmission);
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ error: 'Failed to submit' });
+    }
+});
+
+app.get("/challenges", async (req, res) => {
+    try {
+        const ps = await chall.find();
+        res.json(ps);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+app.get("/", async (req,res) => {
+    try {
+        const data = await scores.find();
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

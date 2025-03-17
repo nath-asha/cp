@@ -34,3 +34,41 @@
                     </div>
                 </div>
             </div></> -->
+
+
+            const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+// ... other imports (database connection, etc.)
+
+const app = express();
+app.use(express.json());
+
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    // 1. Find user by email in the database
+    const user = await findUserByEmail(email); // Replace with your database query
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+    // 2. Compare passwords
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+    // 3. Generate JWT
+    const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' }); // Replace 'your_secret_key'
+    // 4. Send response
+    res.json({ success: true, token });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// ... database functions and other routes
+
+app.listen(5000, () => {
+  console.log('Server started on port 5000');
+});

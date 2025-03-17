@@ -2,28 +2,28 @@ import React from "react";
 import { motion } from "framer-motion";
 import "../styles/RotatingTimeline.css";
 
-// const events = [
-//   { time: "10:00 AM", title: "Opening Ceremony", description: "Kick off the event with a welcome speech and introduction." },
-//   { time: "11:00 AM", title: "Keynote Speaker", description: "Hear from an industry expert about the latest trends in technology." },
-//   { time: "1:00 PM", title: "Lunch Break", description: "Enjoy a variety of food options and network with other participants." },
-//   { time: "2:00 PM", title: "Coding Workshops", description: "Participate in hands-on workshops to learn new skills and techniques." },
-//   { time: "5:00 PM", title: "Hackathon Begins", description: "Form teams and start working on your projects." },
-//   { time: "8:00 PM", title: "Dinner Break", description: "Take a break and enjoy a delicious dinner." },
-//   { time: "9:00 PM", title: "Continue Hacking", description: "Work through the night to complete your projects." },
-// ];
-
 const events = [
-    { time: "10:00 AM", title: "Opening Ceremony" },
-    { time: "11:00 AM", title: "Keynote Speaker"},
-    { time: "1:00 PM", title: "Lunch Break" },
-    { time: "2:00 PM", title: "Coding Workshops" },
-    { time: "5:00 PM", title: "Hackathon Begins" },
-    { time: "8:00 PM", title: "Dinner Break"},
-    { time: "9:00 PM", title: "Continue Hacking" },
-  ];
+  { time: "10:00 AM", title: "Opening Ceremony", description: "Kick off the event with a welcome speech and introduction." },
+  { time: "11:00 AM", title: "Keynote Speaker", description: "Hear from an industry expert about the latest trends in technology." },
+  { time: "1:00 PM", title: "Lunch Break", description: "Enjoy a variety of food options and network with other participants." },
+  { time: "2:00 PM", title: "Coding Workshops", description: "Participate in hands-on workshops to learn new skills and techniques." },
+  { time: "5:00 PM", title: "Hackathon Begins", description: "Form teams and start working on your projects." },
+  { time: "9:00 PM", title: "Continue Hacking", description: "Work through the night to complete your projects." },
+];
+
+// const events = [
+//     { time: "10:00 AM", title: "Opening Ceremony" },
+//     { time: "11:00 AM", title: "Keynote Speaker"},
+//     { time: "1:00 PM", title: "Lunch Break" },
+//     { time: "2:00 PM", title: "Coding Workshops" },
+//     { time: "5:00 PM", title: "Hackathon Begins" },
+//     { time: "8:00 PM", title: "Dinner Break"},
+//     { time: "9:00 PM", title: "Continue Hacking" },
+//   ];
   
 const RotatingTimeline = () => {
   return (
+    <div className="container">
     <div className="timeline-container">
       <h2>Event Schedule</h2>
 
@@ -48,6 +48,7 @@ const RotatingTimeline = () => {
           </div>
         ))}
       </motion.div>
+    </div>
     </div>
   );
 };
