@@ -61,12 +61,12 @@
   height: 250px;
 }
 
-.home{ 
+/* .home{ 
   text-align: 'center';
    padding : 0;
    margin: 0%;
    justify-content: center;
-   }
+   } */
 
 .home h1{
   justify-self: center;

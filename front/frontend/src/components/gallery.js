@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Gallery() {
     return (
+        <div className='container-fluid'>
         <Carousel>
             <Carousel.Item>
                 <img
@@ -32,6 +33,7 @@ function Gallery() {
                 </Carousel.Caption>
             </Carousel.Item>
         </Carousel>
+        </div>
     );
 }
 
