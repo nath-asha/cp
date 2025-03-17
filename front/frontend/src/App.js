@@ -22,11 +22,6 @@ import ContactUS from './components/contactus';
 import Teammanager from './components/teammanager';
 import MentorDashboard from './components/mentordash'
 
-
-// just for checking the protected routes 
-import { ProtectedRoute } from "./components/ProtectedRoute";
-import { AuthProvider } from "./hooks/useAuth";
-
 import Dashboard1 from './components/udashboard';
 import ParticipantDashboard from './components/userdash';
 import Demodash from './components/Demodash';
@@ -36,14 +31,14 @@ import { getAuthToken, isAuthenticated } from './utils/auth'; // Helper for toke
 import { ImportIcon } from 'lucide-react';
 
 //Protected Route Component
-// const ProtectedRoute = ({ element }) => {
-//   return isAuthenticated() ? element : <Navigate to="/login" />;
-// };
+const ProtectedRoute = ({ element }) => {
+  return isAuthenticated() ? element : <Navigate to="/login" />;
+};
 
 function App() {
   return (
     <AuthProvider>
-    {/* <Router> */}
+    <Router>
       <div className="App">
       {/* <nav className="navbar" style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
             <ul className="navbar-links">
@@ -70,16 +65,16 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/submissions" element={<ProtectedRoute element={<Submissions />} />} />
-          {/* <Route path="/submissions" element={<Submissions />} /> */}
+          {/* <Route path="/submissions" element={<ProtectedRoute element={<Submissions />} />} /> */}
+          <Route path="/submissions" element={<Submissions />} />
 
           <Route path="/lay" element={<Lay />} />
           <Route path="/mentor" element={<Mentor />} />
           <Route path="/displaychallenge/:track_id" element={<DisplayChallenge />} />
 
         
-          <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
-          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+          {/* <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} /> */}
+          <Route path="/dashboard" element={<Dashboard />} />
 
           <Route path="/dash1" element={<Dashboard1/>}/>
           <Route path="/dash2" element={<ParticipantDashboard />} />
@@ -95,7 +90,7 @@ function App() {
         </Routes>
       </div>
       <Footer />
-    {/* </Router> */}
+    </Router>
     </AuthProvider>
   );
 }
