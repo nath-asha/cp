@@ -26,7 +26,7 @@ function Teammanager() {
       //mentors can be assigned randomly or with a preference of skills
       //long length descriptions for challenges
       return (
-        <div className="container">
+        <div>
           <div className="row">
             {teams.map((teams) => (
               <div className="col-md-4" key={teams.id}>

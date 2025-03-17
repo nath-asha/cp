@@ -81,7 +81,6 @@ function Leaderboard() {
     }
   
     return (
-        <div className='container'>
         <div className="leaderboard-container">
         <Confetti />
             <h2>🏆 Top 3 Participants</h2>
@@ -118,7 +117,6 @@ function Leaderboard() {
                      ))}
                 </tbody>
             </table>
-        </div>
         </div>
     );
 }

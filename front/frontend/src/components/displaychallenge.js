@@ -29,7 +29,7 @@ const DisplayChallenge = ({ title, description, details }) => {
     };
 
     return (
-        <div className="container mt-5">
+        <div>
             {challenges.length > 0 && (
                 <div className="card mb-3">
                     <div className="card-header">

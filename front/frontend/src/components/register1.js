@@ -62,7 +62,6 @@ export default function RegistrationForm() {
 
 
   return (
-    <div className="container-md">
       <div className="form-container"> 
         <form className="register-form" onSubmit={handleSubmit}>
           {submitted && valid && (
@@ -268,6 +267,5 @@ export default function RegistrationForm() {
           )}
         </form>
       </div>
-    </div>
   );
 }

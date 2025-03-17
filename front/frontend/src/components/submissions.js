@@ -66,7 +66,7 @@ const Submissions = () => {
   };
 
   return (
-    <div className="container md-5">
+    <div>
       <h4>Project Submission</h4>
 
       <Form onSubmit={handleSubmit}>

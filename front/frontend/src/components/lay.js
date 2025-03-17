@@ -7,7 +7,6 @@ const Lay = () => {
     const navigate = useNavigate(); 
 
     return (
-        <Container>
             <Row className="justify-content-center">
                 <Col md={5}>
                     <div className="p-3">
@@ -44,7 +43,6 @@ const Lay = () => {
                     </div>
                 </Col>
             </Row>
-        </Container>
     );
 }
 

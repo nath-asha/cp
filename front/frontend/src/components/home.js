@@ -6,7 +6,6 @@ import 'bootstrap/dist/js/bootstrap.bundle.min'; // Import Bootstrap's JS
 
 const Home = () => {
     return (
-        <div className='container'>
         <div className='home'>
         <Timer />
             <h1>Welcome to the Hack A Fest!</h1>
@@ -111,7 +110,6 @@ const Home = () => {
             </div>
             {/* <Footer /> */}
         </div>
-    </div>
     );
 };
 
