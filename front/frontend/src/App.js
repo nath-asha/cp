@@ -20,6 +20,7 @@ import Mentor from './components/registerm';
 import DisplayChallenge from './components/displaychallenge';
 import ContactUS from './components/contactus';
 import Teammanager from './components/teammanager';
+import MentorDashboard from './components/mentordash'
 
 import Dashboard1 from './components/udashboard';
 import ParticipantDashboard from './components/userdash';
@@ -27,6 +28,7 @@ import Demodash from './components/Demodash';
 import EvaluationPortal from './components/evaluationportal';
 //Import JWT helper
 import { getAuthToken, isAuthenticated } from './utils/auth'; // Helper for token
+import { ImportIcon } from 'lucide-react';
 
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
@@ -79,6 +81,7 @@ function App() {
           <Route path="/demodash" element={<Demodash/>}/>
 
           <Route path="/evaluation" element={<EvaluationPortal/>}/>
+          <Route path='/mentordash' element={<MentorDashboard />}/>
 
 
           <Route path="/contact" element={<ContactUS />} />
