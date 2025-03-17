@@ -1,113 +1,249 @@
-import "../styles/register.css";
 import React, { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "../styles/register.css";
 
 const token = sessionStorage.getItem('token');
 
-export default function App() {
-  const [values, setValues] = useState({
-    email: "",
-    password: "",
-  });
+const Login = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const { login } = useAuth();
 
-  const handleInputChange = (event) => {
-    event.preventDefault();
+    const [values, setValues] = useState({
+        email: "",
+        password: "",
+    });
 
-    const { name, value } = event.target;
-    setValues((values) => ({
-      ...values,
-      [name]: value,
-    }));
-  };
+    const [submitted, setSubmitted] = useState(false);
+    const [valid, setValid] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
-  const [submitted, setSubmitted] = useState(false);
-  const [valid, setValid] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        // Here you would usually send a request to your backend to authenticate the user
+        // For the sake of this example, we're using a mock authentication
+        if (username === "user" && password === "password") {
+            // Replace with actual authentication logic
+            await login({ username });
+        } else {
+            alert("Invalid username or password");
+        }
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMessage(""); 
-    try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(values),
-      });
+    const handleInputChange = (event) => {
+        event.preventDefault();
 
-      const data = await response.json();
+        const { name, value } = event.target;
+        setValues((values) => ({
+            ...values,
+            [name]: value,
+        }));
+    };
 
-      if (response.ok && data.success) {
-        setValid(true);
-        setSubmitted(true);
-      } else {
-        setErrorMessage(data.message || "Login failed. Please check your credentials.");
-        setValid(false);
-        setSubmitted(true);
-      }
-    } catch (error) {
-      setErrorMessage("An error occurred during login.");
-      setValid(false);
-      setSubmitted(true);
-      console.error("Login error:", error);
-    }
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setErrorMessage(""); 
+        try {
+            const response = await fetch('http://localhost:5000/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(values),
+            });
 
-  return (
-    <div className="container">
-      <div className="form-container">
-        <form className="register-form" onSubmit={handleSubmit}>
-          {submitted && valid && (
-            <div className="success-message">
-              <h3>Welcome!</h3>
-              <div>You are logged in!</div>
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                setValid(true);
+                setSubmitted(true);
+            } else {
+                setErrorMessage(data.message || "Login failed. Please check your credentials.");
+                setValid(false);
+                setSubmitted(true);
+            }
+        } catch (error) {
+            setErrorMessage("An error occurred during login.");
+            setValid(false);
+            setSubmitted(true);
+            console.error("Login error:", error);
+        }
+    };
+
+    return (
+        <div className="container">
+            <div className="form-container">
+                <form className="register-form" onSubmit={handleSubmit}>
+                    {submitted && valid && (
+                        <div className="success-message">
+                            <h3>Welcome!</h3>
+                            <div>You are logged in!</div>
+                        </div>
+                    )}
+
+                    {!valid && (
+                        <input
+                            className="form-field"
+                            type="email"
+                            placeholder="Email"
+                            name="email"
+                            value={values.email}
+                            onChange={handleInputChange}
+                        />
+                    )}
+
+                    {submitted && !values.email && (
+                        <span id="email-error">Please enter an email address</span>
+                    )}
+
+                    {!valid && (
+                        <input
+                            className="form-field"
+                            type="password"
+                            placeholder="Password"
+                            name="password"
+                            value={values.password}
+                            onChange={handleInputChange}
+                        />
+                    )}
+
+                    {submitted && errorMessage && !valid && (
+                        <div className="error-message">
+                            {errorMessage}
+                        </div>
+                    )}
+
+                    {!valid && (
+                        <button className="form-field" type="submit">
+                            Login
+                        </button>
+                    )}
+                </form>
             </div>
-          )}
+        </div>
+    );
+};
 
-          {!valid && (
-            <input
-              className="form-field"
-              type="email"
-              placeholder="Email"
-              name="email"
-              value={values.email}
-              onChange={handleInputChange}
-            />
-          )}
+export default Login;
 
-          {submitted && !values.email && (
-            <span id="email-error">Please enter an email address</span>
-          )}
 
-          {!valid && (
-            <input
-              className="form-field"
-              type="password"
-              placeholder="Password"
-              name="password"
-              value={values.password}
-              onChange={handleInputChange}
-            />
-          )}
+// import "../styles/register.css";
+// import React, { useState } from "react";
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
-          {submitted && errorMessage && !valid && (
-            <div className="error-message">
-              {errorMessage}
-            </div>
-          )}
+// const token = sessionStorage.getItem('token');
 
-          {!valid && (
-            <button className="form-field" type="submit">
-              Login
-            </button>
-          )}
-        </form>
-      </div>
-    </div>
-  );
-}
+// export default function App() {
+//   const [values, setValues] = useState({
+//     email: "",
+//     password: "",
+//   });
+
+//   const handleInputChange = (event) => {
+//     event.preventDefault();
+
+//     const { name, value } = event.target;
+//     setValues((values) => ({
+//       ...values,
+//       [name]: value,
+//     }));
+//   };
+
+//   const [submitted, setSubmitted] = useState(false);
+//   const [valid, setValid] = useState(false);
+//   const [errorMessage, setErrorMessage] = useState("");
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setErrorMessage(""); 
+//     try {
+//       const response = await fetch('http://localhost:5000/api/auth/login', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//           'Authorization': `Bearer ${token}`
+//         },
+//         body: JSON.stringify(values),
+//       });
+
+//       const data = await response.json();
+
+//       if (response.ok && data.success) {
+//         setValid(true);
+//         setSubmitted(true);
+//       } else {
+//         setErrorMessage(data.message || "Login failed. Please check your credentials.");
+//         setValid(false);
+//         setSubmitted(true);
+//       }
+//     } catch (error) {
+//       setErrorMessage("An error occurred during login.");
+//       setValid(false);
+//       setSubmitted(true);
+//       console.error("Login error:", error);
+//     }
+//   };
+
+//   return (
+//     <div className="container">
+//       <div className="form-container">
+//         <form className="register-form" onSubmit={handleSubmit}>
+//           {submitted && valid && (
+//             <div className="success-message">
+//               <h3>Welcome!</h3>
+//               <div>You are logged in!</div>
+//             </div>
+//           )}
+
+//           {!valid && (
+//             <input
+//               className="form-field"
+//               type="email"
+//               placeholder="Email"
+//               name="email"
+//               value={values.email}
+//               onChange={handleInputChange}
+//             />
+//           )}
+
+//           {submitted && !values.email && (
+//             <span id="email-error">Please enter an email address</span>
+//           )}
+
+//           {!valid && (
+//             <input
+//               className="form-field"
+//               type="password"
+//               placeholder="Password"
+//               name="password"
+//               value={values.password}
+//               onChange={handleInputChange}
+//             />
+//           )}
+
+//           {submitted && errorMessage && !valid && (
+//             <div className="error-message">
+//               {errorMessage}
+//             </div>
+//           )}
+
+//           {!valid && (
+//             <button className="form-field" type="submit">
+//               Login
+//             </button>
+//           )}
+//         </form>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+
+//this is old has issues but works
 // import Button from 'react-bootstrap/Button';
 // import Form from 'react-bootstrap/Form';
 

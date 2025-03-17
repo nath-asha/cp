@@ -43,23 +43,23 @@ import { ImportIcon } from 'lucide-react';
 function App() {
   return (
     <AuthProvider>
-    <Router>
+    {/* <Router> */}
       <div className="App">
-      <nav className="navbar" style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
+      {/* <nav className="navbar" style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
             <ul className="navbar-links">
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/challenges">Problem Statement</Link></li>
                 <li><Link to="/scoreboard">Winners</Link></li>
-                {/* <li><Link to="/dashboard">Dashboard</Link></li> */}
+                {/* <li><Link to="/dashboard">Dashboard</Link></li> 
                 <li><Link to="/gallery">Gallery</Link></li>
                 <li><Link to="/leaderboard">Leaderboard</Link></li>
-                {/* <li><Link to="/submissions">Impact</Link></li> */}
+                {/* <li><Link to="/submissions">Impact</Link></li> 
                 <li><Link to="/contact">Contact</Link></li>
                 <li><Link to="/login">Login</Link></li>
-                {/* <li><Link to="/demodash">demo</Link></li> */}
+                {/* <li><Link to="/demodash">demo</Link></li> 
             </ul>
-        </nav>        
-        {/* <Navbar /> */}
+        </nav>         */}
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
@@ -95,7 +95,7 @@ function App() {
         </Routes>
       </div>
       <Footer />
-    </Router>
+    {/* </Router> */}
     </AuthProvider>
   );
 }
