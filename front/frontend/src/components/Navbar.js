@@ -35,7 +35,7 @@ export default Navbar;
 //             </div> */}
 //             <ul className="navbar-links">
 //                 {/* <a class="navbar-brand" href="#">
-//                     <img src='download.png' alt="Logo" width="30" height="24" class="d-inline-block align-text-top" />
+//                     <img src='download.png' alt="Logo" width="30" height="24" className="d-inline-block align-text-top" />
 //                 </a> */}
 //                 <li><Link to="/" >Home</Link></li>
 //                 <li><Link to="/challenges">problem statement</Link></li>

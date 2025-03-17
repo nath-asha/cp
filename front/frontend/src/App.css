@@ -8,24 +8,24 @@
   background-repeat: no-repeat; */
 */
 
-body {
+/* body {
   /* font-family: "Inter", sans-serif; 
   font-size: 1rem;
   min-height: 100vh;
   display: flex;
   /* justify-content: center; 
   align-items: center;
-  /* flex-direction: column; */
+  /* flex-direction: column; 
   margin: 0;
   padding: 0;
-  /* padding: 1rem; */
-}
+  /* padding: 1rem; 
+} */
 
-.App {
-  /* text-align: center; */
+/* .App {
+  /* text-align: center; 
   margin: 0%;
   padding: 0%; 
-}
+} */
 
 .App h1{
   color: rgb(26, 18, 137);

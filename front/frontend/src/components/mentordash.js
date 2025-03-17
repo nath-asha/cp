@@ -4,6 +4,7 @@ import { Card, Button, Container, Row, Col, Table, Badge, Form, Modal, ProgressB
 import { Users, BookOpen, Award, Bell, User, MessageSquare, Search, FileText, CheckSquare, AlertTriangle } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Navigate } from 'react-router-dom';
 
 const MentorDashboard = () => {
     const [loading, setLoading] = useState(true);
@@ -52,10 +53,10 @@ const MentorDashboard = () => {
                 // Using sample data instead
                 setMentorData({
                     profile: {
-                        name: "Dr. Alex Johnson",
-                        email: "alex@mentor.edu",
+                        name: "mentor",
+                        email: "example@gmail.com",
                         department: "Computer Science",
-                        expertise: "React, Node.js, Cloud Computing"
+                        expertise: "React, Node.js"
                     },
                     students: [
                         { id: "S1001", name: "Jordan Smith", team: "Team Reactors", progress: 75, lastActive: "Today, 10:30 AM" },
@@ -279,7 +280,10 @@ const MentorDashboard = () => {
                                                                     </Badge>
                                                                 </td>
                                                                 <td>
-                                                                    <Button variant="primary" size="sm" onClick={() => handleReviewSubmission(submission)}>
+                                                                    {/* <Button variant="primary" size="sm" onClick={() => handleReviewSubmission(submission)}>
+                                                                        Review
+                                                                    </Button> */}
+                                                                    <Button variant="primary" size="sm" onClick={() => window.location.href = '/evaluation'}>
                                                                         Review
                                                                     </Button>
                                                                 </td>

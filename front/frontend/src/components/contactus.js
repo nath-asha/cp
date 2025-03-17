@@ -20,7 +20,7 @@ const ContactUS = () => {
     return (
         <div className="min-h-screen bg-gray-100 p-8" id='contact'>
                <div className="max-w-md mx-auto mb-8 overflow-hidden">
-        <div class="p-8">
+        <div className="p-8">
             <h2 className="mb-6 text-black">Contact Us</h2>
             <form className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">

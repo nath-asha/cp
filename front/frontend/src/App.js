@@ -1,9 +1,8 @@
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+// import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navbar from './components/Navbar';
-import { Link } from 'react-router-dom';
 
 import Leaderboard from './components/Leaderboard';
 import Scoreboard from './components/scoreboard';
@@ -37,23 +36,8 @@ const ProtectedRoute = ({ element }) => {
 
 function App() {
   return (
-    <AuthProvider>
     <Router>
       <div className="App">
-      {/* <nav className="navbar" style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
-            <ul className="navbar-links">
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/challenges">Problem Statement</Link></li>
-                <li><Link to="/scoreboard">Winners</Link></li>
-                {/* <li><Link to="/dashboard">Dashboard</Link></li> 
-                <li><Link to="/gallery">Gallery</Link></li>
-                <li><Link to="/leaderboard">Leaderboard</Link></li>
-                {/* <li><Link to="/submissions">Impact</Link></li> 
-                <li><Link to="/contact">Contact</Link></li>
-                <li><Link to="/login">Login</Link></li>
-                {/* <li><Link to="/demodash">demo</Link></li> 
-            </ul>
-        </nav>         */}
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -91,7 +75,6 @@ function App() {
       </div>
       <Footer />
     </Router>
-    </AuthProvider>
   );
 }
 
