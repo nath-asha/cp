@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
+import RoleBasedComponent from './rolebasedbutton';
 
 function Challenges() {
   const [challenges, setChallenges] = useState([]);
@@ -38,9 +39,12 @@ function Challenges() {
               <div className="card-body">
                 <h5 className="card-title">{challenge.title}</h5>
                 <h6 className="card-subtitle mb-2 text-muted">{challenge.description}</h6>
-                {/* <button onClick={() => window.location.href = `/displaychallenge/${challenge.track_id}`}>Choose</button> */}
                 <a href={`/displaychallenge/${challenge.track_id}`}><button>Know more</button></a>
-                {/* <button>Choose</button> */}
+                <RoleBasedComponent
+                  role={"user"}
+                  supportedRoles={["admin", "mentor", "user"]}
+                  render={() => <button>Choose</button>}
+                />
               </div>
             </div>
           </div>
