@@ -11,7 +11,8 @@ const teamSchema = new mongoose.Schema({
 "frontScore": String,
 "backScore": String,
 "uiScore": String,
-"dbdesign": String
+"dbdesign": String,
+"feedback" : String
 });
 
 module.exports = mongoose.model("teams",teamSchema);

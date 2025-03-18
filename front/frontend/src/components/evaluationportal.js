@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, CardBody, CardImg, CardLink, CardText, CardTitle, Col, Row } from 'react-bootstrap';
+import Feedback from 'react-bootstrap/esm/Feedback';
 
 const EvaluationPortal = () => {
     const [teams, setTeams] = useState([]);
@@ -44,7 +45,8 @@ const EvaluationPortal = () => {
                 frontScore: "",
                 backScore: "",
                 uiScore: "",
-                dbdesign: ""
+                dbdesign: "",
+                feedback: ""
      });
 
      const handleinputChange = (event) => {
@@ -177,7 +179,7 @@ const EvaluationPortal = () => {
       .map((submission) => (
         <div key={submission._id}>
           <Card>
-            <CardImg src={submission.thumbnail} alt="thumbnail" />
+            <CardImg src={submission.thumbnail} height='250px' width='250px' alt="thumbnail" />
             <CardText><a href={submission.vid}>Demo Video: {submission.vid}</a></CardText>
           </Card>
           <Col>
@@ -218,7 +220,6 @@ const EvaluationPortal = () => {
             </div>
           )}
           <h2>Scores</h2>
-
             <input
               className="form-field"
               type="number"
@@ -266,13 +267,101 @@ const EvaluationPortal = () => {
             {submitted && !scores.dbdesign && (
               <span id="error">Please enter a number</span>
             )}
+
+            <input
+              className="form-field"
+              type="text"
+              placeholder="feedback"
+              name="Feedback"
+              value={scores.feedback}
+              onChange={handleinputChange}
+            />
+            {submitted && !scores.feedback && (
+              <span id="error">Please enter a number</span>
+            )}
+          
           
 
           <button className="form-field" type="submit">
             Submit
           </button>
         </form>
+
+
+        <table>
+            <tr>
+              <th>Evaluation Criteria</th>
+              <th>Score</th>
+            </tr>
+            <tr>
+              <th>
+                Frontend :
+              </th>
+              <th>
+            <input
+              className="form-field"
+              type="number"
+              placeholder="Frontend"
+              name="frontScore"
+              value={scores.frontScore}
+              onChange={handleinputChange}
+            />
+            {submitted && !scores.frontScore && (
+              <span id="error">Please enter a number</span>
+            )}
+            </th>
+            </tr>
+
+            <input
+              className="form-field"
+              type="number"
+              placeholder="Backend"
+              name="backScore"
+              value={scores.backScore}
+              onChange={handleinputChange}
+            />
+            {submitted && !scores.backScore && (
+              <span id="error">Please enter a number</span>
+            )}
+          
+            <input
+              className="form-field"
+              type="number"
+              placeholder="UI"
+              name="uiScore"
+              value={scores.uiScore}
+              onChange={handleinputChange}
+            />
+            {submitted && !scores.uiScore && (
+              <span id="error">Please enter a number</span>
+            )}
+          
+            <input
+              className="form-field"
+              type="number"
+              placeholder="DB Design"
+              name="dbdesign"
+              value={scores.dbdesign}
+              onChange={handleinputChange}
+            />
+            {submitted && !scores.dbdesign && (
+              <span id="error">Please enter a number</span>
+            )}
+
+            <input
+              className="form-field"
+              type="text"
+              placeholder="feedback"
+              name="Feedback"
+              value={scores.feedback}
+              onChange={handleinputChange}
+            />
+            {submitted && !scores.feedback && (
+              <span id="error">Please enter a number</span>
+            )}
+          </table>
       </Row>
+      
             <button className="btn btn-primary mt-3" onClick={handleNextteam}>
                 Next team
             </button>
