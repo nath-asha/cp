@@ -307,7 +307,7 @@ const MentorDashboard = () => {
                                                                         Review
                                                                     </Button>
 
-                                                                    <a href={`/evaluation/${teams.id}`}><Button>Review</Button></a>
+                                                                    <a href={`/evaluation/${teams.team_id}`}><Button>Review</Button></a>
                                                                 </td>
                                                             </tr>
                                                         ))}

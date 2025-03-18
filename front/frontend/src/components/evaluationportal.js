@@ -33,6 +33,7 @@ const EvaluationPortal = () => {
       const [valid, setValid] = useState(false);
       const [scores, setScores] = useState({
                 name: "" ,
+                team_id: "",
                 members : [],
                 project_id : "",
                 project : "",
