@@ -25,18 +25,69 @@ const EvaluationPortal = () => {
           const handleNextteam = () => {
               setCurrentTeamIndex((prevIndex) => (prevIndex + 1) % teams.length);
           };
-      
+    
+    //SCORE STORE
+    //this is for storing the marks of teams after evaluation in scores
 
-    const handleRatingChange = (id, rating) => {
-        setTeams(teams.map(team => 
-            team.id === id ? { ...team, rating: rating } : team
-        ));
+      const [submitted, setSubmitted] = useState(false);
+      const [valid, setValid] = useState(false);
+      const [scores, setScores] = useState({
+                name: "" ,
+                members : [],
+                project_id : "",
+                project : "",
+                createdAt : "",
+                mentor : "",
+                frontScore: "",
+                backScore: "",
+                uiScore: "",
+                dbdesign: ""
+     });
+
+     const handleinputChange = (event) => {
+      const {name, value} = event.target;
+      setScores((scores) => ({
+        ...scores,
+        [name]: value
+      }));
+     };
+
+     const handleSubmit = async (e) => {
+      e.preventDefault();
+      if(Object.values(scores).every(value => value)) {
+        setValid(true);
+        try {
+          const response = await fetch('http://localhost:5000/teams', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              // 'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(scores)
+          });
+          if (response.ok) {
+            console.log('Scores submitted successfully');
+          } else {
+            console.error('Failed to submit scores');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+      setSubmitted(true);
     };
+
+
+    // const handleRatingChange = (id, rating) => {
+    //     setTeams(teams.map(team => 
+    //         team.id === id ? { ...team, rating: rating } : team
+    //     ));
+    // };
 
     return (
         <div>
             <h1>Evaluation Portal</h1>
-            {teams.map((teams) => (
+            {/* {teams.map((teams) => (
               <div className="col-md-4" key={teams.id}>
                 <div className="card mb-4">
                   <div className="card-header">
@@ -50,7 +101,7 @@ const EvaluationPortal = () => {
                 </div>
               </div>
           </div>
-        ))}
+        ))} */}
         <div>
             {teams.length > 0 && (
                 <div className="card mb-3">
@@ -62,7 +113,7 @@ const EvaluationPortal = () => {
                         <div className="mt-4">
                             <h2>Details:</h2>
                             <img src={teams[currentTeamIndex].imgurl} alt='p' height='50%' width='25%'/>
-                            <p>Track ID: {teams[currentTeamIndex].id}</p>
+                            <p>{teams[currentTeamIndex].id}</p>
                         </div>
                     </div>
                 </div>
@@ -70,7 +121,7 @@ const EvaluationPortal = () => {
             <button className="btn btn-primary mt-3" onClick={handleNextteam}>
                 Next team
             </button>
-            <a href='/challenges'><button>Back to team</button></a>
+            <a href='/mentordash'><button>Back to team</button></a>
         </div>
             {/* {teams.map(team => (
                 <div key={team.id}>
