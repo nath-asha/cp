@@ -1,4 +1,6 @@
 import React, { useState,useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Card, CardBody, Col, Row } from 'react-bootstrap';
 
 const EvaluationPortal = () => {
     const [teams, setTeams] = useState([]);
@@ -78,15 +80,13 @@ const EvaluationPortal = () => {
       setSubmitted(true);
     };
 
+    //SUBMISSIONS REVIEW OF THE TEAMS
+    //this is for fetching data from submissions collections and displaying it for evaluation
 
-    // const handleRatingChange = (id, rating) => {
-    //     setTeams(teams.map(team => 
-    //         team.id === id ? { ...team, rating: rating } : team
-    //     ));
-    // };
+    
 
     return (
-        <div>
+        <div className='container'>
             <h1>Evaluation Portal</h1>
             {/* {teams.map((teams) => (
               <div className="col-md-4" key={teams.id}>
@@ -103,27 +103,100 @@ const EvaluationPortal = () => {
               </div>
           </div>
         ))} */}
-        <div>
-            {teams.length > 0 && (
-                <div className="card mb-3">
-                    <div className="card-header">
-                        <h1>{teams[currentTeamIndex].name}</h1>
-                    </div>
-                    <div className="card-body">
-                        <p className="card-text">{teams[currentTeamIndex].project}</p>
-                        <div className="mt-4">
-                            <h2>Details:</h2>
-                            <img src={teams[currentTeamIndex].imgurl} alt='p' height='50%' width='25%'/>
-                            <p>{teams[currentTeamIndex].id}</p>
-                        </div>
-                    </div>
-                </div>
+      <Row>
+        {teams.length > 0 && (
+          <>
+            <Col>
+            <Card>
+              <CardBody>
+              <h1>{teams[currentTeamIndex].name}</h1>
+              </CardBody>
+              </Card>
+            </Col>
+            <Col>
+            <Card>
+            <CardBody>
+              {teams[currentTeamIndex].members.map((member, index) => (
+                <h5 key={index}>{member}</h5>
+              ))}
+              </CardBody>
+              </Card>
+            </Col>
+          </>
+        )}
+      </Row>
+      <Row>
+        <h4>Submissions</h4>
+      </Row>
+      <Row>
+        <h4>Scores</h4>
+        <form onSubmit={handleSubmit}>
+          {submitted && valid && (
+            <div className="success-message">
+              <h4>Scores submitted successfully!</h4>
+            </div>
+          )}
+          <h2>Scores</h2>
+
+            <input
+              className="form-field"
+              type="number"
+              placeholder="Frontend"
+              name="frontScore"
+              value={scores.frontScore}
+              onChange={handleinputChange}
+            />
+            {submitted && !scores.frontScore && (
+              <span id="error">Please enter a number</span>
             )}
+
+            <input
+              className="form-field"
+              type="number"
+              placeholder="Backend"
+              name="backScore"
+              value={scores.backScore}
+              onChange={handleinputChange}
+            />
+            {submitted && !scores.backScore && (
+              <span id="error">Please enter a number</span>
+            )}
+          
+            <input
+              className="form-field"
+              type="number"
+              placeholder="UI"
+              name="uiScore"
+              value={scores.uiScore}
+              onChange={handleinputChange}
+            />
+            {submitted && !scores.uiScore && (
+              <span id="error">Please enter a number</span>
+            )}
+          
+            <input
+              className="form-field"
+              type="number"
+              placeholder="DB Design"
+              name="dbdesign"
+              value={scores.dbdesign}
+              onChange={handleinputChange}
+            />
+            {submitted && !scores.dbdesign && (
+              <span id="error">Please enter a number</span>
+            )}
+          
+
+          <button className="form-field" type="submit">
+            Submit
+          </button>
+        </form>
+      </Row>
             <button className="btn btn-primary mt-3" onClick={handleNextteam}>
                 Next team
             </button>
             <a href='/mentordash'><button>Back to team</button></a>
-        </div>
+    
             {/* {teams.map(team => (
                 <div key={team.id}>
                     <h2 className='text-black'>{team.name}</h2>

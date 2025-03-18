@@ -302,12 +302,14 @@ const MentorDashboard = () => {
                                                                     {/* <Button variant="primary" size="sm" onClick={() => handleReviewSubmission(submission)}>
                                                                         Review
                                                                     </Button> */}
-
-                                                                    <Button variant="primary" size="sm" onClick={() => window.location.href = '/evaluation'}>
+                                                                    
+                                                                    {/* button that directs to evaluation page  */}
+                                                                    {/* <Button variant="primary" size="sm" onClick={() => window.location.href = '/evaluation'}>
                                                                         Review
-                                                                    </Button>
-
-                                                                    <a href={`/evaluation/${teams.team_id}`}><Button>Review</Button></a>
+                                                                    </Button> */}
+                                                                    
+                                                                    {teams.map((teams) => (  <div  key={teams.team_id}><a href={`/evaluation/${teams.team_id}`}><Button>Review</Button></a></div>
+                                                                    ))}
                                                                 </td>
                                                             </tr>
                                                         ))}
