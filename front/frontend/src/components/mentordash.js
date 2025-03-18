@@ -7,6 +7,25 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { Navigate } from 'react-router-dom';
 
 const MentorDashboard = () => {
+    const [teams, setTeams] = useState([]);
+        useEffect(() => {
+            const fetchData = async () => {
+              try {
+                const response = await fetch('http://localhost:5000/teams'); // Updated API route
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const team = await response.json();
+                setTeams(team);
+                console.log(team);
+              } catch (err) {
+                console.error('Error fetching problem statement data:', err);
+              }
+            };
+        
+            fetchData();
+          }, []);
+    
     const [loading, setLoading] = useState(true);
     const [mentorData, setMentorData] = useState({
         profile: {
@@ -283,9 +302,12 @@ const MentorDashboard = () => {
                                                                     {/* <Button variant="primary" size="sm" onClick={() => handleReviewSubmission(submission)}>
                                                                         Review
                                                                     </Button> */}
+
                                                                     <Button variant="primary" size="sm" onClick={() => window.location.href = '/evaluation'}>
                                                                         Review
                                                                     </Button>
+
+                                                                    <a href={`/evaluation/${teams.id}`}><Button>Review</Button></a>
                                                                 </td>
                                                             </tr>
                                                         ))}

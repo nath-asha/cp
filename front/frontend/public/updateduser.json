@@ -6,14 +6,11 @@
       "password": "SecurePassword123!",
       "phone": "9876543210",
       "role": "Team Leader",
-      "team": "Analytics Team",
-      "address": "456 Elm St, Bangalore, Karnataka 560001",
       "organization": "Sahyadri",
       "description": "Data scientist with expertise in machine learning and statistical modeling.",
       "skills": "Python, R, SQL, Machine Learning, Data Visualization",
       "github_url": "https://github.com/aaravsharma",
       "linkedin_url": "https://www.linkedin.com/in/aaravsharma",
-      "twitter_url": "https://twitter.com/aaravsharma",
       "USN": "9876543210"
     },
     {
@@ -23,8 +20,6 @@
       "password": "SecurePassword123!",
       "phone": "9876543211",
       "role": "Member",
-      "team": "Development Team B",
-      "address": "789 Oak St, Mumbai, Maharashtra 400001",
       "organization": "Sahyadri",
       "description": "Full-stack developer with experience in building web applications.",
       "skills": "Java, Spring Boot, JavaScript, React, Angular",

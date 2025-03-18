@@ -20,6 +20,13 @@ const EvaluationPortal = () => {
         fetchData();
       }, []);
 
+       const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
+      
+          const handleNextteam = () => {
+              setCurrentTeamIndex((prevIndex) => (prevIndex + 1) % teams.length);
+          };
+      
+
     const handleRatingChange = (id, rating) => {
         setTeams(teams.map(team => 
             team.id === id ? { ...team, rating: rating } : team
@@ -29,7 +36,43 @@ const EvaluationPortal = () => {
     return (
         <div>
             <h1>Evaluation Portal</h1>
-            {teams.map(team => (
+            {teams.map((teams) => (
+              <div className="col-md-4" key={teams.id}>
+                <div className="card mb-4">
+                  <div className="card-header">
+                      Team: {teams.name}
+                  </div>
+                  <img src={teams.imgurl} className="card-img-top" alt="problem statement image" />
+                  <div className="card-body">
+                  <h5 className="card-title">{teams.title}</h5>
+                  <h6 className="card-subtitle mb-2 text-muted">{teams.description}</h6>
+
+                </div>
+              </div>
+          </div>
+        ))}
+        <div>
+            {teams.length > 0 && (
+                <div className="card mb-3">
+                    <div className="card-header">
+                        <h1>{teams[currentTeamIndex].name}</h1>
+                    </div>
+                    <div className="card-body">
+                        <p className="card-text">{teams[currentTeamIndex].project}</p>
+                        <div className="mt-4">
+                            <h2>Details:</h2>
+                            <img src={teams[currentTeamIndex].imgurl} alt='p' height='50%' width='25%'/>
+                            <p>Track ID: {teams[currentTeamIndex].id}</p>
+                        </div>
+                    </div>
+                </div>
+            )}
+            <button className="btn btn-primary mt-3" onClick={handleNextteam}>
+                Next team
+            </button>
+            <a href='/challenges'><button>Back to team</button></a>
+        </div>
+            {/* {teams.map(team => (
                 <div key={team.id}>
                     <h2 className='text-black'>{team.name}</h2>
                     <h4>{team.members[0]}</h4>
@@ -47,8 +90,8 @@ const EvaluationPortal = () => {
                         />
                     </label>
                 </div>
-            ))}
-        </div>
+            ))} */}
+      </div>
     );
 };
 

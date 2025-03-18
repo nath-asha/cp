@@ -1,4 +1,4 @@
-import "../styles/register.css";
+// import "../styles/register.css";
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -42,6 +42,7 @@ export default function App() {
       if (response.ok && data.success) {
         setValid(true);
         setSubmitted(true);
+        console.log("login sucessful")
       } else {
         setErrorMessage(data.message || "Login failed. Please check your credentials.");
         setValid(false);
@@ -56,7 +57,8 @@ export default function App() {
   };
 
   return (
-      <div className="form-container">
+    // <div className="form-container">
+      <div>
         <form className="register-form" onSubmit={handleSubmit}>
           {submitted && valid && (
             <div className="success-message">
