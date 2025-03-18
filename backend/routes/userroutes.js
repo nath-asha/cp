@@ -15,9 +15,10 @@ router.get("/admin-dashboard", authenticate, authorize(["admin"]), (req, res) =>
     res.json({ message: "Welcome to the admin dashboard" });
 });
 
-router.get("/submissions", authenticate, authorize(["user"]), (req, res) => {
-    res.json({ message: "Welcome to submission portal" });
-});
+// router.get("/submissions", authenticate, authorize(["user"]), (req, res) => {
+//     res.json({ message: "Welcome to submission portal" });
+// });
+
 
 router.post("/submissions", authenticate, authorize(["user"]), (req, res) => {
     const { title, gitrepo, projectdesc, ps, ppt, thumbnail, preport, doc, vid } = req.body;

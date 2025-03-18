@@ -4,6 +4,7 @@ const Score = require("../models/Scoremodel");
 const team = require("../models/teamsmodel");
 const notify = require("../models/notificationsmodel");
 const dash = require('../../front/frontend/public/dashboarddata.json');
+const submission = require("../models/submissionmodel");
 
 const router = express.Router();
 
@@ -35,6 +36,15 @@ router.get("/teams", async (req, res) => {
         res.json(teams);
     }catch(err){
         res.status(500).send("Internal server error");
+    }
+});
+
+router.get("/submissions", async (req, res) => {
+    try {
+        const submissions = await submission.find();
+        res.json(submissions);
+    } catch (err) {
+        res.status(500).send("Internal Server Error");
     }
 });
 

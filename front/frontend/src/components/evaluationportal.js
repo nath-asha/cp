@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, CardBody, Col, Row } from 'react-bootstrap';
+import { Card, CardBody, CardImg, CardLink, CardText, CardTitle, Col, Row } from 'react-bootstrap';
 
 const EvaluationPortal = () => {
     const [teams, setTeams] = useState([]);
@@ -83,7 +83,23 @@ const EvaluationPortal = () => {
     //SUBMISSIONS REVIEW OF THE TEAMS
     //this is for fetching data from submissions collections and displaying it for evaluation
 
-    
+    const [submissions, setSubmissions] = useState([]);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch('http://localhost:5000/submissions');
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          const data = await response.json();
+          setSubmissions(data);
+          console.log(data);
+        }catch (err) {
+          console.error('Error fetching submissions data:',err);
+        }
+      };
+      fetchData();
+    },[]);
 
     return (
         <div className='container'>
@@ -128,6 +144,39 @@ const EvaluationPortal = () => {
       <Row>
         <h4>Submissions</h4>
       </Row>
+      {submissions.map((submissions) => (
+        <div key={submissions.id}>
+          <Card>
+            <CardImg src={submissions.thumbnail} alt="thumbnail" />
+            <CardText><a href={submissions.vid}>Demo Video :{submissions.vid}</a></CardText>
+          </Card>
+          <Col> 
+          <Card>
+            <CardBody>
+            <h3>Title :{submissions.title}</h3>
+            <h4>Github Link:<a href={submissions.gitrepo}>{submissions.gitrepo}</a></h4>
+            <h4>PS id :{submissions.ps}</h4>
+            </CardBody>
+          </Card>
+          </Col>
+          <Col>
+          <Card>
+            <CardBody>
+              <a href={submissions.ppt}>Presentation Link: {submissions.ppt}</a>
+              <br></br>
+              <a href={submissions.preport}>Project Report: {submissions.preport}</a>
+              <br></br>
+              <a href={submissions.doc}>Documentation : {submissions.doc}</a>
+            </CardBody>
+          </Card>
+          </Col>
+          <Col>
+          <Card>
+            <span className='text-black'>Description:  <br></br>{submissions.projectdesc}</span>
+          </Card>
+          </Col>
+        </div>
+      ))}
       <Row>
         <h4>Scores</h4>
         <form onSubmit={handleSubmit}>
