@@ -17,6 +17,7 @@ const Submissions = () => {
     preport: "",
     doc: "",
     vid: "",
+    team_id: ""
   });
 
   const [submitted, setSubmitted] = useState(false);

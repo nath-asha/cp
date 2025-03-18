@@ -110,21 +110,6 @@ const EvaluationPortal = () => {
     return (
         <div>
             <h1>Evaluation Portal</h1>
-            {/* {teams.map((teams) => (
-              <div className="col-md-4" key={teams.id}>
-                <div className="card mb-4">
-                  <div className="card-header">
-                      Team: {teams.name}
-                  </div>
-                  <img src={teams.imgurl} className="card-img-top" alt="problem statement image" />
-                  <div className="card-body">
-                  <h5 className="card-title">{teams.title}</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">{teams.description}</h6>
-
-                </div>
-              </div>
-          </div>
-        ))} */}
       <Row>
         {teams.length > 0 && (
           <>
@@ -136,10 +121,12 @@ const EvaluationPortal = () => {
             <Col>
             <Card>
             <CardBody>
-              {teams[currentTeamIndex].members.map((member, index) => (
-                <h5 key={index}>{member}</h5>
-              ))}
-              </CardBody>
+              {/* {teams[currentTeamIndex].members.map((member, index) => (
+                <h5 key={index}>{member}</h5>  */}
+                {teams[currentTeamIndex].members.map((member) => (
+                                        <h5 key={member}>{member}</h5>
+                        ))}
+               </CardBody>
               </Card>
             </Col>
           </>
@@ -148,30 +135,30 @@ const EvaluationPortal = () => {
       <Row>
         <h4>Submissions</h4>
       </Row>
-      <Row>
-      {submissions.map((submissions) => (
-        <div key={submissions.id}>
+      {/* <Row>
+      {submissions.map((submission) => (
+        <div key={submission._id}>
           <Card>
-            <CardImg src={submissions.thumbnail} alt="thumbnail" />
-            <CardText><a href={submissions.vid}>Demo Video :{submissions.vid}</a></CardText>
+            <CardImg src={submission.thumbnail} alt="thumbnail" />
+            <CardText><a href={submission.vid}>Demo Video :{submission.vid}</a></CardText>
           </Card>
           <Col> 
           <Card>
             <CardBody>
-            <h3>Title :{submissions.title}</h3>
-            <h4>Github Link:<a href={submissions.gitrepo}>{submissions.gitrepo}</a></h4>
-            <h4>PS id :{submissions.ps}</h4>
+            <h3>Title :{submission.title}</h3>
+            <h4>Github Link:<a href={submission.gitrepo}>{submission.gitrepo}</a></h4>
+            <h4>PS id :{submission.ps}</h4>
             </CardBody>
           </Card>
           </Col>
           <Col>
           <Card>
             <CardBody>
-              <a href={submissions.ppt}>Presentation Link: {submissions.ppt}</a>
+              <a href={submission.ppt}>Presentation Link: {submission.ppt}</a>
               <br></br>
-              <a href={submissions.preport}>Project Report: {submissions.preport}</a>
+              <a href={submission.preport}>Project Report: {submission.preport}</a>
               <br></br>
-              <a href={submissions.doc}>Documentation : {submissions.doc}</a>
+              <a href={submission.doc}>Documentation : {submission.doc}</a>
             </CardBody>
           </Card>
           </Col>
@@ -182,7 +169,46 @@ const EvaluationPortal = () => {
           </Col>
         </div>
       ))}
-      </Row>
+      </Row> */}
+      <Row>
+  {teams.length > 0 && submissions.length > 0 && (
+    submissions
+      .filter(submission => submission.team_id === teams[currentTeamIndex]._id) // Filter submissions
+      .map((submission) => (
+        <div key={submission._id}>
+          <Card>
+            <CardImg src={submission.thumbnail} alt="thumbnail" />
+            <CardText><a href={submission.vid}>Demo Video: {submission.vid}</a></CardText>
+          </Card>
+          <Col>
+            <Card>
+              <CardBody>
+                <h3>Title: {submission.title}</h3>
+                <h4>Github Link: <a href={submission.gitrepo}>{submission.gitrepo}</a></h4>
+                <h4>PS id: {submission.ps}</h4>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col>
+            <Card>
+              <CardBody>
+                <a href={submission.ppt}>Presentation Link: {submission.ppt}</a>
+                <br />
+                <a href={submission.preport}>Project Report: {submission.preport}</a>
+                <br />
+                <a href={submission.doc}>Documentation: {submission.doc}</a>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col>
+            <Card>
+              <span className="text-black">Description: <br />{submission.projectdesc}</span>
+            </Card>
+          </Col>
+        </div>
+      ))
+  )}
+</Row>
       <Row>
         <h4>Scores</h4>
         <form onSubmit={handleSubmit}>
@@ -251,26 +277,6 @@ const EvaluationPortal = () => {
                 Next team
             </button>
             <a href='/mentordash'><button>Back to team</button></a>
-    
-            {/* {teams.map(team => (
-                <div key={team.id}>
-                    <h2 className='text-black'>{team.name}</h2>
-                    <h4>{team.members[0]}</h4>
-                    <h4>{team.members[1]}</h4>
-                    <h4>{team.members[2]}</h4>
-                    <p>{team.project}</p>
-                    <label>
-                        Rating:
-                        <input 
-                            type="number" 
-                            value={team.rating} 
-                            onChange={(e) => handleRatingChange(team.id, parseInt(e.target.value))} 
-                            min="0" 
-                            max="10" 
-                        />
-                    </label>
-                </div>
-            ))} */}
       </div>
     );
 };

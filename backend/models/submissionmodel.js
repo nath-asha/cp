@@ -10,6 +10,7 @@ const subSchema = new mongoose.Schema({
     preport: String,
     doc: String,
     vid: String,
+    team_id: String
 });
 
 module.exports = mongoose.model("Submission", subSchema);
