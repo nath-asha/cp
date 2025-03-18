@@ -13,7 +13,7 @@ const EvaluationPortal = () => {
             }
             const team = await response.json();
             setTeams(team);
-            console.log(team);
+            console.log('no issue');
           } catch (err) {
             console.error('Error fetching problem statement data:', err);
           }
@@ -93,7 +93,7 @@ const EvaluationPortal = () => {
           }
           const data = await response.json();
           setSubmissions(data);
-          console.log(data);
+          console.log('no issue');
         }catch (err) {
           console.error('Error fetching submissions data:',err);
         }
@@ -101,8 +101,14 @@ const EvaluationPortal = () => {
       fetchData();
     },[]);
 
+    const [currentSubIndex, setCurrentSubIndex] = useState(0);
+      
+          const handleNextsub = () => {
+              setCurrentSubIndex((prevIndex) => (prevIndex + 1) % submissions.length);
+          };
+
     return (
-        <div className='container'>
+        <div>
             <h1>Evaluation Portal</h1>
             {/* {teams.map((teams) => (
               <div className="col-md-4" key={teams.id}>
@@ -124,9 +130,7 @@ const EvaluationPortal = () => {
           <>
             <Col>
             <Card>
-              <CardBody>
               <h1>{teams[currentTeamIndex].name}</h1>
-              </CardBody>
               </Card>
             </Col>
             <Col>
@@ -144,6 +148,7 @@ const EvaluationPortal = () => {
       <Row>
         <h4>Submissions</h4>
       </Row>
+      <Row>
       {submissions.map((submissions) => (
         <div key={submissions.id}>
           <Card>
@@ -177,6 +182,7 @@ const EvaluationPortal = () => {
           </Col>
         </div>
       ))}
+      </Row>
       <Row>
         <h4>Scores</h4>
         <form onSubmit={handleSubmit}>
