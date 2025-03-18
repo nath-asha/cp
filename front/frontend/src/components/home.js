@@ -51,18 +51,11 @@ const Home = () => {
                 </div>
             </div> */}
             <RotatingTimeline />
-            <div className='venue'>
+         
                 <p>
                     venue 1
                 </p>
-                <p>
-                    venue 2
-                </p>
-                </div>
-                <div className='important dates'>
-                </div>
-                <div className='prize'>
-                </div>
+            
 
             <div className='guildelines'>
                 </div>

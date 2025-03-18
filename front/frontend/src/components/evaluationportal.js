@@ -110,7 +110,7 @@ const EvaluationPortal = () => {
           };
 
     return (
-        <div>
+  <div>
             <h1>Evaluation Portal</h1>
       <Row>
         {teams.length > 0 && (
@@ -134,6 +134,47 @@ const EvaluationPortal = () => {
           </>
         )}
       </Row>
+  {/* ============================================================================================= 
+      <h4>trual</h4>
+      <div class="container">
+  <div class="row">
+  {teams.length > 0 && submissions.length > 0 && (
+    submissions
+      .filter(submission => submission.team_id === teams[currentTeamIndex]._id) // Filter submissions
+      .map((submission) => (
+        <div key={submission._id}>
+    <div class="col-sm">
+      <img src={submission.thumbnail} height='250px' width='250px' alt="thumbnail" />
+      <a href={submission.vid}>Demo Video: {submission.vid}</a>
+    </div>
+    <div class="col-sm">
+      One of three columns
+      <h3>Title: {submission.title}</h3>
+                <h4>Github Link: <a href={submission.gitrepo}>{submission.gitrepo}</a></h4>
+                <h4>PS id: {submission.ps}</h4>
+    </div>
+    <div class="col-sm">
+      One of three columns
+      <a href={submission.ppt}>Presentation Link: {submission.ppt}</a>
+                <br />
+                <a href={submission.preport}>Project Report: {submission.preport}</a>
+                <br />
+                <a href={submission.doc}>Documentation: {submission.doc}</a>
+    </div>
+    <div className='col-sm'>
+    <a href={submission.ppt}>Presentation Link: {submission.ppt}</a>
+                <br />
+                <a href={submission.preport}>Project Report: {submission.preport}</a>
+                <br />
+                <a href={submission.doc}>Documentation: {submission.doc}</a>
+      </div>
+      <div className='col-sm'>
+      <span className="text-black">Description: <br />{submission.projectdesc}</span>
+        </div>
+  </div>
+   ))
+  )}
+  {/* ==================================================================================================== */}
       <Row>
         <h4>Submissions</h4>
       </Row>
@@ -367,6 +408,7 @@ const EvaluationPortal = () => {
             </button>
             <a href='/mentordash'><button>Back to team</button></a>
       </div>
+     
     );
 };
 
