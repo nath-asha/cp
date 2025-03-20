@@ -1,30 +1,27 @@
-import React,{ useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Community() {
-    const [message, setMessage] = useState('');
-    const [user, setUser] = useState('');
+    const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState('');
+    const [user, setUser] = useState('Anonymous'); // You can implement user authentication later
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchMessages = async () => {
             try {
                 const response = await fetch('http://localhost:5000/community');
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const data = await response.json();
-                setMessage(data.message);
-                setUser(data.user);
-                console.log(data);
+                setMessages(data);
             } catch (err) {
                 console.error('Error fetching community data:', err);
             }
         };
 
-        fetchData();
-
-    })
-
-    const [newMessage, setNewMessage] = useState('');
+        fetchMessages();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,28 +37,38 @@ export default function Community() {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const data = await response.json();
-            setMessage(data.message);
+            setMessages(prevMessages => [...prevMessages, data]); // Add new message to the list
             setNewMessage('');
         } catch (err) {
             console.error('Error sending message:', err);
         }
     };
 
-    return(
-        <div>
-            <h1>Community Page</h1>
-            <p>{message}</p>
-            <p>User: {user}</p>
-            <form onSubmit={handleSubmit}>
-                <input 
-                    type="text" 
-                    value={newMessage} 
-                    onChange={(e) => setNewMessage(e.target.value)} 
-                    placeholder="Enter your message" 
-                />
-                <button type="submit">Send</button>
-            </form>
+    return (
+        <div className="container mt-4">
+            <h1>Community Forum</h1>
+            <div className="mb-3">
+                <form onSubmit={handleSubmit}>
+                    <div className="input-group">
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            placeholder="Enter your message"
+                        />
+                        <button type="submit" className="btn btn-primary">Send</button>
+                    </div>
+                </form>
+            </div>
+
+            <div className="list-group">
+                {messages.map((msg, index) => (
+                    <div key={index} className="list-group-item">
+                        <strong>{msg.user}:</strong> {msg.message}
+                    </div>
+                ))}
+            </div>
         </div>
     );
-
-};
+}

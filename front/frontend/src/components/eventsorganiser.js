@@ -66,8 +66,8 @@ const EventCard = ({ event, onDelete, onEdit }) => {
     return (
         <div className="card">
             <h3>{event.title}</h3>
-            <p>{event.genre}</p>
-            <p>{event.releaseYear}</p>
+            <p>{event.event_id}</p>
+            <p>{event.description}</p>
             <button onClick={() => onEdit(event)}>Edit</button>
             <button onClick={() => onDelete(event._id)}>Delete</button>
         </div>
