@@ -12,7 +12,11 @@ export default function App() {
 
   const handleInputChange = (event) => {
     event.preventDefault();
-
+    if (event.target.name === "logout") {
+      sessionStorage.removeItem('token');
+      window.location.reload();
+      return;
+    }
     const { name, value } = event.target;
     setValues((values) => ({
       ...values,
@@ -57,55 +61,55 @@ export default function App() {
   };
 
   return (
-    // <div className="form-container">
-      <div>
-        <form className="register-form" onSubmit={handleSubmit}>
-          {submitted && valid && (
-            <div className="success-message">
-              <h3>Welcome!</h3>
-              <div>You are logged in!</div>
-            </div>
-          )}
+    <div>
+      <form className="register-form" onSubmit={handleSubmit}>
+        {submitted && valid && (
+          <div className="success-message">
+            <h3>Welcome!</h3>
+            <div>You are logged in!</div>
+            <button name="logout" onClick={handleInputChange}>Logout</button>
+          </div>
+        )}
 
-          {!valid && (
-            <input
-              className="form-field"
-              type="email"
-              placeholder="Email"
-              name="email"
-              value={values.email}
-              onChange={handleInputChange}
-            />
-          )}
+        {!valid && (
+          <input
+            className="form-field"
+            type="email"
+            placeholder="Email"
+            name="email"
+            value={values.email}
+            onChange={handleInputChange}
+          />
+        )}
 
-          {submitted && !values.email && (
-            <span id="email-error">Please enter an email address</span>
-          )}
+        {submitted && !values.email && (
+          <span id="email-error">Please enter an email address</span>
+        )}
 
-          {!valid && (
-            <input
-              className="form-field"
-              type="password"
-              placeholder="Password"
-              name="password"
-              value={values.password}
-              onChange={handleInputChange}
-            />
-          )}
+        {!valid && (
+          <input
+            className="form-field"
+            type="password"
+            placeholder="Password"
+            name="password"
+            value={values.password}
+            onChange={handleInputChange}
+          />
+        )}
 
-          {submitted && errorMessage && !valid && (
-            <div className="error-message">
-              {errorMessage}
-            </div>
-          )}
+        {submitted && errorMessage && !valid && (
+          <div className="error-message">
+            {errorMessage}
+          </div>
+        )}
 
-          {!valid && (
-            <button className="form-field" type="submit">
-              Login
-            </button>
-          )}
-        </form>
-      </div>
+        {!valid && (
+          <button className="form-field" type="submit">
+            Login
+          </button>
+        )}
+      </form>
+    </div>
   );
 }
 

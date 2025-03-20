@@ -37,10 +37,7 @@ const Dashboard = () => {
                 setData({
                     ...dashboardData.data,
                     teams: teamData.data,
-                    submissions: submissionData.data.length ? submissionData.data : [
-                        { title: "React Component Library", status: "Submitted", score: 85 },
-                        { title: "API Integration", status: "In Review", score: null }
-                    ],
+                    submissions: submissionData.data.length ? submissionData.data : [],
                     teamRequests: dashboardData.data.teamRequests.length ? dashboardData.data.teamRequests : [
                         { requestedBy: "Alex Chen", teamName: "Code Ninjas", status: "Pending" },
                         { requestedBy: "Jamie Wong", teamName: "React Masters", status: "Pending" }
@@ -61,10 +58,7 @@ const Dashboard = () => {
                 // Set fallback data
                 setData({
                     ...data,
-                    submissions: [
-                        { title: "React Component Library", status: "Submitted", score: 85 },
-                        { title: "API Integration", status: "In Review", score: null }
-                    ],
+                    submissions: [],
                     teamRequests: [
                         { requestedBy: "Alex Chen", teamName: "Code Ninjas", status: "Pending" },
                         { requestedBy: "Jamie Wong", teamName: "React Masters", status: "Pending" }
