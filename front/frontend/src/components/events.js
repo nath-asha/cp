@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
-import RoleBasedComponent from './rolebasedbutton';
 
 function Events() {
   const [events, setEvents] = useState([]);
@@ -9,7 +8,7 @@ function Events() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/events'); // Updated API route
+        const response = await fetch('http://localhost:5000/events');
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -43,7 +42,6 @@ function Events() {
           </div>
         ))}
       </div>
-    // </div>
   );
 }
 
