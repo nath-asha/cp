@@ -27,6 +27,7 @@ import Demodash from './components/Demodash';
 import EvaluationPortal from './components/evaluationportal';
 
 import Events from './components/events';
+import Eventlist from './components/eventsorganiser';
 
 //Import JWT helper
 import { getAuthToken, isAuthenticated } from './utils/auth'; // Helper for token
@@ -80,6 +81,7 @@ function App() {
           <Route path="/organiserdash" element={<Organiserdash />} />
 
           <Route path="/events" element={<Events />} />
+          <Route path='/eventlist' element={<Eventlist/>}/>
         </Routes>
       </div>
       <Footer />

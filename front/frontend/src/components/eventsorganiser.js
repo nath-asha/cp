@@ -1,47 +1,119 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-
-const Eventlist = () => {
-    const [events, setevents] = useState([]);
-    const [search, setSearch] = useState('');
-    const [currentevent, setCurrentevent] = useState(null);
+const EventForm = ({ onAdd, currentEvent, onEdit }) => {
+    const [title, setTitle] = useState('');
+    const [genre, setGenre] = useState('');
+    const [releaseYear, setReleaseYear] = useState('');
 
     useEffect(() => {
-        fetchevents();
+        if (currentEvent) {
+            setTitle(currentEvent.title);
+            setGenre(currentEvent.genre);
+            setReleaseYear(currentEvent.releaseYear);
+        } else {
+            setTitle('');
+            setGenre('');
+            setReleaseYear('');
+        }
+    }, [currentEvent]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const event = { title, genre, releaseYear };
+
+        if (currentEvent) {
+            event._id = currentEvent._id;
+            onEdit(event);
+        } else {
+            onAdd(event);
+        }
+
+        setTitle('');
+        setGenre('');
+        setReleaseYear('');
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <input 
+                type="text" 
+                placeholder="Title" 
+                value={title} 
+                onChange={(e) => setTitle(e.target.value)} 
+                required 
+            />
+            <input 
+                type="text" 
+                placeholder="Genre" 
+                value={genre} 
+                onChange={(e) => setGenre(e.target.value)} 
+                required 
+            />
+            <input 
+                type="number" 
+                placeholder="Release Year" 
+                value={releaseYear} 
+                onChange={(e) => setReleaseYear(e.target.value)} 
+                required 
+            />
+            <button type="submit">{currentEvent ? 'Update' : 'Add'} Event</button>
+        </form>
+    );
+};
+
+const EventCard = ({ event, onDelete, onEdit }) => {
+    return (
+        <div className="card">
+            <h3>{event.title}</h3>
+            <p>{event.genre}</p>
+            <p>{event.releaseYear}</p>
+            <button onClick={() => onEdit(event)}>Edit</button>
+            <button onClick={() => onDelete(event._id)}>Delete</button>
+        </div>
+    );
+}
+
+const EventList = () => {
+    const [events, setEvents] = useState([]);
+    const [search, setSearch] = useState('');
+    const [currentEvent, setCurrentEvent] = useState(null);
+
+    useEffect(() => {
+        fetchEvents();
     }, []);
 
-    const fetchevents = async () => {
+    const fetchEvents = async () => {
         const response = await axios.get('http://localhost:5000/events');
-        setevents(response.data);
+        setEvents(response.data);
     };
 
     const handleDelete = async (id) => {
         try {
             await axios.delete(`http://localhost:5000/events/${id}`);
-            setevents(events.filter(events => events._id !== id));
+            setEvents(events.filter(event => event._id !== id));
         } catch (err) {
             console.error('Error deleting event:', err);
         }
     };
     
     const handleEdit = (event) => {
-        setCurrentevent(event);
+        setCurrentEvent(event);
     };
 
-    const handleUpdate = async (updatedevent) => {
-        await axios.put(`http://localhost:5000/api/movies/${updatedevent._id}`, updatedevent);
-        setCurrentevent(null);
-        fetchevents();
+    const handleUpdate = async (updatedEvent) => {
+        await axios.put(`http://localhost:5000/events/${updatedEvent._id}`, updatedEvent);
+        setCurrentEvent(null);
+        fetchEvents();
     };
 
-    const handleAdd = async (newevent) => {
-        await axios.post('http://localhost:5000/events', newevent);
-        fetchevents();
+    const handleAdd = async (newEvent) => {
+        await axios.post('http://localhost:5000/events', newEvent);
+        fetchEvents();
     };
 
-    const filteredevents = events.filter(events => 
-        events.title.toLowerCase().includes(search.toLowerCase())
+    const filteredEvents = events.filter(event => 
+        event.title.toLowerCase().includes(search.toLowerCase())
     );
 
     return (
@@ -54,16 +126,16 @@ const Eventlist = () => {
                 onChange={(e) => setSearch(e.target.value)}
                 className="search-input"
             />
-            <eventForm 
+            <EventForm 
                 onAdd={handleAdd} 
-                currentevent={currentevent} 
+                currentEvent={currentEvent} 
                 onEdit={handleUpdate} 
             />
             <div className="event-list">
-                {filteredevents.map(events => (
-                    <eventsCard 
-                        key={events._id} 
-                        event={events}
+                {filteredEvents.map(event => (
+                    <EventCard 
+                        key={event._id} 
+                        event={event}
                         onDelete={handleDelete} 
                         onEdit={handleEdit} 
                     />
@@ -73,4 +145,5 @@ const Eventlist = () => {
     );
 };
 
-export default Evenlist;
+export default EventList;
+
