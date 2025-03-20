@@ -31,7 +31,7 @@ const Lay = () => {
                             <Card.Body>
                                 <Card.Title>Mentor Registration</Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">Mentors register here</Card.Subtitle>
-                                <Button variant="outline-primary" onClick={() => navigate('/register-mentor')}>
+                                <Button variant="outline-primary" onClick={() => navigate('/mentor')}>
                                     Register
                                 </Button>
                                 <Card.Text>Already have an account? <br />Login below</Card.Text>

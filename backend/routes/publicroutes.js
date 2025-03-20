@@ -7,6 +7,7 @@ const dash = require('../../front/frontend/public/dashboarddata.json');
 const submission = require("../models/submissionmodel");
 const user = require("../models/userModel");
 const event = require("../models/eventmodel");
+const community = require("../models/communitymodel");
 
 const router = express.Router();
 
@@ -59,10 +60,30 @@ router.get("/events", async (req, res) => {
     }
 });
 
+
+router.get("/community", async (req, res) => {
+    try {
+        const communities = await community.find();
+        res.json(communities);
+    } catch (err) {
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 router.get("/submissions", async (req, res) => {
     try {
         const submissions = await submission.find();
         res.json(submissions);
+    } catch (err) {
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+router.post("/submissions", async (req, res) => {
+    try {
+        const newSubmission = new submission(req.body);
+        await newSubmission.save();
+        res.json(newSubmission);
     } catch (err) {
         res.status(500).send("Internal Server Error");
     }

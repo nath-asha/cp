@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 // import { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navbar from './components/Navbar';
 
@@ -28,6 +28,7 @@ import EvaluationPortal from './components/evaluationportal';
 
 import Events from './components/events';
 import Eventlist from './components/eventsorganiser';
+import Community from './components/community';
 
 //Import JWT helper
 import { getAuthToken, isAuthenticated } from './utils/auth'; // Helper for token
@@ -82,6 +83,7 @@ function App() {
 
           <Route path="/events" element={<Events />} />
           <Route path='/eventlist' element={<Eventlist/>}/>
+          <Route path='/community' element={<Community/>} />
         </Routes>
       </div>
       <Footer />
