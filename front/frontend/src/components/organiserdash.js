@@ -33,7 +33,7 @@ function Organiserdash() {
     const [submissions, setSubmissions] = useState([]);
 
     useEffect(() => {
-      axios.get("http://localhost:5000/api/submissions")
+      axios.get("http://localhost:5000/submissions")
         .then(response => setSubmissions(response.data))
         .catch(error => console.error(error));
     }, []);
@@ -129,7 +129,7 @@ function Organiserdash() {
                         <td>{submission.team_id}</td>
                         <td>{submission.gitrepo}</td>
                         <td>
-                            <a href={submission.link} target="_blank" rel="noopener noreferrer">
+                            <a href={submission.gitrepo} target="_blank" rel="noopener noreferrer">
                                 View
                             </a>
                         </td>

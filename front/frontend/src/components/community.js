@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 export default function Community() {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
-    const [user, setUser] = useState('Anonymous'); // You can implement user authentication later
+    const [user, setUser] = useState('Anonymous'); // implement user authentication later
 
     useEffect(() => {
         const fetchMessages = async () => {
