@@ -25,9 +25,15 @@ import Dashboard1 from './components/udashboard';
 import ParticipantDashboard from './components/userdash';
 import Demodash from './components/Demodash';
 import EvaluationPortal from './components/evaluationportal';
+
+import Events from './components/events';
+
 //Import JWT helper
 import { getAuthToken, isAuthenticated } from './utils/auth'; // Helper for token
 import { ImportIcon } from 'lucide-react';
+
+import Organiserdash from './components/organiserdash';
+
 
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
@@ -71,6 +77,9 @@ function App() {
 
           <Route path="/contact" element={<ContactUS />} />
           <Route path="/teams" element={<Teammanager />} />
+          <Route path="/organiserdash" element={<Organiserdash />} />
+
+          <Route path="/events" element={<Events />} />
         </Routes>
       </div>
       <Footer />
