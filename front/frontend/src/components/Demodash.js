@@ -16,46 +16,69 @@ const Dashboard = () => {
     });
     
     const [loading, setLoading] = useState(true);
-    const [notifications, setNotifications] = useState([]);
+    const [notifications, setNotifications] = useState([
+        { id: 1, message: "New team request received", read: false },
+        { id: 2, message: "Submission deadline approaching", read: false },
+        { id: 3, message: "Your code was reviewed by mentor", read: true }
+    ]);
 
     useEffect(() => {
         const fetchAllData = async () => {
             setLoading(true);
             try {
                 // Fetch all data in parallel
-                const [dashboardData, teamData, submissionData, notificationsData] = await Promise.all([
+                const [dashboardData, teamData, submissionData] = await Promise.all([
                     axios.get('http://localhost:5000/api/dashboard-data'),
                     axios.get('http://localhost:5000/teams'),
-                    axios.get('http://localhost:5000/submissions'),
-                    axios.get('http://localhost:5000/api/notifications')
+                    axios.get('http://localhost:5000/submissions')
                 ]);
                 
                 // Merge all the data
                 setData({
                     ...dashboardData.data,
                     teams: teamData.data,
-                    submissions: submissionData.data,
-                    teamRequests: teamData.data.teamRequests,
-                    profile: dashboardData.data.profile.username ,
-                    mentor: dashboardData.data.mentor.name 
+                    submissions: submissionData.data.length ? submissionData.data : [],
+                    teamRequests: dashboardData.data.teamRequests.length ? dashboardData.data.teamRequests : [
+                        { requestedBy: "Alex Chen", teamName: "Code Ninjas", status: "Pending" },
+                        { requestedBy: "Jamie Wong", teamName: "React Masters", status: "Pending" }
+                    ],
+                    profile: dashboardData.data.profile.username ? dashboardData.data.profile : {
+                        username: "Jordan Smith",
+                        email: "jordan@example.com",
+                        _id: "P12345",
+                        team: "Team Hackers"
+                    },
+                    mentor: dashboardData.data.mentor.name ? dashboardData.data.mentor : {
+                        name: "Dr. Alex Johnson",
+                        email: "alex@mentor.edu"
+                    }
                 });
-                setNotifications(notificationsData.data);
             } catch (error) {
                 console.error('Error fetching dashboard data', error);
                 // Set fallback data
                 setData({
                     ...data,
                     submissions: [],
-                    teamRequests: [],
-                    scores: [],
-                    leaderboard: [],
-                    profile: {},
-                    mentor: {}
+                    teamRequests: [
+                        { requestedBy: "Alex Chen", teamName: "Code Ninjas", status: "Pending" },
+                        { requestedBy: "Jamie Wong", teamName: "React Masters", status: "Pending" }
+                    ],
+                    profile: {
+                        username: "Jordan Smith",
+                        email: "jordan@example.com",
+                        _id: "P12345",
+                        team: "Team Hackers"
+                    },
+                    mentor: {
+                        name: "Dr. Alex Johnson",
+                        email: "alex@mentor.edu"
+                    }
                 });
             } finally {
                 setLoading(false);
             }
         };
+
         fetchAllData();
     }, []);
 
