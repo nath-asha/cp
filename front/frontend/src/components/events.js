@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../App.css';
+
 
 function Events() {
   const [events, setEvents] = useState([]);
@@ -36,7 +36,8 @@ function Events() {
               <div className="card-body">
                 <h5 className="card-title">{events.title}</h5>
                 <h6 className="card-subtitle mb-2 text-muted">{events.description}</h6>
-                <a href={`/displayevent/${events.event_id}`}><button>Know more</button></a>
+                {/* <a href={`/challenges/${events.event_id}`}><button>Know more</button></a> */}
+                <a href={`/challenges`}><button>Know more</button></a>
               </div>
             </div>
           </div>
