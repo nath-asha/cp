@@ -113,6 +113,21 @@ router.post('/events', async (req, res) => {
     }
 });
 
+router.delete('/events/:id', async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        console.log("Deleting event with ID:", eventId);
+        const deletedEvent = await event.findByIdAndDelete(eventId);
+        if (!deletedEvent) {
+            return res.status(404).json({ message: 'Event not found' });
+        }
+        res.json({ message: 'Event deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting event:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 
 // Submissions Routes

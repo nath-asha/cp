@@ -19,13 +19,13 @@ const EventManager = () => {
     useEffect(() => {
         if (currentEvent) {
             setFormData({
-                title: currentEvent.title,
-                desc: currentEvent.desc,
-                imgUrl: currentEvent.imgUrl,
-                eventId: currentEvent.eventId,
+                title: currentEvent.title || '',
+                description: currentEvent.description || '',
+                imgurl: currentEvent.imgurl || '',
+                eventId: currentEvent.eventId || '',
             });
         } else {
-            setFormData({ title: '', desc: '', imgUrl: '', eventId: '' });
+            setFormData({ title: '', description: '', imgurl: '', eventId: '' });
         }
     }, [currentEvent]);
 
