@@ -104,7 +104,7 @@ router.post('/events', async (req, res) => {
         if (!title || !desc || !imgUrl || !eventId) {
             return res.status(400).json({ error: "All fields are required" });
         }
-        const newEvent = new Event({ title, desc, imgUrl, eventId });
+        const newEvent = new event({ title, desc, imgUrl, eventId });
         await newEvent.save();
         res.status(201).json(newEvent);
     } catch (error) {
