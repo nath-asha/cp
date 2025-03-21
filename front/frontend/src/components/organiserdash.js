@@ -72,7 +72,12 @@ function Organiserdash() {
             </div>
         </div>
     </div>
-
+    
+    <div>
+        <h2 className="text-black"> Event Management </h2>
+        <h4>Total Number of Events</h4>
+        <button onClick={() => window.location.href = '/eventlist'}>Events page</button>
+    </div>
     <div>
         <h2>Participants</h2>
         <table className="table table-striped">
