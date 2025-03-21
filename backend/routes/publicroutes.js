@@ -100,16 +100,16 @@ router.get("/events", async (req, res) => {
 
 router.post('/events', async (req, res) => {
     try {
-        const { title, desc, imgUrl, eventId } = req.body;
-        if (!title || !desc || !imgUrl || !eventId) {
-            return res.status(400).json({ error: "All fields are required" });
-        }
-        const newEvent = new event({ title, desc, imgUrl, eventId });
+        console.log("Request Body:", req.body); // Log the request body
+        const newEvent = new event(req.body);
         await newEvent.save();
         res.status(201).json(newEvent);
     } catch (error) {
-        console.error("Error saving event:", error);
-        res.status(500).json({ error: "Internal Server Error" });
+        console.error("Error saving event:", error); // Log the full error
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ error: error.message });
+        }
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 });
 

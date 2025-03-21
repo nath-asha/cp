@@ -5,7 +5,12 @@ const EventManager = () => {
     const [events, setEvents] = useState([]);
     const [search, setSearch] = useState('');
     const [currentEvent, setCurrentEvent] = useState(null);
-    const [formData, setFormData] = useState({ title: '', desc: '', imgUrl: '', eventId: '' });
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '', 
+        imgurl: '', 
+        eventId: '', 
+    });
 
     useEffect(() => {
         fetchEvents();
@@ -56,11 +61,12 @@ const EventManager = () => {
             }
             fetchEvents();
             setCurrentEvent(null);
-            setFormData({ title: '', desc: '', imgUrl: '', eventId: '' });
+            setFormData({ title: '', desc: '', imgUrl: '', eventId: '' }); 
         } catch (error) {
             console.error("Error saving event:", error);
         }
     };
+
 
     const filteredEvents = events.filter(event => 
         event.title.toLowerCase().includes(search.toLowerCase())
@@ -76,44 +82,44 @@ const EventManager = () => {
                 onChange={(e) => setSearch(e.target.value)}
                 className="search-input"
             />
-            <form onSubmit={handleSubmit}>
-                <input 
-                    type="text" 
-                    placeholder="Title" 
-                    value={formData.title} 
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })} 
-                    required 
-                />
-                <input 
-                    type="text" 
-                    placeholder="Description" 
-                    value={formData.desc} 
-                    onChange={(e) => setFormData({ ...formData, desc: e.target.value })} 
-                    required 
-                />
-                <input 
-                    type="text" 
-                    placeholder="Thumbnail Image URL" 
-                    value={formData.imgUrl} 
-                    onChange={(e) => setFormData({ ...formData, imgUrl: e.target.value })} 
-                    required 
-                />
-                <input 
-                    type="text"
-                    placeholder="Event ID"
-                    value={formData.eventId}
-                    onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
-                    required
-                />
-                <button type="submit">{currentEvent ? 'Update' : 'Add'} Event</button>
-            </form>
+             <form onSubmit={handleSubmit}>
+            <input
+                type="text"
+                placeholder="Title"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                required
+            />
+            <input
+                type="text"
+                placeholder="Description"
+                value={formData.desc} 
+                onChange={(e) => setFormData({ ...formData, desc: e.target.value })} 
+                required
+            />
+            <input
+                type="text"
+                placeholder="Thumbnail Image URL"
+                value={formData.imgUrl} 
+                onChange={(e) => setFormData({ ...formData, imgUrl: e.target.value })} 
+                required
+            />
+            <input
+                type="text"
+                placeholder="Event ID"
+                value={formData.eventId} 
+                onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
+                required
+            />
+            <button type="submit">{currentEvent ? 'Update' : 'Add'} Event</button>
+        </form>
             <div className="event-list">
                 {filteredEvents.map(event => (
                     <div key={event._id} className="card">
                         <h3>{event.title}</h3>
                         <p>Event ID: {event.eventId}</p>
                         <p>{event.desc}</p>
-                        <img src={event.imgurl} alt={event.title} style={{ maxWidth: '500px' }} />
+                        <img src={event.imgUrl} alt={event.title} style={{ maxWidth: '500px' }} />
                         {/* <button onClick={() => handleEdit(event)}>Edit</button>
                         <button onClick={() => handleDelete(event._id)}>Delete</button> */}
                         <button onClick={() => handleEdit(event)} style={{ marginRight: '10px' }}>Edit</button>
