@@ -3,24 +3,27 @@ import axios from 'axios';
 
 const EventForm = ({ onAdd, currentEvent, onEdit }) => {
     const [title, setTitle] = useState('');
-    const [genre, setGenre] = useState('');
-    const [releaseYear, setReleaseYear] = useState('');
+    const [desc, setDesc] = useState('');
+    const [imgUrl, setImgUrl] = useState('');
+    const [eventId, setEventId] = useState('');
 
     useEffect(() => {
         if (currentEvent) {
             setTitle(currentEvent.title);
-            setGenre(currentEvent.genre);
-            setReleaseYear(currentEvent.releaseYear);
+            setDesc(currentEvent.desc);
+            setImgUrl(currentEvent.imgUrl);
+            setEventId(currentEvent.eventId);
         } else {
             setTitle('');
-            setGenre('');
-            setReleaseYear('');
+            setDesc('');
+            setImgUrl('');
+            setEventId('');
         }
     }, [currentEvent]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const event = { title, genre, releaseYear };
+        const event = { title, desc, imgUrl, eventId };
 
         if (currentEvent) {
             event._id = currentEvent._id;
@@ -30,8 +33,9 @@ const EventForm = ({ onAdd, currentEvent, onEdit }) => {
         }
 
         setTitle('');
-        setGenre('');
-        setReleaseYear('');
+        setDesc('');
+        setImgUrl('');
+        setEventId('');
     };
 
     return (
@@ -45,17 +49,24 @@ const EventForm = ({ onAdd, currentEvent, onEdit }) => {
             />
             <input 
                 type="text" 
-                placeholder="Genre" 
-                value={genre} 
-                onChange={(e) => setGenre(e.target.value)} 
+                placeholder="Description" 
+                value={desc} 
+                onChange={(e) => setDesc(e.target.value)} 
                 required 
             />
             <input 
-                type="number" 
-                placeholder="Release Year" 
-                value={releaseYear} 
-                onChange={(e) => setReleaseYear(e.target.value)} 
+                type="text" 
+                placeholder="Thumbnail Image URL" 
+                value={imgUrl} 
+                onChange={(e) => setImgUrl(e.target.value)} 
                 required 
+            />
+            <input 
+                type="text"
+                placeholder="Event ID"
+                value={eventId}
+                onChange={(e) => setEventId(e.target.value)}
+                required
             />
             <button type="submit">{currentEvent ? 'Update' : 'Add'} Event</button>
         </form>
@@ -66,13 +77,14 @@ const EventCard = ({ event, onDelete, onEdit }) => {
     return (
         <div className="card">
             <h3>{event.title}</h3>
-            <p>{event.event_id}</p>
-            <p>{event.description}</p>
+            <p>Event ID: {event.eventId}</p>
+            <p>{event.desc}</p>
+            <img src={event.imgUrl} alt={event.title} style={{ maxWidth: '100px' }} />
             <button onClick={() => onEdit(event)}>Edit</button>
             <button onClick={() => onDelete(event._id)}>Delete</button>
         </div>
     );
-}
+};
 
 const EventList = () => {
     const [events, setEvents] = useState([]);
@@ -84,8 +96,12 @@ const EventList = () => {
     }, []);
 
     const fetchEvents = async () => {
-        const response = await axios.get('http://localhost:5000/events');
-        setEvents(response.data);
+        try {
+            const response = await axios.get('http://localhost:5000/events');
+            setEvents(response.data);
+        } catch (error) {
+            console.error("Error fetching events:", error);
+        }
     };
 
     const handleDelete = async (id) => {
@@ -96,20 +112,28 @@ const EventList = () => {
             console.error('Error deleting event:', err);
         }
     };
-    
+
     const handleEdit = (event) => {
         setCurrentEvent(event);
     };
 
     const handleUpdate = async (updatedEvent) => {
-        await axios.put(`http://localhost:5000/events/${updatedEvent._id}`, updatedEvent);
-        setCurrentEvent(null);
-        fetchEvents();
+        try {
+            await axios.put(`http://localhost:5000/events/${updatedEvent._id}`, updatedEvent);
+            setCurrentEvent(null);
+            fetchEvents();
+        } catch (error) {
+            console.error("Error updating event:", error);
+        }
     };
 
     const handleAdd = async (newEvent) => {
-        await axios.post('http://localhost:5000/events', newEvent);
-        fetchEvents();
+        try {
+            await axios.post('http://localhost:5000/events', newEvent);
+            fetchEvents();
+        } catch (error) {
+            console.error("Error adding event:", error);
+        }
     };
 
     const filteredEvents = events.filter(event => 
@@ -146,4 +170,3 @@ const EventList = () => {
 };
 
 export default EventList;
-

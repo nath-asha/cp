@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card,CardBody } from "react-bootstrap";
+import { Github } from "lucide-react";
 
 
 function Organiserdash() {
@@ -80,6 +81,7 @@ function Organiserdash() {
                     <th>#</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Github</th>
                 </tr>
             </thead>
             <tbody>
@@ -88,6 +90,7 @@ function Organiserdash() {
                         <td>{index + 1}</td>
                         <td>{p.firstName}  {p.lastName}</td>
                         <td>{p.email}</td>
+                        <td><a href={p.github_url}><Github /></a></td>
                     </tr>
                 ))}
             </tbody>
@@ -95,7 +98,7 @@ function Organiserdash() {
     </div>
 
     <div>
-                <h2>Problem Statements</h2>
+                <h2 className="text-black">Problem Statements</h2>
                 <div className="row">
                     {problems.map((problem) => (
                         <div className="col-md-4 mb-4" key={problem._id}>
