@@ -128,7 +128,24 @@ router.delete('/events/:id', async (req, res) => {
     }
 });
 
-
+router.put('/events/:id', async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        console.log("Updating event with ID:", eventId);
+        console.log("Request body:", req.body);
+        const updatedEvent = await event.findByIdAndUpdate(eventId, req.body, { new: true });
+        if (!updatedEvent) {
+            return res.status(404).json({ message: 'Event not found' });
+        }
+        res.json(updatedEvent);
+    } catch (error) {
+        console.error("Error updating event:", error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ error: error.message });
+        }
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 
 // Submissions Routes
 router.get("/submissions", async (req, res) => {
