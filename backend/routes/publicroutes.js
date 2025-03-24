@@ -11,6 +11,7 @@ const community = require("../models/communitymodel");
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+
 const router = express.Router();
 
 router.use(bodyParser.json());
@@ -46,6 +47,17 @@ router.get("/challenges", async (req, res) => {
     } catch (err) {
         console.error("Error fetching challenges:", err);
         res.status(500).send("Internal Server Error");
+    }
+});
+
+router.get('/challenges/:trackId', async (req, res) => {
+    try {
+        const trackId = req.params.trackId;
+        const challenges = await Challenge.find({ track_id: trackId });
+        res.json(challenges);
+    } catch (err) {
+        console.error('Error fetching challenges:', err);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
