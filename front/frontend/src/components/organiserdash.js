@@ -24,12 +24,31 @@ function Organiserdash() {
     }, []);
 
     const [problems, setProblems] = useState([]);
+    const [search,setSearch] = useState('');
+    const [currentChallenge, setCurrentChallenge] = useState(null);
 
     useEffect(() => {
       axios.get("http://localhost:5000/challenges")
         .then(response => setProblems(response.data))
         .catch(error => console.error(error));
     }, []);
+
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`http://localhost:5000/challenges/${id}`);
+            setProblems(problems.filter(problems => problems._id !==id));
+        } catch (err) {
+            console.error('Error deleting challenge:', err);
+        }
+    };
+
+    const handleEdit = (problems) => {
+        setCurrentChallenge(problems);
+    }
+
+    const filteredChallenges = problems.filter(problems => 
+        problems.title.toLowerCase().includes(search.toLowerCase())
+    );
 
     const [submissions, setSubmissions] = useState([]);
 
@@ -104,8 +123,27 @@ function Organiserdash() {
 
     <div>
                 <h2 className="text-black">Problem Statements</h2>
+                <input 
+                    type="text"
+                    placeholder="Search"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="search-input"
+                />
                 <div className="row">
                     {problems.map((problem) => (
+                        <div className="col-md-4 mb-4" key={problem._id}>
+                            <Card>
+                                <CardBody>
+                                    <h5 className="card-title">{problem.title}</h5>
+                                    <p className="card-text">{problem.description}</p>
+                                </CardBody>
+                            </Card>
+                        </div>
+                    ))}
+                </div>
+                <div>
+                    {filteredChallenges.map(problem =>  (
                         <div className="col-md-4 mb-4" key={problem._id}>
                             <Card>
                                 <CardBody>
