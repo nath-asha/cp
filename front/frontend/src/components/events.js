@@ -38,7 +38,7 @@ function Events() {
                 <h6 className="card-subtitle mb-2 text-muted">{events.description}</h6>
                 {/* <a href={`/challenges/${events.event_id}`}><button>Know more</button></a> */}
                 <a href={`/challenges`}><button>Know more</button></a>
-                {/* change the url so that each event navigates to its own set of problem statements /event-name/challenges event-name sourced from title */}
+                {/* change the url so that each event navigates to its own set of problem statements /event-name/challenges event-name sourced from title from  */}
               </div>
             </div>
           </div>

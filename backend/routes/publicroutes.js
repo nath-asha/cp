@@ -17,6 +17,17 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(cors());
 
+// User Routes
+router.get('/participants', async (req,res) => {
+    try {
+        const users = await user.find().where(role='user');
+        res.json(users);
+    } catch (err) {
+        console.error("Error fetching users", err);
+        res.status(500).send("Internal Server Error");
+    }
+})
+
 // Community Routes
 router.get('/community', async (req, res) => {
     try {
@@ -110,6 +121,17 @@ router.get("/events", async (req, res) => {
     }
 });
 
+router.get('/events/:eventId', async (req, res) => {
+    try {
+        const eventId = req.params.eventId;
+        const seeevents = await event.find({ event_id: eventId });
+        res.json(seeevents);
+    } catch (err) {
+        console.error('Error fetching events:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 router.post('/events', async (req, res) => {
     try {
         console.log("Request Body:", req.body); // Log the request body
@@ -180,5 +202,20 @@ router.post("/submissions", async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
+
+//yet to created 
+router.get("/api/stats", async (req,res) => {
+    try {
+        const participants = (await event.collection.distinct('email').length());
+        const challenges = await Challenge.find();
+        const problems = (await event.collection("challenges").distinct().length('track_id'));
+        const submission = await submission.find();
+        const submissions = (await event.collection("submission").distinct().length('ps'));
+        res.send(participants);
+    } catch (err) {
+        console.error('Error fetching events:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+    });
 
 module.exports = router;
