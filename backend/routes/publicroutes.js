@@ -99,12 +99,26 @@ router.get("/teams", async (req, res) => {
     }
 });
 
-
+////////////////////////////////////////////////////
 router.get('/teams/:teamId', async (req, res) => {
     try {
         const teamId = req.params.teamId;
+        if (isNaN(parseInt(teamId))) {
+            return res.status(400).json({ error: 'Invalid teamId' });
+        }
         const seeteams = await team.find({ team_id: teamId });
         res.json(seeteams);
+    } catch (err) {
+        console.error('Error fetching submissions:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+router.get("/submissions/:teamId", async (req, res) => {
+    try {
+        const teamId = req.params.teamId;
+        const submissions = await submission.find({ team_id: teamId });
+        res.json(submissions);
     } catch (err) {
         console.error('Error fetching submissions:', err);
         res.status(500).json({ error: 'Internal server error' });
@@ -208,16 +222,6 @@ router.get("/submissions", async (req, res) => {
     }
 });
 
-router.get('/submissions/:teamId', async (req, res) => {
-    try {
-        const teamId = req.params.teamId;
-        const seesubs = await submission.find({ team_id: teamId });
-        res.json(seesubs);
-    } catch (err) {
-        console.error('Error fetching submissions:', err);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
 
 
 router.post("/submissions", async (req, res) => {
