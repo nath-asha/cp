@@ -32,12 +32,13 @@ function Events() {
               <div className="card-header">
                 Track ID: {events.event_id}
               </div>
-              <img src={events.imgurl} className="card-img-top" alt="problem statement image" />
+              <img src={events.imgUrl} className="card-img-top" alt="problem statement image" />
               <div className="card-body">
                 <h5 className="card-title">{events.title}</h5>
                 <h6 className="card-subtitle mb-2 text-muted">{events.description}</h6>
                 {/* <a href={`/challenges/${events.event_id}`}><button>Know more</button></a> */}
                 <a href={`/challenges`}><button>Know more</button></a>
+                {/* change the url so that each event navigates to its own set of problem statements /event-name/challenges event-name sourced from title */}
               </div>
             </div>
           </div>
