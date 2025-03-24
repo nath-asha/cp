@@ -67,7 +67,7 @@ const EvaluationPortal = () => {
       if(Object.values(scores).every(value => value)) {
         setValid(true);
         try {
-          const response = await fetch('http://localhost:5000/teams', {
+          const response = await fetch('http://localhost:5000/teams/${teamId}}', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
