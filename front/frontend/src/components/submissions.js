@@ -51,7 +51,8 @@ const Submissions = () => {
     setValid(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/submissions", {
+      // const response = await fetch("http://localhost:5000/api/submissions", {
+        const response = await fetch("http://localhost:5000/submissions", {
         method: "POST",
         headers: { "Content-Type": "application/json",
           'Authorization': `Bearer ${token}`

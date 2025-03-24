@@ -97,7 +97,7 @@ function Organiserdash() {
                 <button onClick={() => window.location.href = '/eventlist'}>Events page</button>
             </div>
             <div>
-                <h2>Participants</h2>
+                <h2 className="text-black">Participants</h2>
                 <table className="table table-striped">
                     <thead>
                         <tr>
@@ -144,7 +144,7 @@ function Organiserdash() {
             </div>
 
             <div>
-                <h2>Submissions</h2>
+                <h2 className="text-black">Submissions</h2>
                 <table className="table table-striped">
                     <thead>
                         <tr>
