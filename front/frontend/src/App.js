@@ -65,8 +65,8 @@ function App() {
           <Route path="/displaychallenge/:trackId" element={<DisplayChallenge />} />
 
         
-          {/* <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} /> */}
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
 
           <Route path="/dash1" element={<Dashboard1/>}/>
           <Route path="/dash2" element={<ParticipantDashboard />} />
