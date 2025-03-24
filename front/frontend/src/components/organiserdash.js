@@ -18,7 +18,7 @@ function Organiserdash() {
     const [participants, setParticipants] = useState([]);
 
     useEffect(() => {
-      axios.get("http://localhost:5000/users")
+      axios.get("http://localhost:5000/participants")
         .then(response => setParticipants(response.data))
         .catch(error => console.error(error));
     }, []);
@@ -75,7 +75,7 @@ function Organiserdash() {
     
     <div>
         <h2 className="text-black"> Event Management </h2>
-        <h4>Total Number of Events</h4>
+        <h4>Total Number of Events {stats.eventcount}</h4>
         <button onClick={() => window.location.href = '/eventlist'}>Events page</button>
     </div>
     <div>

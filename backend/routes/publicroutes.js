@@ -204,18 +204,17 @@ router.post("/submissions", async (req, res) => {
 });
 
 //yet to created 
-router.get("/api/stats", async (req,res) => {
+router.get("/api/stats", async (req, res) => {
     try {
-        const participants = (await event.collection.distinct('email').length());
-        const challenges = await Challenge.find();
-        const problems = (await event.collection("challenges").distinct().length('track_id'));
-        const submission = await submission.find();
-        const submissions = (await event.collection("submission").distinct().length('ps'));
-        res.send(participants);
+        const participants = await user.distinct('email').countDocuments();
+        const problems = await Challenge.distinct('track_id').countDocuments();
+        const submissions = await submission.distinct('ps').countDocuments();
+        const eventcount = await event.distinct('event_id').countDocuments();
+        res.json({ participants, problems, submissions, eventcount });
     } catch (err) {
-        console.error('Error fetching events:', err);
+        console.error('Error fetching stats:', err);
         res.status(500).json({ error: 'Internal server error' });
     }
-    });
+});
 
 module.exports = router;
