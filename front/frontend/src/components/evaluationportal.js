@@ -2,16 +2,18 @@ import React, { useState,useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, CardBody, CardImg, CardLink, CardText, CardTitle, Col, Row } from 'react-bootstrap';
 import { Github,File,Video} from 'lucide-react';
+import { useParams } from 'react-router-dom';
 import Feedback from 'react-bootstrap/esm/Feedback';
 
 //need not have extra fields for the score let the first round of judges seect the team and then the next round of judges can evaluate the team
 //remove the score fields from the teams model and add a new model for scores in the end the judges will evaluate the teams and give score and feedback
 const EvaluationPortal = () => {
     const [teams, setTeams] = useState([]);
+    const {teamId} = useParams();
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await fetch('http://localhost:5000/teams'); // Updated API route
+            const response = await fetch('http://localhost:5000/teams/${teamId}'); // Updated API route
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -24,7 +26,7 @@ const EvaluationPortal = () => {
         };
     
         fetchData();
-      }, []);
+      }, [teamId]);
 
        const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
       
@@ -92,7 +94,7 @@ const EvaluationPortal = () => {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await fetch('http://localhost:5000/submissions');
+          const response = await fetch('http://localhost:5000/submissions/${teamId}');
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
@@ -104,7 +106,7 @@ const EvaluationPortal = () => {
         }
       };
       fetchData();
-    },[]);
+    },[teamId]);
 
     const [currentSubIndex, setCurrentSubIndex] = useState(0);
       

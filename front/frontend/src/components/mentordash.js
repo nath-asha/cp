@@ -8,6 +8,7 @@ import { Navigate } from 'react-router-dom';
 
 const MentorDashboard = () => {
     const [teams, setTeams] = useState([]);
+
         useEffect(() => {
             const fetchData = async () => {
               try {
@@ -304,12 +305,12 @@ const MentorDashboard = () => {
                                                                     </Button> */}
                                                                     
                                                                     {/* button that directs to evaluation page  */}
-                                                                    {/* <Button variant="primary" size="sm" onClick={() => window.location.href = '/evaluation'}>
+                                                                    <Button variant="primary" size="sm" onClick={() => window.location.href = `/evaluation/${teams.team_id}`}>
                                                                         Review
-                                                                    </Button> */}
-                                                                    
+                                                                    </Button>
+{/*                                                                     
                                                                     {teams.map((teams) => (  <div  key={teams.team_id}><a href={`/evaluation/${teams.team_id}`}><Button>Review</Button></a></div>
-                                                                    ))}
+                                                                    ))} */}
                                                                 </td>
                                                             </tr>
                                                         ))}

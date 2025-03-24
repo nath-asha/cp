@@ -73,7 +73,7 @@ function App() {
 
           <Route path="/demodash" element={<Demodash/>}/>
 
-          <Route path="/evaluation/:team_id" element={<EvaluationPortal/>}/>
+          <Route path="/evaluation/:teamId" element={<EvaluationPortal/>}/>
           <Route path='/mentordash' element={<MentorDashboard />}/>
 
 

@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
 const token = sessionStorage.getItem('token');
-
+//should there be an option to view team members and edit here or dash
 const Submissions = () => {
   const [submissions, setSubmissions] = useState({
     title: "",
