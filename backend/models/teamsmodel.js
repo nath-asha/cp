@@ -16,7 +16,8 @@ const teamSchema = new mongoose.Schema({
     "requests": [{
         "name": String,
         "approval": Boolean
-    }]
+    }],
+    "status" : String
 });
 
 module.exports = mongoose.model("teams",teamSchema);

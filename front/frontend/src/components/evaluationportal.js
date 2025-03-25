@@ -12,18 +12,11 @@ const EvaluationPortal = () => {
     const [submitted, setSubmitted] = useState(false);
     const [valid, setValid] = useState(false);
     const [scores, setScores] = useState({
-        name: "",
-        team_id: "",
-        members: [],
-        project_id: "",
-        project: "",
-        createdAt: "",
-        mentor: "",
         frontScore: "",
-        backScore: "",
-        uiScore: "",
-        dbdesign: "",
-        feedback: ""
+    backScore: "",
+    uiScore: "",
+    dbdesign: "",
+    feedback: ""
     });
 
     useEffect(() => {
@@ -72,13 +65,47 @@ const EvaluationPortal = () => {
         }));
     };
 
+    // const handleSubmit = async (e) => {
+    //     console.log("handleSubmit called!"); // Debugging
+    //     console.log("Team ID:", teamId); // Add this
+    // console.log("Scores:", scores); // Add this
+    //     e.preventDefault();
+    //     if (Object.values(scores).every(value => value)) {
+    //         setValid(true);
+    //         console.log("Team ID being sent: ", teamId); // Debugging
+    //         console.log("Scores object: ", scores); // Debugging
+    //         try {
+    //             const response = await fetch(`http://localhost:5000/teams/${teamId}`, {
+    //                 method: 'PUT',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                 },
+    //                 body: JSON.stringify(scores)
+    //             });
+    //             if (response.ok) {
+    //                 console.log('Scores submitted successfully');
+    //             } else {
+    //                 console.error('Failed to submit scores');
+    //                 const errorText = await response.text();
+    //                 console.error('Server error:', errorText);
+    //             }
+    //         } catch (error) {
+    //             console.error('Error:', error);
+    //         }
+    //     }
+    //     setSubmitted(true);
+    // };
+
     const handleSubmit = async (e) => {
+        console.log("handleSubmit called!");
         e.preventDefault();
         if (Object.values(scores).every(value => value)) {
             setValid(true);
+            console.log("Team ID from useParams:", teamId);
+            console.log("Scores being sent:", scores); // Check the corrected scores object
             try {
                 const response = await fetch(`http://localhost:5000/teams/${teamId}`, {
-                    method: 'POST',
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -86,8 +113,12 @@ const EvaluationPortal = () => {
                 });
                 if (response.ok) {
                     console.log('Scores submitted successfully');
+                    const data = await response.json();
+                    console.log("Server Response:", data);
                 } else {
                     console.error('Failed to submit scores');
+                    const errorText = await response.text();
+                    console.error('Server error:', errorText);
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -96,6 +127,7 @@ const EvaluationPortal = () => {
         setSubmitted(true);
     };
 
+    
     return (
         <div>
             <h1>Evaluation Portal</h1>
@@ -165,6 +197,7 @@ const EvaluationPortal = () => {
 
             <Row>
                 <h4>Scores</h4>
+              
                 <form onSubmit={handleSubmit}>
                     {submitted && valid && (
                         <div className="success-message">

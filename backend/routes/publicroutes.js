@@ -235,6 +235,8 @@ router.post("/submissions", async (req, res) => {
     }
 });
 
+
+
 //yet to created 
 router.get("/api/stats", async (req, res) => {
     try {
@@ -249,4 +251,25 @@ router.get("/api/stats", async (req, res) => {
     }
 });
 
+router.put('/teams/:teamId', async (req, res) => {
+    try {
+        const teamId = parseInt(req.params.teamId); // Parse teamId to number
+        console.log("Updating scores of team with ID:", teamId);
+        console.log("Request body:", req.body);
+
+        const updatedTeam = await team.findOneAndUpdate({ team_id: teamId }, req.body, { new: true }); // use team_id
+
+        if (!updatedTeam) {
+            return res.status(404).json({ message: 'Team not found' });
+        }
+        res.json(updatedTeam);
+    } catch (error) {
+        console.error("Error updating score:", error);
+        console.error("Error Details: ", error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ message: 'Validation Error', errors: error.errors });
+        }
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 module.exports = router;
