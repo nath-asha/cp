@@ -291,7 +291,27 @@ const MentorDashboard = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {mentorData.submissions.slice(0, 5).map((submission) => (
+                                                    {mentorData.submissions.slice(0, 5).map((submission) => (
+                                                    <tr key={submission.id}>
+                                                        <td>{submission.team}</td>
+                                                        <td>{submission.title}</td>
+                                                        <td>
+                                                            <Badge bg={submission.status === "Pending Review" ? "warning" : "success"}>
+                                                                {submission.status}
+                                                            </Badge>
+                                                        </td>
+                                                        <td>
+                                                            {teams && teams.map((team) => (
+                                                                <a key={team.team_id} href={`/evaluation/${team.team_id}`}>
+                                                                    <Button variant="primary" size="sm">
+                                                                        Review
+                                                                    </Button>
+                                                                </a>
+                                                            ))}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                                        {/* {mentorData.submissions.slice(0, 5).map((submission) => (
                                                             <tr key={submission.id}>
                                                                 <td>{submission.team}</td>
                                                                 <td>{submission.title}</td>
@@ -305,17 +325,17 @@ const MentorDashboard = () => {
                                                                         Review
                                                                     </Button> */}
                                                                     
-                                                                    {/* button that directs to evaluation page  */}
+                                                                    {/* button that directs to evaluation page  
                                                                    <a href={`/evaluation/${teams.team_id}`}> <Button variant="primary" size="sm" >
                                                                         Review
                                                                     </Button>
                                                                     </a>
 {/*                                                                     
                                                                     {teams.map((teams) => (  <div  key={teams.team_id}><a href={`/evaluation/${teams.team_id}`}><Button>Review</Button></a></div>
-                                                                    ))} */}
+                                                                    ))} *
                                                                 </td>
                                                             </tr>
-                                                        ))}
+                                                        ))} */}
                                                     </tbody>
                                                 </Table>
                                             </div>
