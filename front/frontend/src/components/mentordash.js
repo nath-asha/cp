@@ -23,7 +23,7 @@ const MentorDashboard = () => {
               } catch (err) {
                 console.error('Error fetching problem statement data:', err);
               }
-            };
+            }; 
         
             fetchData();
           }, []);
@@ -291,7 +291,31 @@ const MentorDashboard = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                    {mentorData.submissions.slice(0, 5).map((submission) => (
+
+                                                    
+                                                         {teams && teams.map((team) => (
+                                                    <tr key={team.team_id}>
+                                                        <td>{team.name}</td>
+                                                        <td>{team.project}</td>
+                                                        <td>
+                                                        {/* {mentorData.submissions.slice(0, 5).map((submission) => ( */}
+                                                        <Badge bg={team.status === "Pending Review" ? "warning" : "success"}>
+                                                        {team.status}
+                                                    </Badge>
+                                                    {/* ))}  */}
+                                                        </td>
+                                                        <td>
+                                                           <a key={team.team_id} href={`/evaluation/${team.team_id}`}>
+                                                                <Button variant="primary" size="sm">
+                                                                    Review
+                                                                </Button>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                      ))}
+                                                
+                                                    
+                                                    {/* {mentorData.submissions.slice(0, 5).map((submission) => (
                                                     <tr key={submission.id}>
                                                         <td>{submission.team}</td>
                                                         <td>{submission.title}</td>
@@ -310,7 +334,7 @@ const MentorDashboard = () => {
                                                             ))}
                                                         </td>
                                                     </tr>
-                                                ))}
+                                                ))} */}
                                                         {/* {mentorData.submissions.slice(0, 5).map((submission) => (
                                                             <tr key={submission.id}>
                                                                 <td>{submission.team}</td>
