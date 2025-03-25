@@ -22,6 +22,14 @@ function Organiserdash() {
             .catch(error => console.error(error));
     }, []);
 
+    const [mentors, setMentors] = useState([]);
+
+    useEffect(() => {
+        axios.get("http://localhost:5000/participants")
+            .then(response => setMentors(response.data))
+            .catch(error => console.error(error));
+    }, []);
+
     const [problems, setProblems] = useState([]);
     const [search, setSearch] = useState('');
     const [currentChallenge, setCurrentChallenge] = useState(null);
@@ -115,6 +123,32 @@ function Organiserdash() {
                                 <td>{p.email}</td>
                                 <td><a href={p.github_url}><Github /></a></td>
                             </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <h2 className="text-black">Mentors</h2>
+                <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            {/* <th>Github</th> */}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {mentors.map((m, index) => (
+                            m.role === 'Mentor' ? (
+                            <tr key={m._id}>
+                                <td>{index + 1}</td>
+                                <td>{m.firstName} {m.lastName}</td>
+                                <td>{m.email}</td>
+                                {/* <td><a href={m.github_url}><Github /></a></td> */}
+                            </tr>
+                            ) : null
                         ))}
                     </tbody>
                 </table>
