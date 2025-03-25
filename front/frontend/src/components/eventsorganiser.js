@@ -7,8 +7,8 @@ const EventManager = () => {
     const [currentEvent, setCurrentEvent] = useState(null);
     const [formData, setFormData] = useState({
         title: '',
-        description: '', 
-        imgurl: '', 
+        desc: '', 
+        imgUrl: '', 
         eventId: '', 
     });
 
@@ -20,12 +20,12 @@ const EventManager = () => {
         if (currentEvent) {
             setFormData({
                 title: currentEvent.title || '',
-                description: currentEvent.description || '',
-                imgurl: currentEvent.imgurl || '',
+                desc: currentEvent.description || '',
+                imgUrl: currentEvent.imgurl || '',
                 eventId: currentEvent.eventId || '',
             });
         } else {
-            setFormData({ title: '', description: '', imgurl: '', eventId: '' });
+            setFormData({ title: '', desc: '', imgUrl: '', eventId: '' });
         }
     }, [currentEvent]);
 
@@ -56,17 +56,19 @@ const EventManager = () => {
         try {
             if (currentEvent) {
                 await axios.put(`http://localhost:5000/events/${currentEvent._id}`, formData);
+                alert('Event updated successfully!');
             } else {
                 await axios.post('http://localhost:5000/events', formData);
+                alert('Event created successfully!');
             }
             fetchEvents();
             setCurrentEvent(null);
-            setFormData({ title: '', desc: '', imgUrl: '', eventId: '' }); 
+            setFormData({title: '', desc: '', imgUrl: '', eventId: ''});
         } catch (error) {
             console.error("Error saving event:", error);
+            alert('Error saving event.');
         }
     };
-
 
     const filteredEvents = events.filter(event => 
         event.title.toLowerCase().includes(search.toLowerCase())
@@ -75,70 +77,59 @@ const EventManager = () => {
     return (
         <div>
             <h1>Events</h1>
-            <input 
-                type="text" 
-                placeholder="Search..." 
+            <input
+                type="text"
+                placeholder="Search..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="search-input"
             />
-             <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="Title"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                required
-            />
-            <input
-                type="text"
-                placeholder="Description"
-                value={formData.desc} 
-                onChange={(e) => setFormData({ ...formData, desc: e.target.value })} 
-                required
-            />
-            <input
-                type="text"
-                placeholder="Thumbnail Image URL"
-                value={formData.imgUrl} 
-                onChange={(e) => setFormData({ ...formData, imgUrl: e.target.value })} 
-                required
-            />
-            <input
-                type="text"
-                placeholder="Event ID"
-                value={formData.eventId} 
-                onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
-                required
-            />
-            <button type="submit">{currentEvent ? 'Update' : 'Add'} Event</button>
-        </form>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    placeholder="Title"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Description"
+                    value={formData.desc}
+                    onChange={(e) => setFormData({ ...formData, desc: e.target.value })}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Thumbnail Image URL"
+                    value={formData.imgUrl}
+                    onChange={(e) => setFormData({ ...formData, imgUrl: e.target.value })}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Event ID"
+                    value={formData.eventId}
+                    onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
+                    required
+                />
+                <button type="submit">{currentEvent ? 'Update' : 'Add'} Event</button>
+            </form>
             <div className="event-list">
                 {filteredEvents.map(event => (
                     <div key={event._id} className="card">
                         <h3>{event.title}</h3>
                         <p>Event ID: {event.eventId}</p>
-                        <p>{event.description}</p>
-                        <img src={event.imgurl} alt={event.title} style={{ maxWidth: '500px' }} />
+                        <p>{event.desc}</p>
+                        <img src={event.imgUrl} alt={event.title} style={{ maxWidth: '500px' }} />
                         <button onClick={() => handleEdit(event)} style={{ marginRight: '10px' }}>Edit</button>
-                        <button type="button" data-bs-toggle="modal" data-bs-target={`#delete-${event._id}`}>
+                        <button onClick={() => {
+                            if (window.confirm(`Are you sure you want to delete event ${event.title}?`)) {
+                                handleDelete(event._id);
+                            }
+                        }}>
                             Delete
                         </button>
-                
-                        <div className="modal fade" id={`delete-${event._id}`} data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div className="modal-dialog">
-                                <div className="modal-content">
-                                    <div className="modal-header">
-                                        <h5 className="modal-title" id="staticBackdropLabel">Are you sure you want to delete event {event.title}?</h5>
-                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div className="modal-footer">
-                                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <button onClick={() => handleDelete(event._id)} type="button" className="btn btn-danger">Delete</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 ))}
             </div>

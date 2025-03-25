@@ -146,6 +146,7 @@ function Organiserdash() {
                                 <td>{index + 1}</td>
                                 <td>{m.firstName} {m.lastName}</td>
                                 <td>{m.email}</td>
+                                <td>{m.team_id}</td>
                                 {/* <td><a href={m.github_url}><Github /></a></td> */}
                             </tr>
                             ) : null
