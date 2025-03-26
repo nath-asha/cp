@@ -1,72 +1,94 @@
-/* nav {
-    background-color: #0096ff;
-    color: white;
-    width: 60%;
-    height: 100vh;
-    max-width: 200px;
-    font-size: 20px;
-  }
-   */
-  .navbar-nav .nav-item {
-    padding: 0 30px;
-  }
-  
-  .navbar-nav .nav-item:hover {
-    background-color: white;
-    border-radius: 8px;
-  }
-  
-  .navbar-nav .nav-item:hover a {
-    color: #0096ff;
-  }
-  
-  .navbar-nav .nav-item a {
-    color: white;
-  }
+.navbar-nav .nav-item {
+  padding: 0 30px;
+}
 
-  .navbar {
-    background-color: rgb(26, 18, 137);
-    overflow: hidden;
-    position: sticky;
-    top: 0;
-    padding: 10px 0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-    width: 100%;
-  }
-  
-  .navbar ul {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-  }
-  
-  .navbar ul li a {
-    text-decoration: none;
-    color: #ebebf3;
-    padding: 10px 20px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    border-radius: 5px;
-  }
-  
-  .navbar ul li a:hover,
-  .navbar ul li a.active {
-    background-color: #3399ff;
-    color: #fff;
-  }
-  
-  .navbar a {
-    float: left;
-    display:flexbox;
-    color: #ffffff;
-  }
-  
-  .navbar a:hover {
-    background-color: #3399ff;
-    color: black;
-  }
+.navbar-nav .nav-item:hover {
+  background-color: white;
+  border-radius: 8px;
+}
+
+.navbar-nav .nav-item:hover a {
+  color: #0096ff;
+}
+
+.navbar-nav .nav-item a {
+  color: white;
+}
+
+.navbar {
+  background-color: rgb(26, 18, 137);
+  overflow: visible;
+  position: relative;
+  top: 0;
+  padding: 10px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  width: 100%;
+}
+
+.navbar ul {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: #ebebf3;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 5px;
+}
+
+.navbar ul li a:hover,
+.navbar ul li a.active {
+  background-color: #3399ff;
+  color: #fff;
+}
+
+.navbar a {
+  float: left;
+  color: #ffffff;
+}
+
+.navbar a:hover {
+  background-color: #3399ff;
+  color: black;
+}
+
+.user-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1000;
+  list-style: none;
+  min-width: 200px;
+}
+
+.dropdown-menu li {
+  display: block;
+  padding: 5px 10px;
+}
+
+.dropdown-menu li a {
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown-menu li button {
+  width: 100%;
+  text-align: left;
+  text-transform: none; 
+}

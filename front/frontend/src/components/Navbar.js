@@ -29,7 +29,7 @@ const Navbar = () => {
 
                 {user && user.email ? (
                     <li className="user-dropdown">
-                        <User onClick={toggleDropdown} />
+                        <User className='text-white' onClick={toggleDropdown} />
                         {isDropdownOpen && (
                             <ul className="dropdown-menu">
                                 {user.role === 'participant' && (
