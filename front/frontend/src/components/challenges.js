@@ -27,7 +27,7 @@ function Challenges() {
   //mentors can be assigned randomly or with a preference of skills
   //long length descriptions for challenges
   return (
-    <div className="container">
+    // <div className="container">
       <div className="row">
         {challenges.map((challenge) => (
           <div className="col-md-4" key={challenge.track_id}>
@@ -49,8 +49,9 @@ function Challenges() {
             </div>
           </div>
         ))}
+        <button className='text-center' onClick={() => window.location.href = '/events'}>Back</button>
       </div>
-    </div>
+    // </div>
   );
 }
 

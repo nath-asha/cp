@@ -94,7 +94,7 @@ const ParticipantDashboard = () => {
             </div>
             <div className="bg-blue-100 p-3 rounded mt-4">
               <h4 className="font-medium">Need Help?</h4>
-              <p className="text-sm">Mentors are available at the Help Desk or on Slack channel #help-reactathon</p>
+              <p className="text-sm">Mentors are available at the Help Desk or on #help-reactathon</p>
             </div>
           </div>
         );

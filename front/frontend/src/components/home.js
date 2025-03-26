@@ -6,7 +6,6 @@ import 'bootstrap/dist/js/bootstrap.bundle.min'; // Import Bootstrap's JS
 
 const Home = () => {
     return (
-        <div className='container'>
         <div className='home'>
         <Timer />
             <h1>Welcome to the Hack A Fest!</h1>
@@ -52,18 +51,11 @@ const Home = () => {
                 </div>
             </div> */}
             <RotatingTimeline />
-            <div className='venue'>
+         
                 <p>
                     venue 1
                 </p>
-                <p>
-                    venue 2
-                </p>
-                </div>
-                <div className='important dates'>
-                </div>
-                <div className='prize'>
-                </div>
+            
 
             <div className='guildelines'>
                 </div>
@@ -111,7 +103,6 @@ const Home = () => {
             </div>
             {/* <Footer /> */}
         </div>
-    </div>
     );
 };
 

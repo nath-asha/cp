@@ -4,8 +4,30 @@ import { Card, Button, Container, Row, Col, Table, Badge, Form, Modal, ProgressB
 import { Users, BookOpen, Award, Bell, User, MessageSquare, Search, FileText, CheckSquare, AlertTriangle } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Navigate } from 'react-router-dom';
 
 const MentorDashboard = () => {
+    const [teams, setTeams] = useState([]);
+    const [submissions, setSubmissions] = useState([]);
+
+        useEffect(() => {
+            const fetchData = async () => {
+              try {
+                const response = await fetch('http://localhost:5000/teams'); // Updated API route
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const team = await response.json();
+                setTeams(team);
+                console.log(team);
+              } catch (err) {
+                console.error('Error fetching problem statement data:', err);
+              }
+            }; 
+        
+            fetchData();
+          }, []);
+    
     const [loading, setLoading] = useState(true);
     const [mentorData, setMentorData] = useState({
         profile: {
@@ -52,10 +74,10 @@ const MentorDashboard = () => {
                 // Using sample data instead
                 setMentorData({
                     profile: {
-                        name: "Dr. Alex Johnson",
-                        email: "alex@mentor.edu",
+                        name: "mentor",
+                        email: "example@gmail.com",
                         department: "Computer Science",
-                        expertise: "React, Node.js, Cloud Computing"
+                        expertise: "React, Node.js"
                     },
                     students: [
                         { id: "S1001", name: "Jordan Smith", team: "Team Reactors", progress: 75, lastActive: "Today, 10:30 AM" },
@@ -269,7 +291,51 @@ const MentorDashboard = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {mentorData.submissions.slice(0, 5).map((submission) => (
+
+                                                    
+                                                         {teams && teams.map((team) => (
+                                                    <tr key={team.team_id}>
+                                                        <td>{team.name}</td>
+                                                        <td>{team.project}</td>
+                                                        <td>
+                                                        {/* {mentorData.submissions.slice(0, 5).map((submission) => ( */}
+                                                        <Badge bg={team.status === "Pending Review" ? "warning" : "success"}>
+                                                        {team.status}
+                                                    </Badge>
+                                                    {/* ))}  */}
+                                                        </td>
+                                                        <td>
+                                                           <a key={team.team_id} href={`/evaluation/${team.team_id}`}>
+                                                                <Button variant="primary" size="sm">
+                                                                    Review
+                                                                </Button>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                      ))}
+                                                
+                                                    
+                                                    {/* {mentorData.submissions.slice(0, 5).map((submission) => (
+                                                    <tr key={submission.id}>
+                                                        <td>{submission.team}</td>
+                                                        <td>{submission.title}</td>
+                                                        <td>
+                                                            <Badge bg={submission.status === "Pending Review" ? "warning" : "success"}>
+                                                                {submission.status}
+                                                            </Badge>
+                                                        </td>
+                                                        <td>
+                                                            {teams && teams.map((team) => (
+                                                                <a key={team.team_id} href={`/evaluation/${team.team_id}`}>
+                                                                    <Button variant="primary" size="sm">
+                                                                        Review
+                                                                    </Button>
+                                                                </a>
+                                                            ))}
+                                                        </td>
+                                                    </tr>
+                                                ))} */}
+                                                        {/* {mentorData.submissions.slice(0, 5).map((submission) => (
                                                             <tr key={submission.id}>
                                                                 <td>{submission.team}</td>
                                                                 <td>{submission.title}</td>
@@ -279,12 +345,21 @@ const MentorDashboard = () => {
                                                                     </Badge>
                                                                 </td>
                                                                 <td>
-                                                                    <Button variant="primary" size="sm" onClick={() => handleReviewSubmission(submission)}>
+                                                                    {/* <Button variant="primary" size="sm" onClick={() => handleReviewSubmission(submission)}>
+                                                                        Review
+                                                                    </Button> */}
+                                                                    
+                                                                    {/* button that directs to evaluation page  
+                                                                   <a href={`/evaluation/${teams.team_id}`}> <Button variant="primary" size="sm" >
                                                                         Review
                                                                     </Button>
+                                                                    </a>
+{/*                                                                     
+                                                                    {teams.map((teams) => (  <div  key={teams.team_id}><a href={`/evaluation/${teams.team_id}`}><Button>Review</Button></a></div>
+                                                                    ))} *
                                                                 </td>
                                                             </tr>
-                                                        ))}
+                                                        ))} */}
                                                     </tbody>
                                                 </Table>
                                             </div>

@@ -5,26 +5,38 @@
   padding: 0; 
   /* background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0WvJgKXveaWNt2t_PZveg1vd1pR772mnrVFOR0y179B4rhes2Pr5E4kI&s');
   background-size: auto;
-  background-repeat: no-repeat; */
-*/
+  background-repeat: no-repeat; 
 
 body {
-  /* font-family: "Inter", sans-serif; 
+   font-family: "Inter", sans-serif; 
   font-size: 1rem;
   min-height: 100vh;
   display: flex;
-  /* justify-content: center; 
+  justify-content: center; 
   align-items: center;
-  /* flex-direction: column; */
+  flex-direction: column; 
   margin: 0;
   padding: 0;
-  /* padding: 1rem; */
-}
+  width: 100vw;
+  /* padding: 1rem; 
+}*/
 
 .App {
   /* text-align: center; */
   margin: 0%;
   padding: 0%; 
+  /* width: 100vw; */
+}
+
+.App-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  margin: 0; /* Remove default margin from body */
 }
 
 .App h1{
@@ -61,12 +73,12 @@ body {
   height: 250px;
 }
 
-.home{ 
+/* .home{ 
   text-align: 'center';
    padding : 0;
    margin: 0%;
    justify-content: center;
-   }
+   } */
 
 .home h1{
   justify-self: center;
@@ -128,9 +140,9 @@ h4{
   color:   rgb(26, 18, 137);
 }
 
-.container md-5 h3{
+/* .container md-5 h3{
   justify-content: left;
-}
+} */
 
 footer{ 
   background-color: #038a7f;

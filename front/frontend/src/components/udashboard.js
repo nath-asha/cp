@@ -32,7 +32,6 @@ const Dashboard1 = () => {
     return (
         <div className="dashboard">
             <h1>Student Dashboard</h1>
-            <div className="container">
                 <div className="grid-container">
                     <div className="grid-item profile-section">
                         <section className="profile">
@@ -164,7 +163,6 @@ const Dashboard1 = () => {
                     </div> */}
                 </div>
             </div>
-        </div>
     );
 };
 

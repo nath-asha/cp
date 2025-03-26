@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const token = sessionStorage.getItem('token');
 
 export default function RegistrationForm() {
+  //update and validate form so that incorrect data is not submitted
+  //show error if dummy data is entered
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
@@ -62,8 +64,8 @@ export default function RegistrationForm() {
 
 
   return (
-    <div className="container-md">
-      <div className="form-container"> 
+    // <div className="form-container"> 
+      <div> 
         <form className="register-form" onSubmit={handleSubmit}>
           {submitted && valid && (
             <div className="success-message">
@@ -137,7 +139,7 @@ export default function RegistrationForm() {
                 pattern="\d{10}"
                 title="Please enter a valid 10 digit phone number"
               />
-              {submitted && !values.phone && (
+              {submitted && !values.phone &&  (
                 <span id="phone-error">Please enter a phone number</span>
               )}
 
@@ -268,6 +270,5 @@ export default function RegistrationForm() {
           )}
         </form>
       </div>
-    </div>
   );
 }

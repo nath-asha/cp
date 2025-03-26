@@ -83,7 +83,7 @@ const Submissions = () => {
     };
 
     return (
-        <div className="container md-5">
+        <div>
             <h4>Team Name</h4>
             <h4>Project Title</h4>
             <Form.Control

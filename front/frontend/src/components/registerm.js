@@ -41,8 +41,6 @@ export default function App() {
   };
 
   return (
-   
-      <div className="container-md">
         <div className="form-container"> 
       <form className="register-form" onSubmit={handleSubmit}>
         {submitted && valid && (
@@ -139,14 +137,6 @@ export default function App() {
               onChange={handleInputChange}
             />
 
-            <input
-              className="form-field"
-              type="text"
-              placeholder="Address"
-              name="address"
-              value={values.address}
-              onChange={handleInputChange}
-            />
 
             <input
               className="form-field"
@@ -157,14 +147,6 @@ export default function App() {
               onChange={handleInputChange}
             />
 
-            <input
-              className="form-field"
-              type="text"
-              placeholder="Description"
-              name="description"
-              value={values.description}
-              onChange={handleInputChange}
-            />
 
             <input
               className="form-field"
@@ -184,23 +166,6 @@ export default function App() {
               onChange={handleInputChange}
             />
 
-            <input
-              className="form-field"
-              type="text"
-              placeholder="LinkedIn URL"
-              name="linkedin_url"
-              value={values.linkedin_url}
-              onChange={handleInputChange}
-            />
-
-            <input
-              className="form-field"
-              type="text"
-              placeholder="Twitter URL"
-              name="twitter_url"
-              value={values.twitter_url}
-              onChange={handleInputChange}
-            />
 
             <button className="form-field" type="submit">
               Register
@@ -208,7 +173,6 @@ export default function App() {
           </>
         )}
       </form>
-    </div>
     </div>
   );
 }

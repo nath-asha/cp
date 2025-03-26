@@ -3,7 +3,7 @@ import '../styles/countdown.css';
 
 const CountdownTimer = () => {
   const [eventName, setEventName] = useState("hackafest");
-  const [eventDate, setEventDate] = useState("2025-03-20");
+  const [eventDate, setEventDate] = useState("2025-03-30");
   const [countdownStarted, setCountdownStarted] = useState(true); // Always start
   const [timeRemaining, setTimeRemaining] = useState(0);
 

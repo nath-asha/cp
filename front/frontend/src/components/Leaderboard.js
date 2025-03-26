@@ -32,7 +32,7 @@
 
 import React from 'react'
 import { useState,useEffect } from 'react';
-import '../App.css'
+// import '../App.css'
 import '../styles/leaderboard.css'
 import Confetti from 'react-confetti';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -81,7 +81,7 @@ function Leaderboard() {
     }
   
     return (
-        <div className='container'>
+      <div className='container'>
         <div className="leaderboard-container">
         <Confetti />
             <h2>🏆 Top 3 Participants</h2>
