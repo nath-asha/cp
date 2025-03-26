@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/register", registerUser);
 
-router.post("/login", loginUser);
+router.post("/login", loginUser); //do not change to /logino 
 
 module.exports = router;
 
