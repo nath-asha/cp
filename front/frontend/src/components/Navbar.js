@@ -32,14 +32,14 @@ const Navbar = () => {
                         <User className='text-white' onClick={toggleDropdown} />
                         {isDropdownOpen && (
                             <ul className="dropdown-menu">
-                                {user.role === 'participant' && (
-                                    <li><Link to="/demodash">Participant Dashboard</Link></li>
+                                {user.role === 'user' && (
+                                    <li ><button><Link  to="/demodash">Participant Dashboard</Link></button></li>
                                 )}
-                                {user.role === 'mentor' && (
-                                    <li><Link to="/mentordash">Mentor Dashboard</Link></li>
+                                {user.role === 'Mentor' && (
+                                    <li ><Link to="/mentordash">Mentor Dashboard</Link></li>
                                 )}
                                 {user.role === 'organiser' && (
-                                    <li><Link to="/organiserdash">Organiser Dashboard</Link></li>
+                                    <li ><Link to="/organiserdash">Organiser Dashboard</Link></li>
                                 )}
                                 <li>
                                     <button onClick={() => {
