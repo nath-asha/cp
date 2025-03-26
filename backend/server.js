@@ -15,7 +15,7 @@ app.use(helmet());
 app.use("/api/auth", require("./routes/authrouter"));
 app.use("/api", require("./routes/userroutes"));
 app.use("/", require("./routes/publicroutes"));
-app.use("/api/protected", require("./routes/protectedroutes"));
+app.use("/api/protected", require("./routes/protectroutes"));
 
 
 const PORT = process.env.PORT || 5000;

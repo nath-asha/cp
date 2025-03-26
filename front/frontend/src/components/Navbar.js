@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../provider/AuthProvider';
 import '../styles/navbar.css';
-import { User } from 'lucide-react';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { User} from 'lucide-react';
 
 const Navbar = () => {
     const { user, loading, logout } = useAuth();
@@ -26,7 +27,7 @@ const Navbar = () => {
                 <li><Link to="/leaderboard">Leaderboard</Link></li>
                 <li><Link to="/contact">Contact</Link></li>
 
-                {user && user.username ? (
+                {user && user.email ? (
                     <li className="user-dropdown">
                         <User onClick={toggleDropdown} />
                         {isDropdownOpen && (
