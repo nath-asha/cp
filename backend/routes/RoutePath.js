@@ -5,7 +5,7 @@ import About from "../components/About";
 import Login from "../components/Login";
 import Profile from "../components/Profile";
 import Authentication from "./Authentication";
-import Authorization from "./Authorization";
+import Authorization from "../../front/frontend/src/components/Authorization";
 import PERMISSIONS from "../permissions/permissions";
 import Extra from "../components/Extra";
 const RoutePath = () => {

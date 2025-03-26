@@ -49,7 +49,7 @@ function Leaderboard() {
         setError(null);
   
         try {
-          const response = await fetch('http://localhost:5000/scores'); // Updated API route
+          const response = await fetch('http://localhost:5000/scores'); 
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }

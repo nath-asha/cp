@@ -18,7 +18,7 @@ const Lay = () => {
                                     Register
                                 </Button>
                                 <Card.Text>Already have an account? <br /> Login below</Card.Text>
-                                <Button variant="outline-primary" onClick={() => navigate('/login')}>
+                                <Button variant="outline-primary" onClick={() => navigate('/logino')}>
                                     Login
                                 </Button>
                             </Card.Body>
@@ -35,7 +35,7 @@ const Lay = () => {
                                     Register
                                 </Button>
                                 <Card.Text>Already have an account? <br />Login below</Card.Text>
-                                <Button variant="outline-primary" onClick={() => navigate('/login')}>
+                                <Button variant="outline-primary" onClick={() => navigate('/logino')}>
                                     Login
                                 </Button>
                             </Card.Body>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, useLocation, Outlet } from "react-router-dom";
 import Unauthorized from "../components/Unauthorized";
-import { useAuth } from "../../front/frontend/src/provider/AuthProvider";
+import { useAuth } from "../provider/AuthProvider";
 
 const Authorization = ({ permissions }) => {
     const { user } = useAuth();

@@ -40,7 +40,6 @@ import Organiserdash from './components/organiserdash';
 
 import Logino from './components/loogin';
 import About from './components/About';
-import Extra from './components/Extra';
 import Profile from './components/Profile';
 
 //Protected Route Component
@@ -94,7 +93,6 @@ function App() {
 
           <Route path='/logino' element={<Logino/>}/>
           <Route path='/about' element={<About/>}/>
-          <Route path='/extra' element={<Extra/>}/>
           <Route path='/profile' element={<Profile/>}/>
 
         </Routes>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../provider/AuthProvider'; // Adjust path as needed
+import { useAuth } from '../provider/AuthProvider'; 
 
 const ProtectedRoute = ({ element }) => {
     const { user, loading } = useAuth();
@@ -10,7 +10,7 @@ const ProtectedRoute = ({ element }) => {
         return <div>Loading...</div>; // Or a loading spinner
     }
 
-    if (!user || !user.username) {
+    if (!user || !user.email) { //this was !user.username before now changed to email ,works either way
         return <Navigate to="/logino" state={{ path: location.pathname }} replace />;
     }
 
