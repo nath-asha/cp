@@ -1,45 +1,98 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../provider/AuthProvider';
 import '../styles/navbar.css';
 import { User } from 'lucide-react';
 
 const Navbar = () => {
-    const { user, loading } = useAuth(); 
+    const { user, loading, logout } = useAuth();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const navigate = useNavigate();
 
     if (loading) {
-        return <nav className="navbar sticky-top">Loading...</nav>; 
+        return <nav className="navbar sticky-top">Loading...</nav>;
     }
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
 
     return (
         <nav className="navbar sticky-top">
             <ul className="navbar-links">
                 <li><Link to="/">Home</Link></li>
-               <li><Link to="/events">Events</Link></li>
+                <li><Link to="/events">Events</Link></li>
                 <li><Link to="/gallery">Gallery</Link></li>
                 <li><Link to="/leaderboard">Leaderboard</Link></li>
-                <li><Link to="/contact">Contact</Link></li> 
-                {/* <li><Link to="/login1">Login</Link></li> */}
-                <li><Link to="/login1">Login</Link></li>
-                <li><Link to="/dashboard"><User /></Link></li>
-                <NavLink to="/about">About</NavLink>
-                {user && user.username && <NavLink to="/profile">Profile</NavLink>}
-                {(!user || !user.username) && <NavLink to="/logino">Login</NavLink>}
-                <NavLink to="/extra">Extra</NavLink>
+                <li><Link to="/contact">Contact</Link></li>
 
-                 {/* <li><Link to="/login1">Login</Link></li> */}
-                 {(!user || !user.username) && <li><Link to="/logino">Login</Link></li>}
-                {/* <li><Link to="/logino">Login</Link></li> */}
-                <li><Link to="/dashboard"><User /></Link></li>
-                {user && user.username && <NavLink to="/profile"><User /></NavLink>}
-                {(!user || !user.username) && <NavLink to="/logino">Login</NavLink>}
-
+                {user && user.username ? (
+                    <li className="user-dropdown">
+                        <User onClick={toggleDropdown} />
+                        {isDropdownOpen && (
+                            <ul className="dropdown-menu">
+                                {user.role === 'participant' && (
+                                    <li><Link to="/demodash">Participant Dashboard</Link></li>
+                                )}
+                                {user.role === 'mentor' && (
+                                    <li><Link to="/mentordash">Mentor Dashboard</Link></li>
+                                )}
+                                {user.role === 'organiser' && (
+                                    <li><Link to="/organiserdash">Organiser Dashboard</Link></li>
+                                )}
+                                <li>
+                                    <button onClick={() => {
+                                        logout();
+                                        navigate('/logino');
+                                    }}>Logout</button>
+                                </li>
+                            </ul>
+                        )}
+                    </li>
+                ) : (
+                    <li><Link to="/logino">Login</Link></li>
+                )}
             </ul>
         </nav>
     );
 };
 
 export default Navbar;
+
+// import React from 'react';
+// import { Link, NavLink } from 'react-router-dom';
+// import { useAuth } from '../provider/AuthProvider';
+// import '../styles/navbar.css';
+// import { User } from 'lucide-react';
+
+// const Navbar = () => {
+//     const { user, loading } = useAuth(); 
+
+//     if (loading) {
+//         return <nav className="navbar sticky-top">Loading...</nav>; 
+//     }
+
+//     return (
+//         <nav className="navbar sticky-top">
+//             <ul className="navbar-links">
+//                 <li><Link to="/">Home</Link></li>
+//                <li><Link to="/events">Events</Link></li>
+//                 <li><Link to="/gallery">Gallery</Link></li>
+//                 <li><Link to="/leaderboard">Leaderboard</Link></li>
+//                 <li><Link to="/contact">Contact</Link></li> 
+//                 {/* <li><Link to="/login1">Login</Link></li> */}
+//                  {(!user || !user.username) && <li><Link to="/logino">Login</Link></li>}
+//                 {/* <li><Link to="/logino">Login</Link></li> */}
+//                 <li><Link to="/dashboard"><User /></Link></li>
+//                 {user && user.username && <Link to="/profile"><User /></Link>}
+//                 {/* {(!user || !user.username) && <Link to="/logino">Login</Link>} */}
+
+//             </ul>
+//         </nav>
+//     );
+// };
+
+// export default Navbar;
 
 // import React from 'react';
 // import { Link } from 'react-router-dom';
