@@ -9,10 +9,9 @@ export const AuthProvider = ({ children }) => {
     const location = useLocation();
     const redirectPath = location.state?.path || "/profile";
     const [token, setToken_] = useState(localStorage.getItem("token"));
-    const [user, setUser] = useState({
-        username: "",
-        permissions: [],
-    });
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const setToken = (newToken) => {
         setToken_(newToken);
@@ -21,40 +20,49 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (token) {
             axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-            localStorage.setItem('token', token);
+            localStorage.setItem("token", token);
+            setLoading(false);
         } else {
             delete axios.defaults.headers.common["Authorization"];
-            localStorage.removeItem('token');
+            localStorage.removeItem("token");
+            setLoading(false);
         }
     }, [token]);
 
-    const login = async (username, password) => {
+    const login = async (email, password) => { // Renamed to 'login'
+        setLoading(true);
+        setError(null);
         try {
-            const response = await axios.post('http://localhost:5000/login', { username, password });
+            const response = await axios.post("http://localhost:5000/api/auth/login", { email, password });
             const { token, user } = response.data;
-            setToken(token);
+            setToken_(token);
             setUser(user);
             navigate(redirectPath, { replace: true });
-        } catch (error) {
-            console.error('Login failed:', error);
+        } catch (err) {
+            console.error("Login failed:", err);
+            setError(err.response?.data?.message || "Login failed. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
     const logout = () => {
         setToken(null);
-        setUser({ username: "", permissions: [] });
-        navigate('/login');
+        setUser(null);
+        navigate("/login");
     };
 
     const contextValue = useMemo(
         () => ({
             user,
-            login,
+            login, // Updated to 'login'
             logout,
             token,
             setToken,
+            loading,
+            error,
         }),
-        [user, token]
+        [user, token, loading, error]
     );
 
     return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

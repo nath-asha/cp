@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'r
 // import { useState, useEffect } from 'react';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { AuthProvider } from './provider/AuthProvider';
+
 import Navbar from './components/Navbar';
 
 import Leaderboard from './components/Leaderboard';
@@ -36,6 +38,10 @@ import { ImportIcon } from 'lucide-react';
 
 import Organiserdash from './components/organiserdash';
 
+import Logino from './components/loogin';
+import About from './components/About';
+import Extra from './components/Extra';
+import Profile from './components/Profile';
 
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
@@ -45,6 +51,7 @@ const ProtectedRoute = ({ element }) => {
 function App() {
   return (
     <Router>
+          <AuthProvider>
       <Navbar />
       <div className="App">
         <Routes>
@@ -54,7 +61,7 @@ function App() {
           <Route path="/challenges" element={<Challenges />} />
 
           <Route path="/register" element={<RegistrationForm />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login1" element={<Login />} />
 
           <Route path="/gallery" element={<Gallery />} />
           {/* <Route path="/submissions" element={<ProtectedRoute element={<Submissions />} />} /> */}
@@ -84,9 +91,16 @@ function App() {
           <Route path="/events" element={<Events />} />
           <Route path='/eventlist' element={<Eventlist/>}/>
           <Route path='/community' element={<Community/>} />
+
+          <Route path='/logino' element={<Logino/>}/>
+          <Route path='/about' element={<About/>}/>
+          <Route path='/extra' element={<Extra/>}/>
+          <Route path='/profile' element={<Profile/>}/>
+
         </Routes>
       </div>
       <Footer />
+      </AuthProvider>
     </Router>
   );
 }
