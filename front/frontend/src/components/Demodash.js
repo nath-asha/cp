@@ -36,16 +36,18 @@ const Dashboard = () => {
                     submissions: submissionData.data.length ? submissionData.data : [],
                     teamRequests: dashboardData.data.teamRequests.length ? dashboardData.data.teamRequests : [],
                     notifications: notificationData.data.length ? notificationData.data : [],
-                    profile: dashboardData.data.profile.username ? dashboardData.data.profile : {
-                        username: "Jordan Smith",
-                        email: "jordan@example.com",
-                        _id: "P12345",
-                        team: "Team Hackers"
-                    },
-                    mentor: dashboardData.data.mentor.name ? dashboardData.data.mentor : {
-                        name: "Dr. Alex Johnson",
-                        email: "alex@mentor.edu"
-                    }
+                    profile: dashboardData.data.profile.username ? dashboardData.data.profile : [],
+                    // {
+                    //     username: "Jordan Smith",
+                    //     email: "jordan@example.com",
+                    //     _id: "P12345",
+                    //     team: "Team Hackers"
+                    // },
+                    mentor: dashboardData.data.mentor.name ? dashboardData.data.mentor : []
+                    // {
+                    //     name: "Dr. Alex Johnson",
+                    //     email: "alex@mentor.edu"
+                    // }
                 });
                 setNotifications(notificationData.data);
             } catch (error) {

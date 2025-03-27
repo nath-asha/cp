@@ -42,11 +42,7 @@ const MentorDashboard = () => {
         announcements: []
     });
     
-    const [notifications, setNotifications] = useState([
-        { id: 1, message: "New submission from Team Reactors", read: false },
-        { id: 2, message: "Question from Jordan about API integration", read: false },
-        { id: 3, message: "Team Code Ninjas requested feedback", read: true }
-    ]);
+    const [notifications, setNotifications] = useState([]);
     
     const [showModal, setShowModal] = useState(false);
     const [selectedSubmission, setSelectedSubmission] = useState(null);
