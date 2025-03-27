@@ -272,4 +272,15 @@ router.put('/teams/:teamId', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
+//notifications
+router.get('/notifications', async (req,res) => {
+    try {
+        const notifications = await notify.find();
+        return res.json(notifications);
+    } catch (err) {
+        res.status(500).send("Internal server error");
+        console.error("error fetching notifications ",err)
+    }
+})
 module.exports = router;

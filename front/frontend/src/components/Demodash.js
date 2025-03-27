@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, Button, Container, Row, Col, ProgressBar, Badge } from 'react-bootstrap';
+import { Card, Button, Container, Row, Col, ProgressBar, Badge, Dropdown } from 'react-bootstrap';
 import { Calendar, User, BookOpen, Users, Award, Bell } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DynamicChart from './charts';
+import Teammanager from './teammanager';
 
 const Dashboard = () => {
     const [data, setData] = useState({
@@ -14,34 +15,27 @@ const Dashboard = () => {
         profile: {},
         mentor: {}
     });
-    
     const [loading, setLoading] = useState(true);
-    const [notifications, setNotifications] = useState([
-        { id: 1, message: "New team request received", read: false },
-        { id: 2, message: "Submission deadline approaching", read: false },
-        { id: 3, message: "Your code was reviewed by mentor", read: true }
-    ]);
+    const [notifications, setNotifications] = useState([]);
+    const [showNotifications, setShowNotifications] = useState(false); // State to toggle notifications dropdown
 
     useEffect(() => {
         const fetchAllData = async () => {
             setLoading(true);
             try {
-                // Fetch all data in parallel
-                const [dashboardData, teamData, submissionData] = await Promise.all([
+                const [dashboardData, teamData, submissionData, notificationData] = await Promise.all([
                     axios.get('http://localhost:5000/api/dashboard-data'),
                     axios.get('http://localhost:5000/teams'),
-                    axios.get('http://localhost:5000/submissions')
+                    axios.get('http://localhost:5000/submissions'),
+                    axios.get('http://localhost:5000/notifications')
                 ]);
-                
-                // Merge all the data
+
                 setData({
                     ...dashboardData.data,
                     teams: teamData.data,
                     submissions: submissionData.data.length ? submissionData.data : [],
-                    teamRequests: dashboardData.data.teamRequests.length ? dashboardData.data.teamRequests : [
-                        { requestedBy: "Alex Chen", teamName: "Code Ninjas", status: "Pending" },
-                        { requestedBy: "Jamie Wong", teamName: "React Masters", status: "Pending" }
-                    ],
+                    teamRequests: dashboardData.data.teamRequests.length ? dashboardData.data.teamRequests : [],
+                    notifications: notificationData.data.length ? notificationData.data : [],
                     profile: dashboardData.data.profile.username ? dashboardData.data.profile : {
                         username: "Jordan Smith",
                         email: "jordan@example.com",
@@ -53,27 +47,9 @@ const Dashboard = () => {
                         email: "alex@mentor.edu"
                     }
                 });
+                setNotifications(notificationData.data);
             } catch (error) {
                 console.error('Error fetching dashboard data', error);
-                // Set fallback data
-                setData({
-                    ...data,
-                    submissions: [],
-                    teamRequests: [
-                        { requestedBy: "Alex Chen", teamName: "Code Ninjas", status: "Pending" },
-                        { requestedBy: "Jamie Wong", teamName: "React Masters", status: "Pending" }
-                    ],
-                    profile: {
-                        username: "Jordan Smith",
-                        email: "jordan@example.com",
-                        _id: "P12345",
-                        team: "Team Hackers"
-                    },
-                    mentor: {
-                        name: "Dr. Alex Johnson",
-                        email: "alex@mentor.edu"
-                    }
-                });
             } finally {
                 setLoading(false);
             }
@@ -81,6 +57,14 @@ const Dashboard = () => {
 
         fetchAllData();
     }, []);
+
+    const toggleNotifications = () => {
+        setShowNotifications(!showNotifications);
+    };
+
+    const markAllAsRead = () => {
+        setNotifications(notifications.map(notification => ({ ...notification, read: true })));
+    };
 
     const getStatusColor = (status) => {
         switch(status) {
@@ -109,11 +93,31 @@ const Dashboard = () => {
                         <h1 className="fs-3 mb-0">React-a-thon Dashboard</h1>
                         <div className="d-flex align-items-center">
                             <div className="position-relative me-3">
-                                <Bell size={20} className="cursor-pointer" />
+                                <Bell size={20} className="cursor-pointer" onClick={toggleNotifications} />
                                 {notifications.filter(n => !n.read).length > 0 && (
                                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                         {notifications.filter(n => !n.read).length}
                                     </span>
+                                )}
+                                {showNotifications && (
+                                    <div className="dropdown-menu dropdown-menu-end show" style={{ position: 'absolute', top: '30px', right: '0px', zIndex: 1050 }}>
+                                        <div className="dropdown-header d-flex justify-content-between align-items-center">
+                                            <span>Notifications</span>
+                                            <Button variant="link" size="sm" onClick={markAllAsRead}>Mark all as read</Button>
+                                        </div>
+                                        {notifications.length > 0 ? (
+                                            notifications.map((notification, index) => (
+                                                <div key={index} className={`dropdown-item ${notification.read ? '' : 'bg-light'}`}>
+                                                    <p className="mb-0">{notification.message}</p>
+                                                    <small className="text-muted">{notification.timestamp}</small>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div className="dropdown-item text-center text-muted">
+                                                No notifications
+                                            </div>
+                                        )}
+                                    </div>
                                 )}
                             </div>
                             <div className="d-flex align-items-center">
@@ -262,6 +266,12 @@ const Dashboard = () => {
                             </Card.Body>
                         </Card>
                     </Col>
+
+                    <div className='row-md-4'>
+                        <div className='col'>
+                        <Teammanager />
+                        </div>
+                    </div>
 
                     {/* Team Requests */}
                     <Col md={12}>
