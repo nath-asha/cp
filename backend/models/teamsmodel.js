@@ -15,7 +15,7 @@ const teamSchema = new mongoose.Schema({
     "feedback": String,
     "requests": [{
         "name": String,
-        "approval": Boolean
+        "approval": Boolean                                                                                                       
     }],
     "status" : String
 });

@@ -34,7 +34,8 @@ const Dashboard = () => {
                     ...dashboardData.data,
                     teams: teamData.data,
                     submissions: submissionData.data.length ? submissionData.data : [],
-                    teamRequests: dashboardData.data.teamRequests.length ? dashboardData.data.teamRequests : [],
+                    // teamRequests: dashboardData.data.teamRequests.length ? dashboardData.data.teamRequests : [],
+                    teamRequests: teamData.data,
                     notifications: notificationData.data.length ? notificationData.data : [],
                     profile: dashboardData.data.profile.username ? dashboardData.data.profile : [],
                     // {
@@ -239,6 +240,10 @@ const Dashboard = () => {
                                 </h5>
                                 
                                 {data.submissions.map((submission, index) => (
+                                    // {mentors.map((m, index) => (
+                                    //     m.role === 'Mentor' ? (
+                                    //     <tr key={m._id}>
+                                    submission.team_id==='user.team_id'?(
                                     <Card key={index} className="mb-3 border-0 shadow-sm">
                                         <Card.Body>
                                             <div className="d-flex justify-content-between align-items-center">
@@ -260,7 +265,8 @@ const Dashboard = () => {
                                             </div>
                                         </Card.Body>
                                     </Card>
-                                ))}
+                                    )  : null 
+                            ))}
                                 
                                 <div className="d-grid mt-3">
                                     <Button variant="primary">New Submission</Button>
