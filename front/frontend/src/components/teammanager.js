@@ -65,9 +65,10 @@ function Teammanager() {
     }
 
     return (
+        // card view
         <div>
             <div className='row'>
-                <h2>Participants</h2>
+                <h2 className='text-blue'>Participants</h2>
                 <input
                     type="text"
                     placeholder="Search Participants..."
@@ -79,7 +80,7 @@ function Teammanager() {
                     <div className="col-md-4" key={participant.id}>
                         <div className="card mb-4">
                             <div className="card-header">
-                                User ID: {participant.id}
+                                User ID: {participant.USN}
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">{participant.firstName}</h5>
@@ -91,8 +92,73 @@ function Teammanager() {
                 ))}
             </div>
 
+
+            {/* table view */}
+            <div className='row'>
+                <h2 className='text-blue'>Participants</h2>
+                <input
+                    type="text"
+                    placeholder="Search Participants..."
+                    value={participantSearch}
+                    onChange={(e) => setParticipantSearch(e.target.value)}
+                    className="search-input"
+                />
+                {filteredParticipants.map((participant) => (
+                    <div className="col-md-4" key={participant.USN}>
+                        <table>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                            </tr>
+                            <tr>
+                                <td>{participant.USN}</td>
+                                <td>{participant.firstName} {participant.lastName}
+                                
+                                <h6 className="card-subtitle mb-2 text-muted">
+                                <button>send request</button></h6>
+                                </td>
+                            </tr>
+                        </table>
+                        </div>
+                ))}
+            </div>
+
+            {/* list of participants */}
+            <div className='row'>
+                <h2 className='text-blue'>Participants</h2>
+                <input
+                    type="text"
+                    placeholder="Search Participants..."
+                    value={participantSearch}
+                    onChange={(e) => setParticipantSearch(e.target.value)}
+                    className="search-input"
+                />
+                    <div>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {filteredParticipants.map((participant) => (
+                            <tr key={participant.USN}>
+                                <td>{participant.USN}</td>
+                                <td>{participant.firstName} {participant.lastName}
+                                
+                                <h6 className="card-subtitle mb-2 text-muted">
+                                <button>send request</button></h6>
+                                </td>
+                            </tr>
+                         ))}
+                         </tbody>
+                        </table>
+                        </div>
+            </div>
+
             <div className="row">
-                <h2>Teams</h2>
+                <h2 className='text-blue'>Teams</h2>
                 <input
                     type="text"
                     placeholder="Search Teams..."
