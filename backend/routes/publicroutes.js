@@ -161,7 +161,7 @@ router.get('/events/:eventId', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
+ 
 router.post('/events', async (req, res) => {
     try {
         console.log("Request Body:", req.body); // Log the request body
@@ -237,6 +237,7 @@ router.post("/submissions", async (req, res) => {
 
 
 
+
 //yet to created 
 router.get("/api/stats", async (req, res) => {
     try {
@@ -283,4 +284,23 @@ router.get('/notifications', async (req,res) => {
         console.error("error fetching notifications ",err)
     }
 })
+
+router.get('/users/:email', async (req, res) => {
+  try {
+    const email = req.params.email;
+
+    // Find the user in the database based on the email
+    const User = await user.findOne({ email: email });
+
+    if (!User) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Send the user data as a JSON response
+    res.json(User);
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 module.exports = router;

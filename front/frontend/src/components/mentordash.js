@@ -1,105 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, Button, Container, Row, Col, Table, Badge, Form, Modal, ProgressBar, Nav, Tab } from 'react-bootstrap';
-import { Users, BookOpen, Award, Bell, User, MessageSquare, Search, FileText, CheckSquare, AlertTriangle } from 'lucide-react';
+import { Card, Button, Container, Row, Col, Table, Badge, Nav, Tab, ProgressBar } from 'react-bootstrap';
+import { Users, BookOpen, Award, Bell, User, FileText } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Navigate } from 'react-router-dom';
+import { useAuth } from '../provider/AuthProvider'; 
 
 const MentorDashboard = () => {
+    const { user } = useAuth(); // Get the logged-in user's details from AuthProvider
     const [teams, setTeams] = useState([]);
-    const [submissions, setSubmissions] = useState([]);
-
-        useEffect(() => {
-            const fetchData = async () => {
-              try {
-                const response = await fetch('http://localhost:5000/teams'); // Updated API route
-                if (!response.ok) {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const team = await response.json();
-                setTeams(team);
-                console.log(team);
-              } catch (err) {
-                console.error('Error fetching problem statement data:', err);
-              }
-            }; 
-        
-            fetchData();
-          }, []);
-    
     const [loading, setLoading] = useState(true);
     const [mentorData, setMentorData] = useState({
-        profile: {
-            name: "Dr. Alex Johnson",
-            email: "alex@mentor.edu",
-            department: "Computer Science",
-            expertise: "React, Node.js, Cloud Computing"
-        },
+        profile: {},
         students: [],
         teams: [],
         submissions: [],
         announcements: []
     });
-    
     const [notifications, setNotifications] = useState([]);
-    
-    const [showModal, setShowModal] = useState(false);
-    const [selectedSubmission, setSelectedSubmission] = useState(null);
-    const [feedbackText, setFeedbackText] = useState("");
-    const [searchTerm, setSearchTerm] = useState("");
-    const [filter, setFilter] = useState("all");
-
-    // Sample chart data
-    const teamProgressData = [
-        { day: 'Day 1', 'Team Reactors': 20, 'Code Ninjas': 15, 'React Masters': 18 },
-        { day: 'Day 2', 'Team Reactors': 35, 'Code Ninjas': 28, 'React Masters': 32 },
-        { day: 'Day 3', 'Team Reactors': 48, 'Code Ninjas': 45, 'React Masters': 40 },
-        { day: 'Day 4', 'Team Reactors': 62, 'Code Ninjas': 56, 'React Masters': 58 },
-        { day: 'Day 5', 'Team Reactors': 70, 'Code Ninjas': 65, 'React Masters': 75 }
-    ];
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                // API calls
-                // const response = await axios.get('http://localhost:5000/api/mentor-data');
-                // setMentorData(response.data);
-                
-                // Using sample data instead
+                // Fetch teams and mentor-specific data
+                const [teamsResponse, mentorResponse, notificationsResponse] = await Promise.all([
+                    axios.get('http://localhost:5000/teams'),
+                    axios.get(`http://localhost:5000/users/${user.email}`), // Fetch mentor data using logged-in user's email
+                    axios.get('http://localhost:5000/notifications')
+                ]);
+
+                setTeams(teamsResponse.data);
                 setMentorData({
+                    ...mentorResponse.data,
                     profile: {
-                        name: "mentor",
-                        email: "example@gmail.com",
-                        department: "Computer Science",
-                        expertise: "React, Node.js"
-                    },
-                    students: [
-                        { id: "S1001", name: "Jordan Smith", team: "Team Reactors", progress: 75, lastActive: "Today, 10:30 AM" },
-                        { id: "S1002", name: "Alex Chen", team: "Code Ninjas", progress: 65, lastActive: "Today, 9:15 AM" },
-                        { id: "S1003", name: "Jamie Wong", team: "React Masters", progress: 80, lastActive: "Yesterday" },
-                        { id: "S1004", name: "Taylor Reed", team: "Team Reactors", progress: 60, lastActive: "Today, 11:45 AM" },
-                        { id: "S1005", name: "Casey Jones", team: "Code Ninjas", progress: 50, lastActive: "2 days ago" },
-                        { id: "S1006", name: "Riley Garcia", team: "React Masters", progress: 70, lastActive: "Today, 8:20 AM" }
-                    ],
-                    teams: [
-                        { id: "T1", name: "Team Reactors", members: 3, avgProgress: 68, project: "Social Media Dashboard" },
-                        { id: "T2", name: "Code Ninjas", members: 4, avgProgress: 58, project: "E-commerce Platform" },
-                        { id: "T3", name: "React Masters", members: 3, avgProgress: 75, project: "Health Tracking App" }
-                    ],
-                    submissions: [
-                        { id: "SUB1", team: "Team Reactors", title: "Component Library", submitted: "Mar 15, 2025", status: "Pending Review", type: "code" },
-                        { id: "SUB2", team: "Code Ninjas", title: "API Integration", submitted: "Mar 14, 2025", status: "Reviewed", score: 85, type: "code" },
-                        { id: "SUB3", team: "React Masters", title: "Project Proposal", submitted: "Mar 10, 2025", status: "Reviewed", score: 92, type: "document" },
-                        { id: "SUB4", team: "Team Reactors", title: "Project Proposal", submitted: "Mar 9, 2025", status: "Reviewed", score: 88, type: "document" },
-                        { id: "SUB5", team: "Code Ninjas", title: "User Research", submitted: "Mar 8, 2025", status: "Reviewed", score: 78, type: "document" }
-                    ],
-                    announcements: [
-                        { id: "A1", title: "Workshop: Advanced React Hooks", date: "Mar 18, 2025", time: "2:00 PM", location: "Room 101" },
-                        { id: "A2", title: "Submission Deadline Reminder", date: "Mar 20, 2025", time: "11:59 PM", type: "reminder" }
-                    ]
+                        name: user.name, // Use logged-in user's name
+                        email: user.email, // Use logged-in user's email
+                        department: mentorResponse.data.department || "N/A",
+                        expertise: mentorResponse.data.expertise || "N/A"
+                    }
                 });
+                setNotifications(notificationsResponse.data);
             } catch (error) {
                 console.error('Error fetching mentor data', error);
             } finally {
@@ -108,33 +48,7 @@ const MentorDashboard = () => {
         };
 
         fetchData();
-    }, []);
-
-    const handleReviewSubmission = (submission) => {
-        setSelectedSubmission(submission);
-        setFeedbackText(submission.feedback || "");
-        setShowModal(true);
-    };
-
-    const handleSubmitFeedback = () => {
-        // send this to an API
-        console.log(`Submitting feedback for ${selectedSubmission.id}: ${feedbackText}`);
-        setShowModal(false);
-    };
-
-    const filteredSubmissions = mentorData.submissions
-        .filter(sub => {
-            if (filter === "all") return true;
-            if (filter === "pending") return sub.status === "Pending Review";
-            if (filter === "reviewed") return sub.status === "Reviewed";
-            if (filter === "code") return sub.type === "code";
-            if (filter === "document") return sub.type === "document";
-            return true;
-        })
-        .filter(sub => 
-            sub.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-            sub.team.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+    }, [user]);
 
     const getProgressVariant = (progress) => {
         if (progress >= 80) return "success";
@@ -199,7 +113,7 @@ const MentorDashboard = () => {
                             <Nav.Link eventKey="announcements" className="px-4">Announcements</Nav.Link>
                         </Nav.Item>
                     </Nav>
-                    
+
                     <Tab.Content>
                         {/* Overview Tab */}
                         <Tab.Pane eventKey="overview">
@@ -220,7 +134,7 @@ const MentorDashboard = () => {
                                         <Card.Body>
                                             <h5 className="mb-3">Expertise</h5>
                                             <div className="d-flex flex-wrap gap-2 mb-4">
-                                                {mentorData.profile.expertise.split(", ").map((skill, index) => (
+                                                {mentorData.profile.skills.map((skill, index) => (
                                                     <Badge key={index} bg="light" text="dark" className="py-2 px-3">
                                                         {skill}
                                                     </Badge>
@@ -252,112 +166,7 @@ const MentorDashboard = () => {
                                                 <Award size={20} className="me-2 text-primary" /> Team Progress Over Time
                                             </h5>
                                             <div style={{ height: '300px' }}>
-                                                <ResponsiveContainer width="100%" height="100%">
-                                                    <LineChart data={teamProgressData}>
-                                                        <CartesianGrid strokeDasharray="3 3" />
-                                                        <XAxis dataKey="day" />
-                                                        <YAxis />
-                                                        <Tooltip />
-                                                        <Legend />
-                                                        <Line type="monotone" dataKey="Team Reactors" stroke="#8884d8" activeDot={{ r: 8 }} />
-                                                        <Line type="monotone" dataKey="Code Ninjas" stroke="#82ca9d" />
-                                                        <Line type="monotone" dataKey="React Masters" stroke="#ff7300" />
-                                                    </LineChart>
-                                                </ResponsiveContainer>
-                                            </div>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                                
-                                {/* Recent Submissions */}
-                                <Col md={6}>
-                                    <Card className="shadow-sm border-0">
-                                        <Card.Body>
-                                            <h5 className="d-flex align-items-center mb-3">
-                                                <FileText size={20} className="me-2 text-primary" /> Recent Submissions
-                                            </h5>
-                                            <div className="table-responsive">
-                                                <Table hover className="align-middle">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Team</th>
-                                                            <th>Title</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                    
-                                                         {teams && teams.map((team) => (
-                                                    <tr key={team.team_id}>
-                                                        <td>{team.name}</td>
-                                                        <td>{team.project}</td>
-                                                        <td>
-                                                        {/* {mentorData.submissions.slice(0, 5).map((submission) => ( */}
-                                                        <Badge bg={team.status === "Pending Review" ? "warning" : "success"}>
-                                                        {team.status}
-                                                    </Badge>
-                                                    {/* ))}  */}
-                                                        </td>
-                                                        <td>
-                                                           <a key={team.team_id} href={`/evaluation/${team.team_id}`}>
-                                                                <Button variant="primary" size="sm">
-                                                                    Review
-                                                                </Button>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                      ))}
-                                                
-                                                    
-                                                    {/* {mentorData.submissions.slice(0, 5).map((submission) => (
-                                                    <tr key={submission.id}>
-                                                        <td>{submission.team}</td>
-                                                        <td>{submission.title}</td>
-                                                        <td>
-                                                            <Badge bg={submission.status === "Pending Review" ? "warning" : "success"}>
-                                                                {submission.status}
-                                                            </Badge>
-                                                        </td>
-                                                        <td>
-                                                            {teams && teams.map((team) => (
-                                                                <a key={team.team_id} href={`/evaluation/${team.team_id}`}>
-                                                                    <Button variant="primary" size="sm">
-                                                                        Review
-                                                                    </Button>
-                                                                </a>
-                                                            ))}
-                                                        </td>
-                                                    </tr>
-                                                ))} */}
-                                                        {/* {mentorData.submissions.slice(0, 5).map((submission) => (
-                                                            <tr key={submission.id}>
-                                                                <td>{submission.team}</td>
-                                                                <td>{submission.title}</td>
-                                                                <td>
-                                                                    <Badge bg={submission.status === "Pending Review" ? "warning" : "success"}>
-                                                                        {submission.status}
-                                                                    </Badge>
-                                                                </td>
-                                                                <td>
-                                                                    {/* <Button variant="primary" size="sm" onClick={() => handleReviewSubmission(submission)}>
-                                                                        Review
-                                                                    </Button> */}
-                                                                    
-                                                                    {/* button that directs to evaluation page  
-                                                                   <a href={`/evaluation/${teams.team_id}`}> <Button variant="primary" size="sm" >
-                                                                        Review
-                                                                    </Button>
-                                                                    </a>
-{/*                                                                     
-                                                                    {teams.map((teams) => (  <div  key={teams.team_id}><a href={`/evaluation/${teams.team_id}`}><Button>Review</Button></a></div>
-                                                                    ))} *
-                                                                </td>
-                                                            </tr>
-                                                        ))} */}
-                                                    </tbody>
-                                                </Table>
+                                                {/* Add your chart component here */}
                                             </div>
                                         </Card.Body>
                                     </Card>
@@ -368,6 +177,7 @@ const MentorDashboard = () => {
                 </Tab.Container>
             </Container>
         </div>
-    )};
+    );
+};
 
 export default MentorDashboard;
