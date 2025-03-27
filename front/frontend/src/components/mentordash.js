@@ -5,9 +5,11 @@ import { Card, Button, Container, Row, Col, Table, Badge, Form, Modal, ProgressB
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
  import { Navigate } from 'react-router-dom';
-import { useAuth } from '../provider/AuthProvider'; // Import useAuth to get logged-in user details
+ import { useParams,Links} from 'react-router-dom';
+import { useAuth } from '../provider/AuthProvider'; // for getting logged-in user details
 
 const MentorDashboard = () => {
+    const emailid = useParams();
     const { user } = useAuth(); // Get the logged-in user's details from AuthProvider
     const [teams, setTeams] = useState([]);
     const [submissions, setSubmissions] = useState([]);
@@ -32,23 +34,30 @@ const MentorDashboard = () => {
 
     // Sample chart data
     const teamProgressData = [
-        { day: 'Day 1', 'Team Reactors': 20, 'Code Ninjas': 15, 'React Masters': 18 },
-        { day: 'Day 2', 'Team Reactors': 35, 'Code Ninjas': 28, 'React Masters': 32 },
-        { day: 'Day 3', 'Team Reactors': 48, 'Code Ninjas': 45, 'React Masters': 40 },
-        { day: 'Day 4', 'Team Reactors': 62, 'Code Ninjas': 56, 'React Masters': 58 },
-        { day: 'Day 5', 'Team Reactors': 70, 'Code Ninjas': 65, 'React Masters': 75 }
+        {  'Team Reactors': 20, 'Code Ninjas': 15, 'React Masters': 18 },
+        {  'Team Reactors': 35, 'Code Ninjas': 28, 'React Masters': 32 },
+        {  'Team Reactors': 48, 'Code Ninjas': 45, 'React Masters': 40 },
+        {  'Team Reactors': 62, 'Code Ninjas': 56, 'React Masters': 58 },
+        {  'Team Reactors': 70, 'Code Ninjas': 65, 'React Masters': 75 }
     ];
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
+            // try {
+            //     // Fetch teams and mentor-specific data
+            //     const [teamsResponse, mentorResponse, notificationsResponse] = await Promise.all([
+            //         axios.get('http://localhost:5000/teams'),
+            //         axios.get(`http://localhost:5000/users/${user.emailid}`), // Fetch mentor data using logged-in user's email
+            //         axios.get('http://localhost:5000/notifications')
+            //     ]);
             try {
-                // Fetch teams and mentor-specific data
-                const [teamsResponse, mentorResponse, notificationsResponse] = await Promise.all([
-                    axios.get('http://localhost:5000/teams'),
-                    axios.get(`http://localhost:5000/users/${user.email}`), // Fetch mentor data using logged-in user's email
-                    axios.get('http://localhost:5000/notifications')
-                ]);
+                if (user && user.emailid) {
+                    const [teamsResponse, mentorResponse, notificationsResponse] = await Promise.all([
+                        axios.get('http://localhost:5000/teams'),
+                        axios.get(`http://localhost:5000/users/${user.emailid}`),
+                        axios.get('http://localhost:5000/notifications'),
+                    ]);
 
                 setTeams(teamsResponse.data);
                 setMentorData({
@@ -67,13 +76,15 @@ const MentorDashboard = () => {
                         { id: "S1006", name: "Riley Garcia", team: "React Masters", progress: 70, lastActive: "Today, 8:20 AM" }
                     ],
                     teams: teams.name,
-                    submissions: teams.project,
                     announcements: [
                         { id: "A1", title: "Workshop: Advanced React Hooks", date: "Mar 18, 2025", time: "2:00 PM", location: "Room 101" },
                         { id: "A2", title: "Submission Deadline Reminder", date: "Mar 20, 2025", time: "11:59 PM", type: "reminder" }
                     ]
                 });
                 setNotifications(notificationsResponse.data);
+                const submissionsResponse = await axios.get('http://localhost:5000/submissions');
+                setSubmissions(submissionsResponse.data);
+            }
             } catch (error) {
                 console.error('Error fetching mentor data', error);
             } finally {
@@ -82,6 +93,7 @@ const MentorDashboard = () => {
         };
 
         fetchData();
+    }, [user]);
         const handleReviewSubmission = (submission) => {
             setSelectedSubmission(submission);
             setFeedbackText(submission.feedback || "");
@@ -94,8 +106,7 @@ const MentorDashboard = () => {
             setShowModal(false);
         };
     
-        const filteredSubmissions = mentorData.submissions
-            .filter(sub => {
+        const filteredSubmissions = submissions.filter((sub) => {
                 if (filter === "all") return true;
                 if (filter === "pending") return sub.status === "Pending Review";
                 if (filter === "reviewed") return sub.status === "Reviewed";
@@ -107,7 +118,7 @@ const MentorDashboard = () => {
                 sub.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                 sub.team.toLowerCase().includes(searchTerm.toLowerCase())
             );
-    }, [user]);
+   
 
     const getProgressVariant = (progress) => {
         if (progress >= 80) return "success";
@@ -133,6 +144,7 @@ const MentorDashboard = () => {
                 <Container>
                     <div className="d-flex justify-content-between align-items-center">
                         <h1 className="fs-3 mb-0">React-a-thon Mentor Dashboard</h1>
+                        <h1>{user.firstname}</h1>
                         <div className="d-flex align-items-center">
                             <div className="position-relative me-3">
                                 <Bell size={20} className="cursor-pointer" />
@@ -262,19 +274,17 @@ const MentorDashboard = () => {
                                                              <th>Action</th>
                                                          </tr>
                                                      </thead>
-                                                     <tbody>
- 
                                                      
-                                                          {teams && teams.map((team) => (
+                                                          {/* {teams && teams.map((team) => (
                                                      <tr key={team.team_id}>
                                                          <td>{team.name}</td>
                                                          <td>{team.project}</td>
                                                          <td>
-                                                         {/* {mentorData.submissions.slice(0, 5).map((submission) => ( */}
+                                                         {/* {mentorData.submissions.slice(0, 5).map((submission) => ( 
                                                          <Badge bg={team.status === "Pending Review" ? "warning" : "success"}>
                                                          {team.status}
                                                      </Badge>
-                                                     {/* ))}  */}
+                                                     {/* ))}  
                                                          </td>
                                                          <td>
                                                             <a key={team.team_id} href={`/evaluation/${team.team_id}`}>
@@ -284,7 +294,7 @@ const MentorDashboard = () => {
                                                              </a>
                                                          </td>
                                                      </tr>
-                                                       ))}
+                                                       ))} */}
                                                  
                                                      
                                                      {/* {mentorData.submissions.slice(0, 5).map((submission) => (
@@ -331,16 +341,45 @@ const MentorDashboard = () => {
                                                                      ))} *
                                                                  </td>
                                                              </tr>
-                                                         ))} */}
+                                                         ))} 
                                                      </tbody>
                                                  </Table>
-                                                {/* Add your chart component here */}
+                                                {/* Add your chart component here 
+                                            </div>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            </Row>
+                        </Tab.Pane>*/}
+                        
+                        <tbody>
+                                                        {submissions.slice(0, 5).map((submission) => (
+                                                            <tr key={submission.submission_id}>
+                                                                <td>{submission.team_name}</td>
+                                                                <td>{submission.title}</td>
+                                                                <td>
+                                                                    <Badge bg={submission.status === 'Pending Review' ? 'warning' : 'success'}>
+                                                                        {submission.status}
+                                                                    </Badge>
+                                                                </td>
+                                                                <td>
+                                                                    <a href={`/evaluation/${submission.submission_id}`}>
+                                                                        <Button variant="primary" size="sm">
+                                                                            Review
+                                                                        </Button>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </Table>
                                             </div>
                                         </Card.Body>
                                     </Card>
                                 </Col>
                             </Row>
                         </Tab.Pane>
+                         {/* ... other tab panes */}
                     </Tab.Content>
                 </Tab.Container>
             </Container>

@@ -21,7 +21,8 @@ import Mentor from './components/registerm';
 import DisplayChallenge from './components/displaychallenge';
 import ContactUS from './components/contactus';
 import Teammanager from './components/teammanager';
-import MentorDashboard from './components/mentordash'
+import MentorDashboard from './components/mentordash';
+// import MentorDashboardo from '../';
 
 import Dashboard1 from './components/udashboard';
 import ParticipantDashboard from './components/userdash';
@@ -94,6 +95,8 @@ function App() {
           <Route path='/logino' element={<Logino/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/profile' element={<Profile/>}/>
+
+          {/* <Route path='/mento' element={<MentorDashboardo/>}/> */}
 
         </Routes>
       </div>

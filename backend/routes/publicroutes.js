@@ -285,22 +285,19 @@ router.get('/notifications', async (req,res) => {
     }
 })
 
-router.get('/users/:email', async (req, res) => {
+router.get('/users/:emailid', async (req, res) => {
   try {
-    const email = req.params.email;
-
-    // Find the user in the database based on the email
-    const User = await user.findOne({ email: email });
+    const emailid = req.params.emailid;
+    const User = await user.findOne({ email: emailid });
 
     if (!User) {
       return res.status(404).json({ message: 'User not found' });
     }
-
-    // Send the user data as a JSON response
     res.json(User);
   } catch (error) {
     console.error('Error fetching user:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 module.exports = router;

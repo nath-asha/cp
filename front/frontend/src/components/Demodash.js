@@ -5,8 +5,10 @@ import { Calendar, User, BookOpen, Users, Award, Bell } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DynamicChart from './charts';
 import Teammanager from './teammanager';
+import { useAuth } from '../provider/AuthProvider';
 
 const Dashboard = () => {
+    const {user} = useAuth();
     const [data, setData] = useState({
         submissions: [],
         teamRequests: [],
