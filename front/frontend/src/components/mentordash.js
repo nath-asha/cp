@@ -144,7 +144,7 @@ const MentorDashboard = () => {
                 <Container>
                     <div className="d-flex justify-content-between align-items-center">
                         <h1 className="fs-3 mb-0">React-a-thon Mentor Dashboard</h1>
-                        <h1>{user.firstname}</h1>
+                        <h1>{mentorData.name}</h1>
                         <div className="d-flex align-items-center">
                             <div className="position-relative me-3">
                                 <Bell size={20} className="cursor-pointer" />

@@ -45,6 +45,10 @@ function Teammanager() {
             }
         };
 
+        //capture the requests in collection requests 
+        //send requests through mail via triggered links or notifications
+        //identify the teamid and userid and add userid to members in collections
+
         fetchData();
     }, []);
 
