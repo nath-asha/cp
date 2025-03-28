@@ -21,7 +21,7 @@ import Mentor from './components/registerm';
 import DisplayChallenge from './components/displaychallenge';
 import ContactUS from './components/contactus';
 import Teammanager from './components/teammanager';
-import MentorDashboard from './components/mentordash';
+import MentorDashboard from './components/About';
 // import MentorDashboardo from '../';
 
 import Dashboard1 from './components/udashboard';
@@ -43,6 +43,8 @@ import Logino from './components/loogin';
 import About from './components/About';
 import Profile from './components/Profile';
 
+import EventOrganizerDashboard from './components/organiser';
+import MentorDashboardin from './components/mentos';
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
@@ -98,6 +100,8 @@ function App() {
 
           {/* <Route path='/mento' element={<MentorDashboardo/>}/> */}
 
+          <Route path='/organo' element={< EventOrganizerDashboard/>} />
+          <Route path='/mentos' element={< MentorDashboardin/>} />
         </Routes>
       </div>
       <Footer />
