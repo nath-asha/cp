@@ -1,87 +1,137 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, Button, Container, Row, Col, Table, Badge, Form, Modal, ProgressBar, Nav, Tab } from 'react-bootstrap';
-import { Users, BookOpen, Award, Bell, User, MessageSquare, Search, FileText, CheckSquare, AlertTriangle } from 'lucide-react';
+import { Card, Button, Container, Row, Col, Table, Badge, Form, Modal, ProgressBar, Nav, Tab, Alert } from 'react-bootstrap';
+import { 
+    Users, BookOpen, Award, Bell, User, MessageSquare, 
+    Search, FileText, CheckSquare, AlertTriangle, 
+    Clock, Mail, Calendar, GitBranch, Star 
+} from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Navigate } from 'react-router-dom';
-import { useParams, Link } from 'react-router-dom';
-import { useAuth } from '../provider/AuthProvider'; // for getting logged-in user details
+import { Link } from 'react-router-dom';
+import { useAuth } from '../provider/AuthProvider';
 
 const MentorDashboard = () => {
-    const { emailid } = useParams();
-    const { user } = useAuth(); // Get the logged-in user's details from AuthProvider
-    const [teams, setTeams] = useState([]);
-    const [submissions, setSubmissions] = useState([]);
+    const { user } = useAuth();
     const [loading, setLoading] = useState(true);
     const [mentorData, setMentorData] = useState({
-        profile: {
-            name: '',
-            email: '',
-            skills: [],
-        },
+        profile: { name: '', email: '', skills: [] },
         students: [],
         teams: [],
         submissions: [],
         announcements: []
     });
+    const [students, setStudents] = useState([]);
+    const [teams, setTeams] = useState([]);
+    const [submissions, setSubmissions] = useState([]);
     const [notifications, setNotifications] = useState([]);
+    const [activeTab, setActiveTab] = useState('overview');
 
-    const [showModal, setShowModal] = useState(false);
-    const [selectedSubmission, setSelectedSubmission] = useState(null);
-    const [feedbackText, setFeedbackText] = useState("");
-    const [searchTerm, setSearchTerm] = useState("");
-    const [filter, setFilter] = useState("all");
+    // Sample data generation functions
+    const generateStudentData = () => [
+        { id: 'S001', name: 'Alex Chen', team: 'React Rockets', progress: 75, email: 'alex.chen@example.com' },
+        { id: 'S002', name: 'Jordan Smith', team: 'Code Ninjas', progress: 60, email: 'jordan.smith@example.com' },
+        { id: 'S003', name: 'Taylor Wong', team: 'Web Warriors', progress: 85, email: 'taylor.wong@example.com' },
+        { id: 'S004', name: 'Riley Garcia', team: 'React Masters', progress: 70, email: 'riley.garcia@example.com' }
+    ];
 
-    // Sample chart data
-    const teamProgressData = [
-        { day: 1, 'Team Reactors': 20, 'Code Ninjas': 15, 'React Masters': 18 },
-        { day: 2, 'Team Reactors': 35, 'Code Ninjas': 28, 'React Masters': 32 },
-        { day: 3, 'Team Reactors': 48, 'Code Ninjas': 45, 'React Masters': 40 },
-        { day: 4, 'Team Reactors': 62, 'Code Ninjas': 56, 'React Masters': 58 },
-        { day: 5, 'Team Reactors': 70, 'Code Ninjas': 65, 'React Masters': 75 }
+    const generateTeamData = () => [
+        { 
+            id: 'T001', 
+            name: 'React Rockets', 
+            members: 4, 
+            project: 'E-Learning Platform', 
+            progress: 75,
+            skills: ['React', 'Node.js', 'MongoDB']
+        },
+        { 
+            id: 'T002', 
+            name: 'Code Ninjas', 
+            members: 5, 
+            project: 'Social Media Dashboard', 
+            progress: 65,
+            skills: ['React', 'Redux', 'Firebase']
+        },
+        { 
+            id: 'T003', 
+            name: 'Web Warriors', 
+            members: 3, 
+            project: 'Healthcare Management App', 
+            progress: 80,
+            skills: ['React Native', 'GraphQL', 'TypeScript']
+        }
+    ];
+
+    const generateSubmissionsData = () => [
+        { 
+            id: 'SUB001', 
+            title: 'Project Proposal', 
+            team: 'React Rockets', 
+            status: 'Pending Review', 
+            submittedDate: '2025-03-15',
+            type: 'document'
+        },
+        { 
+            id: 'SUB002', 
+            title: 'Prototype MVP', 
+            team: 'Code Ninjas', 
+            status: 'Reviewed', 
+            submittedDate: '2025-03-10',
+            type: 'code'
+        },
+        { 
+            id: 'SUB003', 
+            title: 'Final Presentation Deck', 
+            team: 'Web Warriors', 
+            status: 'Pending Review', 
+            submittedDate: '2025-03-20',
+            type: 'document'
+        }
+    ];
+
+    const generateAnnouncementsData = () => [
+        { 
+            id: 'ANN001', 
+            title: 'Midterm Project Check-in', 
+            date: '2025-03-25', 
+            time: '14:00', 
+            description: 'Mandatory project status update for all teams'
+        },
+        { 
+            id: 'ANN002', 
+            title: 'React Workshop', 
+            date: '2025-04-02', 
+            time: '10:00', 
+            description: 'Advanced React Hooks and Performance Optimization'
+        }
     ];
 
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true);
             try {
-                if (user && user.emailid) {
-                    const [teamsResponse, mentorResponse, notificationsResponse, submissionsResponse] = await Promise.all([
-                        axios.get('http://localhost:5000/teams'),
-                        axios.get(`http://localhost:5000/users/${user.emailid}`),
-                        axios.get('http://localhost:5000/notifications'),
-                        axios.get('http://localhost:5000/submissions')
-                    ]);
+                // Simulate data fetching
+                setStudents(generateStudentData());
+                setTeams(generateTeamData());
+                setSubmissions(generateSubmissionsData());
+                
+                setMentorData({
+                    profile: {
+                        name: user?.firstname || 'Mentor Name',
+                        email: user?.email || 'mentor@example.com',
+                        skills: ['React', 'JavaScript', 'Web Development']
+                    },
+                    students: generateStudentData(),
+                    teams: generateTeamData(),
+                    submissions: generateSubmissionsData(),
+                    announcements: generateAnnouncementsData()
+                });
 
-                    setTeams(teamsResponse.data);
-                    setSubmissions(submissionsResponse.data);
-
-                    setMentorData({
-                        ...mentorResponse.data,
-                        profile: {
-                            name: user.firstname,
-                            email: user.email,
-                            skills: mentorResponse.data.skills || []
-                        },
-                        students: [
-                            { id: "S1001", name: "Jordan Smith", team: "Team Reactors", progress: 75, lastActive: "Today, 10:30 AM" },
-                            { id: "S1002", name: "Alex Chen", team: "Code Ninjas", progress: 65, lastActive: "Today, 9:15 AM" },
-                            { id: "S1003", name: "Jamie Wong", team: "React Masters", progress: 80, lastActive: "Yesterday" },
-                            { id: "S1004", name: "Taylor Reed", team: "Team Reactors", progress: 60, lastActive: "Today, 11:45 AM" },
-                            { id: "S1005", name: "Casey Jones", team: "Code Ninjas", progress: 50, lastActive: "2 days ago" },
-                            { id: "S1006", name: "Riley Garcia", team: "React Masters", progress: 70, lastActive: "Today, 8:20 AM" }
-                        ],
-                        teams: teamsResponse.data,
-                        announcements: [
-                            { id: "A1", title: "Workshop: Advanced React Hooks", date: "Mar 18, 2025", time: "2:00 PM", location: "Room 101" },
-                            { id: "A2", title: "Submission Deadline Reminder", date: "Mar 20, 2025", time: "11:59 PM", type: "reminder" }
-                        ]
-                    });
-                    setNotifications(notificationsResponse.data);
-                }
+                setNotifications([
+                    { id: 'N001', message: 'New submission from React Rockets', read: false },
+                    { id: 'N002', message: 'Team Code Ninjas updated project status', read: false }
+                ]);
             } catch (error) {
-                console.error('Error fetching mentor data', error);
+                console.error('Error fetching data', error);
             } finally {
                 setLoading(false);
             }
@@ -90,36 +140,255 @@ const MentorDashboard = () => {
         fetchData();
     }, [user]);
 
-    const handleReviewSubmission = (submission) => {
-        setSelectedSubmission(submission);
-        setFeedbackText(submission.feedback || "");
-        setShowModal(true);
-    };
+    const renderOverviewTab = () => (
+        <Row className="g-4">
+            {/* Mentor Profile Card */}
+            <Col md={4}>
+                <Card className="shadow-sm border-0 h-100">
+                    <div className="bg-primary text-white p-4">
+                        <div className="d-flex justify-content-center mb-3">
+                            <div className="bg-white rounded-circle d-flex justify-content-center align-items-center" style={{ width: '80px', height: '80px' }}>
+                                <User size={40} className="text-primary" />
+                            </div>
+                        </div>
+                        <h4 className="text-center mb-1">{mentorData.profile.name}</h4>
+                        <p className="text-center mb-0 opacity-75">{mentorData.profile.email}</p>
+                    </div>
+                    <Card.Body>
+                        <h5 className="mb-3">Quick Stats</h5>
+                        <div className="d-flex justify-content-between mb-2">
+                            <span>Students:</span>
+                            <span className="fw-bold">{students.length}</span>
+                        </div>
+                        <div className="d-flex justify-content-between mb-2">
+                            <span>Teams:</span>
+                            <span className="fw-bold">{teams.length}</span>
+                        </div>
+                        <div className="d-flex justify-content-between mb-2">
+                            <span>Pending Submissions:</span>
+                            <span className="fw-bold">{submissions.filter(s => s.status === 'Pending Review').length}</span>
+                        </div>
+                    </Card.Body>
+                </Card>
+            </Col>
 
-    const handleSubmitFeedback = () => {
-        // send this to an API
-        console.log(`Submitting feedback for ${selectedSubmission.submission_id}: ${feedbackText}`);
-        setShowModal(false);
-    };
-
-    const filteredSubmissions = submissions.filter((sub) => {
-        if (filter === "all") return true;
-        if (filter === "pending") return sub.status === "Pending Review";
-        if (filter === "reviewed") return sub.status === "Reviewed";
-        if (filter === "code") return sub.type === "code";
-        if (filter === "document") return sub.type === "document";
-        return true;
-    }).filter(sub => 
-        sub.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        sub.team_name.toLowerCase().includes(searchTerm.toLowerCase())
+            {/* Recent Submissions */}
+            <Col md={8}>
+                <Card className="shadow-sm border-0">
+                    <Card.Body>
+                        <h5 className="d-flex align-items-center mb-3">
+                            <FileText size={20} className="me-2 text-primary" /> Recent Submissions
+                        </h5>
+                        <Table hover responsive>
+                            <thead>
+                                <tr>
+                                    <th>Team</th>
+                                    <th>Title</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {submissions.slice(0, 3).map(submission => (
+                                    <tr key={submission.id}>
+                                        <td>{submission.team}</td>
+                                        <td>{submission.title}</td>
+                                        <td>
+                                            <Badge 
+                                                bg={submission.status === 'Pending Review' ? 'warning' : 'success'}
+                                            >
+                                                {submission.status}
+                                            </Badge>
+                                        </td>
+                                        <td>
+                                            <Button variant="primary" size="sm">
+                                                Review
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </Card.Body>
+                </Card>
+            </Col>
+        </Row>
     );
 
-    const getProgressVariant = (progress) => {
-        if (progress >= 80) return "success";
-        if (progress >= 60) return "info";
-        if (progress >= 40) return "warning";
-        return "danger";
-    };
+    const renderStudentsTab = () => (
+        <Card>
+            <Card.Header>
+                <h4 className="d-flex align-items-center">
+                    <Users className="me-2 text-primary" /> Student Management
+                </h4>
+            </Card.Header>
+            <Card.Body>
+                <Table hover responsive>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Team</th>
+                            <th>Progress</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {students.map(student => (
+                            <tr key={student.id}>
+                                <td>{student.id}</td>
+                                <td>{student.name}</td>
+                                <td>{student.team}</td>
+                                <td>
+                                    <ProgressBar 
+                                        now={student.progress} 
+                                        label={`${student.progress}%`} 
+                                        variant="primary" 
+                                    />
+                                </td>
+                                <td>{student.email}</td>
+                                <td>
+                                    <Button variant="outline-primary" size="sm" className="me-2">
+                                        View Details
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </Card.Body>
+        </Card>
+    );
+
+    const renderTeamsTab = () => (
+        <Row>
+            {teams.map(team => (
+                <Col md={4} key={team.id} className="mb-4">
+                    <Card className="h-100">
+                        <Card.Header className="bg-primary text-white">
+                            <h5 className="mb-0">{team.name}</h5>
+                        </Card.Header>
+                        <Card.Body>
+                            <div className="d-flex justify-content-between mb-2">
+                                <span>Members:</span>
+                                <Badge bg="secondary">{team.members}</Badge>
+                            </div>
+                            <div className="mb-3">
+                                <strong>Project:</strong> {team.project}
+                            </div>
+                            <div className="mb-3">
+                                <strong>Skills:</strong>
+                                <div className="d-flex flex-wrap gap-2 mt-2">
+                                    {team.skills.map(skill => (
+                                        <Badge key={skill} bg="light" text="dark">{skill}</Badge>
+                                    ))}
+                                </div>
+                            </div>
+                            <ProgressBar 
+                                now={team.progress} 
+                                label={`${team.progress}%`} 
+                                variant="primary" 
+                            />
+                        </Card.Body>
+                        <Card.Footer>
+                            <Button variant="outline-primary" className="w-100">
+                                Team Details
+                            </Button>
+                        </Card.Footer>
+                    </Card>
+                </Col>
+            ))}
+        </Row>
+    );
+
+    const renderSubmissionsTab = () => (
+        <Card>
+            <Card.Header>
+                <div className="d-flex justify-content-between align-items-center">
+                    <h4 className="mb-0">
+                        <FileText className="me-2 text-primary" /> 
+                        Submissions Tracker
+                    </h4>
+                    <Form.Select style={{ width: '200px' }}>
+                        <option>Filter by Status</option>
+                        <option>Pending Review</option>
+                        <option>Reviewed</option>
+                    </Form.Select>
+                </div>
+            </Card.Header>
+            <Card.Body>
+                <Table hover responsive>
+                    <thead>
+                        <tr>
+                            <th>Submission ID</th>
+                            <th>Title</th>
+                            <th>Team</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Submitted Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {submissions.map(submission => (
+                            <tr key={submission.id}>
+                                <td>{submission.id}</td>
+                                <td>{submission.title}</td>
+                                <td>{submission.team}</td>
+                                <td>
+                                    <Badge bg={submission.type === 'code' ? 'info' : 'secondary'}>
+                                        {submission.type}
+                                    </Badge>
+                                </td>
+                                <td>
+                                    <Badge 
+                                        bg={submission.status === 'Pending Review' ? 'warning' : 'success'}
+                                    >
+                                        {submission.status}
+                                    </Badge>
+                                </td>
+                                <td>{submission.submittedDate}</td>
+                                <td>
+                                    <Button variant="primary" size="sm">
+                                        Review
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </Card.Body>
+        </Card>
+    );
+
+    const renderAnnouncementsTab = () => (
+        <Card>
+            <Card.Header>
+                <h4 className="d-flex align-items-center">
+                    <Bell className="me-2 text-primary" /> 
+                    Announcements & Upcoming Events
+                </h4>
+            </Card.Header>
+            <Card.Body>
+                {mentorData.announcements.map(announcement => (
+                    <Alert key={announcement.id} variant="light" className="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 className="mb-1">{announcement.title}</h5>
+                            <p className="text-muted mb-0">{announcement.description}</p>
+                            <small className="text-muted">
+                                <Calendar size={14} className="me-1" />
+                                {announcement.date} at {announcement.time}
+                            </small>
+                        </div>
+                        <Button variant="outline-primary" size="sm">
+                            Details
+                        </Button>
+                    </Alert>
+                ))}
+            </Card.Body>
+        </Card>
+    );
 
     if (loading) {
         return (
@@ -132,214 +401,45 @@ const MentorDashboard = () => {
     }
 
     return (
-        <div className="dashboard bg-light min-vh-100">
-            {/* Header */}
-            <div className="bg-primary text-white shadow-sm py-4 mb-4">
-                <Container>
-                    <div className="d-flex justify-content-between align-items-center">
-                        <h1 className="fs-3 mb-0">React-a-thon Mentor Dashboard</h1>
-                        <div className="d-flex align-items-center">
-                            <div className="position-relative me-3">
-                                <Bell size={20} className="cursor-pointer" />
-                                {notifications.filter(n => !n.read).length > 0 && (
-                                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                        {notifications.filter(n => !n.read).length}
-                                    </span>
-                                )}
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <div className="bg-white rounded-circle d-flex justify-content-center align-items-center me-2" style={{ width: '35px', height: '35px' }}>
-                                    <User size={20} className="text-primary" />
-                                </div>
-                                <span>{mentorData.profile.name}</span>
-                            </div>
-                        </div>
-                    </div>
-                </Container>
-            </div>
+        <Container fluid className="dashboard bg-light min-vh-100 p-4">
+            <Row className="mb-4">
+                <Col>
+                    <h1 className="display-6">
+                        Mentor Dashboard - {mentorData.profile.name}
+                    </h1>
+                </Col>
+            </Row>
 
-            <Container>
-                <Tab.Container defaultActiveKey="overview">
-                    <Nav variant="tabs" className="mb-4">
-                        <Nav.Item>
-                            <Nav.Link eventKey="overview" className="px-4">Overview</Nav.Link>
+            <Tab.Container defaultActiveKey="overview">
+                <Nav variant="tabs" className="mb-4">
+                    {['overview', 'students', 'teams', 'submissions', 'announcements'].map(tab => (
+                        <Nav.Item key={tab}>
+                            <Nav.Link eventKey={tab} className="text-capitalize">
+                                {tab}
+                            </Nav.Link>
                         </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey="students" className="px-4">Students</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey="teams" className="px-4">Teams</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey="submissions" className="px-4">Submissions</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey="announcements" className="px-4">Announcements</Nav.Link>
-                        </Nav.Item>
-                    </Nav>
+                    ))}
+                </Nav>
 
-                    <Tab.Content>
-                        {/* Overview Tab */}
-                        <Tab.Pane eventKey="overview">
-                            <Row className="g-4">
-                                {/* Mentor Profile Card */}
-                                <Col md={4}>
-                                    <Card className="shadow-sm border-0 h-100">
-                                        <div className="bg-primary text-white p-4">
-                                            <div className="d-flex justify-content-center mb-3">
-                                                <div className="bg-white rounded-circle d-flex justify-content-center align-items-center" style={{ width: '80px', height: '80px' }}>
-                                                    <User size={40} className="text-primary" />
-                                                </div>
-                                            </div>
-                                            <h4 className="text-center mb-1">{mentorData.profile.name}</h4>
-                                            <p className="text-center mb-0 opacity-75">{mentorData.profile.email}</p>
-                                        </div>
-                                        <Card.Body>
-                                            <h5 className="mb-3">Expertise</h5>
-                                            <div className="d-flex flex-wrap gap-2 mb-4">
-                                                {mentorData.profile.skills && mentorData.profile.skills.length > 0 ? (
-                                                    mentorData.profile.skills.map((skill, index) => (
-                                                        <Badge key={index} bg="light" text="dark" className="py-2 px-3">
-                                                            {skill}
-                                                        </Badge>
-                                                    ))
-                                                ) : (
-                                                    <p>No skills available.</p>
-                                                )}
-                                            </div>
-                                            
-                                            <h5 className="mb-3">Quick Stats</h5>
-                                            <div className="d-flex justify-content-between mb-2">
-                                                <span>Students:</span>
-                                                <span className="fw-bold">{mentorData.students.length}</span>
-                                            </div>
-                                            <div className="d-flex justify-content-between mb-2">
-                                                <span>Teams:</span>
-                                                <span className="fw-bold">{mentorData.teams.length}</span>
-                                            </div>
-                                            <div className="d-flex justify-content-between mb-2">
-                                                <span>Pending Reviews:</span>
-                                                <span className="fw-bold">{submissions.filter(s => s.status === "Pending Review").length}</span>
-                                            </div>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                                
-                                {/* Teams Progress Chart */}
-                                <Col md={8}>
-                                    <Card className="shadow-sm border-0 h-100">
-                                        <Card.Body>
-                                            <h5 className="d-flex align-items-center mb-4">
-                                                <Award size={20} className="me-2 text-primary" /> Team Progress Over Time
-                                            </h5>
-                                            <div style={{ height: '300px' }}>
-                                                <ResponsiveContainer width="100%" height="100%">
-                                                    <LineChart data={teamProgressData}>
-                                                        <CartesianGrid strokeDasharray="3 3" />
-                                                        <XAxis dataKey="day" />
-                                                        <YAxis />
-                                                        <Tooltip />
-                                                        <Legend />
-                                                        <Line type="monotone" dataKey="Team Reactors" stroke="#8884d8" activeDot={{ r: 8 }} />
-                                                        <Line type="monotone" dataKey="Code Ninjas" stroke="#82ca9d" />
-                                                        <Line type="monotone" dataKey="React Masters" stroke="#ff7300" />
-                                                    </LineChart>
-                                                </ResponsiveContainer>
-                                            </div>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                                
-                                {/* Recent Submissions */}
-                                <Col md={6}>
-                                    <Card className="shadow-sm border-0">
-                                        <Card.Body>
-                                            <h5 className="d-flex align-items-center mb-3">
-                                                <FileText size={20} className="me-2 text-primary" /> Recent Submissions
-                                            </h5>
-                                            <div className="table-responsive">
-                                                <Table hover className="align-middle">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Team</th>
-                                                            <th>Title</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {submissions.slice(0, 5).map((submission) => (
-                                                            <tr key={submission.submission_id}>
-                                                                <td>{submission.team_name}</td>
-                                                                <td>{submission.title}</td>
-                                                                <td>
-                                                                    <Badge bg={submission.status === 'Pending Review' ? 'warning' : 'success'}>
-                                                                        {submission.status}
-                                                                    </Badge>
-                                                                </td>
-                                                                <td>
-                                                                    <Link to={`/evaluation/${submission.submission_id}`}>
-                                                                        <Button variant="primary" size="sm">
-                                                                            Review
-                                                                        </Button>
-                                                                    </Link>
-                                                                </td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </Table>
-                                            </div>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </Row>
-                        </Tab.Pane>
-                        {/* Placeholder for other tab panes */}
-                        <Tab.Pane eventKey="students">
-                            <h3>Students Tab Content</h3>
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="teams">
-                            <h3>Teams Tab Content</h3>
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="submissions">
-                            <h3>Submissions Tab Content</h3>
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="announcements">
-                            <h3>Announcements Tab Content</h3>
-                        </Tab.Pane>
-                    </Tab.Content>
-                </Tab.Container>
-            </Container>
-
-            {/* Feedback Modal */}
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Submit Feedback</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group>
-                            <Form.Label>Feedback</Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                rows={3}
-                                value={feedbackText}
-                                onChange={(e) => setFeedbackText(e.target.value)}
-                                placeholder="Enter your feedback"
-                            />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>
-                        Cancel
-                    </Button>
-                    <Button variant="primary" onClick={handleSubmitFeedback}>
-                        Submit Feedback
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </div>
+                <Tab.Content>
+                    <Tab.Pane eventKey="overview">
+                        {renderOverviewTab()}
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="students">
+                        {renderStudentsTab()}
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="teams">
+                        {renderTeamsTab()}
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="submissions">
+                        {renderSubmissionsTab()}
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="announcements">
+                        {renderAnnouncementsTab()}
+                    </Tab.Pane>
+                </Tab.Content>
+            </Tab.Container>
+        </Container>
     );
 };
 
