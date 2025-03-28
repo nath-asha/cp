@@ -109,73 +109,6 @@ function Teammanager() {
                 ))}
             </div>
 
-
-            {/* table view 
-            <div className='row'>
-                <h2 className='text-blue'>Participants</h2>
-                <input
-                    type="text"
-                    placeholder="Search Participants..."
-                    value={participantSearch}
-                    onChange={(e) => setParticipantSearch(e.target.value)}
-                    className="search-input"
-                />
-                {filteredParticipants.map((participant) => (
-                    <div className="col-md-4" key={participant.USN}>
-                        <table>
-                            <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                            </tr>
-                            <tr>
-                                <td>{participant.USN}</td>
-                                <td>{participant.firstName} {participant.lastName}
-                                
-                                <h6 className="card-subtitle mb-2 text-muted">
-                                <button>send request</button></h6>
-                                </td>
-                            </tr>
-                        </table>
-                        </div>
-                ))}
-            </div>
-            */}
-
-            {/* list of participants 
-            <div className='row'>
-                <h2 className='text-blue'>Participants</h2>
-                <input
-                    type="text"
-                    placeholder="Search Participants..."
-                    value={participantSearch}
-                    onChange={(e) => setParticipantSearch(e.target.value)}
-                    className="search-input"
-                />
-                    <div>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {filteredParticipants.map((participant) => (
-                            <tr key={participant.USN}>
-                                <td>{participant.USN}</td>
-                                <td>{participant.firstName} {participant.lastName}
-                                
-                                <h6 className="card-subtitle mb-2 text-muted">
-                                <button>send request</button></h6>
-                                </td>
-                            </tr>
-                         ))}
-                         </tbody>
-                        </table>
-                        </div>
-            </div>
-            */}
-
             <div className="row">
             <h2 className='text-black'>Teams</h2>
                 {filteredTeams.map((team) => (
@@ -197,3 +130,134 @@ function Teammanager() {
 }
 
 export default Teammanager;
+
+
+// return (
+//     // card view
+//     <div>
+//         <div className='row'>
+//             <div className='col p-4'>
+//             <input
+//                 type="text"
+//                 placeholder="Search Participants by name..."
+//                 value={participantSearch}
+//                 onChange={(e) => setParticipantSearch(e.target.value)}
+//                 className="search-input"
+//             />
+//             <h2 className='text-black'>Participants</h2>
+//             {filteredParticipants.map((participant) => (
+//                 <div className="col" key={participant.id}>
+//                     <div className="card mb-4">
+//                         <div className="card-header">
+//                             User ID: {participant.USN}
+//                         </div>
+//                         <div className="card-body">
+//                             <h5 className="card-title">{participant.firstName}</h5>
+//                             <h6 className="card-subtitle mb-2 text-muted">{participant.email}</h6>
+//                             <button>send request</button>
+//                         </div>
+//                     </div>
+//                 </div>
+//             ))}
+//             </div>
+//             <div className='col-md-6 p-4'>
+//             <input
+//                 type="text"
+//                 placeholder="Search Teams..."
+//                 value={teamSearch}
+//                 onChange={(e) => setTeamSearch(e.target.value)}
+//                 className="search-input"
+//             />
+            
+//         <h2 className='text-black'>Teams</h2>
+//             {filteredTeams.map((team) => (
+//                 <div className="col" key={team.id}>
+//                     <div className="card mb-4">
+//                         <div className="card-header">
+//                             Team ID: {team.id}
+//                         </div>
+//                         <div className="card-body">
+//                             <h5 className="card-title">{team.name}</h5>
+//                             <h6 className="card-subtitle mb-2 text-muted">{team.project}</h6>
+//                         </div>
+//                     </div>
+//                 </div>
+//             ))}
+        
+//             </div>
+//             </div>
+            
+
+
+//         {/* table view 
+//         <div className='row'>
+//             <h2 className='text-blue'>Participants</h2>
+//             <input
+//                 type="text"
+//                 placeholder="Search Participants..."
+//                 value={participantSearch}
+//                 onChange={(e) => setParticipantSearch(e.target.value)}
+//                 className="search-input"
+//             />
+//             {filteredParticipants.map((participant) => (
+//                 <div className="col-md-4" key={participant.USN}>
+//                     <table>
+//                         <tr>
+//                             <th>Id</th>
+//                             <th>Name</th>
+//                         </tr>
+//                         <tr>
+//                             <td>{participant.USN}</td>
+//                             <td>{participant.firstName} {participant.lastName}
+                            
+//                             <h6 className="card-subtitle mb-2 text-muted">
+//                             <button>send request</button></h6>
+//                             </td>
+//                         </tr>
+//                     </table>
+//                     </div>
+//             ))}
+//         </div>
+//         */}
+
+//         {/* list of participants 
+//         <div className='row'>
+//             <h2 className='text-blue'>Participants</h2>
+//             <input
+//                 type="text"
+//                 placeholder="Search Participants..."
+//                 value={participantSearch}
+//                 onChange={(e) => setParticipantSearch(e.target.value)}
+//                 className="search-input"
+//             />
+//                 <div>
+//                     <table>
+//                         <thead>
+//                         <tr>
+//                             <th>Id</th>
+//                             <th>Name</th>
+//                         </tr>
+//                         </thead>
+//                         <tbody>
+//                         {filteredParticipants.map((participant) => (
+//                         <tr key={participant.USN}>
+//                             <td>{participant.USN}</td>
+//                             <td>{participant.firstName} {participant.lastName}
+                            
+//                             <h6 className="card-subtitle mb-2 text-muted">
+//                             <button>send request</button></h6>
+//                             </td>
+//                         </tr>
+//                      ))}
+//                      </tbody>
+//                     </table>
+//                     </div>
+//         </div>
+//         */}
+
+       
+//     </div>
+// );
+// }
+
+// export default Teammanager;
