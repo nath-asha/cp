@@ -72,14 +72,27 @@ function Teammanager() {
         // card view
         <div>
             <div className='row'>
-                <h2 className='text-blue'>Participants</h2>
+                <div className='col-md-6 p-4'>
                 <input
                     type="text"
-                    placeholder="Search Participants..."
+                    placeholder="Search Participants by name..."
                     value={participantSearch}
                     onChange={(e) => setParticipantSearch(e.target.value)}
                     className="search-input"
                 />
+                </div>
+                <div className='col-md-6 p-4'>
+                <input
+                    type="text"
+                    placeholder="Search Teams..."
+                    value={teamSearch}
+                    onChange={(e) => setTeamSearch(e.target.value)}
+                    className="search-input"
+                />
+                </div>
+                </div>
+                <div className='row'>
+                <h2 className='text-black'>Participants</h2>
                 {filteredParticipants.map((participant) => (
                     <div className="col-md-4" key={participant.id}>
                         <div className="card mb-4">
@@ -97,7 +110,7 @@ function Teammanager() {
             </div>
 
 
-            {/* table view */}
+            {/* table view 
             <div className='row'>
                 <h2 className='text-blue'>Participants</h2>
                 <input
@@ -126,8 +139,9 @@ function Teammanager() {
                         </div>
                 ))}
             </div>
+            */}
 
-            {/* list of participants */}
+            {/* list of participants 
             <div className='row'>
                 <h2 className='text-blue'>Participants</h2>
                 <input
@@ -160,16 +174,10 @@ function Teammanager() {
                         </table>
                         </div>
             </div>
+            */}
 
             <div className="row">
-                <h2 className='text-blue'>Teams</h2>
-                <input
-                    type="text"
-                    placeholder="Search Teams..."
-                    value={teamSearch}
-                    onChange={(e) => setTeamSearch(e.target.value)}
-                    className="search-input"
-                />
+            <h2 className='text-black'>Teams</h2>
                 {filteredTeams.map((team) => (
                     <div className="col-md-4" key={team.id}>
                         <div className="card mb-4">
