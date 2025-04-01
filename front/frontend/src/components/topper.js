@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Nav, Tab, Row, Col, Table, CardBody } from "react-bootstrap";
+
 import Challenges from "./challenges";
 import CountdownTimer from "./CountDown";
 
@@ -55,6 +56,9 @@ const Displayevent = () => {
                                 <Nav.Item>
                                     <Nav.Link eventKey="results" className="px-4">Leaderboard</Nav.Link>
                                 </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="Rules" className="px-4">Rules</Nav.Link>
+                                </Nav.Item>
                             </Nav>
 
                             {/* Body of each tab */}
@@ -69,6 +73,8 @@ const Displayevent = () => {
                                                 alt="Event"
                                                 className="img-fluid"
                                             />
+                                        <h5>Open to All</h5>
+                                        <h5>200 Registered</h5>
                                         </Col>
                                         <Col md={6}>
                                             <Card>
@@ -100,6 +106,10 @@ const Displayevent = () => {
                                             </Card>
                                         </Col>
                                         <p>{selectedEvent?.description || "Description not available."}</p>
+                                        <h4>Requirements</h4>
+                                        <h5>What to build?</h5>
+                                        <h5>What to submit</h5>
+                                        <h6>github link to the project repository<br></br>Video demo of the project</h6>
                                     </Row>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="prizes">
