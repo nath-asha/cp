@@ -331,77 +331,77 @@ router.get('/challenges/:eventId', async (req, res) => {
 });
 
 //changes in events model led to this
-router.post('/events', async (req, res) => {
-    try {
-        console.log("Request Body:", req.body);
-        const newEvent = new event(req.body);
-        await newEvent.save();
-        res.status(201).json(newEvent);
-    } catch (error) {
-        console.error("Error saving event:", error);
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({ error: error.message });
-        }
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
+// router.post('/events', async (req, res) => {
+//     try {
+//         console.log("Request Body:", req.body);
+//         const newEvent = new event(req.body);
+//         await newEvent.save();
+//         res.status(201).json(newEvent);
+//     } catch (error) {
+//         console.error("Error saving event:", error);
+//         if (error.name === 'ValidationError') {
+//             return res.status(400).json({ error: error.message });
+//         }
+//         res.status(500).json({ error: "Internal Server Error" });
+//     }
+// });
 
-router.delete('/events/:id', async (req, res) => {
-    try {
-        const eventId = req.params.id;
-        console.log("Deleting event with ID:", eventId);
-        const deletedEvent = await event.findByIdAndDelete(eventId);
-        if (!deletedEvent) {
-            return res.status(404).json({ message: 'Event not found' });
-        }
-        res.json({ message: 'Event deleted successfully' });
-    } catch (error) {
-        console.error('Error deleting event:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
+// router.delete('/events/:id', async (req, res) => {
+//     try {
+//         const eventId = req.params.id;
+//         console.log("Deleting event with ID:", eventId);
+//         const deletedEvent = await event.findByIdAndDelete(eventId);
+//         if (!deletedEvent) {
+//             return res.status(404).json({ message: 'Event not found' });
+//         }
+//         res.json({ message: 'Event deleted successfully' });
+//     } catch (error) {
+//         console.error('Error deleting event:', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
 
-router.put('/events/:id', async (req, res) => {
-    try {
-        const eventId = req.params.id;
-        console.log("Updating event with ID:", eventId);
-        console.log("Request body:", req.body);
-        const updatedEvent = await event.findByIdAndUpdate(eventId, req.body, { new: true });
-        if (!updatedEvent) {
-            return res.status(404).json({ message: 'Event not found' });
-        }
-        res.json(updatedEvent);
-    } catch (error) {
-        console.error("Error updating event:", error);
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({ error: error.message });
-        }
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
+// router.put('/events/:id', async (req, res) => {
+//     try {
+//         const eventId = req.params.id;
+//         console.log("Updating event with ID:", eventId);
+//         console.log("Request body:", req.body);
+//         const updatedEvent = await event.findByIdAndUpdate(eventId, req.body, { new: true });
+//         if (!updatedEvent) {
+//             return res.status(404).json({ message: 'Event not found' });
+//         }
+//         res.json(updatedEvent);
+//     } catch (error) {
+//         console.error("Error updating event:", error);
+//         if (error.name === 'ValidationError') {
+//             return res.status(400).json({ error: error.message });
+//         }
+//         res.status(500).json({ error: "Internal Server Error" });
+//     }
+// });
 
-router.get('/events', async (req, res) => {
-    try {
-        const events = await event.find();
-        res.json(events);
-    } catch (error) {
-        console.error("Error fetching events:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
+// router.get('/events', async (req, res) => {
+//     try {
+//         const events = await event.find();
+//         res.json(events);
+//     } catch (error) {
+//         console.error("Error fetching events:", error);
+//         res.status(500).json({ error: "Internal Server Error" });
+//     }
+// });
 
-router.get('/events/:id', async (req, res) => {
-    try {
-        const eventId = req.params.id;
-        const foundEvent = await event.findById(eventId);
-        if (!foundEvent) {
-            return res.status(404).json({ message: "Event not found" });
-        }
-        res.json(foundEvent);
-    } catch (error) {
-        console.error("Error fetching event:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
+// router.get('/events/:id', async (req, res) => {
+//     try {
+//         const eventId = req.params.id;
+//         const foundEvent = await event.findById(eventId);
+//         if (!foundEvent) {
+//             return res.status(404).json({ message: "Event not found" });
+//         }
+//         res.json(foundEvent);
+//     } catch (error) {
+//         console.error("Error fetching event:", error);
+//         res.status(500).json({ error: "Internal Server Error" });
+//     }
+// });
 
 module.exports = router;
