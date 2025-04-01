@@ -141,7 +141,7 @@ const MentorDashboard = () => {
         <div className="dashboard bg-light min-vh-100">
             {/* Header */}
             <div className="bg-primary text-white shadow-sm py-4 mb-4">
-                <Container>
+                {/* <Container>
                     <div className="d-flex justify-content-between align-items-center">
                         <h1 className="fs-3 mb-0">React-a-thon Mentor Dashboard</h1>
                         <h1>{mentorData.name}</h1>
@@ -162,7 +162,7 @@ const MentorDashboard = () => {
                             </div>
                         </div>
                     </div>
-                </Container>
+                </Container> */}
             </div>
 
             <Container>

@@ -44,7 +44,7 @@ import Logino from './components/loogin';
 import About from './components/About';
 import Profile from './components/Profile';
 
-
+import Displayevent from './components/topper';
 
 import EventOrganizerDashboard from './components/organiser';
 import MentorDashboardin from './components/mentos';
@@ -100,6 +100,8 @@ function App() {
           <Route path='/logino' element={<Logino/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/profile' element={<Profile/>}/>
+
+          <Route path='/displayevent' element={<Displayevent/>}/>
 
           {/* <Route path='/mento' element={<MentorDashboardo/>}/> */}
 
