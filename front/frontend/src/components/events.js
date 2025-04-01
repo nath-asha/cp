@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Carousel, Container } from 'react-bootstrap';
+import { useNavigate ,Link} from 'react-router-dom'; 
 
 function Events() {
   const [events, setEvents] = useState([]);
   const [eventSearch, setEventSearch] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,7 +17,7 @@ function Events() {
         }
         const data = await response.json();
         setEvents(data);
-        console.log(data);
+        // console.log(data);
       } catch (err) {
         console.error('Error fetching events data:', err);
       }
@@ -27,6 +29,11 @@ function Events() {
   const filteredEvents = events.filter(event =>
     event.title.toLowerCase().includes(eventSearch.toLowerCase())
   );
+
+  const handleKnowMoreClick = (eventId) => {
+    // Navigate using React Router's useNavigate
+    navigate(`/challenges/${eventId}`);
+  };
 
   return (
     <Container className="mt-4">
@@ -43,7 +50,7 @@ function Events() {
           <h4>Currently Open</h4>
           <Carousel>
             {filteredEvents.map((event) => (
-              <Carousel.Item key={event.eventId}>
+              <Carousel.Item key={event.event_id}>
                 <img
                   className="d-block w-100"
                   src={event.imgUrl || 'https://via.placeholder.com/800x400'}
@@ -52,9 +59,9 @@ function Events() {
                 <Carousel.Caption>
                   <h3>{event.title}</h3>
                   <p>{event.description}</p>
-                  <a href={`/challenges/${event.eventId}`}>
+                  <Link to={`/challenges/${event.eventId}`}>
                     <button className="btn btn-primary">Know more</button>
-                  </a>
+                  </Link>
                 </Carousel.Caption>
               </Carousel.Item>
             ))}

@@ -5,6 +5,7 @@ const challengesSchema = new mongoose.Schema({
     description: String,
     trackId: String,
     imgurl: String,
+    eventId: String,
 });
 
 module.exports = mongoose.model("Challenge", challengesSchema);

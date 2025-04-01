@@ -65,6 +65,9 @@ function App() {
           <Route path="/scoreboard" element={<Scoreboard />} />
           <Route path="/challenges" element={<Challenges />} />
 
+          <Route path="/challenges/:eventId" element={<Challenges />} />
+
+
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login1" element={<Login />} />
 
