@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from "axios";
-import { Card, Container, Nav, Tab, Row, Col,Table} from "react-bootstrap";
-
+import { Card, Container, Nav, Tab, Row, Col, Table } from "react-bootstrap";
+import Challenges from "./challenges";
 import CountdownTimer from "./CountDown";
 
 const Displayevent = () => {
@@ -32,7 +31,7 @@ const Displayevent = () => {
         <div>
             {events.length > 0 ? (
                 <div>
-                    <h2>{selectedEvent?.title || "Event Title"}</h2>
+                    <h2 className="mb-4">{selectedEvent?.title || "Event Title"}</h2>
                     <Container>
                         {/* Header of the tab */}
                         <Tab.Container defaultActiveKey="overview">
@@ -59,7 +58,7 @@ const Displayevent = () => {
                                 <Tab.Pane eventKey="overview">
                                     <Row className="g-4">
                                         <CountdownTimer />
-                                        <button>Register now!</button>
+                                        <button className="btn btn-primary">Register now!</button>
                                         <Col md={4}>
                                             <img
                                                 src={selectedEvent?.imgurl || "https://via.placeholder.com/150"}
@@ -79,7 +78,7 @@ const Displayevent = () => {
                                         </Col>
                                         <h4>Getting started/To Dos before the hackathon starts</h4>
                                         <p>Join the WhatsApp group here</p>
-                                        <button>Join group</button>
+                                        <button className="btn btn-success">Join group</button>
                                         <p>Create teams before the deadline, preferably teams of 3</p>
                                         <p>Choose a problem statement from the challenges tab</p>
                                     </Row>
@@ -99,24 +98,58 @@ const Displayevent = () => {
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="schedule">
                                     <p>{selectedEvent?.schedule || "Schedule details not available."}</p>
-                                    <Table>
+                                    <Table striped bordered hover>
                                         <thead>
-                                            <th>Date</th>
-                                            <th>Event</th>
-                                            <th>Time</th>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Event</th>
+                                                <th>Time</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td></td>
-                                            </tr>
+                                            {selectedEvent?.scheduleDetails?.length > 0 ? (
+                                                selectedEvent.scheduleDetails.map((item, index) => (
+                                                    <tr key={index}>
+                                                        <td>{item.date}</td>
+                                                        <td>{item.event}</td>
+                                                        <td>{item.time}</td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="3" className="text-center">No schedule details available.</td>
+                                                </tr>
+                                            )}
                                         </tbody>
                                     </Table>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="importantdates">
                                     <p>{selectedEvent?.importantdates || "Important dates not available."}</p>
+                                    {/* Add important dates with functions to make it visually appealing */}
+                                    <Table striped bordered hover>
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Event</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {selectedEvent?.scheduleDetails?.length > 0 ? (
+                                                selectedEvent.scheduleDetails.map((item, index) => (
+                                                    <tr key={index}>
+                                                        <td>{item.date}</td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="3" className="text-center">No schedule details available.</td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </Table>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="challenges">
-                                    <p>{selectedEvent?.challenges || "Challenges not available."}</p>
+                                    <Challenges />
                                 </Tab.Pane>
                             </Tab.Content>
                         </Tab.Container>
