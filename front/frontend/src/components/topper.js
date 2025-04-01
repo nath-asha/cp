@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
-import { Card, Container, Nav, Tab, Row, Col } from "react-bootstrap";
+import { Card, Container, Nav, Tab, Row, Col,Table} from "react-bootstrap";
 
 import CountdownTimer from "./CountDown";
 
@@ -99,6 +99,18 @@ const Displayevent = () => {
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="schedule">
                                     <p>{selectedEvent?.schedule || "Schedule details not available."}</p>
+                                    <Table>
+                                        <thead>
+                                            <th>Date</th>
+                                            <th>Event</th>
+                                            <th>Time</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="importantdates">
                                     <p>{selectedEvent?.importantdates || "Important dates not available."}</p>
