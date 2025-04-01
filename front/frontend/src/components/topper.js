@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Nav, Tab, Row, Col, Table, CardBody } from "react-bootstrap";
-
+import {Trophy} from 'lucide-react';
 import Challenges from "./challenges";
 import CountdownTimer from "./CountDown";
+import Community from "./community";
 
 
 const Displayevent = () => {
@@ -59,6 +60,9 @@ const Displayevent = () => {
                                 <Nav.Item>
                                     <Nav.Link eventKey="Rules" className="px-4">Rules</Nav.Link>
                                 </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="discuss" className="px-4">Discussions</Nav.Link>
+                                </Nav.Item>
                             </Nav>
 
                             {/* Body of each tab */}
@@ -110,6 +114,7 @@ const Displayevent = () => {
                                         <h5>What to build?</h5>
                                         <h5>What to submit</h5>
                                         <h6>github link to the project repository<br></br>Video demo of the project</h6>
+                                        <h4>Judging Criteria</h4>
                                     </Row>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="prizes">
@@ -182,6 +187,9 @@ const Displayevent = () => {
                                 </Tab.Pane>
                                 <Tab.Pane eventKey='results'>
 
+                                </Tab.Pane>
+                                <Tab.Pane eventKey='discuss'>
+                                    <Community/>
                                 </Tab.Pane>
                             </Tab.Content>
                         </Tab.Container>
