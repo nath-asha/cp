@@ -16,7 +16,6 @@ const DisplayChallenge = () => {
         }
         const data = await response.json();
         setChallenges(data);
-        console.log(data);
       } catch (err) {
         console.error('Error fetching problem statement data:', err);
       }

@@ -21,7 +21,8 @@ import Mentor from './components/registerm';
 import DisplayChallenge from './components/displaychallenge';
 import ContactUS from './components/contactus';
 import Teammanager from './components/teammanager';
-import MentorDashboard from './components/About';
+import MentorDashboard from './components/mentordash';
+// import MentorDashboard from './components/About';
 // import MentorDashboardo from '../';
 
 import Dashboard1 from './components/udashboard';
@@ -42,6 +43,8 @@ import Organiserdash from './components/organiserdash';
 import Logino from './components/loogin';
 import About from './components/About';
 import Profile from './components/Profile';
+
+
 
 import EventOrganizerDashboard from './components/organiser';
 import MentorDashboardin from './components/mentos';
