@@ -300,4 +300,20 @@ router.get('/users/:emailid', async (req, res) => {
   }
 });
 
+
+router.get('/challenges/:eventId', async (req, res) => {
+    try {
+        const eventId = req.params.eventId;
+        const challenges = await Challenge.find({ eventId: eventId });
+        if (!challenges) {
+            return res.status(404).json({ message: 'Challenge not found' });
+          }
+        res.json(challenges);
+    } catch (err) {
+        console.error('Error fetching challenges:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
 module.exports = router;

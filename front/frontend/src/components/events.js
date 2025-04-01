@@ -39,24 +39,27 @@ function Events() {
         className="form-control mb-4"
       />
       {filteredEvents.length > 0 ? (
-        <><h4>Currently Open</h4><Carousel>
-          {filteredEvents.map((event) => (
-            <Carousel.Item key={event.event_id}>
-              <img
-                className="d-block w-100"
-                src={event.imgUrl || 'https://via.placeholder.com/800x400'}
-                alt={event.title} />
-              <Carousel.Caption>
-                <h3>{event.title}</h3>
-                <p>{event.description}</p>
-                {/* <a href={`/challenges/${event.title.replace(/\s+/g, '-').toLowerCase()}`}> */}
-                <a href={`/challenges/${event.eventId}`}>
-                  <button className="btn btn-primary">Know more</button>
-                </a>
-              </Carousel.Caption>
-            </Carousel.Item>
-          ))}
-        </Carousel></>
+        <>
+          <h4>Currently Open</h4>
+          <Carousel>
+            {filteredEvents.map((event) => (
+              <Carousel.Item key={event.eventId}>
+                <img
+                  className="d-block w-100"
+                  src={event.imgUrl || 'https://via.placeholder.com/800x400'}
+                  alt={event.title}
+                />
+                <Carousel.Caption>
+                  <h3>{event.title}</h3>
+                  <p>{event.description}</p>
+                  <a href={`/challenges/${event.eventId}`}>
+                    <button className="btn btn-primary">Know more</button>
+                  </a>
+                </Carousel.Caption>
+              </Carousel.Item>
+            ))}
+          </Carousel>
+        </>
       ) : (
         <p>No events found.</p>
       )}
