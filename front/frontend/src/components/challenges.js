@@ -13,13 +13,13 @@ function Challenges() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/challenges/${eventId}`); // Corrected API route
+        const response = await fetch(`http://localhost:5000/challenges`); // Corrected API route
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
         setChallenges(data);
-        console.log(data);
+        // console.log(data);
       } catch (err) {
         console.error('Error fetching problem statement data:', err);
       }
