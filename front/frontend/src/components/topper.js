@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Container, Nav, Tab, Row, Col, Table } from "react-bootstrap";
+import { Card, Container, Nav, Tab, Row, Col, Table, CardBody } from "react-bootstrap";
 import Challenges from "./challenges";
 import CountdownTimer from "./CountDown";
+
 
 const Displayevent = () => {
     const [events, setEvents] = useState([]); // Initialize as an array
@@ -51,6 +52,9 @@ const Displayevent = () => {
                                 <Nav.Item>
                                     <Nav.Link eventKey="challenges" className="px-4">Problem Statements</Nav.Link>
                                 </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="results" className="px-4">Leaderboard</Nav.Link>
+                                </Nav.Item>
                             </Nav>
 
                             {/* Body of each tab */}
@@ -59,28 +63,43 @@ const Displayevent = () => {
                                     <Row className="g-4">
                                         <CountdownTimer />
                                         <button className="btn btn-primary">Register now!</button>
-                                        <Col md={4}>
+                                        <Col md={6}>
                                             <img
-                                                src={selectedEvent?.imgurl || "https://via.placeholder.com/150"}
+                                                src={selectedEvent?.imgurl || "img"}
                                                 alt="Event"
                                                 className="img-fluid"
                                             />
-                                            <p>{selectedEvent?.description || "Description not available."}</p>
-                                            <h4>Tech Stack</h4>
                                         </Col>
-                                        <Col md={4}>
+                                        <Col md={6}>
                                             <Card>
                                                 <Card.Body>
-                                                    <h5>{selectedEvent?.date || "Date not available"}</h5>
-                                                    <h5>{selectedEvent?.type || "Location not available"}</h5>
+                                                    <h5>{selectedEvent?.date || "30 April"}</h5>
+                                                    <h5>{selectedEvent?.type || "Offline"}</h5>
+                                                    <h5>Venue: {selectedEvent?.venue || "Skill Lab 2"}</h5>
                                                 </Card.Body>
                                             </Card>
+                                            <Card>
+                                                <Card.Body>
+                                                <h4>Tech Stack</h4>
+                                                <h5>{selectedEvent?.type || "Reactjs, Expressjs"}</h5>
+                                                </Card.Body>
+                                            </Card>
+                                            <Card>
+                                                <CardBody>
+                                                <h4>Getting started/To Dos before the hackathon starts</h4>
+                                                <p>Create teams before the deadline, preferably teams of 3</p>
+                                                <p>Choose a problem statement from the challenges tab</p>
+                                                <p>Join Whatsapp group</p>
+                                                </CardBody>
+                                            </Card>
+                                            <Card>
+                                                <CardBody>
+                                                <p>Join the WhatsApp group here</p>
+                                                <button className="btn btn-success">Join group</button>
+                                                </CardBody>
+                                            </Card>
                                         </Col>
-                                        <h4>Getting started/To Dos before the hackathon starts</h4>
-                                        <p>Join the WhatsApp group here</p>
-                                        <button className="btn btn-success">Join group</button>
-                                        <p>Create teams before the deadline, preferably teams of 3</p>
-                                        <p>Choose a problem statement from the challenges tab</p>
+                                        <p>{selectedEvent?.description || "Description not available."}</p>
                                     </Row>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="prizes">
@@ -150,6 +169,9 @@ const Displayevent = () => {
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="challenges">
                                     <Challenges />
+                                </Tab.Pane>
+                                <Tab.Pane eventKey='results'>
+
                                 </Tab.Pane>
                             </Tab.Content>
                         </Tab.Container>
