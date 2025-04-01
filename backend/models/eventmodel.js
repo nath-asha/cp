@@ -5,6 +5,9 @@ const eventSchema = new mongoose.Schema({
     title: {type: String,required: true},
     desc : {type: String,required: true},
     imgUrl: {type: String,required: true}
+    // startdate:
+    // type
+    // prize
 })
 
 module.exports = mongoose.model('event', eventSchema);
