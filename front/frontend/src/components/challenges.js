@@ -2,14 +2,18 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import RoleBasedComponent from './rolebasedbutton';
+import { useParams } from 'react-router-dom'; // Import useParams
 
 function Challenges() {
   const [challenges, setChallenges] = useState([]);
-
+  const { eventId } = useParams(); // Get eventId from URL parameters
+    const [currentChallengeIndex, setCurrentChallengeIndex] = useState(0);
+  
+    
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/challenges'); // Updated API route
+        const response = await fetch(`http://localhost:5000/challenges/${eventId}`); // Corrected API route
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -22,36 +26,32 @@ function Challenges() {
     };
 
     fetchData();
-  }, []);
-  //choosing the problem statement function yet to be added
-  //mentors can be assigned randomly or with a preference of skills
-  //long length descriptions for challenges
+  }, [eventId]); // Add eventId as a dependency
+
   return (
-    // <div className="container">
-      <div className="row">
-        {challenges.map((challenge) => (
-          <div className="col-md-4" key={challenge.track_id}>
-            <div className="card mb-4">
-              <div className="card-header">
-                Track ID: {challenge.track_id}
-              </div>
-              <img src={challenge.imgurl} className="card-img-top" alt="problem statement image" />
-              <div className="card-body">
-                <h5 className="card-title">{challenge.title}</h5>
-                <h6 className="card-subtitle mb-2 text-muted">{challenge.description}</h6>
-                <a href={`/displaychallenge/${challenge.track_id}`}><button>Know more</button></a>
-                <RoleBasedComponent
-                  role={"user"}
-                  supportedRoles={["admin", "mentor", "user"]}
-                  render={() => <button>Choose</button>}
-                />
-              </div>
+    <div className="row">
+      {challenges.map((challenge) => (
+        <div className="col-md-4" key={challenge.track_id}>
+          <div className="card mb-4">
+            <div className="card-header">
+              Track ID: {challenge.track_id}
+            </div>
+            <img src={challenge.imgurl} className="card-img-top" alt="problem statement image" />
+            <div className="card-body">
+              <h5 className="card-title">{challenge.title}</h5>
+              <h6 className="card-subtitle mb-2 text-muted">{challenge.description}</h6>
+              <a href={`/displaychallenge/${challenge.track_id}`}><button>Know more</button></a>
+              <RoleBasedComponent
+                role={"user"}
+                supportedRoles={["admin", "mentor", "user"]}
+                render={() => <button>Choose</button>}
+              />
             </div>
           </div>
-        ))}
-        <button className='text-center' onClick={() => window.location.href = '/events'}>Back</button>
-      </div>
-    // </div>
+        </div>
+      ))}
+      <button className='text-center' onClick={() => window.location.href = '/events'}>Back</button>
+    </div>
   );
 }
 

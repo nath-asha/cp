@@ -300,18 +300,33 @@ router.get('/users/:emailid', async (req, res) => {
   }
 });
 
+// router.get('/challenges/:eventId', async (req, res) => {
+//     try {
+//         const eventId = req.params.eventId;
+//         console.log("Fetching challenges for eventId:", eventId); // Log the eventId
+
+//         const challenges = await Challenge.find({ eventId: eventId });
+//         console.log("Challenges found:", challenges); // Log the result
+
+//         if (!challenges || challenges.length === 0) {
+//             console.log("Challenges not found for eventId:", eventId);
+//             return res.status(404).json({ message: 'Challenges not found' });
+//         }
+//         res.json(challenges);
+//     } catch (err) {
+//         console.error('Error fetching challenges:', err);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// });
+
 router.get('/challenges/:eventId', async (req, res) => {
     try {
         const eventId = req.params.eventId;
-        const challenges = await Challenge.find({ eventId: eventId }); // Corrected line
-        if (!challenges || challenges.length === 0) {
-            return res.status(404).json({ message: 'Challenges not found' });
-        }
+        const challenges = await Challenge.find({ eventId: eventId });
         res.json(challenges);
     } catch (err) {
         console.error('Error fetching challenges:', err);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
 module.exports = router;
