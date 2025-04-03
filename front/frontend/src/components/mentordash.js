@@ -14,6 +14,7 @@ const MentorDashboard = () => {
     const [teams, setTeams] = useState([]);
     const [submissions, setSubmissions] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [teamProgress, setTeamProgress ] = useState([]);
     const [mentorData, setMentorData] = useState({
         profile: {
             name: '',
@@ -33,13 +34,13 @@ const MentorDashboard = () => {
     const [filter, setFilter] = useState("all");
 
     // Sample chart data
-    const teamProgressData = [
-        {  'Team Reactors': 20, 'Code Ninjas': 15, 'React Masters': 18 },
-        {  'Team Reactors': 35, 'Code Ninjas': 28, 'React Masters': 32 },
-        {  'Team Reactors': 48, 'Code Ninjas': 45, 'React Masters': 40 },
-        {  'Team Reactors': 62, 'Code Ninjas': 56, 'React Masters': 58 },
-        {  'Team Reactors': 70, 'Code Ninjas': 65, 'React Masters': 75 }
-    ];
+    // const teamProgressData = [
+    //     {  'Team Reactors': 20, 'Code Ninjas': 15, 'React Masters': 18 },
+    //     {  'Team Reactors': 35, 'Code Ninjas': 28, 'React Masters': 32 },
+    //     {  'Team Reactors': 48, 'Code Ninjas': 45, 'React Masters': 40 },
+    //     {  'Team Reactors': 62, 'Code Ninjas': 56, 'React Masters': 58 },
+    //     {  'Team Reactors': 70, 'Code Ninjas': 65, 'React Masters': 75 }
+    // ];
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,10 +54,11 @@ const MentorDashboard = () => {
             //     ]);
             try {
                 if (user && user.emailid) {
-                    const [teamsResponse, mentorResponse, notificationsResponse] = await Promise.all([
+                    const [teamsResponse, mentorResponse, notificationsResponse,teamProgressData] = await Promise.all([
                         axios.get('http://localhost:5000/teams'),
                         axios.get(`http://localhost:5000/users/${user.emailid}`),
                         axios.get('http://localhost:5000/notifications'),
+                        axios.get('http://localhost:5000/scores')
                     ]);
 
                 setTeams(teamsResponse.data);
@@ -82,6 +84,7 @@ const MentorDashboard = () => {
                     ]
                 });
                 setNotifications(notificationsResponse.data);
+                setTeamProgress(teamProgressData.data);
                 const submissionsResponse = await axios.get('http://localhost:5000/submissions');
                 setSubmissions(submissionsResponse.data);
             }
@@ -241,15 +244,15 @@ const MentorDashboard = () => {
                                             </h5>
                                             <div style={{ height: '300px' }}>
                                             <ResponsiveContainer width="100%" height="100%">
-                                                     <LineChart data={teamProgressData}>
+                                                     <LineChart data={teamProgress}>
                                                          <CartesianGrid strokeDasharray="3 3" />
                                                          <XAxis dataKey="day" />
                                                          <YAxis />
                                                          <Tooltip />
                                                          <Legend />
-                                                         <Line type="monotone" dataKey="Team Reactors" stroke="#8884d8" activeDot={{ r: 8 }} />
-                                                         <Line type="monotone" dataKey="Code Ninjas" stroke="#82ca9d" />
-                                                         <Line type="monotone" dataKey="React Masters" stroke="#ff7300" />
+                                                         <Line type="monotone" dataKey="Mavericks" stroke="#8884d8" activeDot={{ r: 8 }} />
+                                                         <Line type="monotone" dataKey="Mobile Mavericks" stroke="#82ca9d" />
+                                                         <Line type="monotone" dataKey="Backend Titans" stroke="#ff7300" />
                                                      </LineChart>
                                                  </ResponsiveContainer>
                                              </div>

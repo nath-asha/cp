@@ -27,6 +27,7 @@ hyperfeatures
 top 10 ppl will get notified in the dashboard and in scoreboard and email
 events participated must be mentioned in dashboard of participants
 if necessary badges will be stored in digital profile of the participant as milestones
+mentors will be selected after registration according to requirement
 
 
 
