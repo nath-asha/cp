@@ -5,3 +5,165 @@ fetch challenges specific to that event
 proper community page only for registered users
 FAQ in events page
 login register upgrade
+multiple login why
+create a one time registration page
+then again when he logs in he can apply to any event 
+change sizing
+change vutton ui in eventlist make it small
+update mentor permissions : he can add teams or assign problem statements to teams after deadline(special permissions)
+community let it be as it is like hit resolve the organiser/mentor may remove
+leaderboard for each event separate all register?unregistered people can see
+gallery common for now
+teams ui might need a change
+update ui in evaluation portal
+/////////////////////////////////
+proper login with verification of emailconst User = require("../models/userModel");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const { v4: uuidv4 } = require("uuid");
+
+// Register a new user and send a verification email
+exports.registerUser = async (req, res) => {
+  try {
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      phone,
+      role,
+      team,
+      address,
+      organization,
+      description,
+      skills,
+      github_url,
+      linkedin_url,
+      twitter_url,
+      USN,
+    } = req.body;
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Generate a unique token for email verification
+    const token = uuidv4();
+
+    // Create a new user in the database
+    const newUser = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      phone,
+      role,
+      team,
+      address,
+      organization,
+      description,
+      skills,
+      github_url,
+      linkedin_url,
+      twitter_url,
+      USN,
+      token,
+      verified: false, // Initially set verified to false
+    });
+
+    await newUser.save();
+
+    // Configure the email transporter
+    const transporter = nodemailer.createTransport({
+      service: "gmail", // Use Gmail or your preferred email service
+      auth: {
+        user: "nnhhaa325@gmail.com", // Your email address
+        pass: "your-email-password", // Your email password or app-specific password
+      },
+    });
+
+    // Email content
+    const mailOptions = {
+      from: "nnhhaa325@gmail.com",
+      to: email,
+      subject: "Verify your email",
+      text: `Click this link to verify your email: http://localhost:5000/api/verify/${token}`,
+    };
+
+    // Send the email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+        return res.status(500).json({ message: "Email sending failed." });
+      } else {
+        console.log("Email sent: " + info.response);
+        res.status(201).json({
+          message: "Registration successful. Check your email for verification.",
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Registration error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+// Verify the user's email using the token
+exports.verifyEmail = async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    // Find the user with the matching token
+    const userToVerify = await User.findOne({ token });
+
+    if (!userToVerify) {
+      return res.status(404).json({ message: "Invalid verification token." });
+    }
+
+    // Mark the user as verified
+    userToVerify.verified = true;
+    userToVerify.token = null; // Clear the token after verification
+    await userToVerify.save();
+
+    res.json({ message: "Email verified successfully." });
+  } catch (error) {
+    console.error("Error verifying email:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+// Login a user
+exports.loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: "Missing credentials" });
+    }
+
+    // Find the user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
+
+    // Check if the password matches
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
+
+    // Check if the user is verified
+    if (!user.verified) {
+      return res.status(403).json({ success: false, message: "Email not verified. Please verify your email." });
+    }
+
+    // Generate a JWT token
+    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+    res.json({ success: true, message: "Login successful", token, user });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};

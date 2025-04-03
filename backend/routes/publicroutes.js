@@ -11,9 +11,6 @@ const community = require("../models/communitymodel");
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const nodemailer = require('nodemailer');
-const {v4: uuidv4} = require('uuid')
-
 
 const router = express.Router();
 
@@ -407,78 +404,4 @@ router.get('/challenges/:eventId', async (req, res) => {
 //     }
 // });
 
-
-///////////////////////////////////////
-router.post('/api/register', async (req, res) => {
-    const { email, password } = req.body;
-  
-    try {
-      // Generate a unique token for email verification
-      const token = uuidv4();
-  
-      // Create a new user in the database
-      const newUser = new user({
-        email,
-        password,
-        token,
-        verified: false, // Initially set verified to false
-      });
-await newUser.save();
-
-// Configure the email transporter
-const transporter = nodemailer.createTransport({
-  service: 'gmail', // Use Gmail or your preferred email service
-  auth: {
-    user: 'nnhhaa325@gmail.com', // Your email address
-    pass: 'your-email-password', // Your email password or app-specific password
-  },
-});
-// Email content
-const mailOptions = {
-    from: 'nnhhaa325@gmail.com',
-    to: email,
-    subject: 'Verify your email',
-    text: `Click this link to verify your email: http://localhost:5000/api/verify/${token}`,
-  };
-
-  // Send the email
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error sending email:', error);
-      return res.status(500).send('Email sending failed.');
-    } else {
-      console.log('Email sent: ' + info.response);
-      res.send('Registration successful. Check your email for verification.');
-    }
-  });
-} catch (error) {
-  console.error('Error registering user:', error);
-  res.status(500).send('Internal Server Error');
-}
-});
-
-// GET: Verify the user's email using the token
-router.get('/api/verify/:token', async (req, res) => {
-  const { token } = req.params;
-
-  try {
-    // Find the user with the matching token
-    const userToVerify = await user.findOne({ token });
-
-    if (!userToVerify) {
-      return res.status(404).send({ message: 'Invalid verification token.' });
-    }
-
-    // Mark the user as verified
-    userToVerify.verified = true;
-    userToVerify.token = null; // Clear the token after verification
-    await userToVerify.save();
-
-    res.send({ message: 'Email verified successfully.' });
-  } catch (error) {
-    console.error('Error verifying email:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-/////////////////////////////////////////////////////////////
 module.exports = router;
