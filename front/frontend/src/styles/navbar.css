@@ -18,7 +18,7 @@
 .navbar {
   background-color: rgb(26, 18, 137);
   overflow: visible;
-  position: relative;
+  position:fixed;
   top: 0;
   padding: 10px 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
