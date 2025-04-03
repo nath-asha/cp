@@ -1,0 +1,7 @@
+lead to proper display events page from know more in events page
+login state has to stay until session expires
+feedback button in events page? profile dashboard to collect feedback or survey
+fetch challenges specific to that event
+proper community page only for registered users
+FAQ in events page
+login register upgrade

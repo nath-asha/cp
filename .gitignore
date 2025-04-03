@@ -4,7 +4,4 @@ fl.txt
 faq.txt
 mongo.txt
 .env
-/public/frontend/scores.json
-/public/frontend/challenges.json
-/public/frontend/dashboarddata.json
-/public/frontend/teams.json
+issuesfaces.txt
