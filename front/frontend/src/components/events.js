@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Carousel, Container } from 'react-bootstrap';
 import { useNavigate ,Link} from 'react-router-dom'; 
+import '../styles/buttons.css';
+
 
 function Events() {
   const [events, setEvents] = useState([]);
@@ -17,7 +19,6 @@ function Events() {
         }
         const data = await response.json();
         setEvents(data);
-        // console.log(data);
       } catch (err) {
         console.error('Error fetching events data:', err);
       }
@@ -49,23 +50,23 @@ function Events() {
         <>
           <h4>Currently Open</h4>
           <Carousel>
-            {filteredEvents.map((event) => (
-              <Carousel.Item key={event.event_id}>
-                <img
-                  className="d-block w-100"
-                  src={event.imgUrl || 'https://via.placeholder.com/800x400'}
-                  alt={event.title}
-                />
-                <Carousel.Caption>
-                  <h3>{event.title}</h3>
-                  <p>{event.description}</p>
-                  <Link to={`/challenges/${event.eventId}`}>
-                    <button className="btn btn-primary">Know more</button>
-                  </Link>
-                </Carousel.Caption>
-              </Carousel.Item>
-            ))}
-          </Carousel>
+  {filteredEvents.map((event) => (
+    <Carousel.Item key={event.event_id}>
+      <img
+        className="d-block w-100"
+        src={event.imgUrl || 'https://via.placeholder.com/800x400'}
+        alt={event.title}
+      />
+      <Carousel.Caption>
+        <h3>{event.title}</h3>
+        <p>{event.description}</p>
+        <Link to={`/challenges/${event.eventId}`}>
+          <button>Know more</button>
+        </Link>
+      </Carousel.Caption>
+    </Carousel.Item>
+  ))}
+</Carousel>
         </>
       ) : (
         <p>No events found.</p>
