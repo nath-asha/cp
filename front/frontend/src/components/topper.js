@@ -72,7 +72,9 @@ const Displayevent = () => {
                                 <Tab.Pane eventKey="overview">
                                     <Row className="g-4">
                                         <CountdownTimer />
-                                        <button className="btn btn-primary">Register now!</button>
+                                        </Row>   
+                                         <button> Register now!</button>
+                                        <Row>
                                         <Col md={6}>
                                             <img
                                                 src={selectedEvent?.imgurl || "img"}
@@ -90,6 +92,12 @@ const Displayevent = () => {
                                                     <h5>Venue: {selectedEvent?.venue || "Skill Lab 2"}</h5>
                                                 </Card.Body>
                                             </Card>
+                                            {/* <Card>
+                                                <Card.Body>
+                                                <button>Register now!</button>
+                                                    {/* <h5>{selectedEvent?.type || "Offline"}</h5> 
+                                                </Card.Body>
+                                            </Card> */}
                                             <Card>
                                                 <Card.Body>
                                                 <h4>Tech Stack</h4>
@@ -118,6 +126,48 @@ const Displayevent = () => {
                                         <h6>github link to the project repository<br></br>Video demo of the project</h6>
                                         <h4>Judging Criteria</h4>
                                     </Row>
+                                    {/* <div className='faq'>
+                <div className="accordion" id="accordionFlushExample">
+                    <div className="accordion-item">
+                        <p className="accordion-header">
+                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                What software do I need?
+                            </button>
+                        </p>
+                        <div id="flush-collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div className="accordion-body">
+                                Node.js and npm (or yarn).
+                                A code editor (VS Code, Sublime Text, Atom).
+                                A web browser (Chrome, Firefox).
+                                Git (for version control).
+                            </div>
+                        </div>
+                    </div>
+                    <div className="accordion-item">
+                        <h2 className="accordion-header">
+                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                Should I bring a power adapter?
+                            </button>
+                        </h2>
+                        <div id="flush-collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div className="accordion-body"> Yes, always bring a power adapter. Hackathons can be long, and you don't want your laptop to run out of battery.
+                            </div>
+                        </div>
+                    </div>
+                    <div className="accordion-item">
+                        <h2 className="accordion-header">
+                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                What if I run into technical issues?
+                            </button>
+                        </h2>
+                        <div id="flush-collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div className="accordion-body">Work as a team to troubleshoot.
+                                Utilize offline documentation.
+                                Ask the hackathon organizers for assistance</div>
+                        </div>
+                    </div>
+                </div>
+            </div> */}
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="prizes">
                                     <p>{selectedEvent?.prizes || "Prize details not available."}</p>

@@ -56,6 +56,9 @@ input:focus {
     /* width: 50%; */
     height: 4rem;
     font-weight: 600;
+    width: 30%;
+    margin-left: 35%;
+    border-radius: 25px;
     letter-spacing: 0.5px;
     transition: background-color 0.2s ease;
   }
@@ -69,7 +72,8 @@ button {
   outline: none;
   margin-top: 1rem;
   text-transform: uppercase;
-  width: 100%;
+  margin-left: 38%;
+  max-width: 25%;
   height: 2.75rem;
   font-weight: 600;
   letter-spacing: 0.5px;

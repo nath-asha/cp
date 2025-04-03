@@ -225,6 +225,8 @@
 // export default EventManager;
 
 import React, { useState, useEffect } from 'react';
+// import '../styles/buttons.css';
+import '../styles/buttons.css';
 import axios from 'axios';
 
 const EventManager = () => {
@@ -301,61 +303,87 @@ const EventManager = () => {
     );
 
     return (
-        <div>
-            <h1>Events</h1>
+        <div className="container p-3">
+            <h1 className="mb-4">Events</h1>
             <input
                 type="text"
                 placeholder="Search..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="search-input"
+                className="form-control mb-3"
             />
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Title"
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="Description"
-                    value={formData.desc}
-                    onChange={(e) => setFormData({ ...formData, desc: e.target.value })}
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="Thumbnail Image URL"
-                    value={formData.imgUrl}
-                    onChange={(e) => setFormData({ ...formData, imgUrl: e.target.value })}
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="Event ID"
-                    value={formData.eventId}
-                    onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
-                    required
-                />
-                <button type="submit">{currentEvent ? 'Update' : 'Add'} Event</button>
+            <form onSubmit={handleSubmit} className="mb-4">
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        placeholder="Title"
+                        value={formData.title}
+                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                        className="form-control"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        placeholder="Description"
+                        value={formData.desc}
+                        onChange={(e) => setFormData({ ...formData, desc: e.target.value })}
+                        className="form-control"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        placeholder="Thumbnail Image URL"
+                        value={formData.imgUrl}
+                        onChange={(e) => setFormData({ ...formData, imgUrl: e.target.value })}
+                        className="form-control"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        placeholder="Event ID"
+                        value={formData.eventId}
+                        onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
+                        className="form-control"
+                        required
+                    />
+                </div>
+                <button type="submit" className="btn btn-primary">
+                    {currentEvent ? 'Update' : 'Add'} Event
+                </button>
             </form>
-            <div className="event-list">
+            <div className="row">
                 {filteredEvents.map(event => (
-                    <div key={event._id} className="card">
-                        <h3>{event.title}</h3>
-                        <p>Event ID: {event.eventId}</p>
-                        <p>{event.desc}</p>
-                        <img src={event.imgUrl} alt={event.title} style={{ maxWidth: '500px' }} />
-                        <button onClick={() => handleEdit(event)} style={{ marginRight: '10px' }}>Edit</button>
-                        <button onClick={() => {
-                            if (window.confirm(`Are you sure you want to delete event ${event.title}?`)) {
-                                handleDelete(event._id);
-                            }
-                        }}>
-                            Delete
-                        </button>
+                    <div key={event._id} className="col-md-4 mb-4">
+                        <div className="card">
+                            <img src={event.imgUrl} className="card-img-top" alt={event.title} />
+                            <div className="card-body">
+                                <h5 className="card-title">{event.title}</h5>
+                                <p className="card-text">Event ID: {event.eventId}</p>
+                                <p className="card-text">{event.desc}</p>
+                                <button
+                                    onClick={() => handleEdit(event)}
+                                    className="btn btn-warning me-2"
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        if (window.confirm(`Are you sure you want to delete event ${event.title}?`)) {
+                                            handleDelete(event._id);
+                                        }
+                                    }}
+                                    className="btn btn-danger"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import '../App.css';
+import '../styles/countdown.css'
 import RotatingTimeline from "./header";
 import Timer from './CountDown';
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // Import Bootstrap's JS
@@ -7,7 +8,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min'; // Import Bootstrap's JS
 const Home = () => {
     return (
         <div className='home'>
-        <Timer />
+        {/* <Timer />  */}
             <h1>Welcome to the Hack A Fest!</h1>
             <p>Join us for an exciting event full of coding, collaboration, and creativity.</p>
 
@@ -59,7 +60,7 @@ const Home = () => {
 
             <div className='guildelines'>
                 </div>
-            <div className='faq'>
+            {/* <div className='faq'>
                 <div className="accordion accordion-flush" id="accordionFlushExample">
                     <div className="accordion-item">
                         <h2 className="accordion-header">
@@ -100,8 +101,7 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-            {/* <Footer /> */}
+            </div> */}
         </div>
     );
 };
