@@ -84,6 +84,7 @@ const MentorDashboard = () => {
                     ]
                 });
                 setNotifications(notificationsResponse.data);
+                setTeamProgress(teamProgress.data);
                 setTeamProgress(teamProgressData.data);
                 const submissionsResponse = await axios.get('http://localhost:5000/submissions');
                 setSubmissions(submissionsResponse.data);
