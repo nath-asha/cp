@@ -16,6 +16,22 @@ leaderboard for each event separate all register?unregistered people can see
 gallery common for now
 teams ui might need a change
 update ui in evaluation portal
+if anything is needed at the venue they can ask through community
+they need to make a list of things needed beforehand that will be displayed in dashboards(like cables tables charging points ) and ticked so that things are not missed out
+should there be search filter included for tracks?
+after forming team or is it possible for a person to register first and then choose team
+After event concludes project gallery or only top 3 projects with makers
+after the deadline passes should there be a message stating "deadline passed contact your mentor" in dashboard
+change the url so that each event navigates to its own set of problem statements /event-name/challenges event-name sourced from title from
+hyperfeatures
+top 10 ppl will get notified in the dashboard and in scoreboard and email
+events participated must be mentioned in dashboard of participants
+if necessary badges will be stored in digital profile of the participant as milestones
+
+
+
+
+
 /////////////////////////////////
 proper login with verification of emailconst User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
