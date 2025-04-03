@@ -57,8 +57,8 @@ function App() {
   return (
     <Router>
           <AuthProvider>
-      <Navbar />
       <div className="App">
+      <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
@@ -111,8 +111,8 @@ function App() {
           <Route path='/organo' element={< EventOrganizerDashboard/>} />
           <Route path='/mentos' element={< MentorDashboardin/>} />
         </Routes>
+        <Footer />
       </div>
-      <Footer />
       </AuthProvider>
     </Router>
   );
