@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
-const token = sessionStorage.getItem('token');
-//should there be an option to view team members and edit here or dash
+const token = sessionStorage.getItem("token");
+
 const Submissions = () => {
   const [submissions, setSubmissions] = useState({
     title: "",
@@ -17,7 +18,7 @@ const Submissions = () => {
     preport: "",
     doc: "",
     vid: "",
-    team_id: ""
+    team_id: "",
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -38,6 +39,23 @@ const Submissions = () => {
     }));
   };
 
+  const handleReset = () => {
+    setSubmissions({
+      title: "",
+      gitrepo: "",
+      projectdesc: "",
+      ps: "",
+      ppt: "",
+      thumbnail: "",
+      preport: "",
+      doc: "",
+      vid: "",
+      team_id: "",
+    });
+    setSubmitted(false);
+    setValid(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -51,12 +69,12 @@ const Submissions = () => {
     setValid(true);
 
     try {
-      // const response = await fetch("http://localhost:5000/api/submissions", {
-        const response = await fetch("http://localhost:5000/submissions", {
+      const response = await fetch("http://localhost:5000/submissions", {
         method: "POST",
-        headers: { "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
-         },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(submissions),
       });
 
@@ -72,11 +90,17 @@ const Submissions = () => {
   };
 
   return (
-    <div>
-      <h4>Project Submission</h4>
+    <div className="container mt-5">
+      <h2 className="mb-4 text-center">Project Submission</h2>
+
+      {submitted && (
+        <Alert variant="success" className="text-center">
+          Submission successful! Thank you for submitting your project.
+        </Alert>
+      )}
 
       <Form onSubmit={handleSubmit}>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>Project Title</Form.Label>
           <Form.Control
             type="text"
@@ -88,7 +112,7 @@ const Submissions = () => {
           />
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>GitHub Link</Form.Label>
           <Form.Control
             type="text"
@@ -100,7 +124,7 @@ const Submissions = () => {
           />
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>Description</Form.Label>
           <Form.Control
             as="textarea"
@@ -113,9 +137,13 @@ const Submissions = () => {
           />
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>Select Problem Statement</Form.Label>
-          <Form.Select value={submissions.ps} onChange={handleSelectChange} required>
+          <Form.Select
+            value={submissions.ps}
+            onChange={handleSelectChange}
+            required
+          >
             <option value="">Select problem statement</option>
             <option value="1">PS 1</option>
             <option value="2">PS 2</option>
@@ -124,7 +152,7 @@ const Submissions = () => {
           </Form.Select>
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>PPT / Link Upload</Form.Label>
           <Form.Control
             type="text"
@@ -135,7 +163,7 @@ const Submissions = () => {
           />
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>Thumbnail Link</Form.Label>
           <Form.Control
             type="text"
@@ -146,7 +174,7 @@ const Submissions = () => {
           />
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>Report Upload</Form.Label>
           <Form.Control
             type="text"
@@ -157,7 +185,7 @@ const Submissions = () => {
           />
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>Document Link</Form.Label>
           <Form.Control
             type="text"
@@ -168,7 +196,7 @@ const Submissions = () => {
           />
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>Video Link</Form.Label>
           <Form.Control
             type="text"
@@ -179,14 +207,49 @@ const Submissions = () => {
           />
         </Form.Group>
 
-        <Button type="submit" className="mt-3" onClick={handleSubmit}>
-          Submit
-        </Button>
-
-        <Button variant="secondary" className="mt-3">
-          Cancel
-        </Button>
+        <div className="d-flex justify-content-between">
+          <Button type="submit" className="btn btn-primary">
+            Submit
+          </Button>
+          <Button
+            variant="secondary"
+            className="btn btn-secondary"
+            onClick={handleReset}
+          >
+            Reset
+          </Button>
+        </div>
       </Form>
+
+      <div className="mt-5">
+        <h4>Preview</h4>
+        <ul>
+          <li>
+            <strong>GitHub:</strong>{" "}
+            <a href={submissions.gitrepo} target="_blank" rel="noreferrer">
+              {submissions.gitrepo}
+            </a>
+          </li>
+          <li>
+            <strong>PPT:</strong>{" "}
+            <a href={submissions.ppt} target="_blank" rel="noreferrer">
+              {submissions.ppt}
+            </a>
+          </li>
+          <li>
+            <strong>Thumbnail:</strong>{" "}
+            <a href={submissions.thumbnail} target="_blank" rel="noreferrer">
+              {submissions.thumbnail}
+            </a>
+          </li>
+          <li>
+            <strong>Video:</strong>{" "}
+            <a href={submissions.vid} target="_blank" rel="noreferrer">
+              {submissions.vid}
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };
