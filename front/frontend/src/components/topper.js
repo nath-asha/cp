@@ -5,6 +5,8 @@ import {Trophy} from 'lucide-react';
 import Challenges from "./challenges";
 import CountdownTimer from "./CountDown";
 import Community from "./community";
+import Leaderboard from './Leaderboard';
+//this page contains event details and registration
 
 
 const Displayevent = () => {
@@ -186,7 +188,7 @@ const Displayevent = () => {
                                     <Challenges />
                                 </Tab.Pane>
                                 <Tab.Pane eventKey='results'>
-
+                                    <Leaderboard/>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey='discuss'>
                                     <Community/>
