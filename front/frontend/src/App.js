@@ -55,6 +55,9 @@ const ProtectedRoute = ({ element }) => {
 };
 
 function App() {
+    const onCallback = () => {
+        console.log("awesome");
+    };
   return (
     <Router>
           <AuthProvider>
