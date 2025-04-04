@@ -24,7 +24,7 @@ function Verification() {
 
   return (
     <div>
-      <h2>Email Verification</h2>
+      <h2 className='text-black'>Email Verification</h2>
       <p>{message}</p>
     </div>
   );
