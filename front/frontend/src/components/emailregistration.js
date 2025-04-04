@@ -42,7 +42,7 @@ export default function RegistrationForm() {
     if (Object.values(values).every((value) => value)) {
       setValid(true);
       try {
-        const response = await axios.post("/api/register", values); // Backend API endpoint
+        const response = await axios.post("/api/auth/register", values); // Backend API endpoint
         console.log("Registration successful:", response.data);
         navigate("/verification"); // Navigate to the verification page
       } catch (error) {

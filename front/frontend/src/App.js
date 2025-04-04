@@ -48,9 +48,6 @@ import Displayevent from './components/topper';
 
 import EventOrganizerDashboard from './components/organiser';
 import MentorDashboardin from './components/mentos';
-
-import Registration from './components/emailregistration';
-import Verification from './components/emailverification';
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
@@ -113,9 +110,6 @@ function App() {
 
           <Route path='/organo' element={< EventOrganizerDashboard/>} />
           <Route path='/mentos' element={< MentorDashboardin/>} />
-
-          <Route path='/registration' element={<Registration/>}/>
-          <Route path='/verification' element={<Verification/>}/>
         </Routes>
         <Footer />
       </div>
