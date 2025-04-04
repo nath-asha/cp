@@ -41,7 +41,7 @@ const Navbar = () => {
                                 {user.role === 'organiser' && (
                                     <li><Link to="/organiserdash">Organiser Dashboard</Link></li>
                                 )}
-                                <li>
+                                
                                     <Link
                                         to="/logino"
                                         onClick={() => {
@@ -51,7 +51,6 @@ const Navbar = () => {
                                     >
                                         Logout
                                     </Link>
-                                </li>
                             </ul>
                         )}
                     </li>

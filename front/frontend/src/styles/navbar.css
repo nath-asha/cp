@@ -71,19 +71,29 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: white;
+  background-color: rgb(33, 4, 98);
   border: 1px solid #ccc;
   padding: 10px;
   z-index: 1000;
   list-style: none;
   width: 100%;
-  color: black;
-
+  color: #000000;
 }
 
-.dropdown-menu li {
+.dropdown-menu ul {
+  color: black;
+  background-color: rgb(33, 4, 98);
+
+}.dropdown-menu li {
   display: block;
   padding: 5px 10px;
+  color: black;
+  background-color: rgb(33, 4, 98);
+
+}
+.dropdown-menu li {
+  display: block;
+  /* padding: 5px 10px; */
   color: black;
 }
 
