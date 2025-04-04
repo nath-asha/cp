@@ -353,6 +353,61 @@ const EventManager = () => {
                         required
                     />
                 </div>
+                <div className="mb-3">
+                    <input
+                        type='date'
+                        placeholder="Date"
+                        // value={formData.date}
+                        // onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                        // className="form-control"
+                        // required
+                    />
+                </div>
+
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        placeholder="venue/type(online/offline)"
+                    />
+                </div>
+
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        placeholder="prizes(comma separated)"
+                    />
+                </div>
+
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        placeholder="tracks"
+                    />
+                </div>
+
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        placeholder="schedule"
+                    />
+                </div>
+
+                <div className="mb-3">
+                    <input
+                        type='text'
+                        placeholder="schedule details"
+                    />
+                </div>
+
+                <div className="mb-3">
+                    <input
+                        type='text'
+                        placeholder="important dates"
+                    />
+                </div>
+
+
+
                 <button type="submit" className="btn btn-primary">
                     {currentEvent ? 'Update' : 'Add'} Event
                 </button>
