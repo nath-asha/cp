@@ -29,6 +29,8 @@ events participated must be mentioned in dashboard of participants
 if necessary badges will be stored in digital profile of the participant as milestones
 mentors will be selected after registration according to requirement
 upload the file containing schedule(excel,csv) to get schedule of the event
+new users ,page views, engagement in organiserdashboard
+
 
 
 

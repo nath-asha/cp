@@ -177,6 +177,13 @@ FontAwesomeIcon icon{
 button{
   width: 25%;
 }
+
+.timeline{
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
 /* html, body {
   margin: 0;
   padding: 0;
