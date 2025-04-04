@@ -34,19 +34,19 @@ const Dashboard = () => {
 
                 setData({
                     ...dashboardData.data,
-                    teams: teamData.data,
-                    submissions: submissionData.data.length ? submissionData.data : [],
-                    // teamRequests: dashboardData.data.teamRequests.length ? dashboardData.data.teamRequests : [],
-                    teamRequests: teamData.data,
-                    notifications: notificationData.data.length ? notificationData.data : [],
-                    profile: dashboardData.data.profile.username ? dashboardData.data.profile : [],
-                    // {
+                teams: teamData.data || [],
+                submissions: submissionData.data || [],
+                teamRequests: teamData.data || [],
+                notifications: notificationData.data || [],
+                profile: dashboardData.data.profile?.username ? dashboardData.data.profile : {},
+                mentor: dashboardData.data.mentor?.name ? dashboardData.data.mentor : {}
+            // {
                     //     username: "Jordan Smith",
                     //     email: "jordan@example.com",
                     //     _id: "P12345",
                     //     team: "Team Hackers"
                     // },
-                    mentor: dashboardData.data.mentor.name ? dashboardData.data.mentor : []
+                    // mentor: dashboardData.data.mentor.name ? dashboardData.data.mentor : []
                     // {
                     //     name: "Dr. Alex Johnson",
                     //     email: "alex@mentor.edu"
