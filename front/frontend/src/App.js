@@ -80,53 +80,63 @@ function App() {
 
           <Route path="/gallery" element={<Gallery />} />
           {/* <Route path="/submissions" element={<ProtectedRoute element={<Submissions />} />} /> */}
-          <Route path="/submissions" element={<Submissions />} />
+          <Route path="/submissions" element={<PrivateRoute allowedRoles={['user']}>
+          <Submissions />
+            </PrivateRoute> } />
 
           <Route path="/lay" element={<Lay />} />
           <Route path="/mentor" element={<Mentor />} />
           <Route path="/displaychallenge/:trackId" element={<DisplayChallenge />} />
 
         
-          <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
-          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+          {/* <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} /> */}
+          <Route path="/dashboard" element={
+            <PrivateRoute allowedRoles={['user', 'organizer']}>
+              <Dashboard />
+            </PrivateRoute>
+          } />
 
-          <Route path="/dash1" element={<Dashboard1/>}/>
-          <Route path="/dash2" element={<ParticipantDashboard />} />
+          <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
+           <ParticipantDashboard /></PrivateRoute>} />
 
-          <Route path="/demodash" element={<Demodash/>}/>
+          <Route path="/demodash" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
+          <Demodash/>
+            </PrivateRoute> }/>
 
-          <Route path="/evaluation/:teamId" element={<EvaluationPortal/>}/>
+          <Route path="/evaluation/:teamId" element={<PrivateRoute allowedRoles={['admin', 'organizer','mentor','judge']}>
+          <EvaluationPortal/>
+            </PrivateRoute> }/>
           {/* <Route path='/mentordash' element={<MentorDashboard />}/> */}
 
 
           <Route path="/contact" element={<ContactUS />} />
-          <Route path="/teams" element={<Teammanager />} />
-          <Route path="/organiserdash" element={<Organiserdash />} />
+          <Route path="/teams" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
+          <Teammanager />            </PrivateRoute>} />
+          <Route path="/organiserdash" element={ <PrivateRoute allowedRoles={['admin', 'organizer']}>
+              <Organiserdash />
+            </PrivateRoute> } />
 
           <Route path="/events" element={<Events />} />
-          <Route path='/eventlist' element={<Eventlist/>}/>
-          <Route path='/community' element={<Community/>} />
-
+          <Route path='/eventlist' element={<PrivateRoute allowedRoles={['admin', 'organizer']}> <Eventlist/> </PrivateRoute>}/>
+          <Route path='/community' element={<PrivateRoute allowedRoles={['admin','mentor','user', 'organizer']}><Community/></PrivateRoute>} />
           <Route path='/logino' element={<Logino/>}/>
           <Route path='/about' element={<About/>}/>
-          <Route path='/profile' element={<Profile/>}/>
+          <Route path='/profile' element={<PrivateRoute allowedRoles={['admin','mentor','user','judge', 'organizer']}><Profile/></PrivateRoute>}/>
 
           <Route path='/displayevent' element={<Displayevent/>}/>
 
           {/* <Route path='/mento' element={<MentorDashboardo/>}/> */}
-
           <Route path='/organo' element={< EventOrganizerDashboard/>} />
           <Route path='/mentos' element={< MentorDashboardin/>} />
           <Route path='/homepage' element={<Home/>}/>
-          {/* <PrivateRoute path="/admin" component={AdminDashboard} allowedRoles={['admin']} /> */}
           <Route
-              path="/mentordash"
-              element={
-                <PrivateRoute allowedRoles={['Mentor']}>
-                  <MentorDashboard />
-                </PrivateRoute>
-              }
-            />
+          path="/mentordash"
+          element={
+            <PrivateRoute allowedRoles={['Mentor']}>
+              <MentorDashboard />
+            </PrivateRoute>
+          }
+        />
       {/* <PrivateRoute path="/viewer" component={ViewerPage} allowedRoles={['admin', 'editor', 'viewer']} /> */}
       <Route path="/unauthorized" component={Unauthorized} />
         </Routes>
