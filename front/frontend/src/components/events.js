@@ -60,7 +60,8 @@ function Events() {
       <Carousel.Caption>
         <h3 className='text-black'>{event.title}</h3>
         <p className='text-black'>{event.description}</p>
-        <Link to={`/challenges/${event.eventId}`}>
+        {/* <Link to={`/challenges/${event.eventId}`}> */}
+        <Link to={`/displayevent`}>
           <button>Know more</button>
         </Link>
       </Carousel.Caption>

@@ -102,7 +102,7 @@ const EvaluationPortal = () => {
 
   return (
     <div className="container mt-5">
-      <h1 className="text-center mb-4">Evaluation Portal</h1>
+      <h1 className="text-center mb-4 text-black">Evaluation Portal</h1>
 
       {teams.length > 0 && (
         <>
@@ -119,6 +119,7 @@ const EvaluationPortal = () => {
               </Card>
             </Col>
             <Col md={6}>
+            <h6>Progress bar no of teams left</h6>
               <ProgressBar
                 now={((currentTeamIndex + 1) / teams.length) * 100}
                 label={`${currentTeamIndex + 1} / ${teams.length}`}
