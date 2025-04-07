@@ -1,3 +1,4 @@
+who creates team becomes the team leader and then can choose the problem statment
 lead to proper display events page from know more in events page
 login state has to stay until session expires
 feedback button in events page? profile dashboard to collect feedback or survey

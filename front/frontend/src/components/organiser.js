@@ -112,6 +112,14 @@ const EventOrganizerDashboard = () => {
               </Card>
             </div>
             <div className="col-md-4">
+              <h5>Things needed</h5>
+              <input type='checkbox' /> <span>chairs 100</span><br />
+              <input type='checkbox' /> <span>tables 50</span><br />
+              <input type='checkbox' /> <span>projectors 2</span><br />
+              <input type='checkbox' /> <span>water bottles for guests</span><br />
+              <input type='checkbox' /> <span>snacks for guests</span><br />
+              </div>
+            <div className="col-md-4">
               <Card className="p-3">
                 <div className="d-flex justify-content-between align-items-center">
                   <h6>Upcoming Events</h6>
