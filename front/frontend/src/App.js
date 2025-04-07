@@ -64,7 +64,7 @@ function App() {
       <div className="App">
       <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<HackaFestHome />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/scoreboard" element={<Scoreboard />} />
           <Route path="/challenges" element={<Challenges />} />
@@ -114,7 +114,7 @@ function App() {
 
           <Route path='/organo' element={< EventOrganizerDashboard/>} />
           <Route path='/mentos' element={< MentorDashboardin/>} />
-          <Route path='/homepage' element={<HackaFestHome/>}/>
+          <Route path='/homepage' element={<Home/>}/>
         </Routes>
         <Footer />
       </div>

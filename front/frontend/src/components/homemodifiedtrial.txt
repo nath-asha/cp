@@ -1,0 +1,122 @@
+import React, { useRef, useState } from "react";
+import "../App.css";
+import "./homemodified.css";
+import { Link } from "react-router-dom";
+import TimelineObserver from "react-timeline-animation";
+
+const HackaFestHome = () => {
+  const [message1, setMessage1] = useState("");
+  const [message2, setMessage2] = useState("");
+  const [message3, setMessage3] = useState("");
+
+  const handleTimeline1 = () => {
+    setMessage1("Step one: Register");
+  };
+
+  const handleTimeline2 = () => {
+    setMessage2("Step two: Find an Event");
+  };
+
+  const handleTimeline3 = () => {
+    setMessage3("Step three: Join a Team");
+    fireConfetti();
+  };
+
+  const fireConfetti = () => {
+    console.log("Confetti fired!");
+  };
+
+  return (
+    <div className="hackafest-home">
+      <section className="hero">
+        <div className="hero-content">
+          <h1>HackaFest: Your Digital Hackathon Hub</h1>
+          <p>Effortlessly register, form teams, and join exciting hackathons from anywhere.</p>
+          <div className="hero-buttons">
+            <Link to="/register" className="hero-button register">
+              Register Now
+            </Link>
+            <Link to="/events" className="hero-button events">
+              Explore Events
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="features">
+        <div className="container">
+          <h2>Key Features</h2>
+          <div className="feature-grid">
+            <div className="feature-item">
+              <i className="fas fa-user-plus"></i>
+              <h3>Easy Registration</h3>
+              <p>Quickly sign up and join hackathons with a few clicks.</p>
+            </div>
+            <div className="feature-item">
+              <i className="fas fa-users"></i>
+              <h3>Team Formation</h3>
+              <p>Find teammates or create your own team with our intuitive tools.</p>
+            </div>
+            <div className="feature-item">
+              <i className="fas fa-calendar-alt"></i>
+              <h3>Event Listings</h3>
+              <p>Browse a wide range of hackathons and find the perfect fit for your skills.</p>
+            </div>
+            <div className="feature-item">
+              <i className="fas fa-comments"></i>
+              <h3>Real-time Communication</h3>
+              <p>Stay connected with your team and organizers through integrated chat.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="how-it-works">
+        <div className="container">
+          <h2>How It Works</h2>
+          <TimelineObserver
+            initialColor="#e5e5e5"
+            fillColor="#53b374"
+            handleObserve={(setObserver) => (
+              <div className="wrapper">
+                <div id="timeline1" className="timeline" />
+                <div className="circleWrapper">
+                  <div id="circle1" className="circle">
+                    1
+                  </div>
+                  <div className="message">{message1}</div>
+                </div>
+                <div id="timeline2" className="timeline" />
+                <div className="circleWrapper">
+                  <div id="circle2" className="circle">
+                    2
+                  </div>
+                  <div className="message">{message2}</div>
+                </div>
+                <div id="timeline3" className="timeline" />
+                <div className="circleWrapper">
+                  <div id="circle3" className="circle">
+                    3
+                  </div>
+                  <div className="message">{message3}</div>
+                </div>
+              </div>
+            )}
+          />
+        </div>
+      </section>
+
+      <section className="call-to-action">
+        <div className="container">
+          <h2>Ready to Join a Hackathon?</h2>
+          <p>Start your journey with HackaFest and unleash your creativity.</p>
+          <Link to="/register" className="cta-button">
+            Get Started
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default HackaFestHome;
