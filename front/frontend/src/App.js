@@ -120,13 +120,13 @@ function App() {
           <Route path='/homepage' element={<Home/>}/>
           {/* <PrivateRoute path="/admin" component={AdminDashboard} allowedRoles={['admin']} /> */}
           <Route
-        path="/mentordash"
-        element={
-          <PrivateRoute allowedRoles={'Mentor'}>
-            <MentorDashboard />
-          </PrivateRoute>
-        }
-      />
+              path="/mentordash"
+              element={
+                <PrivateRoute allowedRoles={['Mentor']}>
+                  <MentorDashboard />
+                </PrivateRoute>
+              }
+            />
       {/* <PrivateRoute path="/viewer" component={ViewerPage} allowedRoles={['admin', 'editor', 'viewer']} /> */}
       <Route path="/unauthorized" component={Unauthorized} />
         </Routes>

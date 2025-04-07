@@ -67,7 +67,7 @@ const Logino = () => {
                              <div>You are logged in!</div>
                             {role && <p>Your role is: {role}</p>}
                             {role === "user" && <button>Choose</button>}
-                            <button onClick={() => { handleInputChange(); handleLogout(); }}>Logout</button>
+                            <button onClick={() => { handleLogout(); }}>Logout</button>
                         
                         </div>
                     )}

@@ -38,7 +38,7 @@ function Events() {
 
   return (
     <Container className="mt-4">
-      <h2 className="mb-4">Events</h2>
+      <h2 className="mb-4 text-black">Events</h2>
       <input
         type="text"
         placeholder="Search events by name..."
@@ -58,8 +58,8 @@ function Events() {
         alt={event.title}
       />
       <Carousel.Caption>
-        <h3>{event.title}</h3>
-        <p>{event.description}</p>
+        <h3 className='text-black'>{event.title}</h3>
+        <p className='text-black'>{event.description}</p>
         <Link to={`/challenges/${event.eventId}`}>
           <button>Know more</button>
         </Link>
