@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+//the messages will be stored in contact or queries collection and shown in organiser dashboard
 const ContactUS = () => {
     const [buttonText, setButtonText] = useState('Sign in');
     const [buttonClass, setButtonClass] = useState(' text-black');

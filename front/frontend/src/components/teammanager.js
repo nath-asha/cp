@@ -101,7 +101,7 @@ function Teammanager() {
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">{participant.firstName}</h5>
-                                <h6 className="card-subtitle mb-2 text-muted">{participant.email}</h6>
+                                {/* <h6 className="card-subtitle mb-2 text-muted">{participant.email}</h6> */}
                                 <button>send request</button>
                             </div>
                         </div>

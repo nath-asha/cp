@@ -49,9 +49,9 @@ const DisplayChallenge = () => {
             </div>
           </div>
           <div className="card-footer d-flex justify-content-between">
-            <button className="btn btn-primary" onClick={handleNextChallenge}>
+            {/* <button className="btn btn-primary" onClick={handleNextChallenge}>
               Next Challenge
-            </button>
+            </button> */}
             <Link to="/challenges" className="btn btn-secondary">
               Back to Challenges
             </Link>

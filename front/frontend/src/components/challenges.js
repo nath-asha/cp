@@ -57,7 +57,7 @@ function Challenges() {
           </div>
         </div>
       ))}
-      <button onClick={() => window.location.href = '/events'}>Back</button>
+      <button  onClick={() => window.location.href = '/events'}>Back</button>
     </div>
   );
 }
