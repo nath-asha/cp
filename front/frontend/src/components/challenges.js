@@ -51,7 +51,7 @@ function Challenges() {
                 render={() => <button>Choose</button>}
               /> */}
               {role === 'user' && <button>Choose</button>}
-              {role !== 'user' && <p>You cant participate register first</p>}
+              {role !== 'user' && <p>Please register as Participant first</p>}
 
             </div>
           </div>

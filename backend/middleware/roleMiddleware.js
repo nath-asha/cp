@@ -10,7 +10,8 @@ const checkRole = (role,action) => {
         }
       };
     };
-    
+    //the role is shown in console after refreshing and the choose button is visible only to the user but only problem is the role is 
+    //stored after refreshing after login and not before that but login state goes after refresh
 module.exports = checkRole;
 
 // const roles = {
