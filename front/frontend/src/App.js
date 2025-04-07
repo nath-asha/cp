@@ -98,6 +98,8 @@ function App() {
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
            <ParticipantDashboard /></PrivateRoute>} />
+           <Route path="/dash2" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
+           <Dashboard1 /></PrivateRoute>} />
 
           <Route path="/demodash" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
           <Demodash/>

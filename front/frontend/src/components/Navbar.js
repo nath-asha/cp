@@ -38,7 +38,7 @@ const Navbar = () => {
                                 {user.role === 'Mentor' && (
                                     <li><Link to="/mentordash">Mentor Dashboard</Link></li>
                                 )}
-                                {user.role === 'organiser' && (
+                                {user.role === 'organizer' && (
                                     <li><Link to="/organiserdash">Organiser Dashboard</Link></li>
                                 )}
                                 <li>

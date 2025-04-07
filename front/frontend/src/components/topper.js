@@ -119,7 +119,8 @@ const Displayevent = () => {
                                             <Card>
                                                 <CardBody>
                                                 <p>Join the WhatsApp group here</p>
-                                                <button className="btn btn-success">Join group</button>
+                                                {role === 'user'||'mentor' && <button className="btn btn-success">Join group</button>}
+                                                {role !== 'user' || 'mentor' && <p>To Apply please register as Participant first</p>}
                                                 </CardBody>
                                             </Card>
                                         </Col>
@@ -127,7 +128,11 @@ const Displayevent = () => {
                                         <h4>Requirements</h4>
                                         <h5>What to build?</h5>
                                         <h5>What to submit</h5>
-                                        <h6>github link to the project repository<br></br>Video demo of the project</h6>
+                                        <ul>
+                                            <li>github link</li>
+                                            <li>Link to the project repository</li>
+                                            <li>Video demo of the project</li>
+                                        </ul>
                                         <h4>Judging Criteria</h4>
                                     </Row>
                                     {/* <div className='faq'>
