@@ -121,7 +121,7 @@ function App() {
           <Route
         path="/mentordash"
         element={
-          <PrivateRoute allowedRoles={['organizer', 'mentor']}>
+          <PrivateRoute allowedRoles={['Mentor']}>
             <MentorDashboard />
           </PrivateRoute>
         }
