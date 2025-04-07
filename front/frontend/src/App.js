@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'r
 // import { useState, useEffect } from 'react';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 import { AuthProvider } from './provider/AuthProvider';
 import PrivateRoute from './components/PrivateRoute';
 import Unauthorized from './components/Unauthorized';

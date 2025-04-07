@@ -4,6 +4,7 @@ import { Card, Container, Nav, Tab, Row, Col, Table, CardBody } from "react-boot
 import {Trophy} from 'lucide-react';
 import Challenges from "./challenges";
 import CountdownTimer from "./CountDown";
+import { getUserRole } from "./auth";
 import Community from "./community";
 import Leaderboard from './Leaderboard';
 //this page contains event details and registration
@@ -12,6 +13,8 @@ import Leaderboard from './Leaderboard';
 const Displayevent = () => {
     const [events, setEvents] = useState([]); // Initialize as an array
     const [selectedEvent, setSelectedEvent] = useState(null); // To handle a specific event
+
+    const role = getUserRole();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -72,8 +75,9 @@ const Displayevent = () => {
                                 <Tab.Pane eventKey="overview">
                                     <Row className="g-4">
                                         <CountdownTimer />
-                                        </Row>   
-                                         <button> Register now!</button>
+                                        </Row>  
+                                        {role === 'user' && <button> Register now!</button>}
+                                        {role !== 'user' && <p>Please register as Participant first</p>}
                                         <Row>
                                         <Col md={6}>
                                             <img

@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useAuth } from "../provider/AuthProvider";
 import { useNavigate, useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { getUserRole, clearToken } from "./auth";
 
 const Logino = () => {
     const [values, setValues] = useState({
         email: "",
         password: "",
     });
+
+    const [role, setRole] = useState(null);
+
     const [submitted, setSubmitted] = useState(false);
     const [valid, setValid] = useState(false);
     const { login, error } = useAuth(); // Get error from provider
@@ -37,15 +41,34 @@ const Logino = () => {
         }
     };
 
+    useEffect(() => {
+        // Get role on initial load
+        const userRole = getUserRole();
+        setRole(userRole);
+        console.log("User Role on Load:", userRole);
+    }, []);
+
+    const handleLogout = () => {
+        clearToken();
+        setRole(null);
+    };
+
+
     return (
         <div className="container">
             <div className="form-container">
                 <form className="register-form" onSubmit={handleSubmit}>
                     {submitted && valid && (
                         <div className="success-message">
-                            <h3>Welcome!</h3>
+                            {/* <h3>Welcome!</h3>
                             <div>You are logged in!</div>
-                            <button name="logout" onClick={handleInputChange}>Logout</button>
+                            <button name="logout" onClick={handleInputChange}>Logout</button> */}
+                             <h3>Welcome to HackaFest</h3>
+                             <div>You are logged in!</div>
+                            {role && <p>Your role is: {role}</p>}
+                            {role === "user" && <button>Choose</button>}
+                            <button onClick={() => { handleInputChange(); handleLogout(); }}>Logout</button>
+                        
                         </div>
                     )}
 
