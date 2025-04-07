@@ -51,7 +51,7 @@ const HackaFestHome = () => {
                         <div className="feature-item">
                             <i className="fas fa-users"></i>
                             <h3>Team Formation</h3>
-                            <p>Find teammates or create your own team with our intuitive tools.</p>
+                            <p>Find teammates or create your own team.</p>
                         </div>
                         <div className="feature-item">
                             <i className="fas fa-calendar-alt"></i>
