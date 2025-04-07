@@ -3,12 +3,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import RoleBasedComponent from './rolebasedbutton';
 import { useParams } from 'react-router-dom'; // Import useParams
+import { getUserRole } from './auth';
+
 
 function Challenges() {
   const [challenges, setChallenges] = useState([]);
   const { eventId } = useParams(); // Get eventId from URL parameters
     const [currentChallengeIndex, setCurrentChallengeIndex] = useState(0);
   
+    //for role based access on choose component
+    const role = getUserRole();
     
   useEffect(() => {
     const fetchData = async () => {
@@ -41,11 +45,14 @@ function Challenges() {
               <h5 className="card-title">{challenge.title}</h5>
               <h6 className="card-subtitle mb-2 text-muted">{challenge.description}</h6>
               <a href={`/displaychallenge/${challenge.track_id}`}><button>Know more</button></a>
-              <RoleBasedComponent
+              {/* <RoleBasedComponent
                 role={"user"}
                 supportedRoles={["admin", "mentor", "user"]}
                 render={() => <button>Choose</button>}
-              />
+              /> */}
+              {role === 'user' && <button>Choose</button>}
+              {role !== 'user' && <p>You cant participate register first</p>}
+
             </div>
           </div>
         </div>

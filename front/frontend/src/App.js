@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'r
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { AuthProvider } from './provider/AuthProvider';
+import PrivateRoute from './components/PrivateRoute';
+import Unauthorized from './components/Unauthorized';
 
 import Navbar from './components/Navbar';
 
@@ -93,7 +95,7 @@ function App() {
           <Route path="/demodash" element={<Demodash/>}/>
 
           <Route path="/evaluation/:teamId" element={<EvaluationPortal/>}/>
-          <Route path='/mentordash' element={<MentorDashboard />}/>
+          {/* <Route path='/mentordash' element={<MentorDashboard />}/> */}
 
 
           <Route path="/contact" element={<ContactUS />} />
@@ -115,6 +117,17 @@ function App() {
           <Route path='/organo' element={< EventOrganizerDashboard/>} />
           <Route path='/mentos' element={< MentorDashboardin/>} />
           <Route path='/homepage' element={<Home/>}/>
+          {/* <PrivateRoute path="/admin" component={AdminDashboard} allowedRoles={['admin']} /> */}
+          <Route
+        path="/mentordash"
+        element={
+          <PrivateRoute allowedRoles={['organizer', 'mentor']}>
+            <MentorDashboard />
+          </PrivateRoute>
+        }
+      />
+      {/* <PrivateRoute path="/viewer" component={ViewerPage} allowedRoles={['admin', 'editor', 'viewer']} /> */}
+      <Route path="/unauthorized" component={Unauthorized} />
         </Routes>
         <Footer />
       </div>
