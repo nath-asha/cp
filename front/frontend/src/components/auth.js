@@ -19,6 +19,22 @@ export const getUserRole = () => {
     return null;
 };
 
+// Decode token to get user ID
+export const getUserId = () => {
+    const token = getToken();
+    if (token) {
+        try {
+            const decoded = jwtDecode(token);
+            console.log("Decoded user ID:", decoded.id);
+            return decoded.id; // Assuming the token contains a field named 'id'
+        } catch (error) {
+            console.error("Error decoding token:", error);
+            return null;
+        }
+    }
+    return null;
+};
+
 // Save token to localStorage
 export const setToken = (token) => {
     localStorage.setItem("token", token);

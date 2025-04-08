@@ -330,6 +330,28 @@ router.get('/challenges/:eventId', async (req, res) => {
     }
 });
 
+router.post('/choose-challenge', async (req, res) => {
+    const { user_id, track_id } = req.body;
+
+    try {
+        // Find the user and update their chosen challenge
+        const updatedUser = await user.findOneAndUpdate(
+            { _id: user_id },
+            { $set: { chosen_challenge: track_id } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'Challenge chosen successfully', user: updatedUser });
+    } catch (err) {
+        console.error('Error saving challenge choice:', err);
+        res.status(500).json({ error: 'Failed to choose challenge' });
+    }
+});
+
 //changes in events model led to this
 // router.post('/events', async (req, res) => {
 //     try {
