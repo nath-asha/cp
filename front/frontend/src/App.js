@@ -125,7 +125,7 @@ function App() {
           <Route path='/about' element={<About/>}/>
           <Route path='/profile' element={<PrivateRoute allowedRoles={['admin','mentor','user','judge', 'organizer']}><Profile/></PrivateRoute>}/>
 
-          <Route path='/displayevent' element={<Displayevent/>}/>
+          <Route path='/displayevent/:eventId' element={<Displayevent/>}/>
 
           {/* <Route path='/mento' element={<MentorDashboardo/>}/> */}
           <Route path='/organo' element={< EventOrganizerDashboard/>} />

@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom'; // Import useParams and Link
 
 const DisplayChallenge = () => {
   const { trackId } = useParams(); // Get trackId from URL parameters
+  const { eventId } = useParams(); // Get trackId from URL parameters
   const [challenges, setChallenges] = useState([]);
   const [currentChallengeIndex, setCurrentChallengeIndex] = useState(0);
 
@@ -24,9 +25,26 @@ const DisplayChallenge = () => {
     fetchData();
   }, [trackId]); // Run effect when trackId changes
 
-  const handleNextChallenge = () => {
-    setCurrentChallengeIndex((prevIndex) => (prevIndex + 1) % challenges.length);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/challenges/${eventId}`); // Fetch based on trackId
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setChallenges(data);
+      } catch (err) {
+        console.error('Error fetching problem statement data:', err);
+      }
+    };
+
+    fetchData();
+  }, [eventId]);
+
+  // const handleNextChallenge = () => {
+  //   setCurrentChallengeIndex((prevIndex) => (prevIndex + 1) % challenges.length);
+  // };
 
   return (
     <div className="container mt-4">

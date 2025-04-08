@@ -7,10 +7,12 @@ import CountdownTimer from "./CountDown";
 import { getUserRole } from "./auth";
 import Community from "./community";
 import Leaderboard from './Leaderboard';
+import { useParams } from "react-router-dom";
 //this page contains event details and registration
 
 
 const Displayevent = () => {
+    const eventId = useParams().eventId; // Get eventId from URL parameters
     const [events, setEvents] = useState([]); // Initialize as an array
     const [selectedEvent, setSelectedEvent] = useState(null); // To handle a specific event
 
@@ -19,21 +21,22 @@ const Displayevent = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/challenges`);
+                const response = await fetch(`http://localhost:5000/displaychallenge/${eventId}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const data = await response.json();
                 setEvents(data);
-                if (data.length > 0) {
-                    setSelectedEvent(data[0]); // Set the first event as the default selected event
-                }
+                console.log(data);
+                // if (data.length > 0) {
+                //     setSelectedEvent(data[0]); // Set the first event as the default selected event
+                // }
             } catch (err) {
                 console.error('Error fetching challenges:', err);
             }
         };
         fetchData();
-    }, []);
+    }, [eventId]);
 
     return (
         <div>
@@ -264,3 +267,52 @@ const Displayevent = () => {
 };
 
 export default Displayevent;
+{/* Add important dates with functions to make it visually appealing */}
+                    {/* <div className='faq'>
+                <div className="accordion" id="accordionFlushExample">
+                    <div className="accordion-item">
+                        <p className="accordion-header">
+                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                What software do I need?
+                            </button>
+                        </p>
+                        <div id="flush-collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div className="accordion-body">
+                                Node.js and npm (or yarn).
+                                A code editor (VS Code, Sublime Text, Atom).
+                                A web browser (Chrome, Firefox).
+                                Git (for version control).
+                            </div>
+                        </div>
+                    </div>
+                    <div className="accordion-item">
+                        <h2 className="accordion-header">
+                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                Should I bring a power adapter?
+                            </button>
+                        </h2>
+                        <div id="flush-collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div className="accordion-body"> Yes, always bring a power adapter. Hackathons can be long, and you don't want your laptop to run out of battery.
+                            </div>
+                        </div>
+                    </div>
+                    <div className="accordion-item">
+                        <h2 className="accordion-header">
+                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                What if I run into technical issues?
+                            </button>
+                        </h2>
+                        <div id="flush-collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div className="accordion-body">Work as a team to troubleshoot.
+                                Utilize offline documentation.
+                                Ask the hackathon organizers for assistance</div>
+                        </div>
+                    </div>
+                </div>
+            </div> */}
+              {/* <Card>
+                                                <Card.Body>
+                                                <button>Register now!</button>
+                                                    {/* <h5>{selectedEvent?.type || "Offline"}</h5> 
+                                                </Card.Body>
+                                            </Card> */}

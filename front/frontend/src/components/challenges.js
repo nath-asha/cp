@@ -96,7 +96,7 @@ function Challenges() {
                   </button>
                 ) : (
                   <p className="text-black mt-2">
-                    Please register as a Participant first.
+                    Please register for the event first.
                   </p>
                 )}
               </div>

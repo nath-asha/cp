@@ -51,43 +51,14 @@ const HackaFestHome = () => {
 
                     <p>Effortlessly register, form teams, and join exciting hackathons from anywhere.</p>
                     <div className="hero-buttons">
-                        <Link to="/register" className="btn btn-primary">Register Now</Link>
+                        <Link to="/lay" className="btn btn-primary">Register Now</Link>
                         <Link to="/events" className="btn btn-outline-primary">Explore Events</Link>
                     </div>
                 </div>
             </section>
 
-            {/* Features Section */}
-            <section className="features">
-                <div className="container">
-                    <h2 className="section-title">Key Features</h2>
-                    <div className="feature-grid">
-                        <div className="feature-item">
-                            <User className="fas fa-user-plus feature-icon" />
-                            <h3>Easy Registration</h3>
-                            <p>Quickly sign up and join hackathons with a few clicks.</p>
-                        </div>
-                        <div className="feature-item">
-                            <Users className="fas fa-users feature-icon" />
-                            <h3>Team Formation</h3>
-                            <p>Find teammates or create your own team.</p>
-                        </div>
-                        <div className="feature-item">
-                            <Calendar className="fas fa-calendar-alt feature-icon" />
-                            <h3>Event Listings</h3>
-                            <p>Browse a wide range of hackathons and find the perfect fit for your skills.</p>
-                        </div>
-                        <div className="feature-item">
-                            <Group className="fas fa-comments feature-icon" />
-                            <h3>Real-time Communication</h3>
-                            <p>Stay connected with your team and organizers through integrated chat.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Stats Section */}
-            <section className="stats">
+              {/* Stats Section */}
+              <section className="stats">
                 <div className="container">
                     <h2 className="section-title">HackaFest Stats</h2>
                     <div className="stats-grid">
@@ -112,7 +83,7 @@ const HackaFestHome = () => {
                     </div>
                 </div>
             </section>
-
+          
             {/* How It Works Section */}
             <section ref={timelineRef} className="how-it-works">
                 <div className="container">
@@ -157,7 +128,7 @@ const HackaFestHome = () => {
                                         className="event-thumbnail"
                                     />
                                     <h5 className="event-title">{event.title}</h5>
-                                    <a href={`/displaychallenge/${event.eventId}`}>
+                                    <a href={`/displayevent/${event.eventId}`}>
                                         <Badge pill bg="primary">Know More</Badge>
                                     </a>
                                 </div>
@@ -173,6 +144,36 @@ const HackaFestHome = () => {
                     <h3>Ready to Join a Hackathon?</h3>
                     <p>Start your journey with HackaFest and unleash your creativity.</p>
                     <Link to="/register" className="btn btn-primary">Get Started</Link>
+                </div>
+            </section>
+
+            
+            {/* Features Section */}
+            <section className="features">
+                <div className="container">
+                    <h2 className="section-title">Key Features</h2>
+                    <div className="feature-grid">
+                        <div className="feature-item">
+                            <User className="fas fa-user-plus feature-icon" />
+                            <h3>Easy Registration</h3>
+                            <p>Quickly sign up and join hackathons with a few clicks.</p>
+                        </div>
+                        <div className="feature-item">
+                            <Users className="fas fa-users feature-icon" />
+                            <h3>Team Formation</h3>
+                            <p>Find teammates or create your own team.</p>
+                        </div>
+                        <div className="feature-item">
+                            <Calendar className="fas fa-calendar-alt feature-icon" />
+                            <h3>Event Listings</h3>
+                            <p>Browse a wide range of hackathons and find the perfect fit for your skills.</p>
+                        </div>
+                        <div className="feature-item">
+                            <Group className="fas fa-comments feature-icon" />
+                            <h3>Real-time Communication</h3>
+                            <p>Stay connected with your team and organizers through integrated chat.</p>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
