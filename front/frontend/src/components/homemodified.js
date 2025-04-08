@@ -3,18 +3,33 @@ import '../App.css';
 import axios from 'axios';
 import './homemodified.css';
 import { Link } from 'react-router-dom';
+import { Carousel } from 'react-bootstrap';
 import Timeline from 'react-timeline-animation'; // Import Timeline
 import CountUp from 'react-countup'; // Import CountUp for number animation
 
 
 const HackaFestHome = () => {
     const [stats, setStats] = useState({ participants: 0, problems: 0, submissions: 0 });
+    const [events, setEvents] = useState([]);
+    const [eventId, setEventId] = useState(null); // State to store the selected event ID
+    const [eventDetails, setEventDetails] = useState(null); // State to store event details
+    const timelineRef = useRef(null);
+
     useEffect(() => {
         axios.get("http://localhost:5000/api/stats")
             .then(response => setStats(response.data))
             .catch(error => console.error(error));
-    }, []);
-    const timelineRef = useRef(null);
+
+        axios.get("http://localhost:5000/events")
+            .then(response => setEvents(response.data))
+            .catch(error => console.error(error));
+
+        if (eventId) {
+            axios.get(`http://localhost:5000/displayevents/${eventId}`)
+                .then(response => setEventDetails(response.data))
+                .catch(error => console.error(error));
+        }
+    }, [eventId]);
 
     const animation = [
         {
@@ -75,8 +90,9 @@ const HackaFestHome = () => {
                     </div>
                 </div>
             </section>
+
             <section className="stats">
-            <div className="container">
+                <div className="container">
                     <h2 className="stats-title">HackaFest Stats</h2>
                     <div className="stats-grid">
                         <div className="stat-item bubble-card">
@@ -130,12 +146,39 @@ const HackaFestHome = () => {
                 <Timeline animation={animation} repeat={0} />
             </section>
 
+            <section className="event-slideshow">
+            <div className="container">
+                <h3 className="text-center mb-4">Upcoming Events</h3>
+                <Carousel indicators={false} interval={3000} className="mini-carousel">
+                    {events.map((event, index) => (
+                        <Carousel.Item key={index}>
+                            <div className="event-card">
+                                <img
+                                    src={event.imgUrl}
+                                    alt={event.title}
+                                    className="event-thumbnail d-block mx-auto"
+                                />
+                                <h5 className="event-title text-center mt-3">{event.title}</h5><br></br>
+                                <a href={`/displaychallenge/${event.eventId}`}>
+                                <button className='btn btn-success text-center'>Know more</button> </a>
+                            </div>
+                        </Carousel.Item>
+                    ))}
+                </Carousel>
+            </div>
+        </section>
+
             <section className="call-to-action">
                 <div className="container">
-                    <h2>Ready to Join a Hackathon?</h2>
+                    <h3>Ready to Join a Hackathon?</h3>
                     <p>Start your journey with HackaFest and unleash your creativity.</p>
                     <Link to="/register" className="cta-button">Get Started</Link>
                 </div>
+            </section>
+
+            <section className='eventhappening'>
+                <div className="container">
+                    </div>
             </section>
         </div>
     );

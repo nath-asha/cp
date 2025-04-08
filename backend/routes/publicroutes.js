@@ -352,6 +352,38 @@ router.post('/choose-challenge', async (req, res) => {
     }
 });
 
+router.get('/notifications/:userId', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const notifications = await notify.find({ user_id: userId });
+        res.json(notifications);
+    } catch (err) {
+        console.error('Error fetching notifications:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+router.post('/notifications', async (req, res) => {
+    try {
+        const newNotification = new notify(req.body);
+        await newNotification.save();
+        res.json(newNotification);
+    }catch (err) {
+        console.error("Error posting notification:", err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+router.get('/displaychallenge/:eventId', async (req,res) => {
+    try {
+        const eventId = req.params.eventId;
+        const challenges = await Challenge.find({ eventId: eventId });
+        res.json(challenges);
+    } catch (err) {
+        console.error('Error fetching challenges:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 //changes in events model led to this
 // router.post('/events', async (req, res) => {
 //     try {

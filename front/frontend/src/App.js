@@ -87,6 +87,7 @@ function App() {
           <Route path="/lay" element={<Lay />} />
           <Route path="/mentor" element={<Mentor />} />
           <Route path="/displaychallenge/:trackId" element={<DisplayChallenge />} />
+          <Route path="/displaychallenge/:eventId" element={<DisplayChallenge />} />
 
         
           {/* <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} /> */}
