@@ -13,6 +13,7 @@ const Navbar = () => {
     if (loading) {
         return <nav className="navbar sticky-top">Loading...</nav>;
     }
+    
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);

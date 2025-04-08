@@ -34,7 +34,7 @@ new users ,page views, engagement in organiserdashboard
 
 
 
-
+//users,mentors,organisers are successfully logged in and their role is fetched from the backend and stored in the local storage but after refresh eventhough login stays the ui changes and shows login button which should not happen and the login button must only appear if there is no user or no user is logged in else should show the user icon and the dropdown menu with the options of dashboard and logout. The logout button should also work and remove the token from local storage and redirect to the login page. The user icon should be imported from lucide-react and used in the navbar. The navbar should be responsive and work on all screen sizes. The dropdown menu should also be responsive and work on all screen sizes. The navbar should also have a logo which is a link to the home page. The logo should be imported from the assets folder.
 
 /////////////////////////////////
 proper login with verification of emailconst User = require("../models/userModel");
