@@ -55,13 +55,13 @@
 
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+    gap: 20px; /* Space between columns */
     margin-top: 30px;
 }
 
 .feature-item {
-    padding: 20px;
+    padding: 5px;
     border: 1px solid #eee;
     border-radius: 5px;
 }
@@ -209,6 +209,114 @@ span{
   .carousel-control-next-icon{
     filter: invert(1)
   }
+
+
+  /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+  .hackafest-home {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.hero {
+    background: linear-gradient(135deg, #8c21fe,rgb(74, 210, 255), #4885f0);
+    color: white;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.hero-buttons .btn {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+}
+
+.features {
+    padding: 50px 0;
+    background-color: #f9f9f9;
+}
+
+.feature-grid {
+    display: flexbox;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.feature-item {
+    text-align: center;
+    margin: 20px;
+    max-width: 250px;
+}
+
+.feature-icon {
+    font-size: 3rem;
+    color: #6a11cb;
+    margin-bottom: 10px;
+}
+
+.stats {
+    padding: 50px 0;
+    background-color: #fff;
+}
+
+.stats-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+    margin: 20px;
+    font-size: 1.5rem;
+}
+
+.how-it-works {
+    padding: 50px 0;
+    background-color: #f9f9f9;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.step {
+    text-align: center;
+    margin: 20px;
+    max-width: 200px;
+}
+
+.step-number {
+    font-size: 2rem;
+    color: #d6bbf3;
+    margin-bottom: 10px;
+}
+
+.event-slideshow {
+    padding: 50px 0;
+    background-color: #fff;
+}
+
+.event-card {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    transition: transform 0.3s ease;
+}
+
+.event-card:hover {
+    transform: scale(1.05);
+}
+
+.call-to-action {
+    padding: 50px 0;
+    background: linear-gradient(135deg, #3d83fb, #8818ff);
+    color: white;
+    text-align: center;
+}
 /* .homepage {
     font-family: sans-serif;
     line-height: 1.6;

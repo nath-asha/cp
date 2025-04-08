@@ -1,18 +1,16 @@
-import React, { useState,useEffect,useRef } from 'react';
-import '../App.css';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import './homemodified.css';
 import { Link } from 'react-router-dom';
-import { Carousel,Badge } from 'react-bootstrap';
-import Timeline from 'react-timeline-animation'; // Import Timeline
-import CountUp from 'react-countup'; // Import CountUp for number animation
-
+import { Carousel, Badge } from 'react-bootstrap';
+import Timeline from 'react-timeline-animation';
+import {User,Users,Calendar,Group} from 'lucide-react';
+import CountUp from 'react-countup';
+import '../App.css';
+import './homemodified.css';
 
 const HackaFestHome = () => {
     const [stats, setStats] = useState({ participants: 0, problems: 0, submissions: 0 });
     const [events, setEvents] = useState([]);
-    const [eventId, setEventId] = useState(null); // State to store the selected event ID
-    const [eventDetails, setEventDetails] = useState(null); // State to store event details
     const timelineRef = useRef(null);
 
     useEffect(() => {
@@ -23,13 +21,7 @@ const HackaFestHome = () => {
         axios.get("http://localhost:5000/events")
             .then(response => setEvents(response.data))
             .catch(error => console.error(error));
-
-        if (eventId) {
-            axios.get(`http://localhost:5000/displaychallenge/${eventId}`)
-                .then(response => setEventDetails(response.data))
-                .catch(error => console.error(error));
-        }
-    }, [eventId]);
+    }, []);
 
     const animation = [
         {
@@ -51,39 +43,41 @@ const HackaFestHome = () => {
     ];
 
     return (
-        <div className="hackafest-home" style={{ textAlign: 'center' }}>
+        <div className="hackafest-home">
+            {/* Hero Section */}
             <section className="hero">
                 <div className="hero-content">
                     <h1>HackaFest: Your Digital Hackathon Hub</h1>
                     <p>Effortlessly register, form teams, and join exciting hackathons from anywhere.</p>
                     <div className="hero-buttons">
-                        <Link to="/register" className="hero-button register">Register Now</Link>
-                        <Link to="/events" className="hero-button events">Explore Events</Link>
+                        <Link to="/register" className="btn btn-primary">Register Now</Link>
+                        <Link to="/events" className="btn btn-outline-primary">Explore Events</Link>
                     </div>
                 </div>
             </section>
 
+            {/* Features Section */}
             <section className="features">
                 <div className="container">
-                    <h2>Key Features</h2>
+                    <h2 className="section-title">Key Features</h2>
                     <div className="feature-grid">
                         <div className="feature-item">
-                            <i className="fas fa-user-plus"></i>
+                            <User className="fas fa-user-plus feature-icon" />
                             <h3>Easy Registration</h3>
                             <p>Quickly sign up and join hackathons with a few clicks.</p>
                         </div>
                         <div className="feature-item">
-                            <i className="fas fa-users"></i>
+                            <Users className="fas fa-users feature-icon" />
                             <h3>Team Formation</h3>
                             <p>Find teammates or create your own team.</p>
                         </div>
                         <div className="feature-item">
-                            <i className="fas fa-calendar-alt"></i>
+                            <Calendar className="fas fa-calendar-alt feature-icon" />
                             <h3>Event Listings</h3>
                             <p>Browse a wide range of hackathons and find the perfect fit for your skills.</p>
                         </div>
                         <div className="feature-item">
-                            <i className="fas fa-comments"></i>
+                            <Group className="fas fa-comments feature-icon" />
                             <h3>Real-time Communication</h3>
                             <p>Stay connected with your team and organizers through integrated chat.</p>
                         </div>
@@ -91,35 +85,37 @@ const HackaFestHome = () => {
                 </div>
             </section>
 
+            {/* Stats Section */}
             <section className="stats">
                 <div className="container">
-                    <h2 className="stats-title">HackaFest Stats</h2>
+                    <h2 className="section-title">HackaFest Stats</h2>
                     <div className="stats-grid">
-                        <div className="stat-item bubble-card">
+                        <div className="stat-item">
                             <h3>
-                                <CountUp start={0} end={stats.participants} duration={4} />
+                                <CountUp start={0} end={stats.participants} duration={3} />
                             </h3>
                             <p>Participants</p>
                         </div>
-                        <div className="stat-item bubble-card">
+                        <div className="stat-item">
                             <h3>
-                                <CountUp start={0} end={stats.problems} duration={4} />
+                                <CountUp start={0} end={stats.problems} duration={3} />
                             </h3>
                             <p>Problem Statements</p>
                         </div>
-                        <div className="stat-item bubble-card">
+                        <div className="stat-item">
                             <h3>
-                                <CountUp start={0} end={stats.submissions} duration={4} />
+                                <CountUp start={0} end={stats.submissions} duration={3} />
                             </h3>
-                            <p>Submissions</p>
+                            <p>Projects</p>
                         </div>
                     </div>
                 </div>
             </section>
 
+            {/* How It Works Section */}
             <section ref={timelineRef} className="how-it-works">
                 <div className="container">
-                    <h2>How It Works</h2>
+                    <h2 className="section-title">How It Works</h2>
                     <div className="steps">
                         <div className="step">
                             <span className="step-number">1</span>
@@ -146,9 +142,10 @@ const HackaFestHome = () => {
                 <Timeline animation={animation} repeat={0} />
             </section>
 
+            {/* Event Slideshow Section */}
             <section className="event-slideshow">
                 <div className="container">
-                    <h3 className="text-center mb-4">Upcoming Events</h3>
+                    <h3 className="section-title">Upcoming Events</h3>
                     <Carousel indicators={false} interval={3000} className="mini-carousel">
                         {events.map((event, index) => (
                             <Carousel.Item key={index}>
@@ -156,11 +153,11 @@ const HackaFestHome = () => {
                                     <img
                                         src={event.imgUrl}
                                         alt={event.title}
-                                        className="event-thumbnail d-block mx-auto"
+                                        className="event-thumbnail"
                                     />
-                                    <h5 className="event-title text-center mt-3">{event.title}</h5><br></br>
+                                    <h5 className="event-title">{event.title}</h5>
                                     <a href={`/displaychallenge/${event.eventId}`}>
-                                    <Badge pill bg="primary">know more</Badge>
+                                        <Badge pill bg="primary">Know More</Badge>
                                     </a>
                                 </div>
                             </Carousel.Item>
@@ -169,16 +166,12 @@ const HackaFestHome = () => {
                 </div>
             </section>
 
+            {/* Call to Action Section */}
             <section className="call-to-action">
                 <div className="container">
                     <h3>Ready to Join a Hackathon?</h3>
                     <p>Start your journey with HackaFest and unleash your creativity.</p>
-                    <Link to="/register" className="cta-button">Get Started</Link>
-                </div>
-            </section>
-
-            <section className='eventhappening'>
-                <div className="container">
+                    <Link to="/register" className="btn btn-primary">Get Started</Link>
                 </div>
             </section>
         </div>

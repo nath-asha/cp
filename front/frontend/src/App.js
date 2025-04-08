@@ -5,8 +5,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'r
 
 import { AuthProvider } from './provider/AuthProvider';
 import PrivateRoute from './components/PrivateRoute';
-import Unauthorized from './components/Unauthorized';
-
+import Unauthorized from './components/Unauthorized'; 
 import Navbar from './components/Navbar';
 
 import Leaderboard from './components/Leaderboard';
@@ -141,7 +140,7 @@ function App() {
           }
         />
       {/* <PrivateRoute path="/viewer" component={ViewerPage} allowedRoles={['admin', 'editor', 'viewer']} /> */}
-      <Route path="/unauthorized" component={Unauthorized} />
+      <Route path="/unauthorized" element={<Unauthorized />} />
         </Routes>
         <Footer />
       </div>
