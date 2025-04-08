@@ -9,6 +9,7 @@ import Community from "./community";
 import Leaderboard from './Leaderboard';
 import { useParams } from "react-router-dom";
 //this page contains event details and registration
+//once the participant is registered they can choose event then form a team
 
 
 const Displayevent = () => {

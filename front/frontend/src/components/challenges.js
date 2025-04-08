@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getUserRole, getUserId } from './auth'; // Assuming getUserId() gets the logged-in user's ID
-
+//users must be only allowed to choose challenges after registering for the event
 function Challenges() {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
