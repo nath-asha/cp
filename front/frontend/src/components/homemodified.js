@@ -1,10 +1,19 @@
-import React, { useRef } from 'react';
+import React, { useState,useEffect,useRef } from 'react';
 import '../App.css';
+import axios from 'axios';
 import './homemodified.css';
 import { Link } from 'react-router-dom';
 import Timeline from 'react-timeline-animation'; // Import Timeline
+import CountUp from 'react-countup'; // Import CountUp for number animation
+
 
 const HackaFestHome = () => {
+    const [stats, setStats] = useState({ participants: 0, problems: 0, submissions: 0 });
+    useEffect(() => {
+        axios.get("http://localhost:5000/api/stats")
+            .then(response => setStats(response.data))
+            .catch(error => console.error(error));
+    }, []);
     const timelineRef = useRef(null);
 
     const animation = [
@@ -62,6 +71,31 @@ const HackaFestHome = () => {
                             <i className="fas fa-comments"></i>
                             <h3>Real-time Communication</h3>
                             <p>Stay connected with your team and organizers through integrated chat.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section className="stats">
+            <div className="container">
+                    <h2 className="stats-title">HackaFest Stats</h2>
+                    <div className="stats-grid">
+                        <div className="stat-item bubble-card">
+                            <h3>
+                                <CountUp start={0} end={stats.participants} duration={4} />
+                            </h3>
+                            <p>Participants</p>
+                        </div>
+                        <div className="stat-item bubble-card">
+                            <h3>
+                                <CountUp start={0} end={stats.problems} duration={4} />
+                            </h3>
+                            <p>Problem Statements</p>
+                        </div>
+                        <div className="stat-item bubble-card">
+                            <h3>
+                                <CountUp start={0} end={stats.submissions} duration={4} />
+                            </h3>
+                            <p>Submissions</p>
                         </div>
                     </div>
                 </div>

@@ -104,6 +104,14 @@ function Organiserdash() {
                 <h4>Total Number of Events {stats.eventcount}</h4>
                 <button onClick={() => window.location.href = '/eventlist'}>Events page</button>
             </div>
+            <div className="col-md-4">
+              <h5 className='text-black'>Things needed</h5>
+              <input type='checkbox' /> <p>chairs 100</p><br />
+              <input type='checkbox' /> <p>tables 50</p><br />
+              <input type='checkbox' /> <p>projectors 2</p><br />
+              <input type='checkbox' /> <p>water bottles for guests</p><br />
+              <input type='checkbox' /> <p>snacks for guests</p><br />
+              </div>
             <div>
                 <h2 className="text-black">Participants</h2>
                 <table className="table table-striped">

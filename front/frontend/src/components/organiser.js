@@ -112,7 +112,7 @@ const EventOrganizerDashboard = () => {
               </Card>
             </div>
             <div className="col-md-4">
-              <h5>Things needed</h5>
+              <h5 className='text-black'>Things needed</h5>
               <input type='checkbox' /> <span>chairs 100</span><br />
               <input type='checkbox' /> <span>tables 50</span><br />
               <input type='checkbox' /> <span>projectors 2</span><br />
