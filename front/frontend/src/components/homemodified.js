@@ -44,10 +44,11 @@ const HackaFestHome = () => {
 
     return (
         <div className="hackafest-home">
-            {/* Hero Section */}
             <section className="hero">
                 <div className="hero-content">
-                    <h1>HackaFest: Your Digital Hackathon Hub</h1>
+                    <h1>HackaFest :Ignite Innovation, Build the Future</h1>
+                    {/* <h1>HackaFest: Your Digital Hackathon Hub</h1> */}
+
                     <p>Effortlessly register, form teams, and join exciting hackathons from anywhere.</p>
                     <div className="hero-buttons">
                         <Link to="/register" className="btn btn-primary">Register Now</Link>
