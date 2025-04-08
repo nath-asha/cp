@@ -251,6 +251,13 @@ const EventManager = () => {
                 desc: currentEvent.description || '',
                 imgUrl: currentEvent.imgurl || '',
                 eventId: currentEvent.eventId || '',
+                date: currentEvent.date || '',
+                type: currentEvent.type || '',
+                prizes: currentEvent.prizes || [],
+                tracks: currentEvent.tracks || [],
+                schedule: currentEvent.schedule || '',
+                scheduleDetails: currentEvent.scheduleDetails || [],
+                importantdates: currentEvent.importantdates || []
             });
         } else {
             setFormData({ title: '', desc: '', imgUrl: '', eventId: '' });
