@@ -3,7 +3,7 @@ import '../App.css';
 import axios from 'axios';
 import './homemodified.css';
 import { Link } from 'react-router-dom';
-import { Carousel } from 'react-bootstrap';
+import { Carousel,Badge } from 'react-bootstrap';
 import Timeline from 'react-timeline-animation'; // Import Timeline
 import CountUp from 'react-countup'; // Import CountUp for number animation
 
@@ -25,7 +25,7 @@ const HackaFestHome = () => {
             .catch(error => console.error(error));
 
         if (eventId) {
-            axios.get(`http://localhost:5000/displayevents/${eventId}`)
+            axios.get(`http://localhost:5000/displaychallenge/${eventId}`)
                 .then(response => setEventDetails(response.data))
                 .catch(error => console.error(error));
         }
@@ -51,7 +51,7 @@ const HackaFestHome = () => {
     ];
 
     return (
-        <div className="hackafest-home">
+        <div className="hackafest-home" style={{ textAlign: 'center' }}>
             <section className="hero">
                 <div className="hero-content">
                     <h1>HackaFest: Your Digital Hackathon Hub</h1>
@@ -147,26 +147,27 @@ const HackaFestHome = () => {
             </section>
 
             <section className="event-slideshow">
-            <div className="container">
-                <h3 className="text-center mb-4">Upcoming Events</h3>
-                <Carousel indicators={false} interval={3000} className="mini-carousel">
-                    {events.map((event, index) => (
-                        <Carousel.Item key={index}>
-                            <div className="event-card">
-                                <img
-                                    src={event.imgUrl}
-                                    alt={event.title}
-                                    className="event-thumbnail d-block mx-auto"
-                                />
-                                <h5 className="event-title text-center mt-3">{event.title}</h5><br></br>
-                                <a href={`/displaychallenge/${event.eventId}`}>
-                                <button className='btn btn-success text-center'>Know more</button> </a>
-                            </div>
-                        </Carousel.Item>
-                    ))}
-                </Carousel>
-            </div>
-        </section>
+                <div className="container">
+                    <h3 className="text-center mb-4">Upcoming Events</h3>
+                    <Carousel indicators={false} interval={3000} className="mini-carousel">
+                        {events.map((event, index) => (
+                            <Carousel.Item key={index}>
+                                <div className="event-card">
+                                    <img
+                                        src={event.imgUrl}
+                                        alt={event.title}
+                                        className="event-thumbnail d-block mx-auto"
+                                    />
+                                    <h5 className="event-title text-center mt-3">{event.title}</h5><br></br>
+                                    <a href={`/displaychallenge/${event.eventId}`}>
+                                    <Badge pill bg="primary">know more</Badge>
+                                    </a>
+                                </div>
+                            </Carousel.Item>
+                        ))}
+                    </Carousel>
+                </div>
+            </section>
 
             <section className="call-to-action">
                 <div className="container">
@@ -178,7 +179,7 @@ const HackaFestHome = () => {
 
             <section className='eventhappening'>
                 <div className="container">
-                    </div>
+                </div>
             </section>
         </div>
     );

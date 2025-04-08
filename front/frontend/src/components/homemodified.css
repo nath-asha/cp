@@ -205,6 +205,10 @@ span{
     margin-top: 10px;
 }
 
+.carousel-control-prev-icon,
+  .carousel-control-next-icon{
+    filter: invert(1)
+  }
 /* .homepage {
     font-family: sans-serif;
     line-height: 1.6;
