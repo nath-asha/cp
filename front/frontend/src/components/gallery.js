@@ -13,7 +13,7 @@ function Gallery() {
                     className="d-block w-100"
                     height='800px'
                     width='200px'
-                    src="https://media.licdn.com/dms/image/v2/D5622AQFI24AfY-vwcQ/feedshare-shrink_800/feedshare-shrink_800/0/1709390179014?e=1743638400&v=beta&t=ClC9TcRVOEo1-gf8RA2LoYVDK2ushHpSj3deeiAtuoQ"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP9R68N9hVrXMcnR1T4VCjCPmMhGIVZv6oEAgEPp41RS_voHGPCGNELYG7PVC9keGNdQE&usqp=CAU"
                     alt="First slide"
                 />
                 <Carousel.Caption>
@@ -42,7 +42,7 @@ function Gallery() {
                     className="d-block w-100"
                     height='800px'
                     width='200px'
-                    src="https://media.licdn.com/dms/image/v2/D5622AQFI24AfY-vwcQ/feedshare-shrink_800/feedshare-shrink_800/0/1709390179014?e=1743638400&v=beta&t=ClC9TcRVOEo1-gf8RA2LoYVDK2ushHpSj3deeiAtuoQ"
+                    src="https://img.freepik.com/free-vector/hackathon-doodle-hand-drawing-team-programmers-web-developers-managers-graphic-designers-deve_88138-1348.jpg?t=st=1741146510~exp=1741150110~hmac=aa36e1836d63a2fa40cf74e6d2efca9fe0c2bb91bbfb7d1a27f71d9d91a5486a&w=1380"
                     alt="First slide"
                 />
                 <Carousel.Caption>

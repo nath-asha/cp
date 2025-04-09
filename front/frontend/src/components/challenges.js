@@ -8,15 +8,16 @@ function Challenges() {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { eventId } = useParams();
+  const { eventId } = useParams(); // Get eventId from URL parameters
   const navigate = useNavigate();
   const role = getUserRole();
   const userId = getUserId(); // Fetch logged-in user ID
+  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/challenges`);
+        const response = await fetch(`http://localhost:5000/displaychallenge/${eventId}`); // Corrected API route
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }

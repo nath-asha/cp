@@ -35,6 +35,7 @@ import { useState,useEffect } from 'react';
 // import '../App.css'
 import '../styles/leaderboard.css'
 import Confetti from 'react-confetti';
+import { Github } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -90,7 +91,7 @@ function Leaderboard() {
                     <div key={participant.name} className='topper-card'>
                         <h3>{participant.name}</h3>
                         <p>Score: {participant.score}</p>
-                        <a href={participant.github_url} target="_blank" rel="noopener noreferrer"><img src='logo.png' alt="github logo" className="github-logo"></img></a>
+                        <a href={participant.github_url} target="_blank" rel="noopener noreferrer"><Github className="github-logo"/></a>
                     </div>
                 ))}
             </div>
@@ -111,7 +112,7 @@ function Leaderboard() {
                     <tr key={participant.name}>
                         <td>{index + 1}</td>
                         <td>{participant.name}</td>
-                        <td><a href={participant.github_url} target="_blank" rel="noopener noreferrer"><img src='logo.png' alt="github logo" className="github-logo"></img></a>
+                        <td><a href={participant.github_url} target="_blank" rel="noopener noreferrer"><Github className="github-logo" /></a>
                         </td>
                         <td>{participant.score}</td> 
                       </tr>

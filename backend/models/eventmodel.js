@@ -8,8 +8,9 @@ const eventSchema = new mongoose.Schema({
     imgUrl: {type: String,required: true},
     date : {type: String,required: true}, // Renamed from startdate to date, and made required
     venue : {type: String,enum: ['Online', 'Offline', 'Hybrid'],required: true}, // Added type with enum and required
-    prizes: {type: [String],default: []}, // Added prizes as an array of strings, default to empty array
-    schedule: {type: String,required: true}, // Added schedule and made required
+    prizes: {type: [String],default: []},
+    // tracks: {type: [String],default: []},  // Added prizes as an array of strings, default to empty array
+    //schedule: {type: String,required: true}, // Added schedule and made required
     scheduleDetails: {
         type: [{
             date: {type: String,required: true},
@@ -18,6 +19,10 @@ const eventSchema = new mongoose.Schema({
         }],
         required: true,
     },
+    // importantdates: [{
+    //     name : {type: String,required: true},
+    //     date: {type: String,required: true},
+    // }]
     importantdates: {type: [String],required: true}, //added important dates
     // startdate:
     // type
