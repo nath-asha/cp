@@ -31,10 +31,10 @@ function Events() {
     event.title.toLowerCase().includes(eventSearch.toLowerCase())
   );
 
-  const handleKnowMoreClick = (eventId) => {
-    // Navigate using React Router's useNavigate
-    navigate(`/challenges/${eventId}`);
-  };
+  // const handleKnowMoreClick = (eventId) => {
+  //   // Navigate using React Router's useNavigate
+  //   navigate(`/challenges/${eventId}`);
+  // };
 
   return (
     <Container className="mt-4">

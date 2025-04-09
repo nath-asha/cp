@@ -26,7 +26,7 @@ function Gallery() {
                     className="d-block w-100"
                     height='800px'
                     width='200px'
-                    src="https://media.licdn.com/dms/image/v2/D5622AQF6VSJdUs69UQ/feedshare-shrink_1280/feedshare-shrink_1280/0/1709390178886?e=1743638400&v=beta&t=Li6xv75WH2y7Vh_xLFs3Ds55jVXSF23NYfZ6NIihSpk"
+                    src="https://img.freepik.com/free-vector/hackathon-doodle-hand-drawing-team-programmers-web-developers-managers-graphic-designers-deve_88138-1348.jpg?t=st=1741146510~exp=1741150110~hmac=aa36e1836d63a2fa40cf74e6d2efca9fe0c2bb91bbfb7d1a27f71d9d91a5486a&w=1380"
                     alt="Second slide"
                 />
                 <Carousel.Caption>
@@ -55,7 +55,7 @@ function Gallery() {
                     className="d-block w-100"
                     height='800px'
                     width='200px'
-                    src="https://media.licdn.com/dms/image/v2/D5622AQF6VSJdUs69UQ/feedshare-shrink_1280/feedshare-shrink_1280/0/1709390178886?e=1743638400&v=beta&t=Li6xv75WH2y7Vh_xLFs3Ds55jVXSF23NYfZ6NIihSpk"
+                    src="https://img.freepik.com/free-vector/hackathon-doodle-hand-drawing-team-programmers-web-developers-managers-graphic-designers-deve_88138-1348.jpg?t=st=1741146510~exp=1741150110~hmac=aa36e1836d63a2fa40cf74e6d2efca9fe0c2bb91bbfb7d1a27f71d9d91a5486a&w=1380"
                     alt="Second slide"
                 />
                 <Carousel.Caption>

@@ -17,6 +17,7 @@ const Displayevent = () => {
     const [events, setEvents] = useState([]); // Initialize as an array
     const [selectedEvent, setSelectedEvent] = useState(null); // To handle a specific event
 
+
     const role = getUserRole();
 
     useEffect(() => {
@@ -38,6 +39,23 @@ const Displayevent = () => {
         };
         fetchData();
     }, [eventId]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(`http://localhost:5000/events/${eventId}`);
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            setEvents(data);
+          } catch (err) {
+            console.error('Error fetching events data:', err);
+          }
+        };
+    
+        fetchData();
+      }, [eventId]);
 
     return (
         <div>
