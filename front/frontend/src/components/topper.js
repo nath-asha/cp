@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Container, Nav, Tab, Row, Col, Table } from "react-bootstrap";
+import { Card, Container, Nav, Tab, Row, Col, Table, CardBody } from "react-bootstrap";
 import { Trophy } from 'lucide-react';
 import Challenges from "./challenges";
 import CountdownTimer from "./CountDown";
@@ -11,35 +11,15 @@ import { useParams } from "react-router-dom";
 
 const Displayevent = () => {
     const { eventId } = useParams();
-    const [eventDetails, setEventDetails] = useState(null);
     const [challenges, setChallenges] = useState([]);
+    const [selectedEvent, setSelectedEvent] = useState(null);
     const role = getUserRole();
-
-    // Fetch Event Details
-    useEffect(() => {
-        const fetchEventDetails = async () => {
-            try {
-                const response = await fetch(`http://localhost:5000/events/${eventId}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
-                setEventDetails(data);
-            } catch (err) {
-                console.error('Error fetching events data:', err);
-            }
-        };
-        fetchEventDetails();
-    }, [eventId]);
 
     // Fetch Challenges
     useEffect(() => {
         const fetchChallenges = async () => {
             try {
                 const response = await fetch(`http://localhost:5000/displaychallenge/${eventId}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
                 const data = await response.json();
                 setChallenges(data);
             } catch (err) {
@@ -49,22 +29,41 @@ const Displayevent = () => {
         fetchChallenges();
     }, [eventId]);
 
+    // Fetch Event Details
+    useEffect(() => {
+        const fetchEventDetails = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/events/${eventId}`);
+                const data = await response.json();
+
+                if (data && typeof data === 'object') {
+                    setSelectedEvent(data);
+                } else {
+                    console.warn("No valid event object returned from API.");
+                }
+            } catch (err) {
+                console.error('Error fetching events data:', err);
+            }
+        };
+        fetchEventDetails();
+    }, [eventId]);
+
     return (
         <div>
-            {eventDetails ? (
+            {selectedEvent ? (
                 <div>
-                    <h2 className="mb-4">{eventDetails.title}</h2>
+                    <h2 className="mb-4">{selectedEvent.title || "Event Title"}</h2>
                     <Container>
                         <Tab.Container defaultActiveKey="overview">
                             <Nav variant="tabs" className="mb-4">
-                                <Nav.Item><Nav.Link eventKey="overview" className="px-4">Overview</Nav.Link></Nav.Item>
-                                <Nav.Item><Nav.Link eventKey="prizes" className="px-4">Prizes</Nav.Link></Nav.Item>
-                                <Nav.Item><Nav.Link eventKey="schedule" className="px-4">Schedule</Nav.Link></Nav.Item>
-                                <Nav.Item><Nav.Link eventKey="importantdates" className="px-4">Important Dates</Nav.Link></Nav.Item>
-                                <Nav.Item><Nav.Link eventKey="challenges" className="px-4">Problem Statements</Nav.Link></Nav.Item>
-                                <Nav.Item><Nav.Link eventKey="results" className="px-4">Leaderboard</Nav.Link></Nav.Item>
-                                <Nav.Item><Nav.Link eventKey="Rules" className="px-4">Rules</Nav.Link></Nav.Item>
-                                <Nav.Item><Nav.Link eventKey="discuss" className="px-4">Discussions</Nav.Link></Nav.Item>
+                                <Nav.Item><Nav.Link eventKey="overview">Overview</Nav.Link></Nav.Item>
+                                <Nav.Item><Nav.Link eventKey="prizes">Prizes</Nav.Link></Nav.Item>
+                                <Nav.Item><Nav.Link eventKey="schedule">Schedule</Nav.Link></Nav.Item>
+                                <Nav.Item><Nav.Link eventKey="importantdates">Important Dates</Nav.Link></Nav.Item>
+                                <Nav.Item><Nav.Link eventKey="challenges">Problem Statements</Nav.Link></Nav.Item>
+                                <Nav.Item><Nav.Link eventKey="results">Leaderboard</Nav.Link></Nav.Item>
+                                <Nav.Item><Nav.Link eventKey="Rules">Rules</Nav.Link></Nav.Item>
+                                <Nav.Item><Nav.Link eventKey="discuss">Discussions</Nav.Link></Nav.Item>
                             </Nav>
 
                             <Tab.Content>
@@ -72,97 +71,91 @@ const Displayevent = () => {
                                     <Row className="g-4">
                                         <CountdownTimer />
                                         {role === 'user' ? (
-                                            <button className="btn btn-primary">Register now!</button>
+                                            <button> Register now!</button>
                                         ) : (
                                             <p>Please register as Participant first</p>
                                         )}
                                         <Col md={6}>
-                                            <img src={eventDetails.imgurl || "img"} alt="Event" className="img-fluid" />
+                                            <img src={selectedEvent.imgurl} alt="Event" className="img-fluid" />
                                             <h5>Open to All</h5>
-                                            <h5>{eventDetails.registeredCount || 200} Registered</h5>
+                                            <h5>200 Registered</h5>
                                         </Col>
                                         <Col md={6}>
-                                            <Card><Card.Body>
-                                                <h5>{eventDetails.date}</h5>
-                                                <h5>{eventDetails.type}</h5>
-                                                <h5>Venue: {eventDetails.venue}</h5>
-                                            </Card.Body></Card>
-                                            <Card><Card.Body>
-                                                <h4>Tech Stack</h4>
-                                                <h5>{eventDetails.techstack}</h5>
-                                            </Card.Body></Card>
-                                            <Card><Card.Body>
-                                                <h4>Getting started / To-dos</h4>
-                                                <p>Create teams before the deadline, preferably of 3</p>
-                                                <p>Choose a problem statement from the challenges tab</p>
-                                                <p>Join the WhatsApp group</p>
-                                            </Card.Body></Card>
-                                            <Card><Card.Body>
-                                                <p>Join the WhatsApp group here</p>
-                                                {(role === 'user' || role === 'mentor') ? (
-                                                    <button className="btn btn-success">Join group</button>
-                                                ) : (
-                                                    <p>To apply, please register as Participant first</p>
-                                                )}
-                                            </Card.Body></Card>
+                                            <Card>
+                                                <Card.Body>
+                                                    <h5>{selectedEvent.date}</h5>
+                                                    <h5>{selectedEvent.type}</h5>
+                                                    <h5>Venue: {selectedEvent.venue}</h5>
+                                                </Card.Body>
+                                            </Card>
+                                            <Card>
+                                                <Card.Body>
+                                                    <h4>Tech Stack</h4>
+                                                    <h5>{selectedEvent.techStack}</h5>
+                                                </Card.Body>
+                                            </Card>
+                                            <Card>
+                                                <CardBody>
+                                                    <h4>Getting started / To Dos</h4>
+                                                    <p>Create teams before the deadline</p>
+                                                    <p>Choose a challenge</p>
+                                                    <p>Join Whatsapp group</p>
+                                                </CardBody>
+                                            </Card>
+                                            <Card>
+                                                <CardBody>
+                                                    <p>Join WhatsApp Group</p>
+                                                    {role === 'user' || role === 'mentor' ? (
+                                                        <button className="btn btn-success">Join group</button>
+                                                    ) : (
+                                                        <p>To Apply, register as Participant first</p>
+                                                    )}
+                                                </CardBody>
+                                            </Card>
                                         </Col>
-                                        <Col>
-                                            <h4>Description</h4>
-                                            <p>{eventDetails.description}</p>
-                                            <h4>Requirements</h4>
-                                            <ul>
-                                                <li>What to build: {eventDetails.requirements?.build || "Details to be announced"}</li>
-                                                <li>What to submit: {eventDetails.requirements?.submit || "GitHub link, demo video, etc."}</li>
-                                            </ul>
-                                            <h4>Judging Criteria</h4>
-                                            <p>{eventDetails.judgingCriteria || "Criteria will be based on innovation, feasibility, and impact."}</p>
-                                        </Col>
-                                    </Row>
-                                </Tab.Pane>
-
-                                <Tab.Pane eventKey="prizes">
-                                    <h4>Prizes</h4>
-                                    {eventDetails.prizes?.length ? (
+                                        <p>{selectedEvent.description || "Description not available."}</p>
+                                        <h4>Requirements</h4>
                                         <ul>
-                                            {eventDetails.prizes.map((prize, idx) => (
-                                                <li key={idx}>{prize}</li>
-                                            ))}
+                                            <li>GitHub link</li>
+                                            <li>Project repository</li>
+                                            <li>Video demo</li>
                                         </ul>
-                                    ) : (
-                                        <p>No prizes listed.</p>
-                                    )}
-                                </Tab.Pane>
+                                        <h4>Judging Criteria</h4>
+                                    </Row>
 
-                                <Tab.Pane eventKey="schedule">
-                                    <h4>Schedule</h4>
                                     <Table striped bordered hover>
                                         <thead>
-                                            <tr><th>Date</th><th>Event</th></tr>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Event</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                            {eventDetails.schedule?.length ? (
-                                                eventDetails.schedule.map((item, idx) => (
-                                                    <tr key={idx}>
+                                            {selectedEvent.scheduleDetails?.length > 0 ? (
+                                                selectedEvent.scheduleDetails.map((item, index) => (
+                                                    <tr key={index}>
                                                         <td>{item.date}</td>
-                                                        <td>{item.name}</td>
+                                                        <td>{item.activity}</td>
                                                     </tr>
                                                 ))
                                             ) : (
-                                                <tr><td colSpan="2" className="text-center">No schedule details available.</td></tr>
+                                                <tr>
+                                                    <td colSpan="2" className="text-center">No schedule details available.</td>
+                                                </tr>
                                             )}
                                         </tbody>
                                     </Table>
                                 </Tab.Pane>
 
                                 <Tab.Pane eventKey="challenges">
-                                    <Challenges data={challenges} />
+                                    <Challenges />
                                 </Tab.Pane>
 
-                                <Tab.Pane eventKey='results'>
+                                <Tab.Pane eventKey="results">
                                     <Leaderboard />
                                 </Tab.Pane>
 
-                                <Tab.Pane eventKey='discuss'>
+                                <Tab.Pane eventKey="discuss">
                                     <Community />
                                 </Tab.Pane>
                             </Tab.Content>
@@ -170,7 +163,7 @@ const Displayevent = () => {
                     </Container>
                 </div>
             ) : (
-                <p>Loading event details...</p>
+                <p>Loading event details or event not found...</p>
             )}
         </div>
     );

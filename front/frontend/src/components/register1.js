@@ -1,6 +1,6 @@
 import "../styles/register.css";
 import React, { useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 const token = sessionStorage.getItem('token');
 
@@ -64,8 +64,8 @@ export default function RegistrationForm() {
 
 
   return (
-    // <div className="form-container"> 
-      <div> 
+    <div className="form-container"> 
+      
         <form className="register-form" onSubmit={handleSubmit}>
           {submitted && valid && (
             <div className="success-message">

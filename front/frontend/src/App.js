@@ -120,10 +120,10 @@ function App() {
 
           <Route path="/events" element={<Events />} />
           <Route path='/eventlist' element={<PrivateRoute allowedRoles={['admin', 'organizer']}> <Eventlist/> </PrivateRoute>}/>
-          <Route path='/community' element={<PrivateRoute allowedRoles={['admin','mentor','user', 'organizer']}><Community/></PrivateRoute>} />
+          <Route path='/community' element={<PrivateRoute allowedRoles={['admin','mentor',"Mentor",'user', 'organizer']}><Community/></PrivateRoute>} />
           <Route path='/logino' element={<Logino/>}/>
           <Route path='/about' element={<About/>}/>
-          <Route path='/profile' element={<PrivateRoute allowedRoles={['admin','mentor','user','judge', 'organizer']}><Profile/></PrivateRoute>}/>
+          <Route path='/profile' element={<PrivateRoute allowedRoles={['admin','Mentor','mentor','user','judge', 'organizer']}><Profile/></PrivateRoute>}/>
 
           <Route path='/displayevent/:eventId' element={<Displayevent/>}/>
 
@@ -134,7 +134,7 @@ function App() {
           <Route
           path="/mentordash"
           element={
-            <PrivateRoute allowedRoles={['Mentor']}>
+            <PrivateRoute allowedRoles={['Mentor','mentor']}>
               <MentorDashboard />
             </PrivateRoute>
           }
