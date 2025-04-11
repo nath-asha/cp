@@ -86,11 +86,11 @@ function Challenges() {
                   {challenge.description}
                 </h6>
                 <a href={`/displaychallenge/${challenge.track_id}`}>
-                  <button className="btn btn-primary">Know more</button>
+                  <button className="btn btn-primary btn-sm">Know more</button>
                 </a>
                 {role === 'user' ? (
                   <button
-                    className="btn btn-success mt-2"
+                    className="btn btn-success btn-sm"
                     onClick={() => handleChoose(challenge.track_id)}
                   >
                     Choose
