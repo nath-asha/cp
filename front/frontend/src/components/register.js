@@ -2,7 +2,7 @@ import "../styles/register.css";
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function App() {
+export default function Appor() {
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
