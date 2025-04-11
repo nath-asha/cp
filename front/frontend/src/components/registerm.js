@@ -1,8 +1,10 @@
 import "../styles/register.css";
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import PasswordChecklist from 'react-password-checklist';
 
 export default function App() {
+  const [passwordAgain, setPasswordAgain] = useState("");
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
@@ -41,7 +43,7 @@ export default function App() {
   };
 
   return (
-        <div className="form-container"> 
+        <div className="form-container bg-primary"> 
       <form className="register-form" onSubmit={handleSubmit}>
         {submitted && valid && (
           <div className="success-message">
@@ -86,6 +88,33 @@ export default function App() {
             {submitted && !values.email && (
               <span id="email-error">Please enter an email address</span>
             )}
+
+<input
+              className="form-field"
+              type="password"
+              placeholder="password"
+              name="password"
+              value={values.password}
+              onChange={handleInputChange}
+            />
+            {submitted && !values.password && (
+              <span id="password-error">Please enter password</span>
+            )}
+<input type="password" onChange={e => setPasswordAgain(e.target.value)}/>
+<PasswordChecklist
+				rules={["minLength","specialChar","number","capital","match"]}
+				minLength={8}
+				value={values.password}
+				valueAgain={passwordAgain}
+				messages={{
+					minLength: "enter 8 characters.",
+					specialChar: "enter special characters.",
+					number: "number.",
+					capital: "enter capital.",
+					match: "match.",
+				}}
+			/>
+
 
             <input 
               className="form-field"

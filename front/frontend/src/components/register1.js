@@ -66,7 +66,7 @@ export default function RegistrationForm() {
   return (
     <div className="form-container"> 
       
-        <form className="register-form" onSubmit={handleSubmit}>
+        <form className="register-form hero" onSubmit={handleSubmit}>
           {submitted && valid && (
             <div className="success-message">
               <h3>Welcome {values.firstName} {values.lastName}</h3>
@@ -126,7 +126,7 @@ export default function RegistrationForm() {
                 onChange={handleInputChange}
               />
               {submitted && !values.password && (
-                <span id="passwprd-error">Please enter a password</span>
+                <span id="password-error">Please enter a password</span>
               )}
 
               <input
