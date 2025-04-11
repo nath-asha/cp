@@ -105,7 +105,7 @@ function App() {
           <Demodash/>
             </PrivateRoute> }/>
 
-          <Route path="/evaluation/:teamId" element={<PrivateRoute allowedRoles={['admin', 'organizer','mentor','judge']}>
+          <Route path="/evaluation/:teamId" element={<PrivateRoute allowedRoles={['admin', 'organizer','mentor','judge','Mentor']}>
           <EvaluationPortal/>
             </PrivateRoute> }/>
           {/* <Route path='/mentordash' element={<MentorDashboard />}/> */}

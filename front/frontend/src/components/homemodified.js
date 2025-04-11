@@ -87,7 +87,7 @@ const HackaFestHome = () => {
             {/* How It Works Section */}
             <section ref={timelineRef} className="how-it-works">
                 <div className="container">
-                    <h2 className="section-title">How It Works</h2>
+                    <h2 className="section-title text-black">How It Works</h2>
                     <div className="steps">
                         <div className="step">
                             <span className="step-number">1</span>

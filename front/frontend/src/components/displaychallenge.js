@@ -70,9 +70,12 @@ const DisplayChallenge = () => {
             {/* <button className="btn btn-primary" onClick={handleNextChallenge}>
               Next Challenge
             </button> */}
-            <Link to="/challenges" className="btn btn-secondary">
+            {/* <Link to="/displayevent/:eventId" className="btn btn-secondary">
               Back to Challenges
-            </Link>
+            </Link> */}
+            <a href={`/displayevent/${challenges[currentChallengeIndex].eventId}`}>
+                  <button className="btn btn-primary">Back to Challenges</button>
+                </a>
           </div>
         </div>
       ) : (
