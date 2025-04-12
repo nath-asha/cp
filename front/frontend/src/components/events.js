@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Carousel, Container } from 'react-bootstrap';
-import { useNavigate ,Link} from 'react-router-dom'; 
+import { Card, CardBody, CardText, Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import '../styles/buttons.css';
-
 
 function Events() {
   const [events, setEvents] = useState([]);
   const [eventSearch, setEventSearch] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [pastEvents, setPastEvents] = useState([]);
+  const [presentEvents, setPresentEvents] = useState([]);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,14 +28,75 @@ function Events() {
     fetchData();
   }, []);
 
-  const filteredEvents = events.filter(event =>
-    event.title.toLowerCase().includes(eventSearch.toLowerCase())
-  );
+  useEffect(() => {
+    const today = new Date();
+    const past = events.filter((event) => new Date(event.date) < today);
+    const present = events.filter((event) => {
+      const startDate = new Date(event.date);
+      const endDate = new Date(event.enddate || event.date);
+      return startDate <= today && endDate >= today;
+    });
+    const upcoming = events.filter((event) => new Date(event.date) > today);
 
-  // const handleKnowMoreClick = (eventId) => {
-  //   // Navigate using React Router's useNavigate
-  //   navigate(`/challenges/${eventId}`);
-  // };
+    setPastEvents(past);
+    setPresentEvents(present);
+    setUpcomingEvents(upcoming);
+  }, [events]);
+
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    setEventSearch(searchTerm);
+  };
+
+  const filterEventsBySearch = (eventList) => {
+    return eventList.filter(event =>
+      event.title.toLowerCase().includes(eventSearch.toLowerCase())
+    );
+  };
+
+  const searchedPastEvents = filterEventsBySearch(pastEvents);
+  const searchedPresentEvents = filterEventsBySearch(presentEvents);
+  const searchedUpcomingEvents = filterEventsBySearch(upcomingEvents);
+
+  const renderEventList = (eventList, heading) => {
+    if (eventList.length > 0) {
+      return (
+        <>
+          <h4 className="mt-4">{heading}</h4>
+          <Row xs={1} md={2} lg={3} xl={4} className="g-4">
+            {eventList.map((event) => (
+              <Col key={event.event_id}>
+                <Card>
+                  <CardBody>
+                    <img
+                      className='d-block w-100'
+                      src={event.imgUrl || 'https://via.placeholder.com/800x400'}
+                      alt={event.title}
+                      style={{ height: '200px', objectFit: 'cover' }}
+                    />
+                    <CardText>
+                      <h3 className='text-black'>{event.title}</h3>
+                      <p className='text-black'>{event.description && event.description.substring(0, 100)}...</p>
+                      <Link to={`/displayevent/${event.eventId}`}>
+                        <button className="btn btn-primary mt-2">Know more</button>
+                      </Link>
+                    </CardText>
+                  </CardBody>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </>
+      );
+    } else if (eventSearch && heading !== "All Events") {
+      return <p>No {heading.toLowerCase()} found matching your search.</p>;
+    } else if (!eventSearch && heading !== "All Events") {
+      return <p>No {heading.toLowerCase()} available.</p>;
+    }
+    return null;
+  };
+
+  const allEventsFiltered = filterEventsBySearch(events);
 
   return (
     <Container className="mt-4">
@@ -43,37 +105,48 @@ function Events() {
         type="text"
         placeholder="Search events by name..."
         value={eventSearch}
-        onChange={(e) => setEventSearch(e.target.value)}
+        onChange={handleSearch}
         className="form-control mb-4"
       />
-      {filteredEvents.length > 0 ? (
+
+      {eventSearch && allEventsFiltered.length > 0 && (
         <>
-          <h4>Currently Open</h4>
-          <Carousel>
-  {filteredEvents.map((event) => (
-    <Carousel.Item key={event.event_id}>
-      <img
-        className="d-block w-100"
-        src={event.imgUrl || 'https://via.placeholder.com/800x400'}
-        alt={event.title}
-      />
-      <Carousel.Caption>
-        <h3 className='text-black'>{event.title}</h3>
-        <p className='text-black'>{event.description}</p>
-        {/* <Link to={`/challenges/${event.eventId}`}> */}
-        <Link to={`/displayevent/${event.eventId}`}>
-          <button>Know more</button>
-        </Link>
-      </Carousel.Caption>
-    </Carousel.Item>
-  ))}
-</Carousel>
+          <h4 className="mt-4">Search Results</h4>
+          <Row xs={1} md={2} lg={3} xl={4} className="g-4">
+            {allEventsFiltered.map((event) => (
+              <Col key={event.event_id}>
+                <Card>
+                  <CardBody>
+                    <img
+                      className='d-block w-100'
+                      src={event.imgUrl || 'https://via.placeholder.com/800x400'}
+                      alt={event.title}
+                      style={{ height: '200px', objectFit: 'cover' }}
+                    />
+                    <CardText>
+                      <h3 className='text-black'>{event.title}</h3>
+                      <h3 className='text-black'>{event.date}</h3>
+                      <h3 className='text-black'>{event.enddate}</h3>
+                      <p className='text-black'>{event.desc}</p>
+                      <Link to={`/displayevent/${event.eventId}`}>
+                        <button className="btn btn-primary mt-2">Know more</button>
+                      </Link>
+                    </CardText>
+                  </CardBody>
+                </Card>
+              </Col>
+            ))}
+          </Row>
         </>
-      ) : (
-        <p>No events found.</p>
       )}
-      <h4 className="mt-5">Past Hackathons</h4>
-      <h4>Upcoming Hackathons</h4>
+
+      {!eventSearch && (
+        <>
+          {renderEventList(presentEvents, 'Present Events')}
+          {renderEventList(upcomingEvents, 'Upcoming Events')}
+          {renderEventList(pastEvents, 'Past Events')}
+        </>
+      )}
     </Container>
   );
 }

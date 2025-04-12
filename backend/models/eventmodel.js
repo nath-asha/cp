@@ -7,6 +7,7 @@ const eventSchema = new mongoose.Schema({
     desc : {type: String,required: true},
     imgUrl: {type: String,required: true},
     date : {type: String,required: true}, // Renamed from startdate to date, and made required
+    enddate:{type: String,required: true},
     venue : {type: String,enum: ['Online', 'Offline', 'Hybrid'],required: true}, // Added type with enum and required
     prizes: {type: [String],default: []},
     // tracks: {type: [String],default: []},  // Added prizes as an array of strings, default to empty array

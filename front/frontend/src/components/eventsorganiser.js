@@ -238,6 +238,7 @@ const EventManager = () => {
         imgUrl: '',
         eventId: '',
         date: '',
+        enddate: '',
         type: '',
         prizes: '',
         // tracks: '',
@@ -258,6 +259,7 @@ const EventManager = () => {
                 imgUrl: currentEvent.imgUrl || '',
                 eventId: currentEvent.eventId || '',
                 date: currentEvent.date || '',
+                enddate: currentEvent.enddate || '',
                 type: currentEvent.type || '',
                 prizes: currentEvent.prizes?.join(', ') || '',
                 // tracks: currentEvent.tracks?.join(', ') || '',
@@ -272,6 +274,7 @@ const EventManager = () => {
                 imgUrl: '',
                 eventId: '',
                 date: '',
+                enddate: '',
                 type: '',
                 prizes: '',
                 // tracks: '',
@@ -330,6 +333,7 @@ const EventManager = () => {
                 imgUrl: '',
                 eventId: '',
                 date: '',
+                enddate: '',
                 venue: '',
                 prizes: '',
                 // tracks: '',
@@ -404,6 +408,17 @@ const EventManager = () => {
                         placeholder="Date"
                         value={formData.date}
                         onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                        className="form-control"
+                        required
+                    />
+                </div>
+                
+                <div className="mb-3">
+                    <input
+                        type="date"
+                        placeholder="End date"
+                        value={formData.enddate}
+                        onChange={(e) => setFormData({ ...formData, enddate: e.target.value })}
                         className="form-control"
                         required
                     />
