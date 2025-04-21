@@ -62,7 +62,7 @@ const Displayevent = () => {
                                 <h3 className="text-blue">{selectedEvent.title}</h3>
                                     <img src={selectedEvent.imgUrl} alt="Event" className="img-fluid" />
                                     <h5>Open to All</h5>
-                                    {/* Assuming you have a way to track registered users */}
+                        
                                     <h5>190 Registered</h5>
                                 </Col>
                                 <Col md={6}>

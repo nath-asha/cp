@@ -1,4 +1,4 @@
-const { dark } = require('@material-ui/core/styles/createPalette');
+// const { dark } = require('@material-ui/core/styles/createPalette');
 const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({

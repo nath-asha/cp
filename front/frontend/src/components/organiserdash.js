@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, CardBody } from "react-bootstrap";
+import { Card, Container, Nav, Tab, Row, Col, Table, CardBody,Button } from "react-bootstrap";
 import { Github } from "lucide-react";
 
 function Organiserdash() {
@@ -67,6 +67,7 @@ function Organiserdash() {
 
     return (
         <div className="container-fluid">
+         
             <div>
                 <h2>Dashboard</h2>
                 <div className="row">
@@ -74,9 +75,10 @@ function Organiserdash() {
                         <div className="card text-white bg-primary">
                             <div className="card-body">
                                 <h5 className="card-title">Participants</h5>
-                                <p className="card-text">{stats.participants}</p>
+                                <p className="card-text">{stats.participants}</p>                                
                             </div>
                         </div>
+                        <button onClick={() => window.location.href = '/participantlist'}>Manage Participants</button>
                     </div>
 
                     <div className="col">
@@ -102,7 +104,7 @@ function Organiserdash() {
             <div>
                 <h2 className="text-black"> Event Management </h2>
                 <h4>Total Number of Events {stats.eventcount}</h4>
-                <button onClick={() => window.location.href = '/eventlist'}>Events page</button>
+                <button onClick={() => window.location.href = '/eventlist'}>Manage Events page</button>
             </div>
             <div className="col-md-4">
               <h5 className='text-black'>Things needed</h5>
@@ -112,7 +114,7 @@ function Organiserdash() {
               <input type='checkbox' /> <p>water bottles for guests</p><br />
               <input type='checkbox' /> <p>snacks for guests</p><br />
               </div>
-            <div>
+            {/* <div>
                 <h2 className="text-black">Participants</h2>
                 <table className="table table-striped">
                     <thead>
@@ -134,7 +136,7 @@ function Organiserdash() {
                         ))}
                     </tbody>
                 </table>
-            </div>
+            </div> */}
 
             <div>
                 <h2 className="text-black">Mentors</h2>

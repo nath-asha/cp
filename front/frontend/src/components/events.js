@@ -124,7 +124,7 @@ function Events() {
                       style={{ height: '200px', objectFit: 'cover' }}
                     />
                     <CardText>
-                      <h3 className='text-black'>{event.title}</h3>
+                      <h5 className='text-black'>{event.title}</h5>
                       <h3 className='text-black'>{event.date}</h3>
                       <h3 className='text-black'>{event.enddate}</h3>
                       <p className='text-black'>{event.desc}</p>

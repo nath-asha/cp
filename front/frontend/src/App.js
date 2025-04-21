@@ -24,6 +24,10 @@ import DisplayChallenge from './components/displaychallenge';
 import ContactUS from './components/contactus';
 import Teammanager from './components/teammanager';
 import MentorDashboard from './components/mentordash';
+////////////////////////////////////////////////
+//new
+import ParticipantManager from './components/participantlist';
+import SignupForm from './components/signup';
 // import MentorDashboard from './components/About';
 // import MentorDashboardo from '../';
 
@@ -63,16 +67,18 @@ function App() {
     };
   return (
     <Router>
-          <AuthProvider>
-      <div className="App">
-      <Navbar />
-        <Routes>
-          <Route path="/" element={<HackaFestHome />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/scoreboard" element={<Scoreboard />} />
-          <Route path="/challenges" element={<Challenges />} />
-
-          <Route path="/challenges/:eventId" element={<Challenges />} />
+      <AuthProvider>
+        <div className="App">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<HackaFestHome />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/scoreboard" element={<Scoreboard />} />
+            <Route path="/challenges" element={<Challenges />} />
+            <Route path="/signup" element={<SignupForm />} />
+            <Route path="/challenges/:eventId" element={<Challenges />} />
+            <Route path="/register" element={<RegistrationForm />} />
+            <Route path="/login1" element={<Login />} />
 
 
           <Route path="/register" element={<RegistrationForm />} />
@@ -96,6 +102,10 @@ function App() {
               <Dashboard />
             </PrivateRoute>
           } />
+
+          <Route path="/participantlist" element={<ParticipantManager />} />
+
+
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
            <ParticipantDashboard /></PrivateRoute>} />
