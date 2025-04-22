@@ -1,5 +1,5 @@
 const express = require("express");
-const { registerUser, loginUser } = require("../controllers/authcontroller");
+const { registerUser, loginUser, signedupUser } = require("../controllers/authcontroller");
 
 const router = express.Router();
 
@@ -7,6 +7,9 @@ router.post("/register", registerUser);
 
 router.post("/login", loginUser); //do not change to /logino 
 // router.get("/verify/:token", verifyEmail); // Added route for email verification
+
+router.post("/signedup", signedupUser);
+//this is for sign up and later sign up with google
 module.exports = router;
 
 // const express = require("express");
