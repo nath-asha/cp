@@ -112,7 +112,7 @@ function App() {
           <Route path='/problemlist' element={<Problemlist />} />
           <Route path='/submissionlist' element={<Submissionlist />} />
           <Route path='/newsignup' element={<Newsignup/>} />
-          <Route path='/oldsignup'element={<}
+          <Route path='/oldsignup'element={<SignupForm />} />
 
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
