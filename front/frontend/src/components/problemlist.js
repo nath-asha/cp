@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
 import { View } from "lucide-react";
+import { Card,CardBody } from "react-bootstrap";
 
 const Problemlist = () => {
     const [problems, setProblems] = useState([]);
@@ -30,32 +31,27 @@ const Problemlist = () => {
     
 
 return(
-<div>
-    <h2 className="text-black">Submissions</h2>
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Team</th>
-                            <th>Problem</th>
-                            <th>Link</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {submissions.map((submission, index) => (
-                            <tr key={submission._id}>
-                                <td>{index + 1}</td>
-                                <td>{submission.team_id}</td>
-                                <td>{submission.gitrepo}</td>
-                                <td>
-                                    <a href={submission.gitrepo} target="_blank" rel="noopener noreferrer">
-                                        View
-                                    </a>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+    <div>
+    <h2 className="text-black">Problem Statements</h2>
+    <input 
+        type="text"
+        placeholder="Search"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="search-input"
+    />
+    <div className="row">
+        {filteredChallenges.map((problem) => (
+            <div className="col-md-4 mb-4" key={problem._id}>
+                <Card>
+                    <CardBody>
+                        <h5 className="card-title">{problem.title}</h5>
+                        <p className="card-text">{problem.description}</p>
+                    </CardBody>
+                </Card>
+            </div>
+        ))}
+    </div>
 </div>
 )
 };

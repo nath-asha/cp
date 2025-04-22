@@ -75,11 +75,11 @@ function Organiserdash() {
                         <div className="card text-white bg-primary">
                             <div className="card-body">
                                 <h5 className="card-title">Participants</h5>
-                                <p className="card-text">{stats.participants}</p>                                
-                            </div>
-                        </div>
+                                <p className="card-text">{stats.participants}</p> 
                         <button onClick={() => window.location.href = '/participantlist'}>Manage Participants</button>
-                        <Button onClick={() => window.location.href = '/mentorlist'}>Manage Mentors</Button>
+                        </div>
+                        </div>
+                        <button onClick={() => window.location.href = '/mentorlist'}>Manage Mentors</button>       
                     </div>
 
                     <div className="col">
@@ -87,6 +87,7 @@ function Organiserdash() {
                             <div className="card-body">
                                 <h5 className="card-title">Problem Statements</h5>
                                 <p className="card-text">{stats.problems}</p>
+                                <button onClick={() => window.location.href = '/problemlist'}>Manage PS</button>
                             </div>
                         </div>
                     </div>
