@@ -128,7 +128,7 @@ function Organiserdash() {
             <div>
                 <h2 className="text-black"> Event Management </h2>
                 <h4>Total Number of Events {stats.eventcount}</h4>
-                <Row xs={2} md={3} lg={4} xl={5} className="g-4">
+                <Row xs={2} md={3} lg={4} xl={6} className="g-4">
                 {events.map(event => (
                     <div key={event._id} className="col-md-4 mb-4">
                         <div className="card">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { isValidElement, useState } from "react";
 import "../styles/register.css";
 import { Form, Container, Row, Col, Button } from "react-bootstrap";
 
@@ -14,13 +14,22 @@ const Newsignup = () => {
     const [submitted, setSubmitted] = useState(false);
     const [valid, setValid] = useState(false);
 
+
+const validatePassword = (value) => {
+        const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        setValid(pattern.test(value));
+        };
+
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setValues((values) => ({
             ...values,
             [name]: value,
-        }));
-    };
+        }));    };
+
+    
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -31,7 +40,7 @@ const Newsignup = () => {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
+                        'Authorization': `Bearer ${token}`,
                     },
                     body: JSON.stringify(values),
                 });
@@ -48,7 +57,7 @@ const Newsignup = () => {
     };
 
     return (
-        <div className="form-container">
+        <div className="form-container text-black">
             <form className="register-form" onSubmit={handleSubmit}>
                 {submitted && valid && (
                     <div>
@@ -84,13 +93,13 @@ const Newsignup = () => {
 
                         <input
                             className="form-field"
-                            type="password"
+                            type='password'
                             name="password"
                             placeholder="Password"
                             value={values.password}
                             onChange={handleInputChange}
                         />
-                        {submitted && !values.password && (
+                        {submitted && !values.password && !validatePassword(values.password)(
                             <span id="password-error">Please enter a password</span>
                         )}
 
