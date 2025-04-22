@@ -47,6 +47,10 @@ return(
                     <CardBody>
                         <h5 className="card-title">{problem.title}</h5>
                         <p className="card-text">{problem.description}</p>
+                        <button><a onClick={() => handleEdit(problem)}>Edit</a></button>
+                        <button className='btn bg-danger text-white' onClick={() => { if (window.confirm(`Are you sure you want to delete ${problem.title}?`)) {
+                                            handleDelete(problem._id);
+                                        }}}><a>Delete</a></button>
                     </CardBody>
                 </Card>
             </div>

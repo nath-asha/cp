@@ -79,6 +79,7 @@ const MentorManager = () => {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Github</th>
+                        <th>Linkedin</th>
                         <th>Actions</th>
                     </tr>
                 </thead>

@@ -14,6 +14,27 @@ function Organiserdash() {
             .catch(error => console.error(error));
     }, []);
 
+    //for events as cards
+    const [events, setEvents] = useState([]);
+    const [eventSearch, setEventSearch] = useState('');
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch('http://localhost:5000/events');
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            setEvents(data);
+          } catch (err) {
+            console.error('Error fetching events data:', err);
+          }
+        };
+    
+        fetchData();
+      }, []);
+
+      
     const [participants, setParticipants] = useState([]);
 
     useEffect(() => {
@@ -83,7 +104,7 @@ function Organiserdash() {
                     </div>
 
                     <div className="col">
-                        <div className="card text-white bg-success">
+                        <div className="card text-white bg-primary">
                             <div className="card-body">
                                 <h5 className="card-title">Problem Statements</h5>
                                 <p className="card-text">{stats.problems}</p>
@@ -93,7 +114,7 @@ function Organiserdash() {
                     </div>
 
                     <div className="col">
-                        <div className="card text-white bg-warning">
+                        <div className="card text-white bg-primary">
                             <div className="card-body">
                                 <h5 className="card-title">Submissions</h5>
                                 <p className="card-text">{stats.submissions}</p>
@@ -107,6 +128,22 @@ function Organiserdash() {
             <div>
                 <h2 className="text-black"> Event Management </h2>
                 <h4>Total Number of Events {stats.eventcount}</h4>
+                <Row xs={2} md={3} lg={4} xl={5} className="g-4">
+                {events.map(event => (
+                    <div key={event._id} className="col-md-4 mb-4">
+                        <div className="card">
+                            <img src={event.imgUrl} className="card-img-top" alt={event.title} />
+                            <div className="card-body">
+                                <h5 className="card-title">{event.title}</h5>
+                                <p className="card-text">Event ID: {event.eventId}</p>
+                                <p className="card-text">{event.desc}</p>
+                                <p className="card-text">{event.date}</p>
+                                <p className="card-text">{event.venue}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))} 
+                </Row>
                 <button onClick={() => window.location.href = '/eventlist'}>Manage Events page</button>
             </div>
             <div className="col-md-4">
@@ -191,7 +228,7 @@ function Organiserdash() {
                 </div>
             </div> */}
 
-            <div>
+            {/* <div>
                 <h2 className="text-black">Submissions</h2>
                 <table className="table table-striped">
                     <thead>
@@ -217,7 +254,7 @@ function Organiserdash() {
                         ))}
                     </tbody>
                 </table>
-            </div>
+            </div> */}
         </div>
     );
 }

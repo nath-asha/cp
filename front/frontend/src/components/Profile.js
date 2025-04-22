@@ -1,5 +1,6 @@
 import React from "react";
 import { useAuth } from "../provider/AuthProvider";
+import { Button } from "react-bootstrap";
 
 const Profile = () => {
     const { user, logout } = useAuth();
@@ -14,10 +15,12 @@ const Profile = () => {
 
     return (
         <>
-            <h1>Welcome {user.email}</h1>
+            <h1>Welcome {user.firstName}</h1>
             <button type="submit" onClick={logoutHandler}>
                 Logout
             </button>
+            <h4>Complete your profile here click below</h4>
+            <Button onClick={() => window.location.href = '/register'}>Edit Profile</Button>
         </>
     );
 };

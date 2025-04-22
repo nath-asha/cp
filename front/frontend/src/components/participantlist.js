@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Github } from "lucide-react";
+import { Github ,DeleteIcon, Linkedin} from "lucide-react";
 
 const ParticipantManager = () => {
     const [participants, setParticipants] = useState([]);
@@ -48,6 +48,7 @@ const ParticipantManager = () => {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Github</th>
+                        <th>Linkedin</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -65,13 +66,20 @@ const ParticipantManager = () => {
                                 </a>
                             </td>
                             <td>
-                                <button
+                                <a href={p.linkedin_url}>
+                                    <Linkedin />
+                                </a>
+                            </td>
+                            <td>
+                                <button>
+                                <a
                                     onClick={() => handleEdit(p)}>
                                     Edit
+                                </a>
                                 </button>
                             </td>
                             <td>
-                                <button
+                                <a
                                     onClick={() => {
                                         if (window.confirm(`Are you sure you want to delete ${p.firstName} ${p.lastName}?`)) {
                                             handleDelete(p._id);
@@ -79,8 +87,8 @@ const ParticipantManager = () => {
                                     }}
                                     className="btn btn-danger"
                                 >
-                                    Delete
-                                </button>
+                                    <DeleteIcon />
+                                </a>
                             </td>
                         </tr>
                     ))}

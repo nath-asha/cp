@@ -51,7 +51,7 @@ const HackaFestHome = () => {
 
                     <p>Effortlessly register, form teams, and join exciting hackathons from anywhere.</p>
                     <div className="hero-buttons">
-                        <Link to="/lay" className="btn btn-primary">Register Now</Link>
+                        {/* <Link to="/lay" className="btn btn-primary">Register Now</Link> */}
                         <Link to="/events" className="btn btn-outline-primary">Explore Events</Link>
                     </div>
                 </div>
