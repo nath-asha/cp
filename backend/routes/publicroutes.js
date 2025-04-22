@@ -384,6 +384,17 @@ router.get('/displaychallenge/:eventId', async (req,res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+router.post('/challenges/:trackId', async (req,res) => {
+    try{
+    const {trackId} = req.params.trackId;
+const seechallenges = await Challenge.find({trackId: trackId});
+    res.json(seechallenges);
+}catch(err){
+    console.error(err);
+    res.status(500).json({error: 'Internal server error'});
+}
+})
 //changes in events model led to this
 // router.post('/events', async (req, res) => {
 //     try {

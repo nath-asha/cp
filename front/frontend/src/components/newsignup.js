@@ -1,118 +1,164 @@
-import React, { isValidElement, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/register.css";
-import { Form, Container, Row, Col, Button } from "react-bootstrap";
-
-const token = sessionStorage.getItem("token");
+import { Button } from "react-bootstrap";
 
 const Newsignup = () => {
-    const [values, setValues] = useState({
-        name: "",
-        email: "",
-        password: "",
-    });
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-    const [submitted, setSubmitted] = useState(false);
-    const [valid, setValid] = useState(false);
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false); // To disable button during submission
 
+  useEffect(() => {
+    validate(); // Validate on input change
+  }, [values]);
 
-const validatePassword = (value) => {
-        const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
-        setValid(pattern.test(value));
-        };
+  const validateEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email) ? "" : "Please enter a valid email";
+  };
 
+  const validatePassword = (password) => {
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]{8,}$/;
+    return passwordPattern.test(password)
+      ? ""
+      : "Password must be at least 8 characters and include one uppercase letter, one lowercase letter, one number, and one special character.";
+  };
 
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setValues((values) => ({
-            ...values,
-            [name]: value,
-        }));    };
+  const validate = () => {
+    let newErrors = {};
+    newErrors.name = values.name.trim() ? "" : "Please enter a name";
+    newErrors.email = values.email.trim() ? validateEmail(values.email) : "Please enter an email";
+    newErrors.password = values.password ? validatePassword(values.password) : "Please enter a password";
+    setErrors(newErrors);
+    return Object.values(newErrors).every((error) => error === ""); // Returns true if no errors
+  };
 
-    
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitted(true);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (Object.values(values).every((value) => value)) {
-            setValid(true);
-            try {
-                const response = await fetch("http://localhost:5000/api/auth/signedup", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(values),
-                });
-                if (response.ok) {
-                    console.log("User signed up successfully");
-                } else {
-                    console.error("Failed to register user");
-                }
-            } catch (error) {
-                console.error("Error:", error);
-            }
+    if (validate()) {
+      setIsSubmitting(true);
+      try {
+        const token = sessionStorage.getItem("token"); // Consider if token is always available here
+        const response = await fetch("http://localhost:5000/api/auth/signedup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }), // Conditionally add Authorization header
+          },
+          body: JSON.stringify(values),
+        });
+
+        if (response.ok) {
+          console.log("User signed up successfully");
+          // Optionally redirect user or show a success message
+        } else {
+          const errorData = await response.json();
+          console.error("Failed to register user:", errorData);
+          // Optionally display an error message to the user based on errorData
         }
-        setSubmitted(true);
-    };
+      } catch (error) {
+        console.error("Error:", error);
+        // Optionally display a generic error message to the user
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
 
-    return (
-        <div className="form-container text-black">
-            <form className="register-form" onSubmit={handleSubmit}>
-                {submitted && valid && (
-                    <div>
-                        <h5>Sign in successful</h5>
-                    </div>
-                )}
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
-                {!valid && (
-                    <>
-                        <input
-                            className="form-field"
-                            type="text"
-                            name="name"
-                            placeholder="Name"
-                            value={values.name}
-                            onChange={handleInputChange}
-                        />
-                        {submitted && !values.name && (
-                            <span id="name-error">Please enter a name</span>
-                        )}
+  return (
+    <div className="form-container text-black">
+      <form className="register-form" onSubmit={handleSubmit}>
+        {submitted && Object.values(errors).every((error) => error === "") && (
+          <div>
+            <h5>Sign up successful</h5>
+          </div>
+        )}
 
-                        <input
-                            className="form-field"
-                            type="email"
-                            name="email"
-                            placeholder="Email"
-                            value={values.email}
-                            onChange={handleInputChange}
-                        />
-                        {submitted && !values.email && (
-                            <span id="email-error">Please enter an email</span>
-                        )}
+        <input
+          className="form-field"
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={values.name}
+          onChange={handleInputChange}
+        />
+        {submitted && errors.name && <span className="error-message">{errors.name}</span>}
 
-                        <input
-                            className="form-field"
-                            type='password'
-                            name="password"
-                            placeholder="Password"
-                            value={values.password}
-                            onChange={handleInputChange}
-                        />
-                        {submitted && !values.password && !validatePassword(values.password)(
-                            <span id="password-error">Please enter a password</span>
-                        )}
+        <input
+          className="form-field"
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={values.email}
+          onChange={handleInputChange}
+        />
+        {submitted && errors.email && <span className="error-message">{errors.email}</span>}
 
-                        <Button type="submit">
-                            Signup
-                        </Button>
-                        <p className="center">OR</p>
-                        <Button>Signup with Google</Button>
-                    </>
-                )}
-            </form>
+        <div style={{ position: "relative" }}>
+          <input
+            className="form-field"
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Password"
+            value={values.password}
+            onChange={handleInputChange}
+          />
+          <input
+            type="checkbox"
+            id="showPassword"
+            style={{ position: "absolute", right: "5px", top: "50%", transform: "translateY(-50%)" }}
+            checked={showPassword}
+            onChange={toggleShowPassword}
+          />
+          <label
+            htmlFor="showPassword"
+            style={{
+              position: "absolute",
+              right: "25px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              fontSize: "0.8em",
+              userSelect: "none",
+              cursor: "pointer",
+            }}
+          >
+            Show
+          </label>
         </div>
-    );
+        {submitted && errors.password && <span className="error-message">{errors.password}</span>}
+
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Signing Up..." : "Signup"}
+        </Button>
+        <p className="center">OR</p>
+        <Button>Signup with Google</Button>
+      </form>
+    </div>
+  );
 };
 
 export default Newsignup;
