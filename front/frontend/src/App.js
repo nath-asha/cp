@@ -58,6 +58,7 @@ import Displayevent from './components/topper';
 import EventOrganizerDashboard from './components/organiser';
 import MentorDashboardin from './components/mentos';
 import HackaFestHome from './components/homemodified';
+import Submissionlist from './components/submissionlist';
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
@@ -108,6 +109,7 @@ function App() {
           <Route path="/participantlist" element={<ParticipantManager />} />
           <Route path="/mentorlist" element={<MentorManager />} />
           <Route path='/problemlist' element={<Problemlist />} />
+          <Route path='/submissionlist' element={<Submissionlist />} />
 
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>

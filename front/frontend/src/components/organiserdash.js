@@ -97,6 +97,7 @@ function Organiserdash() {
                             <div className="card-body">
                                 <h5 className="card-title">Submissions</h5>
                                 <p className="card-text">{stats.submissions}</p>
+                                <button onClick={() => window.location.href = '/submissionlist'}>Manage Submissions</button>
                             </div>
                         </div>
                     </div>
@@ -167,7 +168,7 @@ function Organiserdash() {
                 </table>
             </div> */}
 
-            <div>
+            {/* <div>
                 <h2 className="text-black">Problem Statements</h2>
                 <input 
                     type="text"
@@ -188,7 +189,7 @@ function Organiserdash() {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div> */}
 
             <div>
                 <h2 className="text-black">Submissions</h2>
