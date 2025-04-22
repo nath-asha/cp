@@ -27,6 +27,8 @@ import MentorDashboard from './components/mentordash';
 ////////////////////////////////////////////////
 //new
 import ParticipantManager from './components/participantlist';
+import MentorManager from './components/mentorlist';
+import Problemlist from './components/problemlist';
 import SignupForm from './components/signup';
 // import MentorDashboard from './components/About';
 // import MentorDashboardo from '../';
@@ -104,7 +106,8 @@ function App() {
           } />
 
           <Route path="/participantlist" element={<ParticipantManager />} />
-
+          <Route path="/mentorlist" element={<MentorManager />} />
+          <Route path='/problemlist' element={<Problemlist />} />
 
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>

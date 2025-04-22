@@ -79,6 +79,7 @@ function Organiserdash() {
                             </div>
                         </div>
                         <button onClick={() => window.location.href = '/participantlist'}>Manage Participants</button>
+                        <Button onClick={() => window.location.href = '/mentorlist'}>Manage Mentors</Button>
                     </div>
 
                     <div className="col">
@@ -138,7 +139,7 @@ function Organiserdash() {
                 </table>
             </div> */}
 
-            <div>
+            {/* <div>
                 <h2 className="text-black">Mentors</h2>
                 <table className="table table-striped">
                     <thead>
@@ -146,7 +147,7 @@ function Organiserdash() {
                             <th>#</th>
                             <th>Name</th>
                             <th>Email</th>
-                            {/* <th>Github</th> */}
+                            {/* <th>Github</th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -157,13 +158,13 @@ function Organiserdash() {
                                 <td>{m.firstName} {m.lastName}</td>
                                 <td>{m.email}</td>
                                 <td>{m.team_id}</td>
-                                {/* <td><a href={m.github_url}><Github /></a></td> */}
+                                {/* <td><a href={m.github_url}><Github /></a></td> 
                             </tr>
                             ) : null
                         ))}
                     </tbody>
                 </table>
-            </div>
+            </div> */}
 
             <div>
                 <h2 className="text-black">Problem Statements</h2>
