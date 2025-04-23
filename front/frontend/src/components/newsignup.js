@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/register.css";
 import { Button } from "react-bootstrap";
+import {ArrowLeftIcon} from 'lucide-react';
 
 const Newsignup = () => {
   const [values, setValues] = useState({
@@ -95,6 +96,7 @@ const Newsignup = () => {
           </div>
         )}
 
+        <a href='/signinu'><ArrowLeftIcon/>Back</a>
         <input
           className="form-field"
           type="text"

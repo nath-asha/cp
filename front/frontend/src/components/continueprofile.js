@@ -133,7 +133,7 @@ export default function Continueprofile() {
     <div className="form-container"> 
       
         <form className="register-form" onSubmit={handleSubmit}>
-          {submitted && valid && Response.ok(
+          {submitted && valid && (
             <div className="success-message">
               <h3>Welcome {values.firstName} {values.lastName}</h3>
               <div>Your profile is now complete!</div>
