@@ -10,8 +10,6 @@ export default function RegistrationForm() {
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
-    email: "",
-    password: "",
     phone: "",
     role: "",
     team: "",
@@ -41,7 +39,7 @@ export default function RegistrationForm() {
     if (Object.values(values).every(value => value)) {
      setValid(true);
      try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch('http://localhost:5000/api/auth/profilesignup', {
         method: 'POST',
         headers: {
          'Content-Type': 'application/json',
@@ -98,36 +96,14 @@ export default function RegistrationForm() {
                 <span id="last-name-error">Please enter a last name</span>
               )}
 
-              <input
-                className="form-field"
-                type="email"
-                placeholder="Email"
-                name="email"
-                value={values.email}
-                onChange={handleInputChange}
-              />
-              {submitted && !values.email && (
-                <span id="email-error">Please enter an email address</span>
-              )}
-
+              
               {/* <input 
                 className="form-field"
                 type="text"
                 placeholder="Batch"
               /> */}
 
-              <input
-                className="form-field"
-                type="password"
-                placeholder="password"
-                name="password"
-                value={values.password}
-                onChange={handleInputChange}
-              />
-              {submitted && !values.password && (
-                <span id="password-error">Please enter a password</span>
-              )}
-
+              
               <input
                 className="form-field"
                 type="text"

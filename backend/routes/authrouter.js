@@ -1,5 +1,5 @@
 const express = require("express");
-const { registerUser, loginUser, signedupUser } = require("../controllers/authcontroller");
+const { registerUser, loginUser, signedupUser,profileUser } = require("../controllers/authcontroller");
 
 const router = express.Router();
 
@@ -10,6 +10,8 @@ router.post("/login", loginUser); //do not change to /logino
 
 router.post("/signedup", signedupUser);
 //this is for sign up and later sign up with google
+
+router.post("/profilesignup", profileUser);
 module.exports = router;
 
 // const express = require("express");

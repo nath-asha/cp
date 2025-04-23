@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
 }],
 required: true,
 default: [] },
- eventreg: { type: String, default:none},
+ eventreg: { type: String, default: "none"},
 });
 
 // module.exports = mongoose.model("User", UserSchema);
