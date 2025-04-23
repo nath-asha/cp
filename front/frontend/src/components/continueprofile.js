@@ -133,13 +133,13 @@ export default function Continueprofile() {
     <div className="form-container"> 
       
         <form className="register-form" onSubmit={handleSubmit}>
-          {submitted && valid && (
+          {submitted && Object.values(errors).every((error) => error === "") && (
             <div className="success-message">
               <h3>Welcome {values.firstName} {values.lastName}</h3>
               <div>Your profile is now complete!</div>
             </div>
           )}
-          {!valid && (
+          {/* {!valid && ( */}
             <>
               <input
                 className="form-field"
@@ -149,9 +149,9 @@ export default function Continueprofile() {
                 value={values.firstName}
                 onChange={handleInputChange}
               />
-              {submitted && !values.firstName && (
-                <span id="first-name-error">Please enter a first name</span>
-              )}
+              {submitted && errors.firstName && 
+                <span id="first-name-error">{errors.firstName}</span>
+              }
 
               <input
                 className="form-field"
@@ -161,8 +161,8 @@ export default function Continueprofile() {
                 value={values.lastName}
                 onChange={handleInputChange}
               />
-              {submitted && !values.lastName && (
-                <span id="last-name-error">Please enter a last name</span>
+              {submitted && errors.lastName && (
+                <span id="last-name-error">{errors.lastName}Please enter a last name</span>
               )}
 
               
@@ -183,8 +183,8 @@ export default function Continueprofile() {
                 pattern="\d{10}"
                 title="Please enter a valid 10 digit phone number"
               />
-              {submitted && !values.phone &&  (
-                <span id="phone-error">Please enter a phone number</span>
+              {submitted && errors.phone &&  (
+                <span id="phone-error">{errors.phone}Please enter a phone number</span>
               )}
 
               <input
@@ -195,8 +195,8 @@ export default function Continueprofile() {
                 value={values.USN}
                 onChange={handleInputChange}
               />
-              {submitted && !values.USN && (
-                <span id="usn-error">Please enter a USN</span>
+              {submitted && errors.USN && (
+                <span id="usn-error">{errors.USN}Please enter a USN</span>
               )}
 
               <input
@@ -207,8 +207,8 @@ export default function Continueprofile() {
                 value={values.role}
                 onChange={handleInputChange}
               />
-              {submitted && !values.role && (
-                <span id="role-error">Please select your role</span>
+              {submitted && errors.role && (
+                <span id="role-error">{errors.role}Please select your role</span>
               )}
 
               <input
@@ -219,8 +219,8 @@ export default function Continueprofile() {
                 value={values.team}
                 onChange={handleInputChange}
               />
-              {submitted && !values.team && (
-                <span id="team-error">Please enter your team</span>
+              {submitted && errors.team && (
+                <span id="team-error">{errors.team}Please enter your team</span>
               )}
 
               <input
@@ -231,8 +231,8 @@ export default function Continueprofile() {
                 value={values.organization}
                 onChange={handleInputChange}
               />
-              {submitted && !values.organization && (
-                <span id="organisation-error">Please enter organisation</span>
+              {submitted && errors.organization && (
+                <span id="organisation-error">{errors.organization}Please enter organisation</span>
               )}
 
               <input
@@ -299,7 +299,7 @@ export default function Continueprofile() {
                 Register
               </button>
             </>
-          )}
+          {/* )} */}
         </form>
       </div>
   );
