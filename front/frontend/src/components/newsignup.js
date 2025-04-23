@@ -91,7 +91,7 @@ const Newsignup = () => {
 
   return (
     <div className="form-container text-black">
-      <form className="register-form" onSubmit={handleSubmit}>
+      <form className="register-form text-black" onSubmit={handleSubmit}>
         {submitted && Object.values(errors).every((error) => error === "") && (
           <div>
             <h5>Sign up successful</h5>
@@ -106,7 +106,7 @@ const Newsignup = () => {
           value={values.name}
           onChange={handleInputChange}
         />
-        {submitted && errors.name && <span className="error-message">{errors.name}</span>}
+        {submitted && errors.name && <span className="error-message text-danger">{errors.name}</span>}
 
         <input
           className="form-field"
@@ -116,7 +116,7 @@ const Newsignup = () => {
           value={values.email}
           onChange={handleInputChange}
         />
-        {submitted && errors.email && <span className="error-message">{errors.email}</span>}
+        {submitted && errors.email && <span className="error-message text-danger">{errors.email}</span>}
 
         <div style={{ position: "relative" }}>
           <input
@@ -130,26 +130,12 @@ const Newsignup = () => {
           <input
             type="checkbox"
             id="showPassword"
-            style={{ position: "absolute", right: "5px", top: "50%", transform: "translateY(-50%)" }}
+            style={{ position: "absolute", left: "46%", top: "40%" }}
             checked={showPassword}
             onChange={toggleShowPassword}
           />
-          <label
-            htmlFor="showPassword"
-            style={{
-              position: "absolute",
-              right: "25px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              fontSize: "0.8em",
-              userSelect: "none",
-              cursor: "pointer",
-            }}
-          >
-            Show
-          </label>
         </div>
-        {submitted && errors.password && <span className="error-message">{errors.password}</span>}
+        {submitted && errors.password && <span className="error-message text-danger">{errors.password}</span>}
 
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Signing Up..." : "Signup"}
