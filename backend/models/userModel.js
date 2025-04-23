@@ -28,7 +28,13 @@ const userSchema = new mongoose.Schema({
   linkedin_url: String,
   Twitter_url: String,
   USN: String,
-  mentee: [],
+  mentee: {  type: [{
+    teamname: { type: String, required: true },
+    teamId: { type: String, required: true },
+}],
+required: true,
+default: [] },
+ eventreg: { type: String, default:none},
 });
 
 // module.exports = mongoose.model("User", UserSchema);
