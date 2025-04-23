@@ -27,8 +27,8 @@ const Navbar = () => {
                 <li><Link to="/gallery">Gallery</Link></li>
                 {/* <li><Link to="/leaderboard">Leaderboard</Link></li> */}
                 <li><Link to="/contact">Contact</Link></li>
-                <li><Link to='/newsignup'>Signup</Link></li>
-                <li><Link to='/signinu'>Signin</Link></li>
+                {/* <li><Link to='/newsignup'>Signup</Link></li>
+                <li><Link to='/signinu'>Signin</Link></li> */}
 
                 {user && user.email ? (
                     <li className="user-dropdown">
@@ -59,7 +59,7 @@ const Navbar = () => {
                         )}
                     </li>
                 ) : (
-                    <li><Link to="/logino">Login</Link></li>
+                    <li><Link to="/logino"> Login / Signup</Link></li>
                 )}
             </ul>
         </nav>

@@ -5,6 +5,27 @@ const signupSchema = new mongoose.Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     role: {type: String, required: true, default : "user"},
+    firstName: String,
+    lastName: String,
+    email: String,
+    password: String,
+    phone: Number,
+    team: { type: String, default: "none" },
+    // address: String,
+    organization:{type: String, required: true},
+    description: String,
+    skills : String,
+    github_url: String,
+    linkedin_url: String,
+    Twitter_url: String,
+    USN: String,
+    mentee: {  type: [{
+    teamname: { type: String, required: true },
+    teamId: { type: String, required: true },
+}],
+required: true,
+default: [] },
+ eventreg: { type: String, default: "none"},
 });
 
 module.exports = mongoose.model('Signup', signupSchema);
