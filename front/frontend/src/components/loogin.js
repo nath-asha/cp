@@ -100,7 +100,7 @@ const Logino = () => {
                         </>
                     )}
                 </form>
-                <p>Don't have an account <a href="/signup">Signup</a></p>
+                <p>Don't have an account <a href="/newsignup">Signup</a></p>
             </div>
         </div>
     );

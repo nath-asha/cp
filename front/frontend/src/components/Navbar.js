@@ -28,6 +28,7 @@ const Navbar = () => {
                 {/* <li><Link to="/leaderboard">Leaderboard</Link></li> */}
                 <li><Link to="/contact">Contact</Link></li>
                 <li><Link to='/newsignup'>Signup</Link></li>
+                <li><Link to='/signinu'>Signin</Link></li>
 
                 {user && user.email ? (
                     <li className="user-dropdown">

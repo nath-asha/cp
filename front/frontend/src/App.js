@@ -62,6 +62,7 @@ import Submissionlist from './components/submissionlist';
 import Newsignup from './components/newsignup';
 import Signee from './components/trialsignup';
 import Assignmentees from './components/assignmentees';
+import Signinuser from './components/signinuser';
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
@@ -117,6 +118,7 @@ function App() {
           <Route path='/oldsignup'element={<SignupForm />} />
           <Route path='/signee' element={<Signee />} />
           <Route path='/assignmentees' element={<Assignmentees />} />
+          <Route path='/signinu' element={<Signinuser />} />
 
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
