@@ -5,10 +5,19 @@ import axios from 'axios';
 const Assignmentees = () => {
     const [assignments, setAssignments] = useState([]);
     const [search, setSearch] = useState('');
+    const [mentors, setMentors] = useState([]);
+    const [currentMentor, setCurrentMentor] = useState(null);
     const [currentAssignment, setCurrentAssignment] = useState(null);
 
+
     useEffect(() => {
-        axios.get("http://localhost:5000/assignments")
+            axios.get("http://localhost:5000/participants")
+                .then(response => setMentors(response.data))
+                .catch(error => console.error(error));
+        }, []);
+
+    useEffect(() => {
+        axios.get("http://localhost:5000/teams")
             .then(response => setAssignments(response.data))
             .catch(error => console.error(error));
     }, []);
@@ -25,6 +34,19 @@ const Assignmentees = () => {
     const handleEdit = (assignment) => {
         setCurrentAssignment(assignment);
     }
+
+    const assignmentees = async (teamId, mentorId) => {{
+        try{
+            const response = await axios.post(`http://localhost:5000/assignments`, { teamId, mentorId });
+            if (response.status === 200) {
+                console.log('Assignment successful:', response.data);
+            } else {
+                console.error('Error assigning:', response.statusText);
+            }
+        }catch(err){
+            console.error('Error assigning mentor:',err);
+        }
+    }}
 
     const filteredAssignments = assignments.filter(assignment => assignment.title.toLowerCase().includes(search.toLowerCase()));
 
@@ -45,8 +67,9 @@ const Assignmentees = () => {
                             <div className="col-md-4 mb-4" key={assignment._id}>
                                 <Card>
                                     <Card.Body>
-                                        <h5 className="card-title">{assignment.title}</h5>
-                                        <p className="card-text">{assignment.description}</p>
+                                        <h5 className="card-title">{assignment.name} {assignment.team_id}</h5>
+                                        <p className="card-text">{assignment.project}</p>
+                                        <button>Assign</button>
                                         <button><a onClick={() => handleEdit(assignment)}>Edit</a></button>
                                         <button className='btn bg-danger text-white' onClick={() => { if (window.confirm(`Are you sure you want to delete ${assignment.title}?`)) {
                                             handleDelete(assignment._id);
@@ -60,6 +83,6 @@ const Assignmentees = () => {
             </div>
         </div>
     );
-}
+};
 
 export default Assignmentees;
