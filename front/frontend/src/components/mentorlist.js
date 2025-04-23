@@ -81,6 +81,7 @@ const MentorManager = () => {
                         <th>Github</th>
                         <th>Linkedin</th>
                         <th>Actions</th>
+                        <th>Assign teams</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -119,6 +120,9 @@ const MentorManager = () => {
                                 >
                                     Delete
                                 </button>
+                            </td>
+                            <td>
+                                <button></button>
                             </td>
                         </tr>
                         ): null

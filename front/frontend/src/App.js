@@ -61,6 +61,7 @@ import HackaFestHome from './components/homemodified';
 import Submissionlist from './components/submissionlist';
 import Newsignup from './components/newsignup';
 import Signee from './components/trialsignup';
+import Assignmentees from './components/assignmentees';
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
@@ -115,6 +116,7 @@ function App() {
           <Route path='/newsignup' element={<Newsignup/>} />
           <Route path='/oldsignup'element={<SignupForm />} />
           <Route path='/signee' element={<Signee />} />
+          <Route path='/assignmentees' element={<Assignmentees />} />
 
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>

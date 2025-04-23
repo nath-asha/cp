@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   phone: Number,
   role: { type: String, default: "user" },
   team: { type: String, default: "none" },
-  address: String,
+  // address: String,
   organization:{type: String, required: true},
   description: String,
   skills : String,
@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema({
   linkedin_url: String,
   Twitter_url: String,
   USN: String,
+  mentee: [],
 });
 
 // module.exports = mongoose.model("User", UserSchema);

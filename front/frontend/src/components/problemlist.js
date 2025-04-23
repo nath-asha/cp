@@ -28,11 +28,15 @@ const Problemlist = () => {
     }
 
     const filteredChallenges = problems.filter(problem => problem.title.toLowerCase().includes(search.toLowerCase()));
-    
+    const filteredChallenge = problems.filter(problem => problem.eventId.toLowerCase().includes(search.toLowerCase()));
+
 
 return(
-    <div>
-    <h2 className="text-black">Problem Statements</h2>
+    <div className="container">
+        <h2 className="text-black">Problem Statements</h2>
+        <div className="row">
+            <div className="col">
+    
     <input 
         type="text"
         placeholder="Search"
@@ -40,6 +44,7 @@ return(
         onChange={(e) => setSearch(e.target.value)}
         className="search-input"
     />
+    
     <div className="row">
         {filteredChallenges.map((problem) => (
             <div className="col-md-4 mb-4" key={problem._id}>
@@ -55,6 +60,33 @@ return(
                 </Card>
             </div>
         ))}
+    </div>
+</div>
+<div className="col">
+    <input 
+        type="text"
+        placeholder="search by Event ID"
+        value={search}
+        onChange={(e => setSearch(e.target.value))}
+        className="search-input"
+    />
+    <div className="row">
+        {filteredChallenge.map((problem) => (
+            <div className="col-md-4 mb-4" key={problem._id}>
+                <Card>
+                    <CardBody>
+                        <h5 className="card-title">{problem.title}</h5>
+                        <p className="card-text">{problem.description}</p>
+                        <button><a onClick={() => handleEdit(problem)}>Edit</a></button>
+                        <button className='btn bg-danger text-white' onClick={() => { if (window.confirm(`Are you sure you want to delete ${problem.title}?`)) {
+                                            handleDelete(problem._id);
+                                        }}}><a>Delete</a></button>
+                    </CardBody>
+                </Card>
+            </div>
+        ))}
+        </div>
+        </div>
     </div>
 </div>
 )

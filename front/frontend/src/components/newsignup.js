@@ -19,7 +19,7 @@ const Newsignup = () => {
   const [isSubmitting, setIsSubmitting] = useState(false); // To disable button during submission
 
   useEffect(() => {
-    validate(); // Validate on input change
+    validate(); 
   }, [values]);
 
   const validateEmail = (email) => {
@@ -40,7 +40,7 @@ const Newsignup = () => {
     newErrors.email = values.email.trim() ? validateEmail(values.email) : "Please enter an email";
     newErrors.password = values.password ? validatePassword(values.password) : "Please enter a password";
     setErrors(newErrors);
-    return Object.values(newErrors).every((error) => error === ""); // Returns true if no errors
+    return Object.values(newErrors).every((error) => error === ""); //no errors then true
   };
 
   const handleInputChange = (event) => {
@@ -58,27 +58,24 @@ const Newsignup = () => {
     if (validate()) {
       setIsSubmitting(true);
       try {
-        const token = sessionStorage.getItem("token"); // Consider if token is always available here
+        const token = sessionStorage.getItem("token"); 
         const response = await fetch("http://localhost:5000/api/auth/signedup", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            ...(token && { Authorization: `Bearer ${token}` }), // Conditionally add Authorization header
+            ...(token && { Authorization: `Bearer ${token}` }), 
           },
           body: JSON.stringify(values),
         });
 
         if (response.ok) {
           console.log("User signed up successfully");
-          // Optionally redirect user or show a success message
         } else {
           const errorData = await response.json();
           console.error("Failed to register user:", errorData);
-          // Optionally display an error message to the user based on errorData
         }
       } catch (error) {
         console.error("Error:", error);
-        // Optionally display a generic error message to the user
       } finally {
         setIsSubmitting(false);
       }

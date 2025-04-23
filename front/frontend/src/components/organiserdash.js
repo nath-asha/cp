@@ -87,11 +87,11 @@ function Organiserdash() {
                          Events
                         </Nav.Link>
                     </Nav.Item>
-                    <Nav.Item>
+                    {/* <Nav.Item>
                         <Nav.Link eventKey="problems">
                             <Puzzle className="me-2" /> Problems & Submissions
                         </Nav.Link>
-                    </Nav.Item>
+                    </Nav.Item> */}
                 </Nav>
                 <Tab.Content className="mt-3">
                     <Tab.Pane eventKey="registrations">
@@ -163,17 +163,17 @@ function Organiserdash() {
                                             <Card.Text><small className="text-muted">Venue: {event.venue}</small></Card.Text>
                                         </Card.Body>
                                         <Card.Footer className="bg-light border-top-0">
-                                            <Button variant="outline-primary" size="sm" onClick={() => window.location.href = '/eventlist'}>Manage Event</Button>
+                                            {/* <Button variant="outline-primary" size="sm" onClick={() => window.location.href = '/eventlist'}>Manage Event</Button> */}
                                         </Card.Footer>
                                     </Card>
                                 </Col>
                             ))}
                         </Row>
                         <div className="mt-3">
-                            <Button onClick={() => window.location.href = '/eventlist'}>Go to Full Event Management Page</Button>
+                            <Button onClick={() => window.location.href = '/eventlist'}>Manage Events</Button>
                         </div>
                     </Tab.Pane>
-                    <Tab.Pane eventKey="problems">
+                    {/* <Tab.Pane eventKey="problems">
                         <h4>Problems & Submissions Overview</h4>
                         <Row xs={1} md={2} className="g-4">
                             <Col>
@@ -199,9 +199,36 @@ function Organiserdash() {
                                 </Card>
                             </Col>
                         </Row>
-                    </Tab.Pane>
+                    </Tab.Pane> */}
                 </Tab.Content>
             </Tab.Container>
+            <div id="problems">
+                        <h4>Problems & Submissions Overview</h4>
+                        <Row xs={1} md={2} className="g-4">
+                            <Col>
+                                <Card className="shadow">
+                                    <Card.Body>
+                                        <Card.Title>Problem Statements</Card.Title>
+                                        <Card.Text>
+                                            <Puzzle className="me-2" size={24} /> Total: {stats.problems}
+                                        </Card.Text>
+                                        <Button variant="outline-info" size="sm" onClick={() => window.location.href = '/problemlist'}>Manage Problems</Button>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col>
+                                <Card className="shadow">
+                                    <Card.Body>
+                                        <Card.Title>Submissions</Card.Title>
+                                        <Card.Text>
+                                            <FileCode className="me-2" size={24} /> Total: {stats.submissions}
+                                        </Card.Text>
+                                        <Button variant="outline-warning" size="sm" onClick={() => window.location.href = '/submissionlist'}>Manage Submissions</Button>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        </Row>
+                    </div>
         </Container>
     );
 }
