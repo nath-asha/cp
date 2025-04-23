@@ -8,13 +8,14 @@ const Signinuser = () => {
     const [values, setValues] = useState({
         email: "",
         password: "",
+        role: "user",
     });
 
     const [role, setRole] = useState(null);
 
     const [submitted, setSubmitted] = useState(false);
     const [valid, setValid] = useState(false);
-    const { login, error } = useAuth(); // Get error from provider
+    const { signin, error } = useAuth(); // Get error from provider
     const navigate = useNavigate();
     const location = useLocation();
     const redirectPath = location.state?.path || "/profile";
@@ -30,7 +31,7 @@ const Signinuser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await login(values.email, values.password); // Call login with email and password
+            await signin(values.email, values.password); // Call login with email and password
             if (!error) {
                 setValid(true);
                 setSubmitted(true);

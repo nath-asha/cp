@@ -45,7 +45,7 @@ return(
         className="search-input"
     />
     
-    <div className="row">
+    <div className="row xl={2} md={2} sm={2} l={2} xs={1}">
         {filteredChallenges.map((problem) => (
             <div className="col-md-4 mb-4" key={problem._id}>
                 <Card>

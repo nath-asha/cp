@@ -87,11 +87,11 @@ function Organiserdash() {
                          Events
                         </Nav.Link>
                     </Nav.Item>
-                    {/* <Nav.Item>
+                    <Nav.Item>
                         <Nav.Link eventKey="problems">
                             <Puzzle className="me-2" /> Problems & Submissions
                         </Nav.Link>
-                    </Nav.Item> */}
+                    </Nav.Item>
                 </Nav>
                 <Tab.Content className="mt-3">
                     <Tab.Pane eventKey="registrations">
@@ -173,7 +173,7 @@ function Organiserdash() {
                             <Button onClick={() => window.location.href = '/eventlist'}>Manage Events</Button>
                         </div>
                     </Tab.Pane>
-                    {/* <Tab.Pane eventKey="problems">
+                     <Tab.Pane eventKey="problems">
                         <h4>Problems & Submissions Overview</h4>
                         <Row xs={1} md={2} className="g-4">
                             <Col>
@@ -199,7 +199,7 @@ function Organiserdash() {
                                 </Card>
                             </Col>
                         </Row>
-                    </Tab.Pane> */}
+                    </Tab.Pane> 
                 </Tab.Content>
             </Tab.Container>
             <div id="problems">

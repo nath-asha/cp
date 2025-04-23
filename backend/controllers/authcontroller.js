@@ -64,12 +64,13 @@ exports.loginUser = async (req, res) => {
 
 exports.signedupUser = async (req,res) => {
     try {
-        const {name,email,password} = req.body;
+        const {name,email,role,password} = req.body;
         const hashedPassword = await bcrypt.hash(password,10);
         const newUser = new signeduser({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            role,
         });
         await newUser.save();
         res.status(201).json({message: "User signed up successfully"});
