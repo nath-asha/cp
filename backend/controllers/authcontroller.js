@@ -64,10 +64,10 @@ exports.loginUser = async (req, res) => {
 
 exports.signedupUser = async (req,res) => {
     try {
-        const {firstName,email,password} = req.body;
+        const {name,email,password} = req.body;
         const hashedPassword = await bcrypt.hash(password,10);
         const newUser = new signeduser({
-            firstName,
+            name,
             email,
             password: hashedPassword
         });

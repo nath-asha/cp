@@ -4,13 +4,13 @@ import { Button } from "react-bootstrap";
 
 const Newsignup = () => {
   const [values, setValues] = useState({
-    firstName: "",
+    name: "",
     email: "",
     password: "",
   });
 
   const [errors, setErrors] = useState({
-    firstName: "",
+    name: "",
     email: "",
     password: "",
   });
@@ -36,7 +36,7 @@ const Newsignup = () => {
 
   const validate = () => {
     let newErrors = {};
-    newErrors.firstName = values.firstName.trim() ? "" : "Please enter a name";
+    newErrors.name = values.name.trim() ? "" : "Please enter a name";
     newErrors.email = values.email.trim() ? validateEmail(values.email) : "Please enter an email";
     newErrors.password = values.password ? validatePassword(values.password) : "Please enter a password";
     setErrors(newErrors);
@@ -100,10 +100,10 @@ const Newsignup = () => {
           type="text"
           name="name"
           placeholder="Name"
-          value={values.firstName}
+          value={values.name}
           onChange={handleInputChange}
         />
-        {submitted && errors.firstName && <span className="error-message text-danger">{errors.firstName}</span>}
+        {submitted && errors.name && <span className="error-message text-danger">{errors.name}</span>}
 
         <input
           className="form-field"
