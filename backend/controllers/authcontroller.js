@@ -84,7 +84,7 @@ exports.signedupUser = async (req,res) => {
 exports.profileUser = async (req, res) => {
     try {
         const { firstName, lastName, phone, role, team, organization, description, skills, github_url, linkedin_url, twitter_url, USN } = req.body;
-        const newUser = new User({
+        const newUser = new signeduser({
             firstName,
             lastName,
             phone,

@@ -1,5 +1,5 @@
 import "../styles/register.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 const token = sessionStorage.getItem('token');
@@ -19,9 +19,23 @@ export default function Continueprofile() {
     github_url: "",
     linkedin_url: "",
     twitter_url: "",
-    USN: ""
+    USN: "",
   });
   
+  const[errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    role: "",
+    team: "",
+    organization: "",
+    description: "",
+    skills: "",
+    github_url: "",
+    linkedin_url: "",
+    twitter_url: "",
+    USN: "",
+  })
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setValues((values) => ({
@@ -31,40 +45,95 @@ export default function Continueprofile() {
   };
 
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    validate();
+  }, [values]);
+
+  const validatePhone = (phone) => {
+    const phonePattern = /^\d{10}$/; // 10 digit number
+    return phonePattern.test(phone) ? "" : "Please enter a valid 10 digit phone number";
+  }  
+
+  const validateUSN = (USN) => {
+    const usnPattern = /^[1-9][0-9]{1,2}[A-Z]{2}[0-9]{2}$/;
+    return usnPattern.test(USN) ? "" : "Please enter a valid USN";
+  }
+
+  const validateGithub = (github_url) => {
+    const githubPattern = /^(https?:\/\/)?(www\.)?github\.com\/+\/?$/;
+    return githubPattern.test(github_url) ? "" : "Please enter a valid GitHub URL";
+  }
+
+  const validateLinkedin = (linkedin_url) => {
+    const linkedPattern = /^(https?:\/\/)?(www\.)?(linkedin\.com\/in|linkedin\.com\/pub)\/[A-Za-z0-9_-]+\/?$/;
+    return linkedPattern.test(linkedin_url) ? "" : "Please enter a valid linkedin URL";
+  }
+
+  const validatetwitter = (twitter_url) => {
+    const twitPattern = /^(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9]+\/?$/;
+    return twitPattern.test(twitter_url) ? "" : "Please enter a valid linkedin URL";
+  }
+
+  const validate = () => {
+    let newErrors = {};
+    newErrors.firstName = values.firstName.trim() ? "" : "Please enter a first name";
+    newErrors.lastName = values.lastName.trim() ? "" : "Please enter a last name";
+    newErrors.phone = values.phone.trim() ? validatePhone(values.phone) : "Please enter a phone number";
+    newErrors.role = values.role.trim() ? "" : "Please select your role";
+    newErrors.team = values.team.trim() ? "" : "Please enter your team";
+    newErrors.organization = values.organization.trim() ? "" : "Please enter organisation";
+    newErrors.description = values.description.trim() ? "" : "Please enter a description";
+    newErrors.skills = values.skills.trim() ? "" : "Please enter skills";
+    newErrors.github_url = values.github_url.trim() ? validateGithub(values.github_url) : "Please enter github profile";
+    newErrors.linkedin_url = values.linkedin_url.trim() ? validateLinkedin(values.linkedin_url) : "Please enter linkedin_url";
+    newErrors.twitter_url = values.twitter_url.trim() ? validatetwitter(values.twitter_url) : "Please enter X url";
+    newErrors.USN = values.USN.trim() ? validateUSN(values.USN) : "Please enter a USN";
+    setErrors(newErrors);
+    return Object.values(newErrors).every((error) => error === ""); //no errors then true
+  }
   const [valid, setValid] = useState(false);
 
+  const [isSubmitting, setIsSubmitting] = useState(false); // To disable button during submission
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Object.values(values).every(value => value)) {
-     setValid(true);
-     try {
-      const response = await fetch('http://localhost:5000/api/auth/profilesignup', {
-        method: 'POST',
-        headers: {
-         'Content-Type': 'application/json',
-         'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(values)
-      });
-      if (response.ok) {
-        console.log('User registered successfully');
-      } else {
-        console.error('Failed to register user');
-      }
-     } catch (error) {
-      console.error('Error:', error);
-     }
-    }
     setSubmitted(true);
+
+    
+    if(validate()) {
+      setIsSubmitting(true);
+      try{
+        const token = sessionStorage.getItem('token');
+        const response = await fetch("http://localhost:5000/api/auth/profilesignup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && { Authorization: `Bearer ${token}`}),
+          },
+          body: JSON.stringify(values),
+        });
+
+        if(response.ok) {
+          const data = await response.json();
+          console.log("Profile updated successfully:", data);
+          setValid(true);
+          setSubmitted(true);
+        }
+      }catch (error){
+        console.error("Error:",error);
+      }finally{
+        setIsSubmitting(false);
+      }
+    }
   };
 
 
   return (
     <div className="form-container"> 
       
-        <form className="register-form hero" onSubmit={handleSubmit}>
-          {submitted && valid && (
+        <form className="register-form" onSubmit={handleSubmit}>
+          {submitted && valid && Response.ok(
             <div className="success-message">
               <h3>Welcome {values.firstName} {values.lastName}</h3>
               <div>Your profile is now complete!</div>

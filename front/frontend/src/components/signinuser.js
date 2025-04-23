@@ -100,8 +100,9 @@ const Signinuser = () => {
                             </button>
                         </>
                     )}
+                    <p>Don't have an account <a href="/newsignup">Signup</a></p>
+
                 </form>
-                <p>Don't have an account <a href="/newsignup">Signup</a></p>
             </div>
         </div>
     );
