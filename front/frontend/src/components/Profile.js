@@ -20,7 +20,7 @@ const Profile = () => {
                 Logout
             </button>
             <h4>Complete your profile here click below</h4>
-            <Button onClick={() => window.location.href = '/register'}>Edit Profile</Button>
+            <Button onClick={() => window.location.href = '/continueprofile'}>Edit Profile</Button>
         </>
     );
 };

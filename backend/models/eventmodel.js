@@ -19,6 +19,7 @@ const eventSchema = new mongoose.Schema({
         required: true,
         default: [] // Added default value
     },
+    logistics: String,
     importantDates: { type: [String], required: true, default: [] }, // Added important dates and default value
 });
 // const eventSchema = new mongoose.Schema({

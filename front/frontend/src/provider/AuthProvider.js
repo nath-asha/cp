@@ -46,17 +46,41 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const signin = async (email, password) => { // Renamed to 'login'
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await axios.post("http://localhost:5000/api/auth/signinuser", { email, password });
+            const { token, user } = response.data;
+            setToken_(token);
+            setUser(response.data.user);
+            navigate(redirectPath, { replace: true });
+        } catch (err) {
+            console.error("Signin failed:", err);
+            setError(err.response?.data?.message || "Signin failed. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const logout = () => {
         setToken(null);
         setUser(null);
         navigate("/logino");
     };
 
+    const signout = () => {
+        setToken(null);
+        setUser(null);
+        navigate("/signinuser");
+    }
+
     const contextValue = useMemo(
         () => ({
             user,
             login, // Updated to 'login'
             logout,
+            signin,
             token,
             setToken,
             loading,

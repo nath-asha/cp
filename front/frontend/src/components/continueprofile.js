@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 const token = sessionStorage.getItem('token');
 
-export default function RegistrationForm() {
+export default function Continueprofile() {
   //update and validate form so that incorrect data is not submitted
   //show error if dummy data is entered
   const [values, setValues] = useState({
@@ -67,7 +67,7 @@ export default function RegistrationForm() {
           {submitted && valid && (
             <div className="success-message">
               <h3>Welcome {values.firstName} {values.lastName}</h3>
-              <div>Your registration was successful!</div>
+              <div>Your profile is now complete!</div>
             </div>
           )}
           {!valid && (
@@ -152,18 +152,6 @@ export default function RegistrationForm() {
               />
               {submitted && !values.team && (
                 <span id="team-error">Please enter your team</span>
-              )}
-
-              <input
-                className="form-field"
-                type="text"
-                placeholder="Address"
-                name="address"
-                value={values.address}
-                onChange={handleInputChange}
-              />
-              {submitted && !values.address && (
-                <span id="address-error">Please enter your address</span>
               )}
 
               <input
