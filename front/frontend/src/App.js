@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 // import { useState, useEffect } from 'react';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-
+// import { GoogleLogin } from '@react-oauth/google';
 
 import { AuthProvider } from './provider/AuthProvider';
 import PrivateRoute from './components/PrivateRoute';
@@ -70,9 +70,15 @@ const ProtectedRoute = ({ element }) => {
 };
 
 function App() {
-    const onCallback = () => {
-        console.log("awesome");
-    };
+//   const responseMessage = (response) => {
+//     console.log(response);
+// };
+// const errorMessage = (error) => {
+//     console.log(error);
+// };
+    // const onCallback = () => {
+    //     console.log("awesome");
+    // };
   return (
     <Router>
       <AuthProvider>
@@ -172,6 +178,7 @@ function App() {
         <Footer />
       </div>
       </AuthProvider>
+      {/* <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> */}
     </Router>
   );
 }

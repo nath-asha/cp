@@ -2,10 +2,45 @@ import React, { useEffect, useState } from "react";
 import "../styles/register.css";
 import { Button } from "react-bootstrap";
 import {ArrowLeftIcon} from 'lucide-react';
-
-// import {GoogleLogin} from 'react-oauth/google';
+import axios from "axios";
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import {useGoogleLogin} from '@react-oauth/google';
 
 const Newsignup = () => {
+  const [user, setUser] = useState([]);
+const [profile, setProfile] = useState([]);
+
+const login = useGoogleLogin({
+  onSuccess : (codeResponse) => setUser(codeResponse),
+  onError : (error) => console.log('Login Failed:', error)
+});
+  const responseMessage = (response) => {
+    console.log(response);
+};
+const errorMessage = (error) => {
+    console.log(error);
+};
+useEffect(() => {
+  if(user) {
+    axios.get('https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}',{
+      headers: {
+        Authorization: `Bearer ${user.access_token}`,
+        'Content-Type': 'application/json',
+      }
+    })
+  .then((res) => {
+    setProfile(res.data);
+  })
+  .catch((err) => console.log(err));
+  }
+},[user]);
+
+//logout
+const logOut = () => {
+  googleLogout();
+  setProfile(null);
+};
+
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -142,7 +177,20 @@ const Newsignup = () => {
           {isSubmitting ? "Signing Up..." : "Signup"}
         </Button>
         <p className="center">OR</p>
-        <Button>Signup with Google</Button>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+        {profile ? (
+          <div>
+            <img src={profile.picture} alt='user image' />
+            <h5>User Logged in</h5>
+            <p>Name: {profile.name}</p>
+            <p>Email: {profile.email}</p>
+            <button onClick={logOut}>Log Out</button>
+            </div>
+        ):(
+          <button onClick={login}>Sign in with google</button>
+        )}
+        <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+        </div>
       </form>
     </div>
   );
