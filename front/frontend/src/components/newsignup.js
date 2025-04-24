@@ -3,12 +3,13 @@ import "../styles/register.css";
 import { Button } from "react-bootstrap";
 import {ArrowLeftIcon} from 'lucide-react';
 import axios from "axios";
-import { GoogleLogin, googleLogout } from '@react-oauth/google';
-import {useGoogleLogin} from '@react-oauth/google';
+// import { GoogleLogin } from '@react-oauth/google';
+import {useGoogleLogin, googleLogout} from '@react-oauth/google';
 
 const Newsignup = () => {
   const [user, setUser] = useState([]);
 const [profile, setProfile] = useState([]);
+    // console.log(`${user.access_token}`);
 
 const login = useGoogleLogin({
   onSuccess : (codeResponse) => setUser(codeResponse),
@@ -20,20 +21,24 @@ const login = useGoogleLogin({
 const errorMessage = (error) => {
     console.log(error);
 };
-useEffect(() => {
-  if(user) {
-    axios.get('https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}',{
-      headers: {
-        Authorization: `Bearer ${user.access_token}`,
-        'Content-Type': 'application/json',
+useEffect(
+  () => {
+      if (user) {
+          axios
+              .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+                  headers: {
+                      Authorization: `Bearer ${user.access_token}`,
+                      Accept: 'application/json'
+                  }
+              })
+              .then((res) => {
+                  setProfile(res.data);
+              })
+              .catch((err) => console.log(err));
       }
-    })
-  .then((res) => {
-    setProfile(res.data);
-  })
-  .catch((err) => console.log(err));
-  }
-},[user]);
+  },
+  [ user ]
+);
 
 //logout
 const logOut = () => {
@@ -189,7 +194,7 @@ const logOut = () => {
         ):(
           <button onClick={login}>Sign in with google</button>
         )}
-        <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+        {/* <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> */}
         </div>
       </form>
     </div>
