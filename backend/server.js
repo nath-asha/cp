@@ -6,7 +6,6 @@ const helmet = require("helmet");
 
 const checkRole = require("./middleware/roleMiddleware")
 
-
 connectDB();
 
 const app = express();

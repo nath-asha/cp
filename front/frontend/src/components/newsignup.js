@@ -3,6 +3,8 @@ import "../styles/register.css";
 import { Button } from "react-bootstrap";
 import {ArrowLeftIcon} from 'lucide-react';
 
+// import {GoogleLogin} from 'react-oauth/google';
+
 const Newsignup = () => {
   const [values, setValues] = useState({
     name: "",
