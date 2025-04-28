@@ -634,7 +634,37 @@ router.post('/api/send-request', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-  
+// Logistics Routes might change later logistics is string now in event
+router.get('/logistics', async (req, res) => {
+    try {
+        const logistics = await event.find({}, 'logistics'); // Fetch only the logistics field from the event model
+        res.json(logistics);
+    } catch (err) {
+        console.error("Error fetching logistics:", err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+router.post('/choose-challenge', async (req, res) => {
+    const { user_id, track_id } = req.body;
+
+    try {
+        const updatedUser = await user.findOneAndUpdate(
+            { _id: user_id },
+            { $set: { chosen_challenge: track_id } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'Challenge chosen successfully', user: updatedUser });
+    } catch (err) {
+        console.error('Error choosing challenge:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 module.exports = router;
 
 //changes in events model led to this

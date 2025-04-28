@@ -37,6 +37,28 @@ const Displayevent = () => {
         return <p>Loading event details or event not found...</p>;
     }
 
+    const handleRegister = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/events/${eventId}/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId: 'currentUserId' }) // Replace 'currentUserId' with actual user ID
+            });
+
+            if (response.ok) {
+                alert('Successfully registered for the event!');
+            } else {
+                const errorData = await response.json();
+                alert(`Failed to register: ${errorData.message}`);
+            }
+        } catch (err) {
+            console.error('Error during registration:', err);
+            alert('An error occurred while trying to register.');
+        }
+    };
+
     return (
         <div>
             <h2 className="mb-4">{selectedEvent.title || "Event Title"}</h2>
@@ -69,7 +91,7 @@ const Displayevent = () => {
                                 <Card>
                                 <CardBody>
                                             {role === 'user' ? (
-                                    <button className="btn btn-primary btn-sm">Register now!</button>
+                                    <button className="btn btn-primary btn-sm" onClick={handleRegister}>Register now!</button>
                                 ) : (
                                     <p>Please register as Participant first</p>
                                 )}
@@ -79,11 +101,11 @@ const Displayevent = () => {
                                         <Card.Body>
                                             <h5>{selectedEvent.date}</h5>
                                             <h5>{selectedEvent.venue}</h5>
-                                            {/* Assuming 'type' is not directly available in this data */}
+                                             {/* Assuming 'type' is not directly available in this data */}
                                             {/* <h5>{selectedEvent.type}</h5> */}
                                         </Card.Body>
                                     </Card>
-                                    {/* Assuming techStack is not directly available in this data */}
+                                     {/* Assuming techStack is not directly available in this data */}
                                     {/* <Card>
                                         <Card.Body>
                                             <h4>Tech Stack</h4>
@@ -123,7 +145,6 @@ const Displayevent = () => {
                         <Tab.Pane eventKey="prizes">
                             {selectedEvent.prizes && selectedEvent.prizes.length > 0 ? (
                                 <ul>
-                                    {/* <img src="medals-gold-silver-bronze-illustration-champion-awards-first_33099-744.png"></img> */}
                                     {selectedEvent.prizes.map((prize, index) => (
                                         <h1 className="hero" key={index}><Trophy/>                 {index+1} : {prize}</h1>
                                     ))}
@@ -179,7 +200,6 @@ const Displayevent = () => {
                         </Tab.Pane>
 
                         <Tab.Pane eventKey="Rules">
-                            {/* Add content for event rules here */}
                             <p>Event rules will be displayed here.</p>
                         </Tab.Pane>
 
