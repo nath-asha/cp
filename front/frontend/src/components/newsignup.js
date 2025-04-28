@@ -3,7 +3,7 @@ import "../styles/register.css";
 import { Button } from "react-bootstrap";
 import {ArrowLeftIcon} from 'lucide-react';
 import axios from "axios";
-// import { GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 import {useGoogleLogin, googleLogout} from '@react-oauth/google';
 
 const Newsignup = () => {
@@ -11,10 +11,14 @@ const Newsignup = () => {
 const [profile, setProfile] = useState([]);
     // console.log(`${user.access_token}`);
 
-const login = useGoogleLogin({
-  onSuccess : (codeResponse) => setUser(codeResponse),
-  onError : (error) => console.log('Login Failed:', error)
-});
+    const login = useGoogleLogin({
+      onSuccess: (codeResponse) => {
+        setUser(codeResponse)
+        console.log(codeResponse)
+      },
+      onError: (error) => console.log("Login Failed:", error)
+    });
+
   const responseMessage = (response) => {
     console.log(response);
 };
@@ -37,8 +41,7 @@ useEffect(
               .catch((err) => console.log(err));
       }
   },
-  [ user ]
-);
+  [ user ]);
 
 //logout
 const logOut = () => {
@@ -195,6 +198,14 @@ const logOut = () => {
           <button onClick={login}>Sign in with google</button>
         )}
         {/* <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> */}
+        <GoogleLogin
+  onSuccess={credentialResponse => {
+    console.log(credentialResponse);
+  }}
+  onError={() => {
+    console.log('Login Failed');
+  }}
+/>
         </div>
       </form>
     </div>

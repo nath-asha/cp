@@ -18,15 +18,25 @@ router.use(bodyParser.json());
 router.use(cors());
 
 // User Routes
-router.get('/participants', async (req,res) => {
+router.get('/participants', async (req, res) => {
     try {
-        const users = await user.find().where(role='user');
-        res.json(users);
+      const users = await user.find({ role: 'Participant' }); // Directly specify the filter object
+      res.json(users);
     } catch (err) {
-        console.error("Error fetching users", err);
-        res.status(500).send("Internal Server Error");
+      console.error("Error fetching participants", err);
+      res.status(500).send("Internal Server Error");
     }
-})
+  });
+
+//   router.get('/participants', async (req, res) => {
+//     try {
+//       const users = await user.find().where('role').equals('Participant');
+//       res.json(users);
+//     } catch (err) {
+//       console.error("Error fetching participants", err);
+//       res.status(500).send("Internal Server Error");
+//     }
+//   });
 
 // Community Routes
 router.get('/community', async (req, res) => {
@@ -395,6 +405,222 @@ const seechallenges = await Challenge.find({trackId: trackId});
     res.status(500).json({error: 'Internal server error'});
 }
 })
+
+router.get('/mentors', async (req, res) => {
+    try {
+      const users = await user.find({ role: 'Mentor' });
+      res.json(users);
+    } catch (err) {
+      console.error("Error fetching mentors", err);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+
+  // POST route for bulk assigning a mentor to multiple teams
+router.post('/assign-mentor', async (req, res) => {
+    try {
+      const { mentorId, teamIds } = req.body; // expecting mentorId and array of teamIds
+  
+      if (!mentorId || !Array.isArray(teamIds)) {
+        return res.status(400).json({ message: "mentorId and teamIds (array) are required" });
+      }
+  
+      // Check if mentor exists
+      const mentor = await User.findById(mentorId);
+      if (!mentor) {
+        return res.status(404).json({ message: "Mentor not found" });
+      }
+  
+      // Update each team to assign the mentor
+      const updateTeams = await Team.updateMany(
+        { _id: { $in: teamIds } },
+        { mentor: mentorId }
+      );
+  
+      res.status(200).json({
+        message: "Mentor assigned to teams successfully",
+        modifiedCount: updateTeams.modifiedCount
+      });
+  
+    } catch (error) {
+      console.error("Error assigning mentor (bulk):", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+  
+  // PUT route for assigning a mentor to a single team
+  router.put('/teams/:teamId', async (req, res) => {
+    const { teamId } = req.params;
+    const { mentor } = req.body;
+  
+    try {
+      const team = await Team.findByIdAndUpdate(
+        teamId,
+        { mentor: mentor || null }, // Allow unassigning by sending null
+        { new: true } // Return the updated document
+      );
+  
+      if (!team) {
+        return res.status(404).json({ message: "Team not found" });
+      }
+  
+      res.status(200).json({ message: "Team mentor updated successfully", team });
+  
+    } catch (error) {
+      console.error("Error updating team mentor:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+  
+  // GET route to fetch all mentors
+  router.get('/mentors', async (req, res) => {
+    try {
+      const mentors = await User.find({ role: 'mentor' }); // Assuming you have a 'role' field
+      res.status(200).json(mentors);
+    } catch (error) {
+      console.error("Error fetching mentors:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+  
+  // GET route to fetch all teams
+  router.get('/teams', async (req, res) => {
+    try {
+      const teams = await Team.find().populate('mentor', 'firstName lastName'); // Populate mentor details
+      res.status(200).json(teams);
+    } catch (error) {
+      console.error("Error fetching teams:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+// // PUT endpoint to assign a mentor to a team
+// router.put('/teams/:teamId/assign-mentor', async (req, res) => {
+//     const { mentorId } = req.body;
+//     const { teamId } = req.params;
+
+//     if (!mentorId) {
+//         return res.status(400).json({ message: 'mentorId is required in the request body.' });
+//     }
+
+//     try {
+//         // Validate mentor exists and has role 'mentor'
+//         const mentor = await User.findById(mentorId);
+//         if (!mentor || mentor.role.toLowerCase() !== 'mentor') {
+//             return res.status(404).json({ message: 'Mentor not found or invalid mentor role.' });
+//         }
+
+//         // Update the team
+//         const updatedTeam = await Team.findByIdAndUpdate(
+//             teamId,
+//             { mentor: mentor._id },
+//             { new: true }
+//         ).populate('mentor', 'firstName lastName email');
+
+//         if (!updatedTeam) {
+//             return res.status(404).json({ message: 'Team not found.' });
+//         }
+
+//         res.status(200).json(updatedTeam);
+//     } catch (error) {
+//         console.error('Error assigning mentor to team:', error);
+//         res.status(500).json({ message: 'Internal Server Error while assigning mentor.' });
+//     }
+// });
+// // GET a specific team with its mentors
+// router.get('/teams/:teamId', async (req, res) => {
+//     try {
+//       const team = await team.findById(req.params.teamId).populate('mentors', 'name email'); // Populate mentor details
+//       if (!team) {
+//         return res.status(404).json({ message: 'Team not found' });
+//       }
+//       res.json(team);
+//     } catch (err) {
+//       console.error("Error fetching team", err);
+//       res.status(500).send("Internal Server Error");
+//     }
+//   });
+  
+//   // PUT endpoint to assign mentors to a team
+//   router.put('/teams/:teamId/assign-mentors', async (req, res) => {
+//     const { mentorIds } = req.body; // Expect an array of mentor ObjectIds
+  
+//     try {
+//       const team = await team.findByIdAndUpdate(
+//         req.params.teamId,
+//         { mentors: mentorIds },
+//         { new: true } // Return the updated document
+//       ).populate('mentors', 'name email');
+  
+//       if (!team) {
+//         return res.status(404).json({ message: 'Team not found' });
+//       }
+  
+//       res.json(team);
+//     } catch (err) {
+//       console.error("Error assigning mentors", err);
+//       res.status(500).send("Internal Server Error");
+//     }
+//   });
+
+// router.post('/assign-mentor', async (req, res) => {
+//     try {
+//       const { mentorId, teamIds } = req.body; // expecting mentorId and array of teamIds
+  
+//       if (!mentorId || !Array.isArray(teamIds)) {
+//         return res.status(400).json({ message: "mentorId and teamIds (array) are required" });
+//       }
+  
+//       // Check if mentor exists
+//       const mentor = await User.findById(mentorId);
+//       if (!mentor) {
+//         return res.status(404).json({ message: "Mentor not found" });
+//       }
+  
+//       // Update each team to assign the mentor
+//       const updateTeams = await Team.updateMany(
+//         { _id: { $in: teamIds } }, 
+//         { mentor: mentorId }
+//       );
+  
+//       res.status(200).json({
+//         message: "Mentor assigned to teams successfully",
+//         modifiedCount: updateTeams.modifiedCount
+//       });
+  
+//     } catch (error) {
+//       console.error("Error assigning mentor:", error);
+//       res.status(500).json({ message: "Internal Server Error" });
+//     }
+//   });
+  
+//   // API 2: Get all teams without a mentor (optional)
+//   // GET /unassigned-teams
+//   router.get('/unassigned-teams', async (req, res) => {
+//     try {
+//       const teams = await Team.find({ mentor: { $exists: false } });
+//       res.status(200).json(teams);
+//     } catch (error) {
+//       console.error("Error fetching unassigned teams:", error);
+//       res.status(500).json({ message: "Internal Server Error" });
+//     }
+//   });
+  
+//   // API 3: Get all teams assigned to a particular mentor
+//   // GET /mentor-teams/:mentorId
+//   router.get('/mentor-teams/:mentorId', async (req, res) => {
+//     try {
+//       const { mentorId } = req.params;
+//       const teams = await Team.find({ mentor: mentorId });
+//       res.status(200).json(teams);
+//     } catch (error) {
+//       console.error("Error fetching mentor's teams:", error);
+//       res.status(500).json({ message: "Internal Server Error" });
+//     }
+//   });
+
+  
+module.exports = router;
+
 //changes in events model led to this
 // router.post('/events', async (req, res) => {
 //     try {

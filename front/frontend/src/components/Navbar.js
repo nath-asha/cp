@@ -60,7 +60,7 @@ const Navbar = () => {
                     </li>
                 ) : (
                     // <li><Link to="/logino"> Login / Signup</Link></li>
-                    <li><Link to="/signinu"> Login / Signup</Link></li>
+                    <li><Link to="/logino"> Login / Signup</Link></li>
 
                 )}
             </ul>

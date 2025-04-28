@@ -7,7 +7,10 @@ const teamSchema = new mongoose.Schema({
     "project_id": Number,
     "project": String,
     "createdAt": Date,
-    "mentor": String,
+    "mentor":{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     "frontScore": String,
     "backScore": String,
     "uiScore": String,
@@ -19,5 +22,4 @@ const teamSchema = new mongoose.Schema({
     }],
     "status" : String
 });
-
 module.exports = mongoose.model("teams",teamSchema);
