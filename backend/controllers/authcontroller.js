@@ -113,12 +113,12 @@ exports.googlesignin = async (req,res) => {
 }
 exports.googlesignup = async (req,res) => {
     try {
-        const {name,email,cred} = req.body;
-        const hashedcred = await bcrypt.hash(cred,10);
+        const {name,email} = req.body;
+    
         const newGsign = new signeduser({
             name,
             email,
-            cred:hashedcred,
+            
             role: 'user',
         });
         await newGsign.save();

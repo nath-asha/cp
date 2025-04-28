@@ -127,6 +127,7 @@ function App() {
           <Route path='/oldsignup'element={<SignupForm />} />
           <Route path='/signee' element={<Signee />} />
           <Route path='/assignmentees' element={<Assignmentees />} />
+          {/* this path belongs to signin without google currently*/}
           <Route path='/signinu' element={<Signinuser />} />
           <Route path='/continueprofile' element={<Continueprofile />} />
           <Route path='/sendteamreq' element={<Sendteamreq/>} />

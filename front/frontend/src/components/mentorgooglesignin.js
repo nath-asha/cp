@@ -1,12 +1,9 @@
-import React, {useState,useEffect} from "react";
-import { GoogleLogin } from "@react-oauth/google";
-import { useGoogleLogin,googleLogout } from "@react-oauth/google";
-import { Card, Button, Container, Row, Col } from "react-bootstrap";
-import { ArrowLeftIcon } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { useGoogleLogin, googleLogout } from "@react-oauth/google";
+import { Card } from "react-bootstrap";
 import axios from "axios";
 
 const MentorGoogleSignIn = () => {
-    //for storing access token n info for displaying profile
     const initialUserProperties = {
         access_token: '',
         expires_in: 0,
@@ -30,117 +27,78 @@ const MentorGoogleSignIn = () => {
     const [emailUser, setEmailUser] = useState(initialUserProperties);
     const [emailProfile, setEmailProfile] = useState(emailUserProfile);
 
-    //prev part with signup
-    const [user,setUser] = useState([]);
-    const [profile,setProfile] = useState([]);
-
     const login = useGoogleLogin({
         onSuccess: (codeResponse) => {
-            setEmailUser(codeResponse)
-            console.log(codeResponse)
+            setEmailUser(codeResponse);
+            console.log(codeResponse);
         },
-        onError:(error) => console.log("Login Failed:",error)
+        onError: (error) => console.log("Login Failed:", error),
     });
 
     useEffect(() => {
         if (!!emailUser.access_token) {
-          axios
-            .get(
-              `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${emailUser.access_token}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${emailUser.access_token}`,
-                  Accept: 'application/json',
-                },
-              }
-            )
-            .then((res) => {
-              setEmailProfile(res.data);
-            })
-            .catch((err) => console.log('err: ', err));
-        }
-      }, [emailUser]);
-
-
-    const responseMessage = (response) => {
-        console.log(response);
-    };
-
-    const errorMessage = (error) => {
-        console.log(error);
-    };
-
- 
-    useEffect(
-        () => {
-            if(user){
-                axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-                    headers: {
-                        Authorization: `Bearer ${user.access_token}`,
-                        Accept: 'application/json'
+            axios
+                .get(
+                    `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${emailUser.access_token}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${emailUser.access_token}`,
+                            Accept: 'application/json',
+                        },
                     }
-                })
+                )
                 .then((res) => {
-                    setProfile(res.data);
+                    setEmailProfile(res.data);
+
+                    // Save user data to MongoDB
+                    const userData = {
+                        name: res.data.name,
+                        email: res.data.email,
+                        picture: res.data.picture,
+                        role: "mentor",
+                    };
+
+                    axios
+                        .post("http://localhost:5000/api/auth/googlesignup", userData)
+                        .then((response) => {
+                            console.log("User data saved to MongoDB:", response.data);
+                        })
+                        .catch((err) => {
+                            console.error("Error saving user data to MongoDB:", err);
+                        });
                 })
-                .catch((err) => console.log(err));
-            }
-        },[user]);
+                .catch((err) => console.log('Error fetching user profile:', err));
+        }
+    }, [emailUser]);
 
     const logOut = () => {
         googleLogout();
-        emailUserProfile(null);
-    }
+        setEmailProfile(null);
+    };
 
-    return(
-//         <Container className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
-//                      <Row>
-//                          <Col>
-//                              <Card className="text-center shadow-lg p-4">
-//                                  <Card.Body>
-//                                      <Card.Title>Mentor Google Sign-In</Card.Title>
-//                                      <Card.Text>
-//                                          Apply as mentor and wait for approval.
-//                                  </Card.Text>
-//     <div>
-//     {profile ? (
-//       <div className="card">
-//         <img src={profile.picture} alt='user image' />
-//         <h5>User Logged in</h5>
-//         <p>Name: {profile.name}</p>
-//         <p>Email: {profile.email}</p>
-//         <button onClick={logout}>Log Out</button>
-//         </div>
-//     ):(
-//       <button className='d-flex justify-content-center align-items-center btn-lg text-sm' onClick={login}>Google Sign in</button>
-//     )}
-//     </div>
-// </Card.Body>
-// </Card>
-// </Col>
-// </Row>
-// </Container>
-<div className="d-flex justify-content-center align-items-center">
+    return (
+        <div className="d-flex justify-content-center align-items-center">
             <Card>
-            {emailProfile ? (
-                <div>
-                    <img src={emailProfile.picture} alt="user image" />
-                    <h3>We have got the user profile.</h3>
-                    
+            {/* <div class="g-signin2" data-onsuccess="onSignIn"></div> */}
+                {emailProfile ? (
                     <div>
-                      <p>Name: {emailProfile.name}</p>
-                      <p>Email Address: {emailProfile.email}</p>
-                    </div>
+                        <img src={emailProfile.picture} alt="user image" />
+                        <h3>We have got the user profile.</h3>
 
-                    <br />
-                    <button onClick={logOut}>Log out</button>
-                </div>
-            ) : (
-                <button onClick={() => login()}>Sign in with Google</button>
-            )}
+                        <div>
+                            <p>Name: {emailProfile.name}</p>
+                            <p>Email Address: {emailProfile.email}</p>
+                        </div>
+
+                        <br />
+                        <button onClick={logOut}>Log out</button>
+                    </div>
+                ) : (
+                    <button onClick={() => login()}>Sign in with Google</button>
+                )}
             </Card>
         </div>
-);
+    );
 };
 
 export default MentorGoogleSignIn;
