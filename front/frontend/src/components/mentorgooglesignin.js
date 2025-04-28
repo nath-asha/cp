@@ -55,7 +55,7 @@ const MentorGoogleSignIn = () => {
                         name: res.data.name,
                         email: res.data.email,
                         picture: res.data.picture,
-                        role: "mentor",
+                        role: "Mentor",
                     };
 
                     axios
@@ -83,7 +83,7 @@ const MentorGoogleSignIn = () => {
                 {emailProfile ? (
                     <div>
                         <img src={emailProfile.picture} alt="user image" />
-                        <h3>We have got the user profile.</h3>
+                        <h3>the User profile.</h3>
 
                         <div>
                             <p>Name: {emailProfile.name}</p>

@@ -192,6 +192,9 @@ const Googlesignin = () => {
 
     const [emailUser, setEmailUser] = useState(initialUserProperties);
     const [emailProfile, setEmailProfile] = useState(emailUserProfile);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const redirectPath = location.state?.path || "/profile";
 
     const login = useGoogleLogin({
         onSuccess: (codeResponse) => {
@@ -237,6 +240,13 @@ const Googlesignin = () => {
         }
     }, [emailUser]);
 
+
+    useEffect(() => {
+        const userRole = getUserRole();
+        setRole(userRole);
+        console.log("user role on load:",userRole);
+    },[]);
+
     const logOut = () => {
         googleLogout();
         setEmailProfile(null);
@@ -249,7 +259,7 @@ const Googlesignin = () => {
                 {emailProfile ? (
                     <div>
                         <img src={emailProfile.picture} alt="user image" />
-                        <h3>We have got the user profile.</h3>
+                        <h3>The User profile.</h3>
 
                         <div>
                             <p>Name: {emailProfile.name}</p>

@@ -252,12 +252,14 @@ const logOut = () => {
     name: "",
     email: "",
     password: "",
+    role: "user",
   });
 
   const [errors, setErrors] = useState({
     name: "",
     email: "",
     password: "",
+    user:"",
   });
   const [submitted, setSubmitted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
