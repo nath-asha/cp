@@ -63,6 +63,22 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    //this is new google signin there is no password matching
+    const gsignin = async (email,name,accessT) => {
+        setLoading(true);
+        setError(null);
+        try{
+            const response = await axios.post("http://localhost:5000/api/auth/googlesignin",{email,name,accessT});
+            setUser(response.data.user);
+            navigate(redirectPath, {replace: true});
+        }catch(err) {
+            console.error("Google sign in error",err);
+            setError(err.response?.data?.message || "Google signin failed.Please try again");
+        }finally{
+            setLoading(false);
+        }
+    };
+
     const logout = () => {
         setToken(null);
         setUser(null);

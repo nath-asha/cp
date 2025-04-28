@@ -196,7 +196,7 @@
 // export default Newsignup;
 
 
-//old code but works in signing but it is not user
+//old code but works in signing but it is not user  DOdo@gmail0
 import React, { useEffect, useState } from "react";
 import "../styles/register.css";
 import { Button } from "react-bootstrap";

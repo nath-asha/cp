@@ -31,6 +31,7 @@ import MentorManager from './components/mentorlist';
 import Problemlist from './components/problemlist';
 import SignupForm from './components/signup';
 import MentorGoogleSignIn from './components/mentorgooglesignin';
+import Googlesignin from './components/googlesignin';
 // import MentorDashboard from './components/About';
 // import MentorDashboardo from '../';
 
@@ -132,7 +133,7 @@ function App() {
           <Route path='/continueprofile' element={<Continueprofile />} />
           <Route path='/sendteamreq' element={<Sendteamreq/>} />
           <Route path='/mentorgooglesignin' element={<MentorGoogleSignIn/>} />
-
+          <Route path='/googlesignin' element={<Googlesignin/>} />
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
            <ParticipantDashboard /></PrivateRoute>} />
