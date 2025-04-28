@@ -304,3 +304,76 @@ export default function Continueprofile() {
       </div>
   );
 }
+// const validate = () => {
+//   let newErrors = {};
+
+//   // Validate first name (only letters, no numbers or special characters)
+//   const namePattern = /^[A-Za-z]+$/;
+//   newErrors.firstName = values.firstName.trim()
+//     ? namePattern.test(values.firstName)
+//       ? ""
+//       : "First name should only contain letters"
+//     : "Please enter a first name";
+
+//   // Validate last name (only letters, no numbers or special characters)
+//   newErrors.lastName = values.lastName.trim()
+//     ? namePattern.test(values.lastName)
+//       ? ""
+//       : "Last name should only contain letters"
+//     : "Please enter a last name";
+
+//   // Validate phone number (10-digit number)
+//   newErrors.phone = values.phone.trim()
+//     ? validatePhone(values.phone)
+//     : "Please enter a phone number";
+
+//   // Validate USN (specific pattern)
+//   newErrors.USN = values.USN.trim()
+//     ? validateUSN(values.USN)
+//     : "Please enter a USN";
+
+//   // Validate role (non-empty)
+//   newErrors.role = values.role.trim()
+//     ? ""
+//     : "Please select your role";
+
+//   // Validate team (non-empty)
+//   newErrors.team = values.team.trim()
+//     ? ""
+//     : "Please enter your team";
+
+//   // Validate organization (non-empty)
+//   newErrors.organization = values.organization.trim()
+//     ? ""
+//     : "Please enter your organization";
+
+//   // Validate description (minimum length)
+//   newErrors.description = values.description.trim()
+//     ? values.description.length >= 10
+//       ? ""
+//       : "Description must be at least 10 characters long"
+//     : "Please enter a description";
+
+//   // Validate skills (non-empty)
+//   newErrors.skills = values.skills.trim()
+//     ? ""
+//     : "Please enter your skills";
+
+//   // Validate GitHub URL
+//   newErrors.github_url = values.github_url.trim()
+//     ? validateGithub(values.github_url)
+//     : "Please enter your GitHub profile URL";
+
+//   // Validate LinkedIn URL
+//   newErrors.linkedin_url = values.linkedin_url.trim()
+//     ? validateLinkedin(values.linkedin_url)
+//     : "Please enter your LinkedIn profile URL";
+
+//   // Validate Twitter URL
+//   newErrors.twitter_url = values.twitter_url.trim()
+//     ? validatetwitter(values.twitter_url)
+//     : "Please enter your Twitter profile URL";
+
+//   setErrors(newErrors);
+//   return Object.values(newErrors).every((error) => error === ""); // Return true if no errors
+// };

@@ -64,6 +64,7 @@ import Signee from './components/trialsignup';
 import Assignmentees from './components/assignmentees';
 import Signinuser from './components/signinuser';
 import Continueprofile from './components/continueprofile';
+import Sendteamreq from './components/sendteamreq';
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
@@ -127,6 +128,7 @@ function App() {
           <Route path='/assignmentees' element={<Assignmentees />} />
           <Route path='/signinu' element={<Signinuser />} />
           <Route path='/continueprofile' element={<Continueprofile />} />
+          <Route path='/sendteamreq' element={<Sendteamreq/>} />
 
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
