@@ -6,6 +6,29 @@ import { ArrowLeftIcon } from "lucide-react";
 import axios from "axios";
 
 const MentorGoogleSignIn = () => {
+    //for storing access token n info for displaying profile
+    const initialUserProperties = {
+        access_token: '',
+        expires_in: 0,
+        id_token: '',
+        scope: '',
+        token_type: '',
+    };
+
+    const emailUserProfile = {
+        email: '',
+        fname: '',
+        gname: '',
+        name: '',
+        picture: '',
+        locale: '',
+        verified_email: false,
+    };
+
+    const [emailUser, setEmailUser] = useState(initialUserProperties);
+    const [emailProfile, setEmailProfile] = useState(emailUserProfile);
+
+    //prev part with signup
     const [user,setUser] = useState([]);
     const [profile,setProfile] = useState([]);
 
