@@ -1,5 +1,5 @@
-import react,{ useState,useEffect } from "react";
-import { Row } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Row, Col, Form, Button, Card } from "react-bootstrap";
 import axios from "axios";
 
 const Sendteamreq = () => {
@@ -37,42 +37,60 @@ const Sendteamreq = () => {
     };
 
     return (
-        <div>
-            <h3>Send Request</h3>
-            <Row>
-                <select
-                    value={selectedRecipient}
-                    onChange={(e) => setSelectedRecipient(e.target.value)}
-                >
-                    <option value="">Select Recipient</option>
-                    <optgroup label="Users">
-                        {users.map((user) => (
-                            <option key={user.id} value={user.id}>
-                                {user.name}
-                            </option>
-                        ))}
-                    </optgroup>
-                    <optgroup label="Teams">
-                        {teams.map((team) => (
-                            <option key={team.id} value={team.id}>
-                                {team.name}
-                            </option>
-                        ))}
-                    </optgroup>
-                </select>
-            </Row>
-            <Row>
-                <textarea
-                    placeholder="Enter your message"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                />
-            </Row>
-            <Row>
-                <button onClick={sendRequest}>Send Request</button>
-            </Row>
-        </div>
-    )
+        <Card className="p-4">
+            <h3 className="text-center mb-4">Send Request</h3>
+            <Form>
+                <Form.Group as={Row} className="mb-3">
+                    <Form.Label column sm={3}>
+                        Recipient
+                    </Form.Label>
+                    <Col sm={9}>
+                        <Form.Select
+                            value={selectedRecipient}
+                            onChange={(e) => setSelectedRecipient(e.target.value)}
+                        >
+                            <option value="">Select Recipient</option>
+                            <optgroup label="Users">
+                                {users.map((user) => (
+                                    <option key={user.id} value={user.id}>
+                                        {user.firstName} {user.lastName}
+                                    </option>
+                                ))}
+                            </optgroup>
+                            <optgroup label="Teams">
+                                {teams.map((team) => (
+                                    <option key={team._id} value={team.id}>
+                                        {team.name}
+                                    </option>
+                                ))}
+                            </optgroup>
+                        </Form.Select>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row} className="mb-3">
+                    <Form.Label column sm={3}>
+                        Message
+                    </Form.Label>
+                    <Col sm={9}>
+                        <Form.Control
+                            as="textarea"
+                            rows={4}
+                            placeholder="Enter your message"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                        />
+                    </Col>
+                </Form.Group>
+                <Row className="text-center">
+                    <Col>
+                        <Button variant="primary" onClick={sendRequest}>
+                            Send Request
+                        </Button>
+                    </Col>
+                </Row>
+            </Form>
+        </Card>
+    );
 };
 
 export default Sendteamreq;

@@ -617,7 +617,23 @@ router.post('/assign-mentor', async (req, res) => {
 //       res.status(500).json({ message: "Internal Server Error" });
 //     }
 //   });
+router.post('/api/send-request', async (req, res) => {
+    try {
+        const { recipient, message } = req.body;
 
+        if (!recipient || !message) {
+            return res.status(400).json({ error: 'Recipient and message are required' });
+        }
+
+        const newRequest = new notify({ recipient, message });
+        await newRequest.save();
+
+        res.status(201).json({ message: 'Request sent successfully', request: newRequest });
+    } catch (err) {
+        console.error('Error sending request:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
   
 module.exports = router;
 

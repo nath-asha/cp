@@ -234,3 +234,194 @@ function Organiserdash() {
 }
 
 export default Organiserdash;
+//add deadlines in events page 
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import { Card, Container, Nav, Tab, Row, Col, Button, Form } from "react-bootstrap";
+// import { Users, ListChecks, Puzzle, FileCode, CalendarEvent } from "lucide-react";
+
+// function Organiserdash() {
+//     const [stats, setStats] = useState({ participants: 0, mentors: 0, problems: 0, submissions: 0, eventcount: 0 });
+//     const [events, setEvents] = useState([]);
+//     const [logistics, setLogistics] = useState([]);
+//     const [newLogisticsItem, setNewLogisticsItem] = useState('');
+//     const [deadlines, setDeadlines] = useState({}); // State to manage deadlines
+
+//     useEffect(() => {
+//         axios.get("http://localhost:5000/api/stats")
+//             .then(response => setStats(response.data))
+//             .catch(error => console.error("Error fetching stats:", error));
+
+//         const fetchEvents = async () => {
+//             try {
+//                 const response = await fetch('http://localhost:5000/events');
+//                 if (!response.ok) {
+//                     throw new Error(`HTTP error! Status: ${response.status}`);
+//                 }
+//                 const data = await response.json();
+//                 setEvents(data);
+//             } catch (err) {
+//                 console.error('Error fetching events data:', err);
+//             }
+//         };
+//         fetchEvents();
+
+//         const fetchLogistics = async () => {
+//             try {
+//                 const response = await axios.get("http://localhost:5000/logistics");
+//                 setLogistics(response.data);
+//             } catch (error) {
+//                 console.error("Error fetching logistics:", error);
+//             }
+//         };
+//         fetchLogistics();
+//     }, []);
+
+//     const handleAddLogistics = () => {
+//         if (newLogisticsItem.trim()) {
+//             axios.post("http://localhost:5000/logistics", { item: newLogisticsItem, checked: false })
+//                 .then(response => {
+//                     setLogistics([...logistics, response.data]);
+//                     setNewLogisticsItem('');
+//                 })
+//                 .catch(error => console.error("Error adding logistics item:", error));
+//         }
+//     };
+
+//     const handleLogisticsCheck = (id) => {
+//         const updatedLogistics = logistics.map(item => {
+//             if (item._id === id) {
+//                 return { ...item, checked: !item.checked };
+//             }
+//             return item;
+//         });
+//         setLogistics(updatedLogistics);
+//         const updatedItem = updatedLogistics.find(item => item._id === id);
+//         if (updatedItem) {
+//             axios.put(`http://localhost:5000/logistics/${id}`, { checked: updatedItem.checked })
+//                 .catch(error => console.error("Error updating logistics item:", error));
+//         }
+//     };
+
+//     const handleDeadlineChange = (eventId, type, value) => {
+//         setDeadlines(prev => ({
+//             ...prev,
+//             [eventId]: {
+//                 ...prev[eventId],
+//                 [type]: value
+//             }
+//         }));
+//     };
+
+//     const saveDeadline = (eventId, type) => {
+//         const deadline = deadlines[eventId]?.[type];
+//         if (deadline) {
+//             axios.put(`http://localhost:5000/events/${eventId}/deadlines`, { type, deadline })
+//                 .then(() => alert(`Deadline for ${type} updated successfully!`))
+//                 .catch(error => console.error("Error updating deadline:", error));
+//         }
+//     };
+
+//     return (
+//         <Container fluid className="mt-4">
+//             <h2>Organiser Dashboard</h2>
+//             <Tab.Container id="dashboard-tabs" defaultActiveKey="registrations">
+//                 <Nav variant="tabs">
+//                     <Nav.Item>
+//                         <Nav.Link eventKey="registrations">
+//                             <Users className="me-2" /> Registrations
+//                         </Nav.Link>
+//                     </Nav.Item>
+//                     <Nav.Item>
+//                         <Nav.Link eventKey="logistics">
+//                             <ListChecks className="me-2" /> Logistics
+//                         </Nav.Link>
+//                     </Nav.Item>
+//                     <Nav.Item>
+//                         <Nav.Link eventKey="events">
+//                             Events
+//                         </Nav.Link>
+//                     </Nav.Item>
+//                     <Nav.Item>
+//                         <Nav.Link eventKey="problems">
+//                             <Puzzle className="me-2" /> Problems & Submissions
+//                         </Nav.Link>
+//                     </Nav.Item>
+//                 </Nav>
+//                 <Tab.Content className="mt-3">
+//                     <Tab.Pane eventKey="events">
+//                         <h4>Event Management</h4>
+//                         <p>Total Number of Events: {events.length}</p>
+//                         <Row xs={1} md={2} lg={3} xl={4} className="g-4">
+//                             {events.map(event => (
+//                                 <Col key={event._id}>
+//                                     <Card className="shadow">
+//                                         {event.imgUrl && <Card.Img variant="top" src={event.imgUrl} alt={event.title} style={{ height: '150px', objectFit: 'cover' }} />}
+//                                         <Card.Body>
+//                                             <Card.Title>{event.title}</Card.Title>
+//                                             <Card.Subtitle className="mb-2 text-muted">Event ID: {event.eventId}</Card.Subtitle>
+//                                             <Card.Text>{event.desc && event.desc.length > 80 ? `${event.desc.substring(0, 80)}...` : event.desc}</Card.Text>
+//                                             <Card.Text><small className="text-muted">Date: {event.date}</small></Card.Text>
+//                                             <Card.Text><small className="text-muted">Venue: {event.venue}</small></Card.Text>
+//                                             <Form.Group className="mb-2">
+//                                                 <Form.Label>Registration Deadline</Form.Label>
+//                                                 <Form.Control
+//                                                     type="datetime-local"
+//                                                     value={deadlines[event._id]?.registration || ''}
+//                                                     onChange={(e) => handleDeadlineChange(event._id, 'registration', e.target.value)}
+//                                                 />
+//                                                 <Button
+//                                                     variant="primary"
+//                                                     size="sm"
+//                                                     className="mt-2"
+//                                                     onClick={() => saveDeadline(event._id, 'registration')}
+//                                                 >
+//                                                     Save
+//                                                 </Button>
+//                                             </Form.Group>
+//                                             <Form.Group className="mb-2">
+//                                                 <Form.Label>Submission Deadline</Form.Label>
+//                                                 <Form.Control
+//                                                     type="datetime-local"
+//                                                     value={deadlines[event._id]?.submission || ''}
+//                                                     onChange={(e) => handleDeadlineChange(event._id, 'submission', e.target.value)}
+//                                                 />
+//                                                 <Button
+//                                                     variant="primary"
+//                                                     size="sm"
+//                                                     className="mt-2"
+//                                                     onClick={() => saveDeadline(event._id, 'submission')}
+//                                                 >
+//                                                     Save
+//                                                 </Button>
+//                                             </Form.Group>
+//                                             <Form.Group className="mb-2">
+//                                                 <Form.Label>Team Formation Deadline</Form.Label>
+//                                                 <Form.Control
+//                                                     type="datetime-local"
+//                                                     value={deadlines[event._id]?.teamFormation || ''}
+//                                                     onChange={(e) => handleDeadlineChange(event._id, 'teamFormation', e.target.value)}
+//                                                 />
+//                                                 <Button
+//                                                     variant="primary"
+//                                                     size="sm"
+//                                                     className="mt-2"
+//                                                     onClick={() => saveDeadline(event._id, 'teamFormation')}
+//                                                 >
+//                                                     Save
+//                                                 </Button>
+//                                             </Form.Group>
+//                                         </Card.Body>
+//                                     </Card>
+//                                 </Col>
+//                             ))}
+//                         </Row>
+//                     </Tab.Pane>
+//                 </Tab.Content>
+//             </Tab.Container>
+//         </Container>
+//     );
+// }
+
+// export default Organiserdash;

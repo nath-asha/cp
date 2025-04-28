@@ -30,6 +30,7 @@ import ParticipantManager from './components/participantlist';
 import MentorManager from './components/mentorlist';
 import Problemlist from './components/problemlist';
 import SignupForm from './components/signup';
+import MentorGoogleSignIn from './components/mentorgooglesignin';
 // import MentorDashboard from './components/About';
 // import MentorDashboardo from '../';
 
@@ -129,6 +130,7 @@ function App() {
           <Route path='/signinu' element={<Signinuser />} />
           <Route path='/continueprofile' element={<Continueprofile />} />
           <Route path='/sendteamreq' element={<Sendteamreq/>} />
+          <Route path='/mentorgooglesignin' element={<MentorGoogleSignIn/>} />
 
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
