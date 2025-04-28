@@ -10,6 +10,7 @@ const subSchema = new mongoose.Schema({
     preport: String,
     doc: String,
     vid: String,
+    "createdAt": Date,
     team_id: String
 });
 

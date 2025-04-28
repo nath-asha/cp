@@ -10,6 +10,7 @@ const eventSchema = new mongoose.Schema({
     enddate: { type: String, required: true },
     venue: { type: String, enum: ['Online', 'Offline', 'Hybrid'], required: true }, // Added type with enum and required
     prizes: { type: [String], default: [] },
+    "createdAt": Date,
     scheduleDetails: {
         type: [{
             date: { type: String, required: true },

@@ -64,6 +64,69 @@ exports.loginUser = async (req, res) => {
     }
 };
 
+exports.signinUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        
+        if (!email || !password) {
+            return res.status(400).json({ success: false, message: "Missing credentials" });
+        }
+        
+        const user = await signeduser.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ success: false, message: "Invalid credentials" });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ success: false, message: "Invalid credentials" });
+        }
+
+        const token = jwt.sign({ id: user._id, email: user.email, role:user.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+        res.json({ success: true, message: "Login successful", token, user });
+    } catch (error) {
+        console.error("Login error:", error);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+exports.googlesignin = async (req,res) => {
+    try {
+        const {cred} =req.body;
+        if(!cred){
+            return res.status(400).json({success: false,message: "Missing credentials"});
+        }
+        const user = await this.googlesignin.findOne({cred});
+        if(!user){
+            return res.status(401).json({success: false, message:"Invalid user"});
+        }
+        const isMatch =await bcrypt.compare(password,user.password);
+        if(!isMatch) {
+            return res.status(401).json({success: false,message:"invalid"});
+        }
+        const token = jwt.sign({id: user._id, email: user.email, role: user.role}, process.env.JWT_SECRET, {expiresIn:"1d"});
+        res.json({success: true, message: "Signin successful",token,user});
+    } catch (error) {
+        console.error("Sign in error");
+        res.status(500).json({success: false, message: "Server error"});
+    }
+}
+exports.googlesignup = async (req,res) => {
+    try {
+        const {name,email,cred} = req.body;
+        const hashedcred = await bcrypt.hash(cred,10);
+        const newGsign = new signeduser({
+            name,
+            email,
+            cred:hashedcred,
+            role: 'user',
+        });
+        await newGsign.save();
+        res.status(201).json({message:"Google sign up successful"});
+        } catch (error) {
+            console.error("error signing up")
+    }
+};
 exports.signedupUser = async (req,res) => {
     try {
         const {name,email,role,password} = req.body;
@@ -109,32 +172,7 @@ exports.profileUser = async (req, res) => {
     }
 };
 
-exports.signinUser = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        
-        if (!email || !password) {
-            return res.status(400).json({ success: false, message: "Missing credentials" });
-        }
-        
-        const user = await signeduser.findOne({ email });
-        if (!user) {
-            return res.status(401).json({ success: false, message: "Invalid credentials" });
-        }
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ success: false, message: "Invalid credentials" });
-        }
-
-        const token = jwt.sign({ id: user._id, email: user.email, role:user.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
-
-        res.json({ success: true, message: "Login successful", token, user });
-    } catch (error) {
-        console.error("Login error:", error);
-        res.status(500).json({ success: false, message: "Server error" });
-    }
-};
 
 // const User = require("../models/userModel");
 // const bcrypt = require("bcryptjs");

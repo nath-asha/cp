@@ -218,12 +218,12 @@ const [profile, setProfile] = useState([]);
       onError: (error) => console.log("Login Failed:", error)
     });
 
-  const responseMessage = (response) => {
-    console.log(response);
-};
-const errorMessage = (error) => {
-    console.log(error);
-};
+//   const responseMessage = (response) => {
+//     console.log(response);
+// };
+// const errorMessage = (error) => {
+//     console.log(error);
+// };
 useEffect(
   () => {
       if (user) {
@@ -392,10 +392,13 @@ const logOut = () => {
             <p>Name: {profile.name}</p>
             <p>Email: {profile.email}</p>
             <button onClick={logOut}>Log Out</button>
+            {/* {values.name}=={profile.name}
+            {values.email}=={profile.email} */}
             </div>
         ):(
           <button onClick={login}>Sign in with google</button>
         )}
+        {/* {values.cred}={user.access_token}; */}
         {/* <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> */}
         {/* <GoogleLogin
   onSuccess={credentialResponse => {

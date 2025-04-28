@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   phone: Number,
+  "createdAt": Date,
   role: { type: String, default: "user" },
   team: { type: String, default: "none" },
   // address: String,
@@ -35,6 +36,9 @@ const userSchema = new mongoose.Schema({
 required: true,
 default: [] },
  eventreg: { type: String, default: "none"},
+//pic: String,
+cred : String, 
+
 });
 
 // module.exports = mongoose.model("User", UserSchema);

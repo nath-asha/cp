@@ -19,6 +19,7 @@ const scoresSchema = new mongoose.Schema({
     name: String,
     score: Number,
     github_url: String,
+    "createdAt": Date,
 });
 
 module.exports = mongoose.model("Score", scoresSchema);

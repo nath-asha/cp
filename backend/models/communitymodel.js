@@ -3,7 +3,8 @@ const communitySchema = new mongoose.Schema({
     name: String,
     message: {
         type: String,
-        required: true
+        required: true,
+        "createdAt": Date,
     }
 });
 

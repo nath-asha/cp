@@ -9,6 +9,7 @@ const signupSchema = new mongoose.Schema({
     lastName: String,
     email: String,
     password: String,
+    "createdAt": Date,
     phone: Number,
     team: { type: String, default: "none" },
     // address: String,
