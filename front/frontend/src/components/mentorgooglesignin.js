@@ -17,11 +17,13 @@ const MentorGoogleSignIn = () => {
 
     const emailUserProfile = {
         email: '',
-        fname: '',
-        gname: '',
+        family_name: '',
+        given_name: '',
+        hd: '',
+        id: '',
+        locale: '',
         name: '',
         picture: '',
-        locale: '',
         verified_email: false,
     };
 
@@ -34,11 +36,31 @@ const MentorGoogleSignIn = () => {
 
     const login = useGoogleLogin({
         onSuccess: (codeResponse) => {
-            setUser(codeResponse)
+            setEmailUser(codeResponse)
             console.log(codeResponse)
         },
         onError:(error) => console.log("Login Failed:",error)
     });
+
+    useEffect(() => {
+        if (!!emailUser.access_token) {
+          axios
+            .get(
+              `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${emailUser.access_token}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${emailUser.access_token}`,
+                  Accept: 'application/json',
+                },
+              }
+            )
+            .then((res) => {
+              setEmailProfile(res.data);
+            })
+            .catch((err) => console.log('err: ', err));
+        }
+      }, [emailUser]);
+
 
     const responseMessage = (response) => {
         console.log(response);
@@ -65,39 +87,59 @@ const MentorGoogleSignIn = () => {
             }
         },[user]);
 
-    const logout = () => {
+    const logOut = () => {
         googleLogout();
-        setProfile(null);
+        emailUserProfile(null);
     }
 
     return(
-        <Container className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
-                     <Row>
-                         <Col>
-                             <Card className="text-center shadow-lg p-4">
-                                 <Card.Body>
-                                     <Card.Title>Mentor Google Sign-In</Card.Title>
-                                     <Card.Text>
-                                         Apply as mentor and wait for approval.
-                                 </Card.Text>
-    <div>
-    {profile ? (
-      <div className="card">
-        <img src={profile.picture} alt='user image' />
-        <h5>User Logged in</h5>
-        <p>Name: {profile.name}</p>
-        <p>Email: {profile.email}</p>
-        <button onClick={logout}>Log Out</button>
+//         <Container className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+//                      <Row>
+//                          <Col>
+//                              <Card className="text-center shadow-lg p-4">
+//                                  <Card.Body>
+//                                      <Card.Title>Mentor Google Sign-In</Card.Title>
+//                                      <Card.Text>
+//                                          Apply as mentor and wait for approval.
+//                                  </Card.Text>
+//     <div>
+//     {profile ? (
+//       <div className="card">
+//         <img src={profile.picture} alt='user image' />
+//         <h5>User Logged in</h5>
+//         <p>Name: {profile.name}</p>
+//         <p>Email: {profile.email}</p>
+//         <button onClick={logout}>Log Out</button>
+//         </div>
+//     ):(
+//       <button className='d-flex justify-content-center align-items-center btn-lg text-sm' onClick={login}>Google Sign in</button>
+//     )}
+//     </div>
+// </Card.Body>
+// </Card>
+// </Col>
+// </Row>
+// </Container>
+<div className="d-flex justify-content-center align-items-center">
+            <Card>
+            {emailProfile ? (
+                <div>
+                    <img src={emailProfile.picture} alt="user image" />
+                    <h3>We have got the user profile.</h3>
+                    
+                    <div>
+                      <p>Name: {emailProfile.name}</p>
+                      <p>Email Address: {emailProfile.email}</p>
+                    </div>
+
+                    <br />
+                    <button onClick={logOut}>Log out</button>
+                </div>
+            ) : (
+                <button onClick={() => login()}>Sign in with Google</button>
+            )}
+            </Card>
         </div>
-    ):(
-      <button className='d-flex justify-content-center align-items-center btn-lg text-sm' onClick={login}>Google Sign in</button>
-    )}
-    </div>
-</Card.Body>
-</Card>
-</Col>
-</Row>
-</Container>
 );
 };
 
