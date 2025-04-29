@@ -80,8 +80,9 @@ const Googlesignin = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ credential: credentialResponse.credential }),
+                    body: JSON.stringify({ credential: credentialResponse.access_token }),
                 });
+                console.log('Google Credential Response:', credentialResponse);
                 console.log(credentialResponse);
                 const data = await res.json();
 
@@ -105,13 +106,15 @@ const Googlesignin = () => {
         },
     });
 
-    function onSignIn(googleUser) {
-        var profile = googleUser.getBasicProfile();
-        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-      }
+    // function onSignIn(googleUser) {
+    //     var profile = googleUser.getBasicProfile();
+    //     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    //     console.log('Name: ' + profile.getName());
+    //     console.log('Image URL: ' + profile.getImageUrl());
+    //     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    //   }
+
+
     // const googleLogin = useGoogleLogin({
     //         onSuccess: (codeResponse) => {
     //             setEmailUser(codeResponse);

@@ -535,7 +535,7 @@
 
 import React, { useEffect, useState } from "react";
 import "../styles/register.css";
-import { Button } from "react-bootstrap";
+import { Button,Card } from "react-bootstrap";
 import { ArrowLeftIcon } from "lucide-react";
 import axios from "axios";
 import { useGoogleLogin, googleLogout } from "@react-oauth/google";
@@ -544,31 +544,99 @@ const Newsignup = () => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
 
-  const login = useGoogleLogin({
-    onSuccess: async (codeResponse) => {
-      try {
-        // Send the Google token to your backend for verification and role assignment
-        const response = await axios.post("http://localhost:5000/api/auth/google-signin", {
-          token: codeResponse.access_token, // You are sending the access token here
-        });
+  const initialUserProperties = {
+    access_token: '',
+    expires_in: 0,
+    id_token: '',
+    scope: '',
+    token_type: '',
+};
 
-        if (response.data) {
-          setUser(response.data.user); // Backend should return user details
-          setProfile(response.data.profile); // Backend should return profile info
-          console.log("Google Sign-In successful:", response.data);
-        }
-      } catch (error) {
-        console.error("Google Sign-In failed:", error);
-      }
-    },
-    onError: (error) => console.log("Login Failed:", error),
-  });
+const emailUserProfile = {
+    email: '',
+    family_name: '',
+    given_name: '',
+    hd: '',
+    id: '',
+    locale: '',
+    name: '',
+    picture: '',
+    verified_email: false,
+};
 
+const [emailUser, setEmailUser] = useState(initialUserProperties);
+    const [emailProfile, setEmailProfile] = useState(emailUserProfile);
+
+  // const login = useGoogleLogin({
+  //   onSuccess: async (codeResponse) => {
+  //     try {
+  //       // Send the Google token to your backend for verification and role assignment
+  //       const response = await axios.post("http://localhost:5000/api/auth/google-signin", {
+  //         token: codeResponse.access_token, // You are sending the access token here
+  //       });
+
+  //       if (response.data) {
+  //         setUser(response.data.user); // Backend should return user details
+  //         setProfile(response.data.profile); // Backend should return profile info
+  //         console.log("Google Sign-In successful:", response.data);
+  //       }
+  //     } catch (error) {
+  //       console.error("Google Sign-In failed:", error);
+  //     }
+  //   },
+  //   onError: (error) => console.log("Login Failed:", error),
+  // });
+
+   const login = useGoogleLogin({
+          onSuccess: (codeResponse) => {
+              setEmailUser(codeResponse);
+              console.log(codeResponse);
+          },
+          onError: (error) => console.log("Login Failed:", error),
+      });
+  
+      useEffect(() => {
+          if (!!emailUser.access_token) {
+              axios
+                  .get(
+                      `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${emailUser.access_token}`,
+                      {
+                          headers: {
+                              Authorization: `Bearer ${emailUser.access_token}`,
+                              Accept: 'application/json',
+                          },
+                      }
+                  )
+                  .then((res) => {
+                      setEmailProfile(res.data);
+  
+                      // Save user data to MongoDB
+                      const userData = {
+                          name: res.data.name,
+                          email: res.data.email,
+                          picture: res.data.picture,
+                          role: "Mentor",
+                      };
+  
+                      axios
+                          .post("http://localhost:5000/api/auth/googlesignup", userData)
+                          .then((response) => {
+                              console.log("User data saved to MongoDB:", response.data);
+                          })
+                          .catch((err) => {
+                              console.error("Error saving user data to MongoDB:", err);
+                          });
+                  })
+                  .catch((err) => console.log('Error fetching user profile:', err));
+          }
+      }, [emailUser]);
+      
   // Logout function
   const logOut = () => {
     googleLogout();
     setUser(null);
     setProfile(null);
+    setEmailProfile(null);
   };
 
   const [values, setValues] = useState({
@@ -720,7 +788,23 @@ const Newsignup = () => {
               <button onClick={logOut}>Log Out</button>
             </div>
           ) : (
-            <button onClick={login}>Sign in with Google</button>
+            // 
+            <Card>
+            {/* <div class="g-signin2" data-onsuccess="onSignIn"></div> */}
+                {emailProfile ? (
+                    <div>
+                        <img src={emailProfile.picture} alt="user image" />
+                        <div>
+                            <p>Signed in as {emailProfile.name}</p>
+                            <p>Email Address: {emailProfile.email}</p>
+                        </div>
+                        <br />
+                        <button onClick={logOut}>Log out</button>
+                    </div>
+                ) : (
+                    <button onClick={() => login()}>Sign in with Google</button>
+                )}
+            </Card>
           )}
         </div>
       </form>

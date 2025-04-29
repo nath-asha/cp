@@ -35,6 +35,20 @@ export const getUserId = () => {
     return null;
 };
 
+export const getEmail = () => {
+    const token = getToken();
+    if(token) {
+        try{
+            const decoded = jwtDecode(token);
+            return decoded.email;
+        }catch(error){
+            console.error("Error decoding token:",error);
+            return null;
+        }
+    }
+    return null;
+};
+
 // Save token to localStorage
 export const setToken = (token) => {
     localStorage.setItem("token", token);

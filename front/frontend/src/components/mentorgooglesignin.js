@@ -85,20 +85,19 @@ const MentorGoogleSignIn = () => {
     };
 
     return (
-        <div className="d-flex justify-content-center align-items-center">
+        <div className="p-4 d-flex justify-content-center align-items-center">
             <Card>
             {/* <div class="g-signin2" data-onsuccess="onSignIn"></div> */}
                 {emailProfile ? (
                     <div>
-                        <img src={emailProfile.picture} alt="user image" />
-                        <h3>the User profile.</h3>
-
+                        {/* <img src={emailProfile.picture} alt="user image" />
+                        <h3>the User profile.</h3>*/}
                         <div>
                             <p>Name: {emailProfile.name}</p>
                             <p>Email Address: {emailProfile.email}</p>
-                        </div>
+                        </div> 
 
-                        <br />
+                        {/* <br /> */}
                         <button onClick={logOut}>Log out</button>
                     </div>
                 ) : (

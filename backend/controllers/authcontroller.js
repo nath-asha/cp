@@ -3,8 +3,9 @@ const signeduser = require("../models/signupmodel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {OAuth2Client} = require('google-auth-library');
-const cors = require('cors');
-const bodyparser = require('body-parser');
+const bodyParser = require('body-parser');
+// const cors = require('cors');
+// const bodyparser = require('body-parser');
 const client = new OAuth2Client();
 
 
@@ -116,10 +117,25 @@ exports.signinUser = async (req, res) => {
 // }
 
 exports.googlesignin = async (req,res) => {
-    const {email} = req.body;
-    const {role} = User[email] || 'user';
-    const {token} = jwt.sign({email,role}, 'secret', {expiresIn:'1h'});
-    res.json({token});
+    const { credential } = req.body;
+
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: credential,
+            audience: process.env.CLIENT_ID,
+        });
+
+        const payload = ticket.getPayload();
+        const { email, name, picture } = payload;
+
+        const user = { email, name, picture }; 
+
+        res.json({ success: true, user, token: 'example-jwt-token' });
+    } catch (err) {
+        console.error('Error verifying Google ID token:', err);
+        res.status(400).json({ success: false, message: 'Invalid Google ID token' });
+    }
+
 }
 exports.googlesignup = async (req,res) => {
     try {
