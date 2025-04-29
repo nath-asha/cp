@@ -3,7 +3,7 @@ const signeduser = require("../models/signupmodel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {OAuth2Client} = require('google-auth-library');
-
+const client = new OAuth2Client();
 
 exports.registerUser = async (req, res) => {
     try {
@@ -187,6 +187,17 @@ exports.jwtverify = async function verify(client_id, jwtToken) {
     return payload;
 }
 
+async function verify() {
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+    // If the request specified a Google Workspace domain:
+    // const domain = payload['hd'];
+  }
+  verify().catch(console.error);
 
 // const User = require("../models/userModel");
 // const bcrypt = require("bcryptjs");

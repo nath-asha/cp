@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { useAuth } from '../provider/AuthProvider';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
-import { useGoogleLogin, googleLogout } from '@react-oauth/google';
+import { useGoogleLogin, googleLogout,onSignin } from '@react-oauth/google';
 import axios from 'axios';
 
 const Googlesignin = () => {
@@ -105,6 +105,13 @@ const Googlesignin = () => {
         },
     });
 
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+      }
     // const googleLogin = useGoogleLogin({
     //         onSuccess: (codeResponse) => {
     //             setEmailUser(codeResponse);
