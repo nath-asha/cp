@@ -731,7 +731,7 @@ const [emailUser, setEmailUser] = useState(initialUserProperties);
           </div>
         )}
 
-        <a href="/signinu">
+        <a href="/googlesignin">
           <ArrowLeftIcon />
           Back
         </a>

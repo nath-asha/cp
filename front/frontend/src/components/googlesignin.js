@@ -80,7 +80,7 @@ const Googlesignin = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ credential: credentialResponse.access_token }),
+                    body: JSON.stringify({ credential: credentialResponse.credential }),
                 });
                 console.log('Google Credential Response:', credentialResponse);
                 console.log(credentialResponse);

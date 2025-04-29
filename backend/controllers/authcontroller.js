@@ -8,7 +8,48 @@ const bodyParser = require('body-parser');
 // const bodyparser = require('body-parser');
 const client = new OAuth2Client();
 
+// exports.googleAuth = async (req, res) => {
+//     const { credential } = req.body;
 
+//     try {
+//         // Verify the ID token using Google's OAuth2Client
+//         const ticket = await client.verifyIdToken({
+//             idToken: credential,
+//             audience: process.env.CLIENT_ID, // Replace with your Google Client ID
+//         });
+
+//         // Extract user information from the verified token
+//         const payload = ticket.getPayload();
+//         const { email, name, picture } = payload;
+
+//         // Check if the user exists in the database
+//         let user = await User.findOne({ email });
+
+//         if (!user) {
+//             // If the user doesn't exist, create a new user
+//             user = new User({
+//                 email,
+//                 name,
+//                 picture,
+//                 role: 'user', // Default role
+//             });
+//             await user.save();
+//         }
+
+//         // Generate a JWT for the application
+//         const token = jwt.sign(
+//             { id: user._id, email: user.email, role: user.role },
+//             process.env.JWT_SECRET,
+//             { expiresIn: "1d" }
+//         );
+
+//         // Send the token and user information back to the client
+//         res.json({ success: true, token, user });
+//     } catch (error) {
+//         console.error("Error during Google authentication:", error);
+//         res.status(400).json({ success: false, message: "Invalid Google ID token" });
+//     }
+// };
 exports.registerUser = async (req, res) => {
     try {
         const { firstName, lastName, email, password, phone, role, team, address, organization, description, skills, github_url, linkedin_url, twitter_url, USN } = req.body;
