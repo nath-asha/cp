@@ -3,7 +3,10 @@ const signeduser = require("../models/signupmodel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {OAuth2Client} = require('google-auth-library');
+const cors = require('cors');
+const bodyparser = require('body-parser');
 const client = new OAuth2Client();
+
 
 exports.registerUser = async (req, res) => {
     try {
@@ -90,26 +93,33 @@ exports.signinUser = async (req, res) => {
         res.status(500).json({ success: false, message: "Server error" });
     }
 };
+// exports.googlesignin = async (req,res) => {
+//     try {
+//         const {cred} =req.body;
+//         if(!cred){
+//             return res.status(400).json({success: false,message: "Missing credentials"});
+//         }
+//         const user = await this.googlesignin.findOne({cred});
+//         if(!user){
+//             return res.status(401).json({success: false, message:"Invalid user"});
+//         }
+//         const isMatch =await bcrypt.compare(password,user.password);
+//         if(!isMatch) {
+//             return res.status(401).json({success: false,message:"invalid"});
+//         }
+//         const token = jwt.sign({id: user._id, email: user.email, role: user.role}, process.env.JWT_SECRET, {expiresIn:"1d"});
+//         res.json({success: true, message: "Signin successful",token,user});
+//     } catch (error) {
+//         console.error("Sign in error");
+//         res.status(500).json({success: false, message: "Server error"});
+//     }
+// }
+
 exports.googlesignin = async (req,res) => {
-    try {
-        const {cred} =req.body;
-        if(!cred){
-            return res.status(400).json({success: false,message: "Missing credentials"});
-        }
-        const user = await this.googlesignin.findOne({cred});
-        if(!user){
-            return res.status(401).json({success: false, message:"Invalid user"});
-        }
-        const isMatch =await bcrypt.compare(password,user.password);
-        if(!isMatch) {
-            return res.status(401).json({success: false,message:"invalid"});
-        }
-        const token = jwt.sign({id: user._id, email: user.email, role: user.role}, process.env.JWT_SECRET, {expiresIn:"1d"});
-        res.json({success: true, message: "Signin successful",token,user});
-    } catch (error) {
-        console.error("Sign in error");
-        res.status(500).json({success: false, message: "Server error"});
-    }
+    const {email} = req.body;
+    const {role} = User[email] || 'user';
+    const {token} = jwt.sign({email,role}, 'secret', {expiresIn:'1h'});
+    res.json({token});
 }
 exports.googlesignup = async (req,res) => {
     try {
@@ -172,32 +182,46 @@ exports.profileUser = async (req, res) => {
     }
 };
 
-exports.jwtverify = async function verify(client_id, jwtToken) {
-    const client = new OAuth2Client(client_id);
-    // Call the verifyIdToken to
-    // varify and decode it
-    const ticket = await client.verifyIdToken({
-        idToken: jwtToken,
-        audience: client_id,
-    });
-    // Get the JSON with all the user info
-    const payload = ticket.getPayload();
-    // This is a JSON object that contains
-    // all the user info
-    return payload;
-}
+// exports.jwtverify = async (req, res) => {
+//     try {
+//         const { client_id, jwtToken } = req.body;
 
-async function verify() {
-    const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: process.env.CLIENT_ID,
-    });
-    const payload = ticket.getPayload();
-    const userid = payload['sub'];
-    // If the request specified a Google Workspace domain:
-    // const domain = payload['hd'];
-  }
-  verify().catch(console.error);
+//         if (!client_id || !jwtToken) {
+//             return res.status(400).json({ success: false, message: "Missing client_id or jwtToken" });
+//         }
+
+//         const client = new OAuth2Client(client_id);
+
+//         // Verify and decode the JWT token
+//         const ticket = await client.verifyIdToken({
+//             idToken: jwtToken,
+//             audience: client_id,
+//         });
+
+//         // Extract the payload containing user information
+//         const payload = ticket.getPayload();
+
+//         // Return the payload as a response
+//         res.status(200).json({ success: true, payload });
+//     } catch (error) {
+//         console.error("JWT verification error:", error);
+//         res.status(500).json({ success: false, message: "Error verifying JWT token" });
+//     }
+// };
+
+// async function verify() {
+//     const ticket = await client.verifyIdToken({
+//         idToken: token,
+//         audience: process.env.CLIENT_ID,
+//     });
+//     const payload = ticket.getPayload();
+//     const userid = payload['sub'];
+//     // If the request specified a Google Workspace domain:
+//     // const domain = payload['hd'];
+//   }
+//   verify().catch(console.error);
+
+
 
 // const User = require("../models/userModel");
 // const bcrypt = require("bcryptjs");

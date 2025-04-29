@@ -1,4 +1,6 @@
 const express = require("express");
+const cors = require('cors');
+const bodyparser = require('body-parser');
 const { registerUser, loginUser, signedupUser,profileUser,signinUser,googlesignin,googlesignup } = require("../controllers/authcontroller");
 
 const router = express.Router();
@@ -12,6 +14,27 @@ router.post("/signedup", signedupUser);
 //this is for sign up and later sign up with google
 
 router.post("/profilesignup", profileUser);
+
+
+const verifyToken = (req,res,next) => {
+    const auth = req.headers.authorization;
+    if(!auth) return res.sendStatus(401);
+    try{
+        req.user = jwt.verify(auth.split(' ')[1], 'secret');
+        next();
+    }catch{
+        res.sendStatus(403);
+    }
+};
+
+const requireRole = role => (res,req,next) => {
+    if(req.user.role !== role) return res.sendStatus(403);
+    next();
+};
+
+router.get('/admin',verifyToken,requireRole('admin'),(req,res) => {
+    res.send("Admin in");
+})
 
 router.post("/googlesignup", googlesignup);
 router.post("/googlesignin", googlesignin);
