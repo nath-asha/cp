@@ -199,7 +199,7 @@
 //old code but works in signing but it is not user  DOdo@gmail0
 import React, { useEffect, useState } from "react";
 import "../styles/register.css";
-import { Button } from "react-bootstrap";
+import { Button,Card } from "react-bootstrap";
 import {ArrowLeftIcon} from 'lucide-react';
 import axios from "axios";
 import { GoogleLogin } from '@react-oauth/google';
@@ -210,12 +210,36 @@ const Newsignup = () => {
 const [profile, setProfile] = useState([]);
     // console.log(`${user.access_token}`);
 
+    const initialUserProperties = {
+      access_token: '',
+      expires_in: 0,
+      id_token: '',
+      scope: '',
+      token_type: '',
+  };
+
+  const emailUserProfile = {
+      email: '',
+      family_name: '',
+      given_name: '',
+      hd: '',
+      id: '',
+      locale: '',
+      name: '',
+      picture: '',
+      verified_email: false,
+  };
+
+  const [emailUser, setEmailUser] = useState(initialUserProperties);
+      const [emailProfile, setEmailProfile] = useState(emailUserProfile);
+  
+
     const login = useGoogleLogin({
       onSuccess: (codeResponse) => {
         setUser(codeResponse)
         console.log(codeResponse)
       },
-      onError: (error) => console.log("Login Failed:", error)
+      onError: (error) => console.log("Signup Failed:", error)
     });
 
 //   const responseMessage = (response) => {
@@ -224,28 +248,65 @@ const [profile, setProfile] = useState([]);
 // const errorMessage = (error) => {
 //     console.log(error);
 // };
-useEffect(
-  () => {
-      if (user) {
-          axios
-              .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+
+useEffect(() => {
+  if (!!emailUser.access_token) {
+      axios
+          .get(
+              `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${emailUser.access_token}`,
+              {
                   headers: {
-                      Authorization: `Bearer ${user.access_token}`,
-                      Accept: 'application/json'
-                  }
-              })
-              .then((res) => {
-                  setProfile(res.data);
-              })
-              .catch((err) => console.log(err));
-      }
-  },
-  [ user ]);
+                      Authorization: `Bearer ${emailUser.access_token}`,
+                      Accept: 'application/json',
+                  },
+              }
+          )
+          .then((res) => {
+              setEmailProfile(res.data);
+
+              // Save user data to MongoDB
+              const userData = {
+                  name: res.data.name,
+                  email: res.data.email,
+                  picture: res.data.picture,
+                  role: "Mentor",
+              };
+
+              axios
+                  .post("http://localhost:5000/api/auth/googlesignup", userData)
+                  .then((response) => {
+                      console.log("User data saved to MongoDB:", response.data);
+                  })
+                  .catch((err) => {
+                      console.error("Error saving user data to MongoDB:", err);
+                  });
+          })
+          .catch((err) => console.log('Error fetching user profile:', err));
+  }
+}, [emailUser]);
+
+// useEffect(
+//   () => {
+//       if (user) {
+//           axios
+//               .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+//                   headers: {
+//                       Authorization: `Bearer ${user.access_token}`,
+//                       Accept: 'application/json'
+//                   }
+//               })
+//               .then((res) => {
+//                   setProfile(res.data);
+//               })
+//               .catch((err) => console.log(err));
+//       }
+//   },
+//   [ user ]);
 
 //logout
 const logOut = () => {
   googleLogout();
-  setProfile(null);
+  setEmailProfile(null);
 };
 
   const [values, setValues] = useState({
@@ -386,7 +447,7 @@ const logOut = () => {
           {isSubmitting ? "Signing Up..." : "Signup"}
         </Button>
         <p className="center">OR</p>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        {/* <div style={{ display: "flex", justifyContent: "center" }}>
         {profile ? (
           <div className="card">
             <img src={profile.picture} alt='user image' />
@@ -395,13 +456,13 @@ const logOut = () => {
             <p>Email: {profile.email}</p>
             <button onClick={logOut}>Log Out</button>
             {/* {values.name}=={profile.name}
-            {values.email}=={profile.email} */}
+            {values.email}=={profile.email} 
             </div>
         ):(
           <button onClick={login}>Sign in with google</button>
         )}
-        {/* {values.cred}={user.access_token}; */}
-        {/* <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> */}
+        {/* {values.cred}={user.access_token}; 
+        {/* <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
         {/* <GoogleLogin
   onSuccess={credentialResponse => {
     console.log(credentialResponse);
@@ -411,7 +472,27 @@ const logOut = () => {
   }}
 /> */}
 
+<div className="d-flex justify-content-center align-items-center">
+            <Card>
+            {/* <div class="g-signin2" data-onsuccess="onSignIn"></div> */}
+                {emailProfile ? (
+                    <div>
+                        <img src={emailProfile.picture} alt="user image" />
+                        <h3>the User profile.</h3>
 
+                        <div>
+                            <p>Name: {emailProfile.name}</p>
+                            <p>Email Address: {emailProfile.email}</p>
+                        </div>
+
+                        <br />
+                        <button onClick={logOut}>Log out</button>
+                    </div>
+                ) : (
+                    <button onClick={() => login()}>Sign in with Google</button>
+                )}
+            </Card>
+        </div>
 
 {/* <p className="justify-center">OR</p>
         {/* style={{ display: "flex", justifyContent: "center" }} 
@@ -443,8 +524,8 @@ const logOut = () => {
   onError={() => {
     console.log('Login Failed');
   }}
-/> */}
-        </div>
+/> 
+        </div> */}
       </form>
     </div>
   );

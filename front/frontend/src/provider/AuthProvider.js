@@ -97,6 +97,7 @@ export const AuthProvider = ({ children }) => {
             login, // Updated to 'login'
             logout,
             signin,
+            gsignin,
             token,
             setToken,
             loading,

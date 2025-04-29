@@ -2,7 +2,7 @@ const User = require("../models/userModel");
 const signeduser = require("../models/signupmodel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-// const {Oauth2Client} = require("google-auth-library");
+const {OAuth2Client} = require('google-auth-library');
 
 
 exports.registerUser = async (req, res) => {
@@ -172,6 +172,20 @@ exports.profileUser = async (req, res) => {
     }
 };
 
+exports.jwtverify = async function verify(client_id, jwtToken) {
+    const client = new OAuth2Client(client_id);
+    // Call the verifyIdToken to
+    // varify and decode it
+    const ticket = await client.verifyIdToken({
+        idToken: jwtToken,
+        audience: client_id,
+    });
+    // Get the JSON with all the user info
+    const payload = ticket.getPayload();
+    // This is a JSON object that contains
+    // all the user info
+    return payload;
+}
 
 
 // const User = require("../models/userModel");
