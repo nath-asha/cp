@@ -8,8 +8,14 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const redirectPath = location.state?.path || "/profile";
-    const [token, setToken_] = useState(localStorage.getItem("token"));
-    const [user, setUser] = useState(null);
+    // const [token, setToken_] = useState(localStorage.getItem("token"));
+    const [token, setToken_] = useState(() => localStorage.getItem("token"));
+
+    // const [user, setUser] = useState(null);
+    const [user, setUser] = useState(() => {
+        const storedUser = localStorage.getItem("user");
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -17,17 +23,31 @@ export const AuthProvider = ({ children }) => {
         setToken_(newToken);
     };
 
+    // useEffect(() => {
+    //     if (token) {
+    //         axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+    //         localStorage.setItem("token", token);
+    //         setLoading(false);
+    //     } else {
+    //         delete axios.defaults.headers.common["Authorization"];
+    //         localStorage.removeItem("token");
+    //         setLoading(false);
+    //     }
+    // }, [token]);
+
     useEffect(() => {
-        if (token) {
+        if (user && token) {
+            localStorage.setItem("user", JSON.stringify(user));
             axios.defaults.headers.common["Authorization"] = "Bearer " + token;
             localStorage.setItem("token", token);
             setLoading(false);
         } else {
             delete axios.defaults.headers.common["Authorization"];
+            localStorage.removeItem("user");
             localStorage.removeItem("token");
             setLoading(false);
         }
-    }, [token]);
+    }, [user, token]);
 
     const login = async (email, password) => { // Renamed to 'login'
         setLoading(true);
@@ -64,18 +84,53 @@ export const AuthProvider = ({ children }) => {
     };
 
     //this is new google signin there is no password matching
-    const gsignin = async (email,name,accessT) => {
-        setLoading(true);
-        setError(null);
-        try{
-            const response = await axios.post("http://localhost:5000/api/auth/googlesignin",{email,name,accessT});
-            setUser(response.data.user);
-            navigate(redirectPath, {replace: true});
-        }catch(err) {
-            console.error("Google sign in error",err);
-            setError(err.response?.data?.message || "Google signin failed.Please try again");
-        }finally{
-            setLoading(false);
+    // const gsignin = async (email, name, accessT) => {
+    //     setLoading(true);
+    //     setError(null);
+    //     try {
+    //         const response = await axios.post("http://localhost:5000/api/auth/googlesignin", { email, name, accessT });
+    //         setToken_(response.data.token); // <--- Add this
+    //         setUser(response.data.user);
+    //         navigate(redirectPath, { replace: true });
+    //     } catch (err) {
+    //         console.error("Google sign in error", err);
+    //         setError(err.response?.data?.message || "Google signin failed. Please try again");
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }; 
+    
+    const gsignin = async (userOrEmail, passwordOrToken, callback) => {
+        try {
+            let authenticatedUser = null;
+            let jwtToken = null;
+
+            if (typeof userOrEmail === "string" && passwordOrToken) {
+                // Email/password login
+                const response = await fetch("http://localhost:5000/api/auth/signin", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: userOrEmail, password: passwordOrToken }),
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || "Login failed");
+
+                authenticatedUser = data.user;
+                jwtToken = data.token;
+            } else {
+                // Google login: directly pass user & token
+                authenticatedUser = userOrEmail;
+                jwtToken = passwordOrToken;
+            }
+
+            setUser(authenticatedUser);
+            setToken(jwtToken);
+            setError(null);
+            if (callback) callback();
+        } catch (err) {
+            console.error(err);
+            setError(err.message || "Authentication failed");
         }
     };
 
@@ -88,7 +143,9 @@ export const AuthProvider = ({ children }) => {
     const signout = () => {
         setToken(null);
         setUser(null);
+        setError(null);
         navigate("/signinuser");
+        // if (callback) callback();
     }
 
     const contextValue = useMemo(
@@ -105,6 +162,8 @@ export const AuthProvider = ({ children }) => {
         }),
         [user, token, loading, error]
     );
+    const isAuthenticated = () => !!token;
+
 
     return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };

@@ -64,10 +64,14 @@ const MentorGoogleSignIn = () => {
                             console.log("User data saved to MongoDB:", response.data);
                         })
                         .catch((err) => {
-                            console.error("Error saving user data to MongoDB:", err);
+                                if (err.response && err.response.status === 409) {
+                                    console.warn("User already exists. Skipping creation.");
+                                } else {
+                                    console.error("Error saving user data to MongoDB:", err);
+                                }
                         });
                 })
-                .catch((err) => console.log('Error fetching user profile:', err));
+                // .catch((err) => console.log('Error fetching user profile:', err));
         }
     }, [emailUser]);
 

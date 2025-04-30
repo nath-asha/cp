@@ -46,10 +46,10 @@ const Navbar = () => {
                                 )}
                                 <li>
                                     <Link
-                                        to="/logino"
+                                        to="/googlesignin"
                                         onClick={() => {
                                             logout();
-                                            navigate('/logino');
+                                            navigate('/googlesignin');
                                         }}
                                     >
                                         Logout
@@ -60,7 +60,7 @@ const Navbar = () => {
                     </li>
                 ) : (
                     // <li><Link to="/logino"> Login / Signup</Link></li>
-                    <li><Link to="/logino"> Login / Signup</Link></li>
+                    <li><Link to="/googlesignin"> Login / Signup</Link></li>
 
                 )}
             </ul>

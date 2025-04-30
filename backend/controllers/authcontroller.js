@@ -157,41 +157,70 @@ exports.signinUser = async (req, res) => {
 //     }
 // }
 
-exports.googlesignin = async (req,res) => {
-    const { credential } = req.body;
 
+exports.googlesignin = async (req, res) => {
+    const { name, email,id } = req.body;
+//this id is received from cred res through google
     try {
-        const ticket = await client.verifyIdToken({
-            idToken: credential,
-            audience: process.env.CLIENT_ID,
+        let user = await signeduser.findOne({ email });
+
+        if (!user) {
+            // user = await signeduser.create({ name, email, picture, role: "user" });
+            // return res.send("user not found please signup first")
+            return res.status(404).json({ success: false, message: "User not found. Please sign up first." });
+        }
+
+        const token = jwt.sign({ id: user.id, role: user.role, id:user.email }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+        res.json({
+            success: true,
+            token,
+            user: { name: user.name, email: user.email, role: user.role },
         });
-
-        const payload = ticket.getPayload();
-        const { email, name, picture } = payload;
-
-        const user = { email, name, picture }; 
-
-        res.json({ success: true, user, token: 'example-jwt-token' });
     } catch (err) {
-        console.error('Error verifying Google ID token:', err);
-        res.status(400).json({ success: false, message: 'Invalid Google ID token' });
+        console.error("Google signup error:", err);
+        res.status(500).json({ success: false, message: "Server error" });
     }
+};
 
-}
-exports.googlesignup = async (req,res) => {
+//latest on 29 april
+// exports.googlesignin = async (req,res) => {
+//     const { credential } = req.body;
+
+//     try {
+//         const ticket = await client.verifyIdToken({
+//             idToken: credential,
+//             audience: process.env.CLIENT_ID,
+//         });
+
+//         const payload = ticket.getPayload();
+//         const { email, name, picture } = payload;
+
+//         const user = { email, name, picture }; 
+//         console.log(user)
+//         res.json({ success: true, user, token: 'example-jwt-token' });
+//     } catch (err) {
+//         console.error('Error verifying Google ID token:', err);
+//         res.status(400).json({ success: false, message: 'Invalid Google ID token' });
+//     }
+
+// }
+exports.googlesignup = async (req, res) => {
     try {
-        const {name,email} = req.body;
-    
-        const newGsign = new signeduser({
-            name,
-            email,
-            
-            role: 'user',
-        });
+        const { name, email } = req.body;
+
+        const existingUser = await signeduser.findOne({ email });
+        if (existingUser) {
+            return res.status(409).json({ message: "User already exists" });
+        }
+
+        const newGsign = new signeduser({ name, email, role: "user" });
         await newGsign.save();
-        res.status(201).json({message:"Google sign up successful"});
-        } catch (error) {
-            console.error("error signing up")
+
+        res.status(201).json({ message: "Google sign-up successful" });
+    } catch (error) {
+        console.error("Error signing up", error);
+        res.status(400).json({ message: "Error signing up user" });
     }
 };
 exports.signedupUser = async (req,res) => {
@@ -231,7 +260,8 @@ exports.profileUser = async (req, res) => {
             USN
         });
 
-        await newUser.save();
+        await signeduser.updateOne({ email: req.body.email }, { $set: { ...req.body } });
+        //await newUser.save();
         res.status(201).json({ message: "Profile completed successfully" });
     } catch (error) {
         console.error("Registration error:", error);

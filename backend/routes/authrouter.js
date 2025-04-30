@@ -14,31 +14,31 @@ router.post("/signedup", signedupUser);
 //this is for sign up and later sign up with google
 
 router.post("/profilesignup", profileUser);
+router.post("/googlesignup", googlesignup);
+router.post("/googlesignin", googlesignin);
+router.post("/signinuser", signinUser);
 
-
-const verifyToken = (req,res,next) => {
+const verifyToken = (req, res, next) => {
     const auth = req.headers.authorization;
-    if(!auth) return res.sendStatus(401);
-    try{
-        req.user = jwt.verify(auth.split(' ')[1], 'secret');
+    if (!auth) return res.sendStatus(401);
+
+    try {
+        req.user = jwt.verify(auth.split(" ")[1], process.env.JWT_SECRET);
         next();
-    }catch{
+    } catch {
         res.sendStatus(403);
     }
 };
 
-const requireRole = role => (res,req,next) => {
-    if(req.user.role !== role) return res.sendStatus(403);
+const requireRole = (role) => (req, res, next) => {
+    if (req.user.role !== role) return res.sendStatus(403);
     next();
 };
 
-router.get('/admin',verifyToken,requireRole('admin'),(req,res) => {
+router.get("/admin", verifyToken, requireRole("admin"), (req, res) => {
     res.send("Admin in");
-})
+});
 
-router.post("/googlesignup", googlesignup);
-router.post("/googlesignin", googlesignin);
-router.post("/signinuser", signinUser);
 module.exports = router;
 
 // const express = require("express");

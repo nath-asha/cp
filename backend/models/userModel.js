@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   phone: Number,
+  picture: { type: String },
   "createdAt": Date,
   role: { type: String, default: "user" },
   team: { type: String, default: "none" },
