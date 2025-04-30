@@ -535,7 +535,7 @@
 
 import React, { useEffect, useState } from "react";
 import "../styles/register.css";
-import { Button,Card } from "react-bootstrap";
+import { Button,Card,Container,Row,Col,Alert, CardBody,Form } from "react-bootstrap";
 import { ArrowLeftIcon } from "lucide-react";
 import axios from "axios";
 import { useGoogleLogin, googleLogout } from "@react-oauth/google";
@@ -543,6 +543,8 @@ import { useGoogleLogin, googleLogout } from "@react-oauth/google";
 const Newsignup = () => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [localError, setLocalError] = useState('');
+  const [googleError, setGoogleError] = useState('');
 
   const initialUserProperties = {
     access_token: '',
@@ -723,20 +725,28 @@ const [emailUser, setEmailUser] = useState(initialUserProperties);
   };
 
   return (
-    <div className="form-container text-black">
-      <form className="register-form text-black" onSubmit={handleSubmit}>
+    <Container className="d-flex justify-content-center align-items-center" style={{minHeight:'80vh'}}>
+      <Row className="w-100">
+        <Col md={6} className="mx-auto">
+        <Card className="shadow">
+          <Card.Body>
+            <h2>Sign up as User</h2>
+            {localError && <Alert variant="danger">{localError}</Alert>}
+        
+      <Form className="mb-4 text-black" onSubmit={handleSubmit}>
         {submitted && Object.values(errors).every((error) => error === "") && (
           <div>
             <h5>Sign up successful</h5>
           </div>
         )}
-
         <a href="/googlesignin">
           <ArrowLeftIcon />
           Back
-        </a>
-        <input
-          className="form-field"
+        </a> 
+       <Form.Group className='mb-3'>
+        <Form.Label>Name</Form.Label>
+        <Form.Control
+          // className="form-field"
           type="text"
           name="name"
           placeholder="Name"
@@ -744,8 +754,11 @@ const [emailUser, setEmailUser] = useState(initialUserProperties);
           onChange={handleInputChange}
         />
         {submitted && errors.name && <span className="error-message text-danger">{errors.name}</span>}
+       </Form.Group>
 
-        <input
+       <Form.Group className='mb-3'>
+        <Form.Label>Email</Form.Label>
+        <Form.Control
           className="form-field"
           type="email"
           name="email"
@@ -753,10 +766,13 @@ const [emailUser, setEmailUser] = useState(initialUserProperties);
           value={values.email}
           onChange={handleInputChange}
         />
+         </Form.Group>
         {submitted && errors.email && <span className="error-message text-danger">{errors.email}</span>}
 
         <div style={{ position: "relative" }}>
-          <input
+        <Form.Group className='mb-3'>
+        <Form.Label>Email</Form.Label>
+        <Form.Control
             className="form-field"
             type={showPassword ? "text" : "password"}
             name="password"
@@ -764,19 +780,24 @@ const [emailUser, setEmailUser] = useState(initialUserProperties);
             value={values.password}
             onChange={handleInputChange}
           />
-          <input
+          <Form.Control
             type="checkbox"
             id="showPassword"
             style={{ position: "absolute", left: "46%", top: "40%" }}
             checked={showPassword}
             onChange={toggleShowPassword}
           />
+          </Form.Group>
+
+
         </div>
         {submitted && errors.password && <span className="error-message text-danger">{errors.password}</span>}
 
-        <Button type="submit" disabled={isSubmitting}>
+        <Button variant="primary" type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Signing Up..." : "Signup"}
         </Button>
+        </Form>
+        {googleError && <Alert variant="danger">{googleError}</Alert>}
         <p className="center">OR</p>
         <div style={{ display: "flex", justifyContent: "center" }}>
           {profile ? (
@@ -792,23 +813,25 @@ const [emailUser, setEmailUser] = useState(initialUserProperties);
             <Card>
             {/* <div class="g-signin2" data-onsuccess="onSignIn"></div> */}
                 {emailProfile ? (
-                    <div>
-                        <img src={emailProfile.picture} alt="user image" />
-                        <div>
-                            <p>Signed in as {emailProfile.name}</p>
-                            <p>Email Address: {emailProfile.email}</p>
-                        </div>
-                        <br />
-                        <button onClick={logOut}>Log out</button>
+                   <div className="text-center">
+                   <img src={emailProfile.picture} alt="profile" width="50" className="rounded-circle mb-2" />
+                   <p>{emailProfile.name}</p>
+                   <p>{emailProfile.email}</p>
+                      <Button onClick={logOut} variant="secondary">Logout</Button>
                     </div>
                 ) : (
-                    <button onClick={() => login()}>Sign in with Google</button>
+                    <Button onClick={() => login()} variant="danger" className="w-100">
+                                    Sign in with Google
+                                </Button>
                 )}
             </Card>
           )}
         </div>
-      </form>
-    </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
