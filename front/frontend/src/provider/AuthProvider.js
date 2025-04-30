@@ -137,14 +137,16 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         setToken(null);
         setUser(null);
-        navigate("/logino");
+        // navigate("/logino");
+        navigate("/googlesignin");
     };
 
     const signout = () => {
         setToken(null);
         setUser(null);
         setError(null);
-        navigate("/signinuser");
+        // navigate("/signinuser");
+        navigate("/googlesignin");
         // if (callback) callback();
     }
 

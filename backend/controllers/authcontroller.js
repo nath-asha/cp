@@ -170,12 +170,12 @@ exports.googlesignin = async (req, res) => {
             return res.status(404).json({ success: false, message: "User not found. Please sign up first." });
         }
 
-        const token = jwt.sign({ id: user.id, role: user.role, id:user.email }, process.env.JWT_SECRET, { expiresIn: "1d" });
+        const token = jwt.sign({ id: user.id, role: user.role, email :user.email }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
         res.json({
             success: true,
             token,
-            user: { name: user.name, email: user.email, role: user.role },
+            user: { name: user.name, email: user.email, role: user.role,id: user.id },
         });
     } catch (err) {
         console.error("Google signup error:", err);

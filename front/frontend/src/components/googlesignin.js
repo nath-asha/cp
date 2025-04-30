@@ -359,7 +359,7 @@ const Googlesignin = () => {
             console.log("Google user profile",res.data);
 
             try {
-                const response = await axios.post("http://localhost:5000/api/auth/googlesignup", userData);
+                const response = await axios.post("http://localhost:5000/api/auth/googlesignin", userData);
                 const { token, user } = response.data;
                 
                 gsignin(user, token, () => {
