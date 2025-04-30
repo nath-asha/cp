@@ -183,6 +183,31 @@ exports.googlesignin = async (req, res) => {
     }
 };
 
+exports.gsigninlatest = async (req, res) => {
+    const { name, email,id } = req.body;
+//this id is received from cred res through google
+    try {
+        let user = await signeduser.findOne({ email });
+
+        if (!user) {
+            // user = await signeduser.create({ name, email, picture, role: "user" });
+            // return res.send("user not found please signup first")
+            return res.status(404).json({ success: false, message: "User not found. Please sign up first." });
+        }
+
+        const token = jwt.sign({ id: user.id, role: user.role, email :user.email }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+        res.json({
+            success: true,
+            token,
+            user: { name: user.name, email: user.email, role: user.role,id: user.id },
+        });
+    } catch (err) {
+        console.error("Google signup error:", err);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+
 //latest on 29 april
 // exports.googlesignin = async (req,res) => {
 //     const { credential } = req.body;

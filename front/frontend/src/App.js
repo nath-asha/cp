@@ -68,6 +68,7 @@ import Signinuser from './components/signinuser';
 import Continueprofile from './components/continueprofile';
 import Sendteamreq from './components/sendteamreq';
 import Newgooglecred from './components/newgooglecred';
+import Gsignsimpler from './components/GoogleSigninLatest';
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
@@ -136,6 +137,7 @@ function App() {
           <Route path='/mentorgooglesignin' element={<MentorGoogleSignIn/>} />
           <Route path='/googlesignin' element={<Googlesignin/>} />
           <Route path='/newgooglecred' element={<Newgooglecred/>}/>
+          <Route path='/gsigninsimpler' element={<Gsignsimpler />} />
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
            <ParticipantDashboard /></PrivateRoute>} />

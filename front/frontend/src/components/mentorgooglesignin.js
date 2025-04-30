@@ -96,6 +96,8 @@ const MentorGoogleSignIn = () => {
                     <div>
                         {/* <img src={emailProfile.picture} alt="user image" />
                         <h3>the User profile.</h3>*/}
+                                                <h1 className="font-weight-bold text-black text-center">Interested to mentor?</h1>
+
                         <div>
                             <p>Name: {emailProfile.name}</p>
                             <p>Email Address: {emailProfile.email}</p>
