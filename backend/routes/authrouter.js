@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require('cors');
 const bodyparser = require('body-parser');
-const { registerUser, loginUser, signedupUser,profileUser,signinUser,googlesignin,googlesignup } = require("../controllers/authcontroller");
+const { registerUser, loginUser, signedupUser,profileUser,signinUser,googlesignin,googlesignup,gsigninlatest } = require("../controllers/authcontroller");
 
 const router = express.Router();
 
@@ -17,6 +17,9 @@ router.post("/profilesignup", profileUser);
 router.post("/googlesignup", googlesignup);
 router.post("/googlesignin", googlesignin);
 router.post("/signinuser", signinUser);
+
+//new one combined
+router.post("/gsigninsimpler",gsigninlatest);
 
 const verifyToken = (req, res, next) => {
     const auth = req.headers.authorization;

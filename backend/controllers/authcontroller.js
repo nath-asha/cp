@@ -192,8 +192,11 @@ exports.gsigninlatest = async (req, res) => {
         if (!user) {
             // user = await signeduser.create({ name, email, picture, role: "user" });
             // return res.send("user not found please signup first")
-            return res.status(404).json({ success: false, message: "User not found. Please sign up first." });
+            return res.status(404).json({ success: false, message: "New User sign up first." });
+            const newGsign = new signeduser({ name, email, role: "user" });
+            await newGsign.save();
         }
+        res.status(201).json({ message: "Google sign-up successful" });
 
         const token = jwt.sign({ id: user.id, role: user.role, email :user.email }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
