@@ -6,7 +6,7 @@ const {OAuth2Client} = require('google-auth-library');
 const bodyParser = require('body-parser');
 // const cors = require('cors');
 // const bodyparser = require('body-parser');
-const client = new OAuth2Client();
+const client = new OAuth2Client(process.env.CLIENT_ID);
 
 // exports.googleAuth = async (req, res) => {
 //     const { credential } = req.body;
@@ -83,28 +83,54 @@ exports.registerUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
+    // try {
+    //     const { email, password } = req.body;
+        
+    //     if (!email || !password) {
+    //         return res.status(400).json({ success: false, message: "Missing credentials" });
+    //     }
+        
+    //     const user = await User.findOne({ email });
+    //     if (!user) {
+    //         return res.status(401).json({ success: false, message: "Invalid credentials" });
+    //     }
+
+    //     const isMatch = await bcrypt.compare(password, user.password);
+    //     if (!isMatch) {
+    //         return res.status(401).json({ success: false, message: "Invalid credentials" });
+    //     }
+
+    //     const token = jwt.sign({ id: user._id, email: user.email, role:user.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+    //     res.json({ success: true, message: "Login successful", token, user });
+    // } catch (error) {
+    //     console.error("Login error:", error);
+    //     res.status(500).json({ success: false, message: "Server error" });
+    // }
+    const { email, password } = req.body;
+
     try {
-        const { email, password } = req.body;
-        
-        if (!email || !password) {
-            return res.status(400).json({ success: false, message: "Missing credentials" });
-        }
-        
         const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(401).json({ success: false, message: "Invalid credentials" });
+
+        if (!user || !(await user.comparePassword(password))) {
+            return res.status(401).json({ success: false, message: "Invalid email or password" });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ success: false, message: "Invalid credentials" });
-        }
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
-        const token = jwt.sign({ id: user._id, email: user.email, role:user.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
-
-        res.json({ success: true, message: "Login successful", token, user });
-    } catch (error) {
-        console.error("Login error:", error);
+        res.json({
+            success: true,
+            token,
+            user: {
+                id: user._id,
+                email: user.email,
+                name: user.name,
+                picture: user.picture,
+                role: user.role,
+            },
+        });
+    } catch (err) {
+        console.error("Login Error:", err);
         res.status(500).json({ success: false, message: "Server error" });
     }
 };
@@ -184,29 +210,69 @@ exports.googlesignin = async (req, res) => {
 };
 
 exports.gsigninlatest = async (req, res) => {
-    const { name, email,id } = req.body;
-//this id is received from cred res through google
+//     const { name, email,id } = req.body;
+// //this id is received from cred res through google
+//     try {
+//         let user = await signeduser.findOne({ email });
+
+//         if (!user) {
+//             // user = await signeduser.create({ name, email, picture, role: "user" });
+//             // return res.send("user not found please signup first")
+//             return res.status(404).json({ success: false, message: "New User sign up first." });
+//             const newGsign = new signeduser({ name, email, role: "user" });
+//             await newGsign.save();
+//         }
+//         res.status(201).json({ message: "Google sign-up successful" });
+
+//         const token = jwt.sign({ id: user.id, role: user.role, email :user.email }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+//         res.json({
+//             success: true,
+//             token,
+//             user: { name: user.name, email: user.email, role: user.role,id: user.id },
+//         });
+//     } catch (err) {
+//         console.error("Google signup error:", err);
+//         res.status(500).json({ success: false, message: "Server error" });
+//     }
+const { credential } = req.body;
+
     try {
-        let user = await signeduser.findOne({ email });
+        const ticket = await client.verifyIdToken({
+            idToken: credential,
+            audience: process.env.CLIENT_ID,
+        });
+
+        const payload = ticket.getPayload();
+        const { email, name, picture } = payload;
+
+        let user = await User.findOne({ email });
 
         if (!user) {
-            // user = await signeduser.create({ name, email, picture, role: "user" });
-            // return res.send("user not found please signup first")
-            return res.status(404).json({ success: false, message: "New User sign up first." });
-            const newGsign = new signeduser({ name, email, role: "user" });
-            await newGsign.save();
+            // Create a new user if not found
+            user = await User.create({
+                email,
+                name,
+                picture,
+                role: "user", // Default role
+            });
         }
-        res.status(201).json({ message: "Google sign-up successful" });
 
-        const token = jwt.sign({ id: user.id, role: user.role, email :user.email }, process.env.JWT_SECRET, { expiresIn: "1d" });
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
         res.json({
             success: true,
             token,
-            user: { name: user.name, email: user.email, role: user.role,id: user.id },
+            user: {
+                id: user._id,
+                email: user.email,
+                name: user.name,
+                picture: user.picture,
+                role: user.role,
+            },
         });
     } catch (err) {
-        console.error("Google signup error:", err);
+        console.error("Google Sign-In Error:", err);
         res.status(500).json({ success: false, message: "Server error" });
     }
 };

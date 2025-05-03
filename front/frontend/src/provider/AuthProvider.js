@@ -107,17 +107,12 @@ export const AuthProvider = ({ children }) => {
 
             if (typeof userOrEmail === "string" && passwordOrToken) {
                 // Email/password login
-                const response = await fetch("http://localhost:5000/api/auth/signin", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: userOrEmail, password: passwordOrToken }),
+                const response = await axios.post("http://localhost:5000/api/auth/signin", {
+                    email: userOrEmail,
+                    password: passwordOrToken,
                 });
-
-                const data = await response.json();
-                if (!response.ok) throw new Error(data.message || "Login failed");
-
-                authenticatedUser = data.user;
-                jwtToken = data.token;
+                authenticatedUser = response.data.user;
+                jwtToken = response.data.token;
             } else {
                 // Google login: directly pass user & token
                 authenticatedUser = userOrEmail;
@@ -129,10 +124,43 @@ export const AuthProvider = ({ children }) => {
             setError(null);
             if (callback) callback();
         } catch (err) {
-            console.error(err);
-            setError(err.message || "Authentication failed");
+            console.error("Google Sign-In failed:", err);
+            setError(err.response?.data?.message || "Authentication failed");
         }
     };
+    // const gsignin = async (userOrEmail, passwordOrToken, callback) => {
+    //     try {
+    //         let authenticatedUser = null;
+    //         let jwtToken = null;
+
+    //         if (typeof userOrEmail === "string" && passwordOrToken) {
+    //             // Email/password login
+    //             const response = await fetch("http://localhost:5000/api/auth/signin", {
+    //                 method: "POST",
+    //                 headers: { "Content-Type": "application/json" },
+    //                 body: JSON.stringify({ email: userOrEmail, password: passwordOrToken }),
+    //             });
+
+    //             const data = await response.json();
+    //             if (!response.ok) throw new Error(data.message || "Login failed");
+
+    //             authenticatedUser = data.user;
+    //             jwtToken = data.token;
+    //         } else {
+    //             // Google login: directly pass user & token
+    //             authenticatedUser = userOrEmail;
+    //             jwtToken = passwordOrToken;
+    //         }
+
+    //         setUser(authenticatedUser);
+    //         setToken(jwtToken);
+    //         setError(null);
+    //         if (callback) callback();
+    //     } catch (err) {
+    //         console.error(err);
+    //         setError(err.message || "Authentication failed");
+    //     }
+    // };
 
     const logout = () => {
         setToken(null);
