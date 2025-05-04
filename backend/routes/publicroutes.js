@@ -665,6 +665,37 @@ router.post('/choose-challenge', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+router.post('/events/:eventId/register', async (req, res) => {
+    try {
+        const { eventId } = req.params;
+        const { userId } = req.body;
+
+        if (!userId) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
+
+        const eventToRegister = await event.findById(eventId);
+        if (!eventToRegister) {
+            return res.status(404).json({ message: 'Event not found' });
+        }
+
+        // Check if user is already registered
+        if (eventToRegister.participants && eventToRegister.participants.includes(userId)) {
+            return res.status(400).json({ message: 'User is already registered for this event' });
+        }
+
+        // Add user to the event
+        eventToRegister.participants = eventToRegister.participants || [];
+        eventToRegister.participants.push(userId);
+        await eventToRegister.save();
+
+        res.status(200).json({ message: 'User registered successfully', event: eventToRegister });
+    } catch (err) {
+        console.error('Error registering user:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 module.exports = router;
 
 //changes in events model led to this
@@ -741,4 +772,4 @@ module.exports = router;
 //     }
 // });
 
-module.exports = router;
+// module.exports = router;

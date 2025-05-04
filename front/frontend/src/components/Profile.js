@@ -11,7 +11,6 @@ import { BiRocket } from 'react-icons/bi';
 const Profile = () => {
     const { user, logout } = useAuth();
     const [userData, setUserData] = useState(null);
-console.log(user);
     const logoutHandler = () => logout();
 
     useEffect(() => {
@@ -20,6 +19,7 @@ console.log(user);
                 const response = await fetch(`/users/${user.email}`);
                 const data = await response.json();
                 setUserData(data);
+                console.log("See",data);
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
