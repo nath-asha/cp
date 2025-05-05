@@ -40,14 +40,14 @@ const MentorManager = () => {
         ));
     };
     useEffect(() => {
-        axios.get("http://localhost:5000/participants")
+        axios.get("http://localhost:5000/users")
             .then(response => setMentors(response.data))
             .catch(error => console.error(error));
     }, []);
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/participants${id}`);
+            await axios.delete(`http://localhost:5000/users${id}`);
             setMentors(mentors.filter((mentor) => mentor._id !== id));
         } catch (error) {
             console.error("Error deleting mentor:", error);

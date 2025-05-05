@@ -151,6 +151,16 @@ router.get("/users", async (req, res) => {
     }
 });
 
+router.get("/signups", async (req,res) => {
+    try{
+        const signup = await signuser.find();
+        res.json(signup);
+    } catch (err) {
+        console.error("Error fetching signups",err);
+        res.status(500).send("Internal Server Error");
+    }
+})
+
 // Events Routes
 router.get("/events", async (req, res) => {
     try {
@@ -650,7 +660,7 @@ router.post('/choose-challenge', async (req, res) => {
     const { user_id, track_id } = req.body;
 
     try {
-        const updatedUser = await signuser.findOneAndUpdate(
+        const updatedUser = await user.findOneAndUpdate(
             { _id: user_id },
             { $set: { chosen_challenge: track_id } },
             { new: true }
@@ -667,7 +677,7 @@ router.post('/choose-challenge', async (req, res) => {
     }
 });
 
-// Event registration endpoint this is working adds event to user 
+// Event registration endpoint this is working adds event to user
 router.post('/events/:eventId/register', async (req, res) => {
     try {
         const { eventId } = req.params;

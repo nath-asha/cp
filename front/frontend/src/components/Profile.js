@@ -63,14 +63,14 @@ const Profile = () => {
                                 style={{ width: '120px', height: '120px', objectFit: 'cover' }}
                             />
                             <h2>{`${userData.firstName} ${userData.lastName}`}</h2>
-                            <p className="lead">{userData.description || 'A fantastic tech enthusiast ready to innovate!'}</p>
+                            <p className="lead">{userData.description || []}</p>
                             <Button
                                 variant="outline-light"
                                 size="sm"
                                 onClick={() => navigator.share?.({ url: shareProfileUrl, title: `Check out ${userData.firstName}'s profile!` })}
                                 disabled={!navigator.share}
                             >
-                                <FaShareAlt className="me-2" /> Share This Cool Profile!
+                                <FaShareAlt className="me-2" /> Share This Profile
                             </Button>
                         </div>
 
