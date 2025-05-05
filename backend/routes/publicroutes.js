@@ -7,6 +7,7 @@ const dash = require('../../front/frontend/public/dashboarddata.json');
 const submission = require("../models/submissionmodel");
 const user = require("../models/userModel");
 const event = require("../models/eventmodel");
+const signuser = require("../models/signupmodel");
 const community = require("../models/communitymodel");
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -666,18 +667,27 @@ router.post('/choose-challenge', async (req, res) => {
     }
 });
 
+// Event registration endpoint
 router.post('/events/:eventId/register', async (req, res) => {
     try {
         const { eventId } = req.params;
         const { userId } = req.body;
 
+        // Validate input
         if (!userId) {
             return res.status(400).json({ message: 'User ID is required' });
         }
 
-        const eventToRegister = await event.findById(eventId);
+        // Find the event by eventId
+        const eventToRegister = await event.findOne({ eventId });
         if (!eventToRegister) {
             return res.status(404).json({ message: 'Event not found' });
+        }
+
+        // Check if user exists
+        const user = await signuser.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
 
         // Check if user is already registered
@@ -685,10 +695,14 @@ router.post('/events/:eventId/register', async (req, res) => {
             return res.status(400).json({ message: 'User is already registered for this event' });
         }
 
-        // Add user to the event
+        // Add user to the event's participants
         eventToRegister.participants = eventToRegister.participants || [];
         eventToRegister.participants.push(userId);
         await eventToRegister.save();
+
+        // Update user's event registration field
+        user.eventreg = eventId;
+        await user.save();
 
         res.status(200).json({ message: 'User registered successfully', event: eventToRegister });
     } catch (err) {
@@ -696,6 +710,7 @@ router.post('/events/:eventId/register', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
 module.exports = router;
 
 //changes in events model led to this

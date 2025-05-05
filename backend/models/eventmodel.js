@@ -8,9 +8,9 @@ const eventSchema = new mongoose.Schema({
     imgUrl: { type: String, required: true },
     date: { type: String, required: true }, // Renamed from startdate to date, and made required
     enddate: { type: String, required: true },
-    venue: { type: String, enum: ['Online', 'Offline', 'Hybrid'], required: true }, // Added type with enum and required
+    venue: { type: String, enum: ['online', 'offline', 'hybrid'], required: true }, // Added type with enum and required
     prizes: { type: [String], default: [] },
-    "createdAt": Date,
+    createdAt: Date,
     scheduleDetails: {
         type: [{
             date: { type: String, required: true },
@@ -22,6 +22,7 @@ const eventSchema = new mongoose.Schema({
     },
     logistics: String,
     importantDates: { type: [String], required: true, default: [] }, // Added important dates and default value
+    participants: { type: [String], default: [] }, // Array of user IDs
 });
 // const eventSchema = new mongoose.Schema({
 //     eventId: {type: String,required:  true},

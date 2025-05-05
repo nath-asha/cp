@@ -3,16 +3,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Nav, Tab, Row, Col, Table, CardBody } from "react-bootstrap";
 import CountdownTimer from "./CountDown";
 import { Trophy } from "lucide-react";
-import { getUserRole } from "./auth";
+import { useAuth } from "../provider/AuthProvider";
 import Community from "./community";
 import Leaderboard from './Leaderboard';
-import Challenges from "./challenges"; // Assuming this component handles fetching challenges
+import Challenges from "./challenges";
 import { useParams } from "react-router-dom";
 
 const Displayevent = () => {
     const { eventId } = useParams();
+    const { user } = useAuth();
     const [selectedEvent, setSelectedEvent] = useState(null);
-    const role = getUserRole();
 
     useEffect(() => {
         const fetchEventDetails = async () => {
@@ -38,15 +38,20 @@ const Displayevent = () => {
     }
 
     const handleRegister = async () => {
+        if (!user || !user.id) {
+            alert("You must be logged in to register for an event.");
+            return;
+        }
+    
         try {
             const response = await fetch(`http://localhost:5000/events/${eventId}/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userId: 'currentUserId' }) // Replace 'currentUserId' with actual user ID
+                body: JSON.stringify({ userId: user.id }) // Ensure user.id is valid
             });
-
+    
             if (response.ok) {
                 alert('Successfully registered for the event!');
             } else {
@@ -58,7 +63,6 @@ const Displayevent = () => {
             alert('An error occurred while trying to register.');
         }
     };
-
     return (
         <div>
             <h2 className="mb-4">{selectedEvent.title || "Event Title"}</h2>
@@ -81,53 +85,31 @@ const Displayevent = () => {
                                 <CountdownTimer />
                                 
                                 <Col md={6}>
-                                <h3 className="text-blue">{selectedEvent.title}</h3>
+                                    <h3 className="text-blue">{selectedEvent.title}</h3>
                                     <img src={selectedEvent.imgUrl} alt="Event" className="img-fluid" />
                                     <h5>Open to All</h5>
-                        
                                     <h5>190 Registered</h5>
                                 </Col>
                                 <Col md={6}>
-                                <Card>
-                                <CardBody>
-                                            {role === 'user' ? (
-                                    <button className="btn btn-primary btn-sm" onClick={handleRegister}>Register now!</button>
-                                ) : (
-                                    <p>Please register as Participant first</p>
-                                )}
+                                    <Card>
+                                        <CardBody>
+                                            <button className="btn btn-primary btn-sm" onClick={handleRegister}>
+                                                Register now!
+                                            </button>
                                         </CardBody>
-                                </Card>
+                                    </Card>
                                     <Card>
                                         <Card.Body>
                                             <h5>{selectedEvent.date}</h5>
                                             <h5>{selectedEvent.venue}</h5>
-                                             {/* Assuming 'type' is not directly available in this data */}
-                                            {/* <h5>{selectedEvent.type}</h5> */}
                                         </Card.Body>
                                     </Card>
-                                     {/* Assuming techStack is not directly available in this data */}
-                                    {/* <Card>
-                                        <Card.Body>
-                                            <h4>Tech Stack</h4>
-                                            <h5>{selectedEvent.techStack}</h5>
-                                        </Card.Body>
-                                    </Card> */}
                                     <Card>
                                         <CardBody>
                                             <h4>Getting started / To Dos</h4>
                                             <p>Create teams before the deadline</p>
                                             <p>Choose a challenge</p>
                                             <p>Join Whatsapp group</p>
-                                        </CardBody>
-                                    </Card>
-                                    <Card>
-                                        <CardBody>
-                                            <p>Join WhatsApp Group</p>
-                                            {role === 'user' || role === 'mentor' ? (
-                                                <button className="btn btn-success">Join group</button>
-                                            ) : (
-                                                <p>To Apply, register as Participant first</p>
-                                            )}
                                         </CardBody>
                                     </Card>
                                 </Col>
@@ -146,7 +128,7 @@ const Displayevent = () => {
                             {selectedEvent.prizes && selectedEvent.prizes.length > 0 ? (
                                 <ul>
                                     {selectedEvent.prizes.map((prize, index) => (
-                                        <h1 className="hero" key={index}><Trophy/>                 {index+1} : {prize}</h1>
+                                        <h1 className="hero" key={index}><Trophy /> {index + 1} : {prize}</h1>
                                     ))}
                                 </ul>
                             ) : (
@@ -214,53 +196,3 @@ const Displayevent = () => {
 };
 
 export default Displayevent;
-
-{/* Add important dates with functions to make it visually appealing */}
-                    {/* <div className='faq'>
-                <div className="accordion" id="accordionFlushExample">
-                    <div className="accordion-item">
-                        <p className="accordion-header">
-                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                What software do I need?
-                            </button>
-                        </p>
-                        <div id="flush-collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                            <div className="accordion-body">
-                                Node.js and npm (or yarn).
-                                A code editor (VS Code, Sublime Text, Atom).
-                                A web browser (Chrome, Firefox).
-                                Git (for version control).
-                            </div>
-                        </div>
-                    </div>
-                    <div className="accordion-item">
-                        <h2 className="accordion-header">
-                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                                Should I bring a power adapter?
-                            </button>
-                        </h2>
-                        <div id="flush-collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                            <div className="accordion-body"> Yes, always bring a power adapter. Hackathons can be long, and you don't want your laptop to run out of battery.
-                            </div>
-                        </div>
-                    </div>
-                    <div className="accordion-item">
-                        <h2 className="accordion-header">
-                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                                What if I run into technical issues?
-                            </button>
-                        </h2>
-                        <div id="flush-collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                            <div className="accordion-body">Work as a team to troubleshoot.
-                                Utilize offline documentation.
-                                Ask the hackathon organizers for assistance</div>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
-              {/* <Card>
-                                                <Card.Body>
-                                                <button>Register now!</button>
-                                                    {/* <h5>{selectedEvent?.type || "Offline"}</h5> 
-                                                </Card.Body>
-                                            </Card> */}
