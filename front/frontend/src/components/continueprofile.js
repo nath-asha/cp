@@ -1,13 +1,16 @@
 import "../styles/register.css";
 import React, { useEffect, useState } from "react";
-
+// import { getEmail } from "./auth";
 const token = sessionStorage.getItem('token');
 
 export default function Continueprofile() {
+
+  // const {Email} = getEmail();
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
     phone: "",
+    // email: Email,
     organization: "",
     description: "",
     skills: "",
@@ -35,7 +38,7 @@ export default function Continueprofile() {
   const validateGithub = (github_url) => /^(https?:\/\/)?(www\.)?github\.com\/[A-Za-z0-9_-]+\/?$/.test(github_url) ? "" : "Please enter a valid GitHub URL";
 
   const validateLinkedin = (linkedin_url) => /^(https?:\/\/)?(www\.)?(linkedin\.com\/in|linkedin\.com\/pub)\/[A-Za-z0-9_-]+\/?$/.test(linkedin_url) ? "" : "Please enter a valid LinkedIn URL";
-
+  //https://www.linkedin.com/in/nathasha-t-attavar-492a4125b?
   const validateTwitter = (twitter_url) => /^(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]+\/?$/.test(twitter_url) ? "" : "Please enter a valid Twitter URL";
 
   const validate = () => {
@@ -65,11 +68,12 @@ export default function Continueprofile() {
         const response = await fetch("http://localhost:5000/api/auth/profilesignup", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            ...(token && { Authorization: `Bearer ${token}` }),
+            'Content-Type': "application/json",
+        'Authorization' : `Bearer ${token}` ,
           },
           body: JSON.stringify(values),
         });
+  console.log(values);
 
         if (response.ok) {
           const data = await response.json();

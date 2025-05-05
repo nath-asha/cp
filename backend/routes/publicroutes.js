@@ -437,13 +437,13 @@ router.post('/assign-mentor', async (req, res) => {
       }
   
       // Check if mentor exists
-      const mentor = await User.findById(mentorId);
+      const mentor = await this.useser.findById(mentorId);
       if (!mentor) {
         return res.status(404).json({ message: "Mentor not found" });
       }
   
       // Update each team to assign the mentor
-      const updateTeams = await Team.updateMany(
+      const updateTeams = await team.updateMany(
         { _id: { $in: teamIds } },
         { mentor: mentorId }
       );
@@ -465,7 +465,7 @@ router.post('/assign-mentor', async (req, res) => {
     const { mentor } = req.body;
   
     try {
-      const team = await Team.findByIdAndUpdate(
+      const team = await team.findByIdAndUpdate(
         teamId,
         { mentor: mentor || null }, // Allow unassigning by sending null
         { new: true } // Return the updated document
@@ -486,7 +486,7 @@ router.post('/assign-mentor', async (req, res) => {
   // GET route to fetch all mentors
   router.get('/mentors', async (req, res) => {
     try {
-      const mentors = await User.find({ role: 'mentor' }); // Assuming you have a 'role' field
+      const mentors = await user.find({ role: 'mentor' }); // Assuming you have a 'role' field
       res.status(200).json(mentors);
     } catch (error) {
       console.error("Error fetching mentors:", error);
@@ -497,7 +497,7 @@ router.post('/assign-mentor', async (req, res) => {
   // GET route to fetch all teams
   router.get('/teams', async (req, res) => {
     try {
-      const teams = await Team.find().populate('mentor', 'firstName lastName'); // Populate mentor details
+      const teams = await team.find().populate('mentor', 'firstName lastName'); // Populate mentor details
       res.status(200).json(teams);
     } catch (error) {
       console.error("Error fetching teams:", error);

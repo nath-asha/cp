@@ -51,7 +51,8 @@ export default function RegistrationForm() {
         body: JSON.stringify(values)
       });
       if (response.ok) {
-        console.log('User registered successfully');
+        const data = await response.json();
+        console.log('User registered successfully'.data);
       } else {
         console.error('Failed to register user');
       }

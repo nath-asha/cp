@@ -343,8 +343,9 @@ exports.profileUser = async (req, res) => {
             firstName,
             lastName,
             phone,
-            role,
-            team,
+            //email,
+            // role,
+            // team,
             organization,
             description,
             skills,
@@ -355,7 +356,7 @@ exports.profileUser = async (req, res) => {
         });
 
         await signeduser.updateOne({ email: req.body.email }, { $set: { ...req.body } });
-        //await newUser.save();
+        // await newUser.save();
         res.status(201).json({ message: "Profile completed successfully" });
     } catch (error) {
         console.error("Registration error:", error);

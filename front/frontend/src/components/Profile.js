@@ -38,9 +38,9 @@ const Profile = () => {
 
     const shareProfileUrl = window.location.href;
     const themedBackgrounds = [
-        'linear-gradient(135deg, #43CBFF 0%, #97F9F7 100%)',
-        'linear-gradient(45deg, #FF9A8B 0%, #FF6A88 55%, #FF99AC 98%)',
-        'linear-gradient(to right, #24C6DC, #514A9D)',
+        'linear-gradient(135deg, #43CBFF 0%, #97F9F7 100%)'
+        // 'linear-gradient(45deg, #FF9A8B 0%, #FF6A88 55%, #FF99AC 98%)',
+        // 'linear-gradient(to right, #24C6DC, #514A9D)',
     ];
     const randomBackground = themedBackgrounds[Math.floor(Math.random() * themedBackgrounds.length)];
 
