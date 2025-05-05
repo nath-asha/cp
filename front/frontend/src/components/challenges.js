@@ -51,6 +51,8 @@ function Challenges() {
         throw new Error(`Error choosing challenge: ${response.statusText}`);
       }
 
+      console.log(userId);
+
       alert('Challenge successfully chosen!');
     } catch (error) {
       console.error('Error submitting choice:', error);

@@ -4,7 +4,7 @@ const challengesSchema = new mongoose.Schema({
     title: String,
     description: String,
     trackId: String,
-    "createdAt": Date,
+    createdAt: Date,
     imgurl: String,
     eventId: String,
 });

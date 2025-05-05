@@ -37,6 +37,7 @@ const userSchema = new mongoose.Schema({
 required: true,
 default: [] },
  eventreg: { type: String, default: "none"},
+ chosen_challenge: {type: String, default: "none"},
 //pic: String,
 cred : String, 
 

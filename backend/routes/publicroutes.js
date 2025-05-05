@@ -650,7 +650,7 @@ router.post('/choose-challenge', async (req, res) => {
     const { user_id, track_id } = req.body;
 
     try {
-        const updatedUser = await user.findOneAndUpdate(
+        const updatedUser = await signuser.findOneAndUpdate(
             { _id: user_id },
             { $set: { chosen_challenge: track_id } },
             { new: true }
@@ -667,7 +667,7 @@ router.post('/choose-challenge', async (req, res) => {
     }
 });
 
-// Event registration endpoint
+// Event registration endpoint this is working adds event to user 
 router.post('/events/:eventId/register', async (req, res) => {
     try {
         const { eventId } = req.params;
