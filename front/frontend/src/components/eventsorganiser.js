@@ -715,7 +715,7 @@ const EventManager = () => {
                         required
                     />
                 </div>
-                <div className="mb-3">
+                {/* <div className="mb-3">
                     <input
                         type="text"
                         placeholder="Event ID"
@@ -724,7 +724,7 @@ const EventManager = () => {
                         className="form-control"
                         required
                     />
-                </div>
+                </div> */}
                 <div className="mb-3">
                     <input
                         type="date"
