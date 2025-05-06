@@ -69,6 +69,8 @@ import Continueprofile from './components/continueprofile';
 import Sendteamreq from './components/sendteamreq';
 import Newgooglecred from './components/newgooglecred';
 import Gsignsimpler from './components/GoogleSigninLatest';
+import MultiSubmissions from './components/mutlisubmissions';
+import EvaluationRubrics from './components/evaluaterubrics';
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
@@ -138,6 +140,8 @@ function App() {
           <Route path='/googlesignin' element={<Googlesignin/>} />
           <Route path='/newgooglecred' element={<Newgooglecred/>}/>
           <Route path='/gsigninsimpler' element={<Gsignsimpler />} />
+          <Route path='multisubmissions' element={<MultiSubmissions />}/>
+          <Route path='evaluationrubrics/:teamId' element={<EvaluationRubrics />} />
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
            <ParticipantDashboard /></PrivateRoute>} />
