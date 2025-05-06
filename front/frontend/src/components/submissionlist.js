@@ -11,6 +11,16 @@ const Submissionlist = () => {
             .then(response => setSubmissions(response.data))
             .catch(error => console.error(error));
     }, []);
+
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`http://localhost:5000/submissions/${id}`);
+            setSubmissions(submissions.filter((submission) => submission._id !== id));
+        } catch (error) {
+            console.error("Error deleting submission:", error);
+        }
+    };
+
 return(
     <div>
                 <h2 className="text-black">Submissions</h2>
@@ -25,6 +35,14 @@ return(
                                     {/* yet to add submission date */}
                                     <p className="card-text">Submission Date: {new Date(submission.submission_date).toLocaleDateString()}</p>
                                     <p className="card-text">Status: {submission.status}</p>
+                                    <button
+                                        onClick={() => {
+                                                handleDelete(submission._id);
+                                        }}
+                                        className="btn btn-danger btn-sm"
+                                    >
+                                        Delete
+                                    </button>
                                 </CardBody>
                             </Card>
                         ))}

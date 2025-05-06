@@ -184,32 +184,18 @@ router.get('/events/:eventId', async (req, res) => {
 });
  
 router.post('/events', async (req, res) => {
-    // try {
-    //     console.log("Request Body:", req.body); // Log the request body
-    //     const newEvent = new event(req.body);
-    //     await newEvent.save();
-    //     res.status(201).json(newEvent);
-    // } catch (error) {
-    //     console.error("Error saving event:", error); // Log the full error
-    //     if (error.name === 'ValidationError') {
-    //         return res.status(400).json({ error: error.message });
-    //     }
-    //     return res.status(500).json({ error: "Internal Server Error" });
-    // }
-    router.post('/events', (req, res) => {
-        const { title, desc, date, venue } = req.body;
-    
-        // Validate required fields
-        if (!title || !desc || !date || !venue) {
-            return res.status(400).json({ message: 'Missing required fields: title, desc, date, or venue.' });
+    try {
+        console.log("Request Body:", req.body); // Log the request body
+        const newEvent = new event(req.body);
+        await newEvent.save();
+        res.status(201).json(newEvent);
+    } catch (error) {
+        console.error("Error saving event:", error); // Log the full error
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ error: error.message });
         }
-    
-        // Proceed with event creation
-        const newEvent = new Event(req.body);
-        newEvent.save()
-            .then(event => res.status(201).json(event))
-            .catch(err => res.status(500).json({ message: 'Error creating event', error: err }));
-    });
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 });
 
 router.delete('/events/:id', async (req, res) => {
@@ -451,7 +437,7 @@ router.post('/assign-mentor', async (req, res) => {
       }
   
       // Check if mentor exists
-      const mentor = await this.useser.findById(mentorId);
+      const mentor = await this.user.findById(mentorId);
       if (!mentor) {
         return res.status(404).json({ message: "Mentor not found" });
       }
@@ -690,6 +676,56 @@ router.post('/choose-challenge', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
+router.delete('/users/:userId', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const deletedUser = await user.findByIdAndDelete(userId);
+
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting user:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.delete('/participants/:id', async (req, res) => {
+    try {
+        const participantId = req.params.id;
+        const deletedParticipant = await user.findByIdAndDelete(participantId);
+
+        if (!deletedParticipant) {
+            return res.status(404).json({ message: 'Participant not found' });
+        }
+
+        res.status(200).json({ message: 'Participant deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting participant:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.delete('/challenges/:id', async (req, res) => {
+    try {
+        const challengeId = req.params.id;
+        const deletedChallenge = await Challenge.findByIdAndDelete(challengeId);
+
+        if (!deletedChallenge) {
+            return res.status(404).json({ message: 'Challenge not found' });
+        }
+
+        res.status(200).json({ message: 'Challenge deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting challenge:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 // Event registration endpoint this is working adds event to user
 router.post('/events/:eventId/register', async (req, res) => {

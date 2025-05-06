@@ -47,7 +47,7 @@ const MentorManager = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/users${id}`);
+            await axios.delete(`http://localhost:5000/users/${id}`);
             setMentors(mentors.filter((mentor) => mentor._id !== id));
         } catch (error) {
             console.error("Error deleting mentor:", error);

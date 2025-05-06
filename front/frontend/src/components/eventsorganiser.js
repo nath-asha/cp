@@ -799,9 +799,9 @@ const EventManager = () => {
                         required
                     >
                         <option value="">Select Venue Type</option>
-                        <option value="Online">Online</option>
-                        <option value="Offline">Offline</option>
-                        <option value="Hybrid">Hybrid</option>
+                        <option value="online">Online</option>
+                        <option value="offline">Offline</option>
+                        <option value="hybrid">Hybrid</option>
                     </select>
                 </div>
                 <div className="mb-3">
