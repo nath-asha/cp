@@ -21,6 +21,9 @@ const eventSchema = new mongoose.Schema({
         default: [] // Added default value
     },
     logistics: String,
+    registrationDeadline: {type: String, required: true},
+    submissionDeadline: {type: String, required: true},
+    teamFormationDeadline: {type: String, required: true},
     importantDates: { type: [String], required: true, default: [] }, // Added important dates and default value
     participants: { type: [String], default: [] }, // Array of user IDs
 });

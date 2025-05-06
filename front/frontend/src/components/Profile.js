@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from "../provider/AuthProvider";
 import { Container, Row, Col, Card, Button, Image } from 'react-bootstrap';
-
+import {FaShareAlt} from 'react-icons/fa';
 const Profile = () => {
     const { user, logout } = useAuth();
 
@@ -10,7 +10,7 @@ const Profile = () => {
     if (!user) {
         return <div className="d-flex align-items-center justify-content-center vh-100"><h1>Loading...</h1></div>;
     }
-
+    const shareProfileUrl = window.location.href;
     return (
         <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
             <Row className="w-100 justify-content-center">
@@ -32,6 +32,9 @@ const Profile = () => {
                         >
                             Edit Profile
                         </Button>
+                        <Button variant="outline-light" size="sm" onClick={() => navigator.share({ url: shareProfileUrl, title: `Check out the profile of ${user.firstName}!` })} disabled={!navigator.share}>
+                                <FaShareAlt className="mr-2" /> Share Profile
+                            </Button>
                         <Button variant="danger" onClick={logoutHandler}>Logout</Button>
                     </Card>
                 </Col>
