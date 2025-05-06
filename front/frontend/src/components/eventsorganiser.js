@@ -640,17 +640,63 @@ const EventManager = () => {
         setFormData({ ...formData, importantDates: updatedImportantDates });
     };
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     try {
+    //         if (currentEvent) {
+    //             await axios.put(`http://localhost:5000/events/${currentEvent._id}`, formData);
+    //             alert('Event updated successfully!');
+    //         } else {
+    //             await axios.post('http://localhost:5000/events', formData);
+    //             alert('Event created successfully!');
+    //         }
+    //         fetchEvents();
+    //         setCurrentEvent(null);
+    //         setFormData({
+    //             title: '',
+    //             desc: '',
+    //             imgUrl: '',
+    //             eventId: '',
+    //             date: '',
+    //             enddate: '',
+    //             venue: '',
+    //             prizes: [],
+    //             scheduleDetails: [],
+    //             importantDates: [],
+    //         });
+    //     } catch (error) {
+    //         console.error("Error saving event:", error);
+    //         alert('Error saving event.');
+    //     }
+    // };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+    
+        // Debugging: Log the formData to inspect the payload
+        console.log("Submitting formData:", formData);
+    
+        // Validate required fields
+        if (!formData.title || !formData.desc || !formData.date || !formData.venue) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+    
         try {
             if (currentEvent) {
+                // Update existing event
                 await axios.put(`http://localhost:5000/events/${currentEvent._id}`, formData);
                 alert('Event updated successfully!');
             } else {
+                // Create new event
                 await axios.post('http://localhost:5000/events', formData);
                 alert('Event created successfully!');
             }
+    
+            // Refresh the events list
             fetchEvents();
+    
+            // Reset the form
             setCurrentEvent(null);
             setFormData({
                 title: '',
@@ -669,7 +715,6 @@ const EventManager = () => {
             alert('Error saving event.');
         }
     };
-
     const filteredEvents = events.filter(event =>
         event.title.toLowerCase().includes(search.toLowerCase())
     );

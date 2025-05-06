@@ -184,18 +184,32 @@ router.get('/events/:eventId', async (req, res) => {
 });
  
 router.post('/events', async (req, res) => {
-    try {
-        console.log("Request Body:", req.body); // Log the request body
-        const newEvent = new event(req.body);
-        await newEvent.save();
-        res.status(201).json(newEvent);
-    } catch (error) {
-        console.error("Error saving event:", error); // Log the full error
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({ error: error.message });
+    // try {
+    //     console.log("Request Body:", req.body); // Log the request body
+    //     const newEvent = new event(req.body);
+    //     await newEvent.save();
+    //     res.status(201).json(newEvent);
+    // } catch (error) {
+    //     console.error("Error saving event:", error); // Log the full error
+    //     if (error.name === 'ValidationError') {
+    //         return res.status(400).json({ error: error.message });
+    //     }
+    //     return res.status(500).json({ error: "Internal Server Error" });
+    // }
+    router.post('/events', (req, res) => {
+        const { title, desc, date, venue } = req.body;
+    
+        // Validate required fields
+        if (!title || !desc || !date || !venue) {
+            return res.status(400).json({ message: 'Missing required fields: title, desc, date, or venue.' });
         }
-        return res.status(500).json({ error: "Internal Server Error" });
-    }
+    
+        // Proceed with event creation
+        const newEvent = new Event(req.body);
+        newEvent.save()
+            .then(event => res.status(201).json(event))
+            .catch(err => res.status(500).json({ message: 'Error creating event', error: err }));
+    });
 });
 
 router.delete('/events/:id', async (req, res) => {
