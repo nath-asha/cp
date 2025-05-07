@@ -19,6 +19,8 @@ const signupSchema = new mongoose.Schema({
     github_url: String,
     linkedin_url: String,
     Twitter_url: String,
+    requests: [],
+    isTeam: Boolean,
     USN: String,
     mentee: {  type: [{
     teamname: { type: String },

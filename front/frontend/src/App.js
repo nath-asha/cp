@@ -141,9 +141,9 @@ function App() {
           <Route path='/googlesignin' element={<Googlesignin/>} />
           <Route path='/newgooglecred' element={<Newgooglecred/>}/>
           <Route path='/gsigninsimpler' element={<Gsignsimpler />} />
-          <Route path='multisubmissions' element={<MultiSubmissions />}/>
-          <Route path='evaluationrubrics/:teamId' element={<EvaluationRubrics />} />
-          <Route path='createteams' element={<Createteam />} />
+          <Route path='/multisubmissions' element={<MultiSubmissions />}/>
+          <Route path='/evaluationrubrics/:teamId' element={<EvaluationRubrics />} />
+          <Route path='/createteams' element={<Createteam />} />
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
            <ParticipantDashboard /></PrivateRoute>} />

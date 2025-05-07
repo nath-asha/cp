@@ -39,6 +39,8 @@ default: [] },
  eventreg: { type: String, default: "none"},
  chosen_challenge: {type: String, default: "none"},
  venue: String,
+ isTeam: Boolean,
+ requests: [],
 //pic: String,
 cred : String, 
 

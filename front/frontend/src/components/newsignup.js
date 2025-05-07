@@ -836,3 +836,138 @@ const [emailUser, setEmailUser] = useState(initialUserProperties);
 };
 
 export default Newsignup;
+
+
+// import React, { useEffect, useState } from "react";
+// import "../styles/register.css";
+// import { Button, Card, Container, Row, Col, Alert, Tabs, Tab } from "react-bootstrap";
+// import { ArrowLeftIcon } from "lucide-react";
+// import axios from "axios";
+// import { useGoogleLogin, googleLogout } from "@react-oauth/google";
+
+// const Newsignup = () => {
+//     const [emailUser, setEmailUser] = useState(null);
+//     const [emailProfile, setEmailProfile] = useState(null);
+//     const [googleError, setGoogleError] = useState('');
+//     const [activeTab, setActiveTab] = useState('user');
+
+//     const googleLoginUser = useGoogleLogin({
+//         onSuccess: tokenResponse => setEmailUser(tokenResponse),
+//         onError: error => {
+//             console.error("Google login failed for user", error);
+//             setGoogleError("Google login failed for user");
+//         },
+//     });
+
+//     const googleLoginMentor = useGoogleLogin({
+//         onSuccess: tokenResponse => setEmailUser(tokenResponse),
+//         onError: error => {
+//             console.error("Google login failed for mentor", error);
+//             setGoogleError("Google login failed for mentor");
+//         },
+//     });
+
+//     useEffect(() => {
+//         if (!!emailUser?.access_token) {
+//             axios
+//                 .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${emailUser.access_token}`, {
+//                     headers: {
+//                         Authorization: `Bearer ${emailUser.access_token}`,
+//                         Accept: 'application/json',
+//                     },
+//                 })
+//                 .then((res) => {
+//                     setEmailProfile(res.data);
+//                     const userData = {
+//                         name: res.data.name,
+//                         email: res.data.email,
+//                         picture: res.data.picture,
+//                         role: activeTab === 'mentor' ? "Mentor" : "User",
+//                     };
+
+//                     axios
+//                         .post("http://localhost:5000/api/auth/googlesignup", userData)
+//                         .then((response) => {
+//                             console.log("User data saved to MongoDB:", response.data);
+//                             // Optionally redirect the user or update UI upon successful signup
+//                         })
+//                         .catch((err) => {
+//                             console.error("Error saving user data to MongoDB:", err);
+//                             setGoogleError("Error saving user data");
+//                         });
+//                 })
+//                 .catch((err) => {
+//                     console.log('Error fetching user profile:', err);
+//                     setGoogleError('Failed to fetch Google profile');
+//                 });
+//         }
+//     }, [emailUser, activeTab]);
+
+//     const logOut = () => {
+//         googleLogout();
+//         setEmailProfile(null);
+//         setEmailUser(null);
+//     };
+
+//     return (
+//         <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
+//             <Row className="w-100">
+//                 <Col md={6} className="mx-auto">
+//                     <Card className="shadow">
+//                         <Card.Body>
+//                             <h2 className="text-center mb-4">Sign Up</h2>
+//                             {googleError && <Alert variant="danger">{googleError}</Alert>}
+//                             <a href="/googlesignin" className="mb-3 d-block">
+//                                 <ArrowLeftIcon /> Back to Sign In
+//                             </a>
+
+//                             <Tabs
+//                                 activeKey={activeTab}
+//                                 id="controlled-tab-example"
+//                                 className="mb-3"
+//                                 onSelect={(k) => setActiveTab(k)}
+//                             >
+//                                 <Tab eventKey="user" title="User">
+//                                     <div className="text-center mt-3">
+//                                         <p>Are you a participant?</p>
+//                                         {emailProfile ? (
+//                                             <div>
+//                                                 <img src={emailProfile.picture} alt="profile" width="50" className="rounded-circle mb-2" />
+//                                                 <p>{emailProfile.name}</p>
+//                                                 <p>{emailProfile.email}</p>
+//                                                 <Button onClick={logOut} variant="secondary">Logout</Button>
+//                                             </div>
+//                                         ) : (
+//                                             <Button onClick={googleLoginUser} variant="danger" className="w-100">
+//                                                 Sign up with Google
+//                                             </Button>
+//                                         )}
+//                                     </div>
+//                                 </Tab>
+//                                 <Tab eventKey="mentor" title="Mentor">
+//                                     <div className="text-center mt-3">
+//                                         <p>Are you looking to mentor?</p>
+//                                         {emailProfile ? (
+//                                             <div>
+//                                                 <img src={emailProfile.picture} alt="profile" width="50" className="rounded-circle mb-2" />
+//                                                 <p>{emailProfile.name}</p>
+//                                                 <p>{emailProfile.email}</p>
+//                                                 <Button onClick={logOut} variant="secondary">Logout</Button>
+//                                             </div>
+//                                         ) : (
+//                                             <Button onClick={googleLoginMentor} variant="danger" className="w-100">
+//                                                 Sign up with Google
+//                                             </Button>
+//                                         )}
+//                                     </div>
+//                                 </Tab>
+//                             </Tabs>
+//                         </Card.Body>
+//                     </Card>
+//                 </Col>
+//             </Row>
+//         </Container>
+//     );
+// };
+
+// export default Newsignup;
