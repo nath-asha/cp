@@ -21,6 +21,7 @@ const teamSchema = new mongoose.Schema({
         "approval": Boolean                                                                                                       
     }],
     "status" : String,
-    "isFull" : Boolean
+    "isFull" : Boolean,
+    chosen_challenge: {type: String, default: "none"},
 });
 module.exports = mongoose.model("teams",teamSchema);

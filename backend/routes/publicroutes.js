@@ -801,6 +801,72 @@ router.get('/signups/:userId', async (req, res) => {
     res.json(user)
 });
 
+router.post('/choose-challenge/:teamId', async (req, res) => {
+    const { team_id, track_id } = req.body;
+
+    try {
+        const updatedTeam = await team.findOneAndUpdate(
+            { _id: team_id },
+            { $set: { chosen_challenge: track_id } },
+            { new: true }
+        );
+
+        // if (!updatedTeam) {
+        //     return res.status(404).json({ message: 'Team not found' });
+        // }
+
+        res.status(200).json({ message: 'Challenge chosen successfully', user: updatedTeam });
+    } catch (err) {
+        console.error('Error choosing challenge:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.post('/createteams', async (req, res) => {
+    const { name, team_id, members } = req.body; // Expecting team name, team_id, and members array in the request body
+    try {
+        const existingTeam = await team.findOne({ $or: [{ name }, { team_id }] });
+        if (existingTeam) {
+            return res.status(400).json({ message: 'Team with the same name or ID already exists' });
+        }
+
+        const newTeam = new team({
+            name,
+            team_id,
+            members: members.map(member => ({ user_id: member, status: 'waiting' })) 
+        });
+
+        await newTeam.save();
+        res.status(201).json({ message: 'Team created successfully, members are in waiting state', team: newTeam });
+    } catch (err) {
+        console.error('Error creating new team:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.put('/approve-member/:teamId', async (req, res) => {
+    const { teamId } = req.params;
+    const { user_id } = req.body; // Expecting user_id to approve
+
+    try {
+        // Find the team and update the member's status to "approved"
+        const updatedTeam = await team.findOneAndUpdate(
+            { _id: teamId, 'members.user_id': user_id },
+            { $set: { 'members.$.status': 'approved' } },
+            { new: true }
+        );
+
+        if (!updatedTeam) {
+            return res.status(404).json({ message: 'Team or member not found' });
+        }
+
+        res.status(200).json({ message: 'Member approved successfully', team: updatedTeam });
+    } catch (err) {
+        console.error('Error approving member:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 module.exports = router;
 
 //changes in events model led to this
