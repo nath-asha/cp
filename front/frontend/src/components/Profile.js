@@ -8,25 +8,52 @@ const userId = getUserId();
 const Profile = () => {
     const { user, logout } = useAuth();
     const [selecteduser, setSelectedUser] = useState();
+    // useEffect(() => {
+    //     const fetchUserData = async () => {
+    //         try {
+    //             const response = await fetch(`http://localhost:5000/signups/${userId}`);
+    //             const data = await response.json();
+    //             console.log(data);
+    //             if (Array.isArray(data) && data.length > 0) {
+    //                 setSelectedUser(data[0]);
+    //             } else {
+    //                 setSelectedUser(null);
+    //                 console.warn("No data found for this ID.");
+    //             }
+    //         } catch (err) {
+    //             console.error('Error fetching user data:', err);
+    //         }
+    //     };
+    //     fetchUserData();
+    // }, [userId]);
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const response = await fetch(`http://localhost:5000/signups/${userId}`);
+                
+                if (!response.ok) {
+                    console.warn(`Failed to fetch user data. Status: ${response.status}`);
+                    setSelectedUser(null);
+                    return;
+                }
+    
                 const data = await response.json();
-                console.log(data);
-                if (Array.isArray(data) && data.length > 0) {
-                    setSelectedUser(data[0]);
+                console.log('Fetched user data:', data);
+    
+                if (data && Object.keys(data).length > 0) {
+                    setSelectedUser(data); // Assuming the backend returns a single user object
                 } else {
                     setSelectedUser(null);
-                    console.warn("No event data found for this ID.");
+                    console.warn("No data found for this ID.");
                 }
             } catch (err) {
                 console.error('Error fetching user data:', err);
             }
         };
+    
         fetchUserData();
     }, [userId]);
-
     const logoutHandler = () => logout();
 
     if (!user) {
@@ -38,15 +65,16 @@ const Profile = () => {
             <Row className="w-100 justify-content-center">
                 <Col xs={12} md={8} lg={6}>
                     <Card className="shadow-lg p-4 text-center">
-                        <Image
+                        {/* <Image
                             src={user.picture }
                             alt={`${user.firstName} ${user.lastName}`}
                             roundedCircle
                             className="mb-3"
                             style={{ width: '120px', height: '120px', objectFit: 'cover' }}
-                        />
+                        /> */}
+                        <h3>Welcome</h3>
                         <h2>{`${user.firstName} ${user.lastName}`}</h2>
-                        <p>{user.description || 'code'}</p>
+                        <p>{user.description || 'user'}</p>
                         <Button
                             variant="primary"
                             className="mb-3"
@@ -54,7 +82,7 @@ const Profile = () => {
                         >
                             Edit Profile
                         </Button>
-                        <Button variant="outline-light" size="sm" onClick={() => navigator.share({ url: shareProfileUrl, title: `Check out the profile of ${user.firstName}!` })} disabled={!navigator.share}>
+                        <Button variant="outline-dark" size="sm" onClick={() => navigator.share({ url: shareProfileUrl, title: `Check out the profile of ${user.firstName}!` })} disabled={!navigator.share}>
                                 <FaShareAlt className="mr-2" /> Share Profile
                             </Button>
                         <Button variant="danger" onClick={logoutHandler}>Logout</Button>

@@ -4,6 +4,7 @@ import { Github, Linkedin, LinkIcon } from "lucide-react";
 
 const MentorManager = () => {
     const [mentors, setMentors] = useState([]);
+    const [events, setEvents] = useState([]);
     const [currentMentor, setCurrentMentor] = useState(null);
     const [search, setSearch] = useState("");
     const renderMentorCards = () => {
@@ -45,6 +46,12 @@ const MentorManager = () => {
             .catch(error => console.error(error));
     }, []);
 
+    useEffect(() => {
+        axios.get("http://localhost:5000/events")
+            .then(response => setEvents(response.data))
+            .catch(error => console.error(error));
+    }, []);
+
     const handleDelete = async (id) => {
         try {
             await axios.delete(`http://localhost:5000/users/${id}`);
@@ -54,6 +61,16 @@ const MentorManager = () => {
         }
     };
 
+    const handleAssignEvent = async (id) => {
+        try {
+            await axios.post(`https://localhost:5000/users/${id}`,{
+                eventreg: setEvents.eventId,
+            });
+        } catch (error) {
+            console.log("Error assigning mentors");
+        }
+    }
+        //   alert("Mentor assigned successfully!");
     const filteredMentors = mentors.filter((m) =>
         `${m.firstName} ${m.lastName}`.toLowerCase().includes(search.toLowerCase())
     );
@@ -161,6 +178,11 @@ const MentorManager = () => {
                                                 className="btn btn-danger btn-sm"
                                             >
                                                 Delete
+                                            </button>
+                                            <button
+                                                onClick={() => handleAssignEvent(m)}
+                                                className="btn btn-primary btn-sm me-2">
+                                                Event Assign
                                             </button>
                                         </div>
                                     </div>

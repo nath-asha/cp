@@ -1,16 +1,19 @@
 import "../styles/register.css";
 import React, { useEffect, useState } from "react";
-// import { getEmail } from "./auth";
+import { getUserRole, getUserId,getEmail } from './auth';
 const token = sessionStorage.getItem('token');
 
 export default function Continueprofile() {
+const Email = getEmail();
+const Role = getUserRole();
 
   // const {Email} = getEmail();
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
     phone: "",
-    // email: Email,
+    email: Email,
+    role: Role,
     organization: "",
     description: "",
     skills: "",

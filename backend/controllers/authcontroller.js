@@ -338,12 +338,12 @@ exports.signedupUser = async (req,res) => {
 
 exports.profileUser = async (req, res) => {
     try {
-        const { firstName, lastName, phone, role, team, organization, description, skills, github_url, linkedin_url, twitter_url, USN } = req.body;
+        const { firstName, lastName, phone,email, role, team, organization, description, skills, github_url, linkedin_url, twitter_url, USN } = req.body;
         const newUser = new signeduser({
             firstName,
             lastName,
             phone,
-            //email,
+            email,
             // role,
             // team,
             organization,

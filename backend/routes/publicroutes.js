@@ -792,15 +792,36 @@ router.put('/events/:id', async (req, res) => {
 });
 
 router.get('/signups/:userId', async (req, res) => {
-    const { userId } = req.params;
-    const user = signuser.find(u => u.id === userId);
+    try {
+        const { userId } = req.params; // Fixed destructuring
+        const user = await signuser.findById(userId).lean(); // Use .lean() to return a plain object
 
-    if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json(user); // Now safe to serialize
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        res.status(500).json({ message: 'Server error' });
     }
-
-    res.json(user)
 });
+
+
+// router.get('/signups/:emailid', async (req, res) => {
+//     try {
+//       const emailid = req.params.emailid;
+//       const User = await signuser.findOne({ email: emailid });
+  
+//       if (!User) {
+//         return res.status(404).json({ message: 'User not found' });
+//       }
+//       res.json(User);
+//     } catch (error) {
+//       console.error('Error fetching user:', error);
+//       res.status(500).json({ message: 'Server error' });
+//     }
+//   });
 
 router.post('/choose-challenge/:teamId', async (req, res) => {
     const { team_id, track_id } = req.body;
@@ -868,6 +889,8 @@ router.put('/approve-member/:teamId', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+//assign events to mentors
 
 module.exports = router;
 
