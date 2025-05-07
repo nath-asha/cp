@@ -7,25 +7,25 @@ const userId = getUserId();
 
 const Profile = () => {
     const { user, logout } = useAuth();
-    const [selecteduser,setSelectedUser] = useState();
+    const [selecteduser, setSelectedUser] = useState();
     useEffect(() => {
-            const fetchUserData = async () => {
-                try {
-                    const response = await fetch(`http://localhost:5000/signups/${userId}`);
-                    const data = await response.json();
-                    console.log(data);
-                    if (Array.isArray(data) && data.length > 0) {
-                        setSelectedUser(data[0]);
-                    } else {
-                        setSelectedUser(null);
-                        console.warn("No event data found for this ID.");
-                    }
-                } catch (err) {
-                    console.error('Error fetching user data:', err);
+        const fetchUserData = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/signups/${userId}`);
+                const data = await response.json();
+                console.log(data);
+                if (Array.isArray(data) && data.length > 0) {
+                    setSelectedUser(data[0]);
+                } else {
+                    setSelectedUser(null);
+                    console.warn("No event data found for this ID.");
                 }
-            };
-            fetchUserData();
-        }, [userId]);
+            } catch (err) {
+                console.error('Error fetching user data:', err);
+            }
+        };
+        fetchUserData();
+    }, [userId]);
 
     const logoutHandler = () => logout();
 

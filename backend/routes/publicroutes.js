@@ -11,6 +11,7 @@ const signuser = require("../models/signupmodel");
 const community = require("../models/communitymodel");
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const nodemailer = require('nodemailer');
 
 
 const router = express.Router();
@@ -833,7 +834,8 @@ router.post('/createteams', async (req, res) => {
         const newTeam = new team({
             name,
             team_id,
-            members: members.map(member => ({ user_id: member, status: 'waiting' })) 
+            // members: members.map(member => ({ user_id: member, status: 'waiting' })) 
+            members:{ user_id: member, status: 'waiting' }
         });
 
         await newTeam.save();
