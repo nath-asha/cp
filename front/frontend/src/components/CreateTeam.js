@@ -338,6 +338,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
+import { getUserRole, getUserId } from './auth';
 
 function TeamManager() {
     const [activeTab, setActiveTab] = useState('create');
@@ -351,8 +352,8 @@ function TeamManager() {
     const [error, setError] = useState(null);
     const [requestsSentToTeam, setRequestsSentToTeam] = useState([]);
 
-    const role = getUserRole();
-    const userId = getUserId(); 
+    const role = getUserRole();    
+    const userId =  getUserId();
     const isRegisteredUser = true; 
 
     useEffect(() => {
@@ -384,6 +385,7 @@ function TeamManager() {
         fetchData();
     }, []);
 
+    const currentUserId = userId; 
     const currentUser = users.find(user => user.id === currentUserId);
     const currentUserName = currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : '';
     const isUserInTeam = teams.some(team => team.members && team.members.includes(currentUserId));
