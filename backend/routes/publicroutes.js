@@ -790,6 +790,22 @@ router.put('/events/:id', async (req, res) => {
     }
 });
 
+router.get('/signups/:userId', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const userData = await signuser.findById(userId);
+
+        if (!userData) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json(userData);
+    } catch (err) {
+        console.error('Error fetching user data:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 module.exports = router;
 
 //changes in events model led to this

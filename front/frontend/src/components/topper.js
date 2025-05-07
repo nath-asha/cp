@@ -8,6 +8,9 @@ import Community from "./community";
 import Leaderboard from './Leaderboard';
 import Challenges from "./challenges";
 import { useParams } from "react-router-dom";
+import { getUserRole, getUserId } from './auth';
+const role = getUserRole();
+const userId = getUserId(); 
 
 const Displayevent = () => {
     const { eventId } = useParams();
@@ -96,6 +99,20 @@ const Displayevent = () => {
                                             <button className="btn btn-primary btn-sm" onClick={handleRegister}>
                                                 Register now!
                                             </button>
+                                        </CardBody>
+                                    </Card>
+                                    <Card>
+                                        <CardBody>
+                                      
+                                            {role === 'user' ? (
+                                             <a href='/createteams'>
+                                            <button className="btn btn-primary btn-sm">Create Team</button>
+                                            </a>
+                                            ) : (
+                                            <p className="text-black mt-2">
+                                                Please register for the event first.
+                                            </p>
+                                            )}
                                         </CardBody>
                                     </Card>
                                     <Card>

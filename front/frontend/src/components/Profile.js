@@ -1,9 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from "../provider/AuthProvider";
 import { Container, Row, Col, Card, Button, Image } from 'react-bootstrap';
+import { getUserRole, getUserId } from './auth';
 import {FaShareAlt} from 'react-icons/fa';
+const userId = getUserId();
+
 const Profile = () => {
     const { user, logout } = useAuth();
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await fetch(`/signups/${userId}`);
+                const userData = await response.json();
+                console.log('Fetched user data:', userData);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUserData();
+    }, [userId]);
 
     const logoutHandler = () => logout();
 
