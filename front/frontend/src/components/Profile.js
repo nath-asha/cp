@@ -65,32 +65,83 @@ const Profile = () => {
             <Row className="w-100 justify-content-center">
                 <Col xs={12} md={8} lg={6}>
                     <Card className="shadow-lg p-4 text-center">
-                        {/* <Image
-                            src={user.picture }
-                            alt={`${user.firstName} ${user.lastName}`}
-                            roundedCircle
-                            className="mb-3"
-                            style={{ width: '120px', height: '120px', objectFit: 'cover' }}
-                        /> */}
-                        <h3>Welcome</h3>
-                        <h2>{`${user.firstName} ${user.lastName}`}</h2>
-                        <p>{user.description || 'user'}</p>
-                        <Button
-                            variant="primary"
-                            className="mb-3"
-                            onClick={() => window.location.href = '/continueprofile'}
-                        >
-                            Edit Profile
-                        </Button>
-                        <Button variant="outline-dark" size="sm" onClick={() => navigator.share({ url: shareProfileUrl, title: `Check out the profile of ${user.firstName}!` })} disabled={!navigator.share}>
-                                <FaShareAlt className="mr-2" /> Share Profile
-                            </Button>
-                        <Button variant="danger" onClick={logoutHandler}>Logout</Button>
+                        {selecteduser ? (
+                            <>
+                                <Image
+                                    src={selecteduser.picture || 'https://via.placeholder.com/150'}
+                                    alt={`${selecteduser.firstName} ${selecteduser.lastName}`}
+                                    roundedCircle
+                                    className="mb-3"
+                                    style={{ width: '120px', height: '120px', objectFit: 'cover' }}
+                                />
+                                <h3>Welcome</h3>
+                                <h3>{`${selecteduser.firstName} ${selecteduser.lastName}`}</h3>
+                                <p>{selecteduser.description || 'No description available'}</p>
+                                <p>{selecteduser.organization}</p>
+                                <p>{selecteduser.skills}</p>
+                                <Button
+                                    variant="primary"
+                                    className="mb-3"
+                                    onClick={() => window.location.href = '/continueprofile'}
+                                >
+                                    Edit Profile
+                                </Button>
+                                <Button
+                                    variant="outline-dark"
+                                    size="sm"
+                                    onClick={() =>
+                                        navigator.share({
+                                            url: shareProfileUrl,
+                                            title: `Check out the profile of ${selecteduser.firstName}!`,
+                                        })
+                                    }
+                                    disabled={!navigator.share}
+                                >
+                                    <FaShareAlt className="mr-2" /> Share Profile
+                                </Button>
+                                <Button variant="danger" onClick={logoutHandler}>
+                                    Logout
+                                </Button>
+                            </>
+                        ) : (
+                            <h3>No user data found</h3>
+                        )}
                     </Card>
                 </Col>
             </Row>
         </Container>
     );
+    // return (
+    //     <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
+    //         <Row className="w-100 justify-content-center">
+    //             <Col xs={12} md={8} lg={6}>
+    //                 <Card className="shadow-lg p-4 text-center">
+    //                     {/* <Image
+    //                         src={user.picture }
+    //                         alt={`${user.firstName} ${user.lastName}`}
+    //                         roundedCircle
+    //                         className="mb-3"
+    //                         style={{ width: '120px', height: '120px', objectFit: 'cover' }}
+    //                     /> */}
+    //                     <h3>Welcome</h3>
+    //                     <h2>{`${user.firstName} ${user.lastName}`}</h2>
+    //                     <p>{user.description || 'user'}</p>
+    //                     <Button
+    //                         variant="primary"
+    //                         className="mb-3"
+    //                         onClick={() => window.location.href = '/continueprofile'}
+    //                     >
+    //                         Edit Profile
+    //                     </Button>
+    //                     <Button variant="outline-dark" size="sm" onClick={() => navigator.share({ url: shareProfileUrl, title: `Check out the profile of ${user.firstName}!` })} disabled={!navigator.share}>
+    //                             <FaShareAlt className="mr-2" /> Share Profile
+    //                         </Button>
+    //                     <Button variant="danger" onClick={logoutHandler}>Logout</Button>
+    //                 </Card>
+    //             </Col>
+    //         </Row>
+    //     </Container>
+    // );
 };
 
 export default Profile;
