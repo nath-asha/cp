@@ -551,6 +551,14 @@ function TeamManager() {
                                 request
                             ]
                         }),
+                        // body: JSON.stringify({
+                        //     requests: [
+                        //         ...(users.find(u => u.id === memberId)?.requests || []),
+                        //     {
+                        //         memberId: users.id,
+                        //     }
+                        // ]
+                        // }),
                     });
                 }
             });
