@@ -64,19 +64,19 @@ const HackaFestHome = () => {
                     <div className="stats-grid">
                         <div className="stat-item">
                             <h3>
-                                <CountUp start={0} end={stats.participants} duration={3} />
+                                <CountUp start={0} end={stats.participants} duration={3} />+
                             </h3>
                             <p>Participants</p>
                         </div>
                         <div className="stat-item">
                             <h3>
-                                <CountUp start={0} end={stats.problems} duration={3} />
+                                <CountUp start={0} end={stats.problems} duration={3} />+
                             </h3>
                             <p>Problem Statements</p>
                         </div>
                         <div className="stat-item">
                             <h3>
-                                <CountUp start={0} end={stats.submissions} duration={3} />
+                                <CountUp start={0} end={stats.submissions} duration={3} />+
                             </h3>
                             <p>Projects</p>
                         </div>
