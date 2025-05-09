@@ -32,7 +32,7 @@ const teamSchema = new mongoose.Schema({
     "status" : String,
     "isFull" : Boolean,
     chosen_challenge: {type: String, default: "none"},
-});
+},{ timestamps: true });
 module.exports = mongoose.model("teams",teamSchema);
 
 //     name: { type: String, required: true },

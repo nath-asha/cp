@@ -360,21 +360,26 @@ function TeamManager() {
         const fetchData = async () => {
             setLoading(true);
             setError(null);
+            //this is for creating teams
             try {
                 const response = await fetch('http://localhost:5000/createteams', { // Changed '/teams' to '/createteams'
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(newTeam),
-                });
+                    // body: JSON.stringify(newTeam),
+                });      
+
+                //for getting teams
                 const teamsResponse = await fetch('http://localhost:5000/teams');
                 if (!teamsResponse.ok) {
                     throw new Error(`HTTP error! Status: ${teamsResponse.status}`);
                 }
                 const teamsData = await teamsResponse.json();
                 setTeams(teamsData);
+                console.log(teamsData);
 
+                //for getting users
                 const usersResponse = await fetch('http://localhost:5000/users');
                 if (!usersResponse.ok) {
                     throw new Error(`HTTP error! Status: ${usersResponse.status}`);
@@ -471,17 +476,18 @@ function TeamManager() {
         const newTeam = {
             name: teamName,
             members: [currentUserId, ...participantsToSend],
-            isFull: participantsToSend.length + 1 === 4,
-            requests: participantsToSend.map(userId => ({
-                userId: userId,
-                status: 'pending',
-                message: `You have been invited to join team "${teamName}" by ${currentUserName}.`,
-                teamId: null // Will be updated after team creation
-            }))
+            team_id:  7,
+            isFull: participantsToSend.length + 1 === 4
+            // requests: participantsToSend.map(userId => ({
+            //     userId: userId,
+            //     status: 'pending',
+            //     message: `You have been invited to join team "${teamName}" by ${currentUserName}.`,
+            //     teamId: null // Will be updated after team creation
+            // }))
         };
 
         try {
-            const response = await fetch('http://localhost:5000/teams', {
+            const response = await fetch('http://localhost:5000/createteams', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -581,9 +587,9 @@ function TeamManager() {
         }
     
         // Logic for post-deadline team blocking and notifications would go here
-        // This would likely involve checking a deadline and team member counts
+        // checking a deadline and team member counts
         // and then making API calls to update the team status and send notifications.
-        // This is a more complex feature and requires a well-defined deadline and notification system.
+        // well-defined deadline and notification system.
     }, [currentUser, isUserInTeam]);
 
     if (loading) {
@@ -740,6 +746,7 @@ function TeamManager() {
                                             <div>
                                                 <h5>{team.name}</h5>
                                                 {team.members && <small className="text-muted">Members: {team.members.length}/4</small>}
+                                                {/* <small className='text-muted'>Members: {team.members[0]}</small> */}
                                                 {team.isFull && <span className="badge bg-danger ms-2">Full</span>}
                                             </div>
                                             <button

@@ -855,8 +855,7 @@ router.post('/createteams', async (req, res) => {
         const newTeam = new team({
             name,
             team_id,
-            // members: members.map(member => ({ user_id: member, status: 'waiting' })) 
-            members:{ user_id: member, status: 'waiting' }
+            members: members.map(memberId => ({ user_id: memberId, status: 'waiting' }))
         });
 
         await newTeam.save();
