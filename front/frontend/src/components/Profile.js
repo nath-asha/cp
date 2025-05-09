@@ -68,7 +68,7 @@ const Profile = () => {
                         {selecteduser ? (
                             <>
                                 <Image
-                                    src={selecteduser.picture || 'https://via.placeholder.com/150'}
+                                    src={selecteduser.picture || 'https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?t=st=1746606601~exp=1746610201~hmac=08b494714b485304f7bfdc2bc63cf2123b3b06e835c6814fb308b2955c36b55d&w=826'}
                                     alt={`${selecteduser.firstName} ${selecteduser.lastName}`}
                                     roundedCircle
                                     className="mb-3"

@@ -18,8 +18,9 @@ const EvaluationRubrics = () => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-                const team = await response.json();
-                setTeams(team);
+                const data = await response.json();
+                // Ensure the response is an array
+                setTeams(Array.isArray(data) ? data : [data]);
             } catch (err) {
                 console.error('Error fetching team data:', err);
             }
@@ -48,19 +49,21 @@ const EvaluationRubrics = () => {
             });
             if (response.ok) {
                 console.log('Scores submitted successfully');
+                setSubmitted(true);
             } else {
                 console.error('Failed to submit scores');
             }
         } catch (error) {
             console.error('Error:', error);
         }
-        setSubmitted(true);
     };
 
     const handleNextTeam = () => {
-        setCurrentTeamIndex((prevIndex) => (prevIndex + 1) % teams.length);
-        setScores({});
-        setSubmitted(false);
+        if (teams.length > 0) {
+            setCurrentTeamIndex((prevIndex) => (prevIndex + 1) % teams.length);
+            setScores({});
+            setSubmitted(false);
+        }
     };
 
     const rubrics = [
@@ -75,17 +78,21 @@ const EvaluationRubrics = () => {
         <div className="container mt-5">
             <h1 className="text-center mb-4 text-black">Evaluation Portal</h1>
 
-            {teams.length > 0 && (
+            {teams.length > 0 ? (
                 <>
                     <Row className="mb-4">
                         <Col md={6}>
                             <Card className="p-3">
-                                <h3>Team Name: {teams[currentTeamIndex].name}</h3>
+                                <h3>Team Name: {teams[currentTeamIndex]?.name || 'N/A'}</h3>
                                 <h5>Members:</h5>
                                 <ul>
-                                    {teams[currentTeamIndex].members.map((member) => (
-                                        <li key={member}>{member}</li>
-                                    ))}
+                                    {Array.isArray(teams[currentTeamIndex]?.members) ? (
+                                        teams[currentTeamIndex].members.map((member, index) => (
+                                            <li key={index}>{member}</li>
+                                        ))
+                                    ) : (
+                                        <li>No members available</li>
+                                    )}
                                 </ul>
                             </Card>
                         </Col>
@@ -146,6 +153,10 @@ const EvaluationRubrics = () => {
                         Next Team
                     </Button>
                 </>
+            ) : (
+                <div className="alert alert-warning text-center">
+                    No teams available to evaluate.
+                </div>
             )}
 
             <Button

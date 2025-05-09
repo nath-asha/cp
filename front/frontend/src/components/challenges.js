@@ -13,7 +13,6 @@ function Challenges() {
   const role = getUserRole();
   const userId = getUserId(); // Fetch logged-in user ID
   
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,7 +35,7 @@ function Challenges() {
 
   const handleChoose = async (trackId) => {
     try {
-      const response = await fetch('http://localhost:5000/choose-challenge', {
+      const response = await fetch(`http://localhost:5000/choose-challenge/${teamId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

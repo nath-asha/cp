@@ -890,6 +890,26 @@ router.put('/approve-member/:teamId', async (req, res) => {
     }
 });
 
+router.post('/createteams', async (req, res) => {
+    const { name, members } = req.body; // team name, team_id, and members array
+    try {
+        const existingTeam = await team.findOne({ $or: [{ name }, { team_id }] });
+        if (existingTeam) {
+            return res.status(400).json({ message: 'Team with the same name or ID already exists' });
+        }
+
+        const newTeam = new team({
+            name,
+            members
+        });
+
+        await newTeam.save();
+        res.status(201).json({ message: 'Team created successfully', team: newTeam });
+    } catch (err) {
+        console.error('Error creating new team:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 //assign events to mentors
 
 module.exports = router;

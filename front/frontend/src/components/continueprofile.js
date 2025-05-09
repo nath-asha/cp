@@ -37,7 +37,7 @@ const Role = getUserRole();
 
   const validatePhone = (phone) => /^\d{10}$/.test(phone) ? "" : "Please enter a valid 10-digit phone number";
 
-  const validateUSN = (USN) => /^[1-4][A-Za-z]{2}[0-9]{2}[A-Za-z]{2}[0-9]{3}$/.test(USN) ? "" : "Please enter a valid USN in the format 4sf21is052";
+  const validateUSN = (USN) => /^[4][A-Za-z]{2}[0-9]{2}[A-Za-z]{2}[0-9]{3}$/.test(USN) ? "" : "Please enter a valid USN in the format 4sf21is002";
   const validateGithub = (github_url) => /^(https?:\/\/)?(www\.)?github\.com\/[A-Za-z0-9_-]+\/?$/.test(github_url) ? "" : "Please enter a valid GitHub URL";
 
   const validateLinkedin = (linkedin_url) => /^(https?:\/\/)?(www\.)?(linkedin\.com\/in|linkedin\.com\/pub)\/[A-Za-z0-9_-]+\/?$/.test(linkedin_url) ? "" : "Please enter a valid LinkedIn URL";

@@ -361,6 +361,13 @@ function TeamManager() {
             setLoading(true);
             setError(null);
             try {
+                const response = await fetch('http://localhost:5000/createteams', { // Changed '/teams' to '/createteams'
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newTeam),
+                });
                 const teamsResponse = await fetch('http://localhost:5000/teams');
                 if (!teamsResponse.ok) {
                     throw new Error(`HTTP error! Status: ${teamsResponse.status}`);
@@ -381,10 +388,33 @@ function TeamManager() {
                 setLoading(false);
             }
         };
-
+     
         fetchData();
     }, []);
 
+    const handleCreateTeam = async (teamData) => {
+        try {
+            const response = await fetch('http://localhost:5000/createteams', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(teamData),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert(result.message);
+                return result.team;
+            } else {
+                const errorData = await response.json();
+                alert(errorData.message || 'Failed to create team.');
+            }
+        } catch (error) {
+            console.error('Error creating team:', error);
+            alert('Error creating team.');
+        }
+    };
     const currentUserId = userId; 
     const currentUser = users.find(user => user.id === currentUserId);
     const currentUserName = currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : '';
