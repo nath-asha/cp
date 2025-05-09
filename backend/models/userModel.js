@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
   createdAt: Date,
   role: { type: String, default: "user" },
   team: { type: String, default: "none" },
+  teamId: {type:Number, default: "none"},
   // address: String,
   organization:{type: String, required: true},
   description: String,

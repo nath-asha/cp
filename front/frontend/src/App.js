@@ -72,6 +72,7 @@ import Gsignsimpler from './components/GoogleSigninLatest';
 import MultiSubmissions from './components/mutlisubmissions';
 import EvaluationRubrics from './components/evaluaterubrics';
 import Createteam from './components/CreateTeam';
+import ApproveUserPage from './components/approveuserpage';
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
@@ -144,6 +145,7 @@ function App() {
           <Route path='/multisubmissions' element={<MultiSubmissions />}/>
           <Route path='/evaluationrubrics/:teamId' element={<EvaluationRubrics />} />
           <Route path='/createteams' element={<Createteam />} />
+          <Route path='/approveuserpage' element={<ApproveUserPage/>}/>
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
            <ParticipantDashboard /></PrivateRoute>} />

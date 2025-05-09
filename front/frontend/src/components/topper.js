@@ -52,7 +52,7 @@ const Displayevent = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userId: user.id }) // Ensure user.id is valid
+                body: JSON.stringify({ userId: user.id }) // user.id is valid
             });
     
             if (response.ok) {

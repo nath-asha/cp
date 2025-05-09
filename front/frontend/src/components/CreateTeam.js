@@ -338,6 +338,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
+import { useParams } from 'react-router-dom';
 import { getUserRole, getUserId } from './auth';
 
 function TeamManager() {
@@ -351,6 +352,7 @@ function TeamManager() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [requestsSentToTeam, setRequestsSentToTeam] = useState([]);
+    const {eventId} = useParams(); //to get eventId from url and that event id must be updated to teams collection
 
     const role = getUserRole();    
     const userId =  getUserId();
@@ -460,80 +462,72 @@ function TeamManager() {
         setSelectedParticipants(selectedParticipants.filter(p => p.id !== userId));
     };
 
-    const handleSendRequestCreateTeam = async () => {
-        if (!teamName.trim()) {
-            alert('Please enter a team name.');
-            return;
-        }
+  const handleSendRequestCreateTeam = async () => {
+    if (!teamName.trim()) {
+        alert('Please enter a team name.');
+        return;
+    }
 
-        if (selectedParticipants.length === 0) {
-            alert('Please add at least one participant to the team.');
-            return;
-        }
+    if (selectedParticipants.length === 0) {
+        alert('Please add at least one participant to the team.');
+        return;
+    }
 
-        const participantsToSend = selectedParticipants.map(p => p.id);
+    const participantsToSend = selectedParticipants.map(p => p.id);
 
-        const newTeam = {
-            name: teamName,
-            members: [currentUserId, ...participantsToSend],
-            team_id:  7,
-            isFull: participantsToSend.length + 1 === 4
-            // requests: participantsToSend.map(userId => ({
-            //     userId: userId,
-            //     status: 'pending',
-            //     message: `You have been invited to join team "${teamName}" by ${currentUserName}.`,
-            //     teamId: null // Will be updated after team creation
-            // }))
-        };
-
-        try {
-            const response = await fetch('http://localhost:5000/createteams', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newTeam),
-            });
-
-            if (response.ok) {
-                const createdTeam = await response.json();
-                setTeams([...teams, createdTeam]);
-
-                // Update user requests
-                participantsToSend.forEach(async (userId) => {
-                    await fetch(`http://localhost:5000/users/${userId}`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            requests: [
-                                ...(users.find(u => u.id === userId)?.requests || []),
-                                {
-                                    teamId: createdTeam.id,
-                                    from: currentUserId,
-                                    message: `You have been invited to join team "${teamName}" by ${currentUserName}.`,
-                                    status: 'pending'
-                                }
-                            ]
-                        }),
-                    });
-                });
-
-                alert(`Team "${teamName}" created. Requests sent to participants.`);
-                setTeamName('');
-                setSelectedParticipants([]);
-                setRequestsSentToTeam(createdTeam.requests); // Show requests sent for the new team
-            } else {
-                console.error('Failed to create team');
-                alert('Failed to create team.');
-            }
-        } catch (error) {
-            console.error('Error creating team:', error);
-            alert('Error creating team.');
-        }
+    const newTeam = {
+        name: teamName,
+        team_id: teams.length > 0 ? Math.max(...teams.map(team => team.team_id || 0)) + 1 : 1, // Auto-increment team_id
+        members: [currentUserId, ...participantsToSend],
     };
 
+    try {
+        const response = await fetch('http://localhost:5000/createteams', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newTeam),
+        });
+
+        if (response.ok) {
+            const createdTeam = await response.json();
+            setTeams([...teams, createdTeam]);
+
+            // Update user requests
+            participantsToSend.forEach(async (userId) => {
+                await fetch(`http://localhost:5000/users/${userId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        requests: [
+                            ...(users.find(u => u.id === userId)?.requests || []),
+                            {
+                                teamId: createdTeam.team_id,
+                                from: currentUserId,
+                                message: `You have been invited to join team "${teamName}" by ${currentUserName}.`,
+                                status: 'pending',
+                            },
+                        ],
+                    }),
+                });
+            });
+
+            alert(`Team "${teamName}" created. Requests sent to participants.`);
+            setTeamName('');
+            setSelectedParticipants([]);
+            setRequestsSentToTeam(createdTeam.requests); // Show requests sent for the new team
+        } else {
+            console.error('Failed to create team');
+            alert('Failed to create team.');
+        }
+    } catch (error) {
+        console.error('Error creating team:', error);
+        alert('Error creating team.');
+    }
+};
     const handleSendJoinRequest = async (team) => {
         const request = {
             teamId: team.id,

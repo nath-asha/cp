@@ -889,17 +889,40 @@ router.put('/approve-member/:teamId', async (req, res) => {
     }
 });
 
+// router.post('/createteams', async (req, res) => {
+//     const { name, members } = req.body; // team name, team_id, and members array
+//     try {
+//         const existingTeam = await team.findOne({ $or: [{ name }, { team_id }] });
+//         if (existingTeam) {
+//             return res.status(400).json({ message: 'Team with the same name or ID already exists' });
+//         }
+
+//         const newTeam = new team({
+//             name,
+//             members
+//         });
+
+//         await newTeam.save();
+//         res.status(201).json({ message: 'Team created successfully', team: newTeam });
+//     } catch (err) {
+//         console.error('Error creating new team:', err);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
 router.post('/createteams', async (req, res) => {
-    const { name, members } = req.body; // team name, team_id, and members array
+    const { name, team_id, members } = req.body; // Expecting team name, team_id, and members array
     try {
+        // Check if a team with the same name or ID already exists
         const existingTeam = await team.findOne({ $or: [{ name }, { team_id }] });
         if (existingTeam) {
             return res.status(400).json({ message: 'Team with the same name or ID already exists' });
         }
 
+        // Create a new team
         const newTeam = new team({
             name,
-            members
+            team_id,
+            members: members.map(member => ({ user_id: member, status: 'waiting' })), // Map members to include status
         });
 
         await newTeam.save();
@@ -909,6 +932,40 @@ router.post('/createteams', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
+router.post('/teams/:teamId/send-join-request', async (req, res) => {
+    const { teamId } = req.params;
+    const { currentUserId, request } = req.body;
+
+    try {
+        const team = await team.findById(teamId);
+        if (!team) {
+            return res.status(404).json({ message: 'Team not found' });
+        }
+
+        const users = await user.find({ _id: { $in: team.members } });
+
+        for (const member of team.members) {
+            if (member.toString() !== currentUserId) {
+                const userToUpdate = users.find(u => u._id.toString() === member.toString());
+                const updatedRequests = [
+                    ...(userToUpdate?.requests || []),
+                    request
+                ];
+
+                await user.findByIdAndUpdate(member, { requests: updatedRequests });
+            }
+        }
+
+        res.status(200).json({ message: `Request sent to all members of team "${team.name}".` });
+    } catch (error) {
+        console.error('Error sending join request:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
 //assign events to mentors
 
 module.exports = router;
