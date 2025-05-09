@@ -538,16 +538,16 @@ function TeamManager() {
 
         try {
             // Send request to all members of the team
-            team.members.forEach(async (memberId) => {
-                if (memberId !== currentUserId) {
-                    await fetch(`http://localhost:5000/users/${memberId}`, {
+            team.members.forEach(async (member) => {
+                if (member.id !== currentUserId) {
+                    await fetch(`http://localhost:5000/users/${member.id}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
                             requests: [
-                                ...(users.find(u => u.id === memberId)?.requests || []),
+                                ...(users.find(u => u.id === member.id)?.requests || []),
                                 request
                             ]
                         }),
