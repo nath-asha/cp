@@ -12,7 +12,7 @@ const signupSchema = new mongoose.Schema({
     createdAt: Date,
     phone: Number,
     team: { type: String, default: "none" },
-    teamId: {type:Number, default: "none"},
+    teamId: {type:Number},
     // address: String,
     organization:{type: String},
     description: String,

@@ -5,6 +5,7 @@ const notifySchema = new mongoose.Schema({
     read : Boolean,
     userid : Number,
     teamid : Number,
+    eventId: String,
     "createdAt": Date,
 });
 

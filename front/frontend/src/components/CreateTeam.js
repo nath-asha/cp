@@ -497,7 +497,7 @@ function TeamManager() {
             // Update user requests
             participantsToSend.forEach(async (userId) => {
                 await fetch(`http://localhost:5000/users/${userId}`, {
-                    method: 'PATCH',
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -541,7 +541,7 @@ function TeamManager() {
             team.members.forEach(async (memberId) => {
                 if (memberId !== currentUserId) {
                     await fetch(`http://localhost:5000/users/${memberId}`, {
-                        method: 'PATCH',
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },

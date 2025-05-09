@@ -934,19 +934,19 @@ router.post('/createteams', async (req, res) => {
 });
 
 
-router.post('/teams/:teamId/send-join-request', async (req, res) => {
+router.post('/users/:memberId', async (req, res) => {
     const { teamId } = req.params;
     const { currentUserId, request } = req.body;
 
     try {
-        const team = await team.findById(teamId);
-        if (!team) {
+        const teamdata = await team.findById(teamId);
+        if (!teamdata) {
             return res.status(404).json({ message: 'Team not found' });
         }
 
-        const users = await user.find({ _id: { $in: team.members } });
+        const users = await user.find({ _id: { $in: teamdata.members } });
 
-        for (const member of team.members) {
+        for (const member of teamdata.members) {
             if (member.toString() !== currentUserId) {
                 const userToUpdate = users.find(u => u._id.toString() === member.toString());
                 const updatedRequests = [
@@ -958,7 +958,7 @@ router.post('/teams/:teamId/send-join-request', async (req, res) => {
             }
         }
 
-        res.status(200).json({ message: `Request sent to all members of team "${team.name}".` });
+        res.status(200).json({ message: `Request sent to all members of team "${teamdata.name}".` });
     } catch (error) {
         console.error('Error sending join request:', error);
         res.status(500).json({ error: 'Internal Server Error' });

@@ -19,6 +19,7 @@ const scoresSchema = new mongoose.Schema({
     name: String,
     score: Number,
     github_url: String,
+    eventId: String,
     "createdAt": Date,
 });
 

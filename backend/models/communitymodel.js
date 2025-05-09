@@ -5,7 +5,8 @@ const communitySchema = new mongoose.Schema({
         type: String,
         required: true,
         "createdAt": Date,
-    }
+    },
+    eventId: String
 });
 
 
