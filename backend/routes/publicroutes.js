@@ -184,19 +184,51 @@ router.get('/events/:eventId', async (req, res) => {
     }
 });
  
+// router.post('/events', async (req, res) => {
+//     try {
+//         console.log("Request Body:", req.body); // Log the request body
+//         const newEvent = new event(req.body);
+//         await newEvent.save();
+//         res.status(201).json(newEvent);
+//     } catch (error) {
+//         console.error("Error saving event:", error); // Log the full error
+//         if (error.name === 'ValidationError') {
+//             return res.status(400).json({ error: error.message });
+//         }
+//         return res.status(500).json({ error: "Internal Server Error" });
+//     }
+// });
+
 router.post('/events', async (req, res) => {
-    try {
-        console.log("Request Body:", req.body); // Log the request body
-        const newEvent = new event(req.body);
-        await newEvent.save();
-        res.status(201).json(newEvent);
-    } catch (error) {
-        console.error("Error saving event:", error); // Log the full error
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({ error: error.message });
-        }
-        return res.status(500).json({ error: "Internal Server Error" });
+  try {
+    console.log("Request Body:", req.body);
+
+    const lastEvent = await event.findOne().sort({ eventId: -1 }); // Use lowercase 'event'
+    let nextSequenceNumber = 1;
+
+    if (lastEvent && lastEvent.eventId) {
+      const lastIdNumber = parseInt(lastEvent.eventId.substring(1), 10);
+      if (!isNaN(lastIdNumber)) {
+        nextSequenceNumber = lastIdNumber + 1;
+      }
     }
+
+    const nextEventId = `E${nextSequenceNumber.toString().padStart(3, '0')}`;
+
+    const newEvent = new event({ ...req.body, eventId: nextEventId }); // Use lowercase 'event'
+
+    await newEvent.save();
+    res.status(201).json(newEvent);
+
+  } catch (error) {
+    console.error("Error saving event:", error);
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ error: error.message });
+    } else if (error.code === 11000 && error.keyPattern && error.keyPattern.eventId) {
+      return res.status(409).json({ error: 'Event ID already exists. Please try again.' });
+    }
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 router.delete('/events/:id', async (req, res) => {
@@ -965,6 +997,62 @@ router.post('/users/:memberId', async (req, res) => {
     }
 });
 
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'email-email', // email
+        pass: 'password-password'  //email password or app password
+    }
+});
+
+router.post('/signup', async (req, res) => {
+    try {
+        const newUser = new signuser(req.body);
+        await newUser.save();
+
+        // Send email after successful signup
+        const mailOptions = {
+            from: 'email-email', // Replace with your email
+            to: newUser.email,
+            subject: 'Registration Successful',
+            text: `Hello ${newUser.name},\n\nThank you for registering! Please complete your profile to get started.\n\nBest regards,\nYour Team`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+            } else {
+                console.log('Email sent:', info.response);
+            }
+        });
+
+        res.status(201).json({ message: 'User registered successfully', user: newUser });
+    } catch (err) {
+        console.error('Error during signup:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.post('/api/challenges', async (req, res) => {
+  try {
+    const { title, description, trackId, imgurl, eventId } = req.body;
+
+    const newChallenge = new Challenge({
+      title,
+      description,
+      trackId,
+      imgurl,
+      eventId,
+    });
+
+    const savedChallenge = await newChallenge.save();
+
+    res.status(201).json({ message: 'Challenge added successfully!', challenge: savedChallenge });
+  } catch (error) {
+    console.error('Error adding challenge:', error);
+    res.status(500).json({ message: 'Failed to add challenge', error: error.message });
+  }
+});
 
 //assign events to mentors
 

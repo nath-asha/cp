@@ -667,7 +667,7 @@ function TeamManager() {
                                             <button
                                                 className="btn btn-sm btn-outline-primary"
                                                 onClick={() => handleAddParticipant(participant)}
-                                                disabled={selectedParticipants.length >= 4}
+                                                disabled={selectedParticipants.length >= 3 || selectedParticipants.some(p => p.id === participant.id)}
                                             >
                                                 Add
                                             </button>
@@ -676,27 +676,30 @@ function TeamManager() {
                                 </ul>
                             </div>
 
-                            {selectedParticipants.length > 0 && (
-                                <div className="mb-3">
-                                    <h5>Selected Participants ({selectedParticipants.length}/4):</h5>
-                                    <ul className="list-group">
-                                        {selectedParticipants.map(participant => (
-                                            <li
-                                                key={participant.id}
-                                                className="list-group-item d-flex justify-content-between align-items-center"
+                            <div className="mb-3">
+                                <h5>Selected Participants ({selectedParticipants.length + 1}/4):</h5>
+                                <ul className="list-group">
+                                    <li
+                                        className="list-group-item d-flex justify-content-between align-items-center"
+                                    >
+                                        {`${currentUserName} (Team Leader)`}
+                                    </li>
+                                    {selectedParticipants.map(participant => (
+                                        <li
+                                            key={participant.id}
+                                            className="list-group-item d-flex justify-content-between align-items-center"
+                                        >
+                                            {`${participant.firstName} ${participant.lastName}`}
+                                            <button
+                                                className="btn btn-sm btn-outline-danger"
+                                                onClick={() => handleRemoveParticipant(participant.id)}
                                             >
-                                                {`${participant.firstName} ${participant.lastName}`}
-                                                <button
-                                                    className="btn btn-sm btn-outline-danger"
-                                                    onClick={() => handleRemoveParticipant(participant.id)}
-                                                >
-                                                    Remove
-                                                </button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
+                                                Remove
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
 
                             <button
                                 className="btn btn-primary"
@@ -748,7 +751,6 @@ function TeamManager() {
                                             <div>
                                                 <h5>{team.name}</h5>
                                                 {team.members && <small className="text-muted">Members: {team.members.length}/4</small>}
-                                                {/* <small className='text-muted'>Members: {team.members[0]}</small> */}
                                                 {team.isFull && <span className="badge bg-danger ms-2">Full</span>}
                                             </div>
                                             <button

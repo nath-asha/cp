@@ -107,7 +107,7 @@ const Displayevent = () => {
                                     </Card>
                                     <Card>
                                         <CardBody>
-                                            {role === 'user' ? (
+                                            {user && role === 'user' && selectedEvent.registeredUsers?.includes(user.id) ? (
                                                 <a href='/createteams'>
                                                     <button className="btn btn-primary btn-sm">Create Team</button>
                                                 </a>

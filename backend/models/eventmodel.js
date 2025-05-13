@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
-    eventId: { type: String, required: true },
+    eventId: { type: String, unique: true },
     title: { type: String, required: true },
     desc: { type: String, required: true },
     imgUrl: { type: String, required: true },
@@ -57,6 +57,39 @@ const eventSchema = new mongoose.Schema({
 // })
 
 module.exports = mongoose.model('event', eventSchema);
+
+
+
+// const mongoose = require('mongoose');
+// const eventSchema = new mongoose.Schema({
+//   eventId: { type: String, unique: true }, // Add unique constraint
+//   title: { type: String, required: true },
+//   desc: { type: String, required: true },
+//   imgUrl: { type: String, required: true },
+//   date: { type: String, required: true },
+//   enddate: { type: String, required: true },
+//   venue: { type: String, enum: ['online', 'offline', 'hybrid'], required: true },
+//   prizes: { type: [String], default: [] },
+//   createdAt: Date,
+//   scheduleDetails: {
+//     type: [{
+//       date: { type: String, required: true },
+//       event: { type: String, required: true },
+//       time: { type: String, required: true },
+//     }],
+//     required: true,
+//     default: []
+//   },
+//   logistics: String,
+//   registrationDeadline: { type: String, required: true },
+//   submissionDeadline: { type: String, required: true },
+//   teamFormationDeadline: { type: String, required: true },
+//   importantDates: { type: [String], required: true, default: [] },
+//   participants: { type: [String], default: [] },
+// });
+
+// const Event = mongoose.model('event', eventSchema);
+// module.exports = Event; 
 
 // const mongoose = require('mongoose');
 

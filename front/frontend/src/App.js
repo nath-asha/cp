@@ -73,6 +73,7 @@ import MultiSubmissions from './components/mutlisubmissions';
 import EvaluationRubrics from './components/evaluaterubrics';
 import Createteam from './components/CreateTeam';
 import ApproveUserPage from './components/approveuserpage';
+import AddChallenge from './components/Addchallenge';
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
@@ -146,6 +147,7 @@ function App() {
           <Route path='/evaluationrubrics/:teamId' element={<EvaluationRubrics />} />
           <Route path='/createteams' element={<Createteam />} />
           <Route path='/approveuserpage' element={<ApproveUserPage/>}/>
+          <Route path='/addchallenge' element={<AddChallenge />}/>
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
            <ParticipantDashboard /></PrivateRoute>} />
