@@ -9,13 +9,15 @@ import Leaderboard from './Leaderboard';
 import Challenges from "./challenges";
 import { useParams } from "react-router-dom";
 import { getUserRole, getUserId } from './auth';
-const role = getUserRole();
-const userId = getUserId(); 
+
 
 const Displayevent = () => {
     const { eventId } = useParams();
     const { user } = useAuth();
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [isRegistered, setIsRegistered] = useState(false);
+    const role = getUserRole();
+    const userId = getUserId(); 
 
     useEffect(() => {
         const fetchEventDetails = async () => {
@@ -25,42 +27,127 @@ const Displayevent = () => {
                 console.log(data);
                 if (Array.isArray(data) && data.length > 0) {
                     setSelectedEvent(data[0]);
+                    
+                    // Check if the current user is registered for THIS SPECIFIC event
+                    // Reset registration status whenever event changes
+                    setIsRegistered(false);
+                    
+                    if (userId && data[0].participants) {
+                        // Convert to strings for safer comparison if needed
+                        const participantIds = data[0].participants.map(id => String(id));
+                        const currentUserId = String(userId);
+                        
+                        if (participantIds.includes(currentUserId)) {
+                            setIsRegistered(true);
+                        }
+                    }
                 } else {
                     setSelectedEvent(null);
+                    setIsRegistered(false);
                     console.warn("No event data found for this ID.");
                 }
             } catch (err) {
                 console.error('Error fetching events data:', err);
+                setIsRegistered(false);
             }
         };
         fetchEventDetails();
-    }, [eventId]);
+    }, [eventId, userId]);
 
     if (!selectedEvent) {
         return <p>Loading event details or event not found...</p>;
     }
-
-    const handleRegister = async () => {
-        if (!user || !user.id) {
-            alert("You must be logged in to register for an event.");
-            return;
-        }
+    // const handleRegister = async () => {
+    //     if (!user || !user.id) {
+    //         alert("You must be logged in to register for an event.");
+    //         return;
+    //     }
     
-        try {
+    //     try {
+    //         const response = await fetch(`http://localhost:5000/events/${eventId}/register`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //            body: JSON.stringify({ userId: user.id }) // user.id is valid
+    //         });
+    
+    //         if (response.ok) {
+    //             alert('Successfully registered for the event!');
+    //         } else {
+    //             const errorData = await response.json();
+    //             alert(`Failed to register: ${errorData.message}`);
+    //         }
+    //     } catch (err) {
+    //         console.error('Error during registration:', err);
+    //         alert('An error occurred while trying to register.');
+    //     }
+    // };
+    const handleRegister = async () => {
+    if (!user || !userId) { //this was changed for error on 13 may 12 am
+        alert("You must be logged in to register for an event.");
+        return;
+    }
+
+    console.log('Payload:', { userId: user.id }); // Debugging
+
+    // try {
+    //     const response = await fetch(`http://localhost:5000/events/${eventId}/register`, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({ userId }),
+    //     });
+
+    //     if (response.ok) {
+    //         alert('Successfully registered for the event!');
+    //         setIsRegistered(true);
+    //         // Refresh event data to update participants list
+    //             const updatedEventResponse = await fetch(`http://localhost:5000/events/${eventId}`);
+    //             const updatedEventData = await updatedEventResponse.json();
+    //             if (Array.isArray(updatedEventData) && updatedEventData.length > 0) {
+    //                 setSelectedEvent(updatedEventData[0]);
+    //             }
+    //     } else {
+    //         const errorData = await response.json();
+    //         alert(`Failed to register: ${errorData.message}`);
+    //     }
+    //     console.log("Participants for this event:", selectedEvent.participants);
+
+    // } catch (err) {
+    //     console.error('Error during registration:', err);
+    //     alert('An error occurred while trying to register.');
+    // }
+     try {
             const response = await fetch(`http://localhost:5000/events/${eventId}/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userId: user.id }) // user.id is valid
+                body: JSON.stringify({ userId }),
             });
-    
+
             if (response.ok) {
                 alert('Successfully registered for the event!');
+                setIsRegistered(true);
+                
+                // Refresh event data to update participants list
+                const updatedEventResponse = await fetch(`http://localhost:5000/events/${eventId}`);
+                const updatedEventData = await updatedEventResponse.json();
+                if (Array.isArray(updatedEventData) && updatedEventData.length > 0) {
+                    setSelectedEvent(updatedEventData[0]);
+                    
+                    // Double-check that we're actually registered in the updated data
+                    const updatedParticipants = updatedEventData[0].participants?.map(id => String(id)) || [];
+                    setIsRegistered(updatedParticipants.includes(String(userId)));
+                }
             } else {
                 const errorData = await response.json();
                 alert(`Failed to register: ${errorData.message}`);
             }
+            console.log("Participants for this event:", selectedEvent.participants);
+
         } catch (err) {
             console.error('Error during registration:', err);
             alert('An error occurred while trying to register.');
@@ -91,23 +178,29 @@ const Displayevent = () => {
                                     <h3 className="text-blue">{selectedEvent.title}</h3>
                                     <img src={selectedEvent.imgUrl} alt="Event" className="img-fluid" />
                                     <h5>Open to All</h5>
-                                    <h5>190 Registered</h5>
+                                    <h5>Participants Registered: {selectedEvent.participants?.length || 0}</h5>
                                 </Col>
                                 <Col md={6}>
-                                    <Card>
+                                
+                                    <Card className="mb-3">
                                         <CardBody>
                                             {new Date() <= new Date(selectedEvent.enddate) ? (
-                                                <button className="btn btn-primary btn-sm" onClick={handleRegister}>
-                                                    Register now!
-                                                </button>
+                                                isRegistered ? (
+                                                    <p className="text-success">You are registered for this event!</p>
+                                                ) : (
+                                                    <button className="btn btn-primary btn-sm" onClick={handleRegister}>
+                                                        Register now!
+                                                    </button>
+                                                )
                                             ) : (
                                                 <p className="text-danger">Registration closed.</p>
                                             )}
                                         </CardBody>
                                     </Card>
-                                    <Card>
+                                    {/* <Card> */}
+                                        {/* <Card>
                                         <CardBody>
-                                            {user && role === 'user' && selectedEvent.registeredUsers?.includes(user.id) ? (
+                                            {user && role === 'user' && selectedEvent.participants?.includes(userId) ? (
                                                 <a href='/createteams'>
                                                     <button className="btn btn-primary btn-sm">Create Team</button>
                                                 </a>
@@ -117,7 +210,32 @@ const Displayevent = () => {
                                                 </p>
                                             )}
                                         </CardBody>
+                                    </Card> */}
+                                  {/* Create Team card - only visible for registered users with role "user"
+                                    {isRegistered && role === 'user' && // Assuming participants is an array of objects like: [{ userId, eventId }]
+                                    selectedEvent.participants?.some(p => p.userId === userId && p.eventId === eventId)
+(
+                                        <Card>
+                                            <CardBody>
+                                                <a href='/createteams'>
+                                                    <button className="btn btn-primary btn-sm">Create Team</button>
+                                                </a>
+                                            </CardBody>
+                                        </Card>
+                                    )} */}
+
+                                    {isRegistered && role === 'user' && selectedEvent.participants?.some(
+                                    p => p.userId === userId && p.eventId === eventId
+                                ) && (
+                                    <Card>
+                                        <CardBody>
+                                            <a href='/createteams'>
+                                                <button className="btn btn-primary btn-sm">Create Team</button>
+                                            </a>
+                                        </CardBody>
                                     </Card>
+                                )}
+
                                     <Card>
                                         <Card.Body>
                                             <h5>{selectedEvent.date}</h5>

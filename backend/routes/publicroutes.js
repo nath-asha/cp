@@ -762,46 +762,33 @@ router.delete('/challenges/:id', async (req, res) => {
 
 // Event registration endpoint this is working adds event to user
 router.post('/events/:eventId/register', async (req, res) => {
+    const { eventId } = req.params;
+    const { userId } = req.body;
+
+    if (!userId) {
+        return res.status(400).json({ message: 'User ID is required' });
+    }
+
     try {
-        const { eventId } = req.params;
-        const { userId } = req.body;
-
-        // Validate input
-        if (!userId) {
-            return res.status(400).json({ message: 'User ID is required' });
-        }
-
-        // Find the event by eventId
-        const eventToRegister = await event.findOne({ eventId });
-        if (!eventToRegister) {
+        // const Event = await event.findById(eventId);
+        const Event = await event.findOne({ eventId }); // Query by eventId (custom string field)
+        if (!Event) {
             return res.status(404).json({ message: 'Event not found' });
         }
 
-        // Check if user exists
-        const user = await signuser.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Check if user is already registered
-        if (eventToRegister.participants && eventToRegister.participants.includes(userId)) {
+        if (Event.participants.includes(userId)) {
             return res.status(400).json({ message: 'User is already registered for this event' });
         }
 
-        // Add user to the event's participants
-        eventToRegister.participants = eventToRegister.participants || [];
-        eventToRegister.participants.push(userId);
-        await eventToRegister.save();
+        Event.participants.push(userId);
+        await event.save();
 
-        // Update user's event registration field
-        user.eventreg = eventId;
-        await user.save();
-
-        res.status(200).json({ message: 'User registered successfully', event: eventToRegister });
-    } catch (err) {
-        console.error('Error registering user:', err);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(200).json({ message: 'Successfully registered for the event' });
+    } catch (error) {
+        console.error('Error registering user:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
     }
+    
 });
 
 router.put('/events/:id', async (req, res) => {

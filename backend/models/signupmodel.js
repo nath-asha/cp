@@ -30,6 +30,14 @@ const signupSchema = new mongoose.Schema({
 required: true,
 default: [] },
  eventreg: { type: String, default: "none"},
+//   eventreg: [ // Changed to an array of objects
+//     {
+//       eventId: { type: String, required: true },
+//       eventName: { type: String, required: true },
+//       isActive: { type: Boolean, default: true }, // Assuming 'isActive' refers to the current registration status
+//       registeredAt: { type: Date, default: Date.now },
+//     },
+//   ],
 });
 
 module.exports = mongoose.model('Signup', signupSchema);
