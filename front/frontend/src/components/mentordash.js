@@ -392,3 +392,247 @@ const MentorDashboard = () => {
 };
 
 export default MentorDashboard;
+
+
+// import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
+// import { Card, Button, Container, Row, Col, Table, Badge, Form, Modal, ProgressBar, Nav, Tab, ListGroup } from 'react-bootstrap';
+// import { Users, BookOpen, Award, Bell, User, MessageSquare, Search, FileText, CheckSquare, AlertTriangle } from 'lucide-react';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+// import { useParams } from 'react-router-dom';
+// import { useAuth } from '../provider/AuthProvider'; // for getting logged-in user details
+
+// const MentorDashboard = () => {
+//     const { user } = useAuth(); // Get the logged-in user's details from AuthProvider
+//     const [teams, setTeams] = useState([]);
+//     const [submissions, setSubmissions] = useState([]);
+//     const [loading, setLoading] = useState(true);
+//     const [teamProgress, setTeamProgress ] = useState([]);
+//     const [mentorData, setMentorData] = useState({
+//         profile: {
+//             name: '',
+//             email: '',
+//             skills: [],
+//         },
+//         students: [],
+//         teams: [],
+//         submissions: [],
+//         announcements: []
+//     });
+//     const [notifications, setNotifications] = useState([]);
+//     const [showModal, setShowModal] = useState(false);
+//     const [selectedSubmission, setSelectedSubmission] = useState(null);
+//     const [feedbackText, setFeedbackText] = useState("");
+//     const [searchTerm, setSearchTerm] = useState("");
+//     const [filter, setFilter] = useState("all");
+
+//     useEffect(() => {
+//         const fetchData = async () => {
+//             setLoading(true);
+//             try {
+//                 const [teamsResponse, mentorResponse, notificationsResponse, teamProgressData] = await Promise.all([
+//                     axios.get('http://localhost:5000/teams'),
+//                     axios.get(`http://localhost:5000/users/${user.emailid}`),
+//                     axios.get('http://localhost:5000/notifications'),
+//                     axios.get('http://localhost:5000/scores')
+//                 ]);
+
+//                 setTeams(teamsResponse.data);
+//                 setMentorData({
+//                     ...mentorResponse.data,
+//                     profile: {
+//                         name: user.firstname,
+//                         email: user.email,
+//                         expertise: mentorResponse.data.skills || "N/A"
+//                     },
+//                     students: [
+//                         { id: "S1001", name: "Jordan Smith", team: "Team Reactors", progress: 75, lastActive: "Today, 10:30 AM" },
+//                         { id: "S1002", name: "Alex Chen", team: "Code Ninjas", progress: 65, lastActive: "Today, 9:15 AM" },
+//                         { id: "S1003", name: "Jamie Wong", team: "React Masters", progress: 80, lastActive: "Yesterday" },
+//                         { id: "S1004", name: "Taylor Reed", team: "Team Reactors", progress: 60, lastActive: "Today, 11:45 AM" },
+//                         { id: "S1005", name: "Casey Jones", team: "Code Ninjas", progress: 50, lastActive: "2 days ago" },
+//                         { id: "S1006", name: "Riley Garcia", team: "React Masters", progress: 70, lastActive: "Today, 8:20 AM" }
+//                     ],
+//                     announcements: [
+//                         { id: "A1", title: "Workshop: Advanced React Hooks", date: "Mar 18, 2025", time: "2:00 PM", location: "Room 101" },
+//                         { id: "A2", title: "Submission Deadline Reminder", date: "Mar 20, 2025", time: "11:59 PM", type: "reminder" }
+//                     ]
+//                 });
+//                 setNotifications(notificationsResponse.data);
+//                 setTeamProgress(teamProgressData.data);
+//                 const submissionsResponse = await axios.get('http://localhost:5000/submissions');
+//                 setSubmissions(submissionsResponse.data);
+//             } catch (error) {
+//                 console.error('Error fetching mentor data', error);
+//             } finally {
+//                 setLoading(false);
+//             }
+//         };
+
+//         fetchData();
+//     }, [user]);
+
+//     const handleReviewSubmission = (submission) => {
+//         setSelectedSubmission(submission);
+//         setFeedbackText(submission.feedback || "");
+//         setShowModal(true);
+//     };
+
+//     const handleSubmitFeedback = () => {
+//         console.log(`Submitting feedback for ${selectedSubmission.id}: ${feedbackText}`);
+//         setShowModal(false);
+//     };
+
+//     const filteredSubmissions = submissions.filter((sub) => {
+//         if (filter === "all") return true;
+//         if (filter === "pending") return sub.status === "Pending Review";
+//         if (filter === "reviewed") return sub.status === "Reviewed";
+//         if (filter === "code") return sub.type === "code";
+//         if (filter === "document") return sub.type === "document";
+//         return true;
+//     }).filter(sub => 
+//         sub.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+//         sub.team.toLowerCase().includes(searchTerm.toLowerCase())
+//     );
+
+//     const getProgressVariant = (progress) => {
+//         if (progress >= 80) return "success";
+//         if (progress >= 60) return "info";
+//         if (progress >= 40) return "warning";
+//         return "danger";
+//     };
+
+//     if (loading) {
+//         return (
+//             <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+//                 <div className="spinner-border text-primary" role="status">
+//                     <span className="visually-hidden">Loading...</span>
+//                 </div>
+//             </div>
+//         );
+//     }
+
+//     return (
+//         <Container fluid>
+//             <Row>
+//                 <Col md={3} className="sidebar bg-light py-3">
+//                     <h5 className="text-center">Mentor Dashboard</h5>
+//                     <Nav defaultActiveKey="/home" className="flex-column">
+//                         <Nav.Link href="#">Profile</Nav.Link>
+//                         <Nav.Link href="#">Teams</Nav.Link>
+//                         <Nav.Link href="#">Students</Nav.Link>
+//                         <Nav.Link href="#">Submissions</Nav.Link>
+//                         <Nav.Link href="#">Announcements</Nav.Link>
+//                     </Nav>
+//                 </Col>
+
+//                 <Col md={9}>
+//                     <Row>
+//                         <Col md={4}>
+//                             <Card>
+//                                 <Card.Body>
+//                                     <Card.Title>{mentorData.profile.name}</Card.Title>
+//                                     <Card.Subtitle>{mentorData.profile.email}</Card.Subtitle>
+//                                     <Card.Text>Expertise: {mentorData.profile.expertise}</Card.Text>
+//                                 </Card.Body>
+//                             </Card>
+//                         </Col>
+//                         <Col md={8}>
+//                             <Card>
+//                                 <Card.Body>
+//                                     <h5>Team Progress</h5>
+//                                     <ResponsiveContainer width="100%" height={200}>
+//                                         <LineChart data={teamProgress}>
+//                                             <CartesianGrid strokeDasharray="3 3" />
+//                                             <XAxis dataKey="teamName" />
+//                                             <YAxis />
+//                                             <Tooltip />
+//                                             <Legend />
+//                                             <Line type="monotone" dataKey="progress" stroke="#8884d8" />
+//                                         </LineChart>
+//                                     </ResponsiveContainer>
+//                                 </Card.Body>
+//                             </Card>
+//                         </Col>
+//                     </Row>
+
+//                     <Row>
+//                         <Col md={12}>
+//                             <Card>
+//                                 <Card.Body>
+//                                     <h5>Recent Submissions</h5>
+//                                     <Form.Control
+//                                         type="search"
+//                                         placeholder="Search Submissions..."
+//                                         value={searchTerm}
+//                                         onChange={(e) => setSearchTerm(e.target.value)}
+//                                     />
+//                                     <Table responsive striped bordered hover>
+//                                         <thead>
+//                                             <tr>
+//                                                 <th>Title</th>
+//                                                 <th>Team</th>
+//                                                 <th>Status</th>
+//                                                 <th>Action</th>
+//                                             </tr>
+//                                         </thead>
+//                                         <tbody>
+//                                             {filteredSubmissions.map(sub => (
+//                                                 <tr key={sub.id}>
+//                                                     <td>{sub.title}</td>
+//                                                     <td>{sub.team}</td>
+//                                                     <td>
+//                                                         <Badge variant={sub.status === "Reviewed" ? "success" : "warning"}>
+//                                                             {sub.status}
+//                                                         </Badge>
+//                                                     </td>
+//                                                     <td>
+//                                                         {sub.status === "Pending Review" && (
+//                                                             <Button
+//                                                                 variant="primary"
+//                                                                 size="sm"
+//                                                                 onClick={() => handleReviewSubmission(sub)}
+//                                                             >
+//                                                                 Review
+//                                                             </Button>
+//                                                         )}
+//                                                     </td>
+//                                                 </tr>
+//                                             ))}
+//                                         </tbody>
+//                                     </Table>
+//                                 </Card.Body>
+//                             </Card>
+//                         </Col>
+//                     </Row>
+//                 </Col>
+//             </Row>
+
+//             {/* Review Submission Modal */}
+//             <Modal show={showModal} onHide={() => setShowModal(false)}>
+//                 <Modal.Header closeButton>
+//                     <Modal.Title>Provide Feedback</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body>
+//                     <Form.Control
+//                         as="textarea"
+//                         rows={3}
+//                         value={feedbackText}
+//                         onChange={(e) => setFeedbackText(e.target.value)}
+//                     />
+//                 </Modal.Body>
+//                 <Modal.Footer>
+//                     <Button variant="secondary" onClick={() => setShowModal(false)}>
+//                         Close
+//                     </Button>
+//                     <Button variant="primary" onClick={handleSubmitFeedback}>
+//                         Submit Feedback
+//                     </Button>
+//                 </Modal.Footer>
+//             </Modal>
+//         </Container>
+//     );
+// };
+
+// export default MentorDashboard;

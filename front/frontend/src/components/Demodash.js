@@ -327,3 +327,205 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { Card, Button, Container, Row, Col, ProgressBar, Badge, Dropdown, ListGroup, Spinner } from 'react-bootstrap';
+// import { Calendar, User, BookOpen, Users, Award, Bell } from 'lucide-react';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import DynamicChart from './charts';
+// import TeamManager from './teammanager'; // Assuming this is a custom component for managing teams
+// import { useAuth } from '../provider/AuthProvider';
+
+// const ParticipantDashboard = () => {
+//     const { user } = useAuth();
+//     const [data, setData] = useState({
+//         submissions: [],
+//         teamRequests: [],
+//         scores: [],
+//         leaderboard: [],
+//         profile: {},
+//         mentor: {},
+//         notifications: [],
+//     });
+//     const [loading, setLoading] = useState(true);
+//     const [showNotifications, setShowNotifications] = useState(false); // For toggling notifications
+
+//     useEffect(() => {
+//         const fetchAllData = async () => {
+//             setLoading(true);
+//             try {
+//                 const [dashboardData, teamData, submissionData, notificationData, leaderboardData] = await Promise.all([
+//                     axios.get('http://localhost:5000/api/dashboard-data'),
+//                     axios.get('http://localhost:5000/teams'),
+//                     axios.get('http://localhost:5000/submissions'),
+//                     axios.get('http://localhost:5000/notifications'),
+//                     axios.get('http://localhost:5000/leaderboard'),
+//                 ]);
+
+//                 setData({
+//                     ...dashboardData.data,
+//                     teams: teamData.data || [],
+//                     submissions: submissionData.data || [],
+//                     teamRequests: teamData.data || [],
+//                     notifications: notificationData.data || [],
+//                     leaderboard: leaderboardData.data || [],
+//                     profile: dashboardData.data.profile || {},
+//                     mentor: dashboardData.data.mentor || {},
+//                 });
+//             } catch (error) {
+//                 console.error('Error fetching dashboard data', error);
+//             } finally {
+//                 setLoading(false);
+//             }
+//         };
+
+//         fetchAllData();
+//     }, []);
+
+//     const toggleNotifications = () => setShowNotifications(!showNotifications);
+
+//     const markAllAsRead = () => {
+//         setData({
+//             ...data,
+//             notifications: data.notifications.map((notification) => ({
+//                 ...notification,
+//                 read: true,
+//             })),
+//         });
+//     };
+
+//     const getStatusColor = (status) => {
+//         switch (status) {
+//             case 'Submitted': return 'success';
+//             case 'In Review': return 'warning';
+//             case 'Rejected': return 'danger';
+//             default: return 'primary';
+//         }
+//     };
+
+//     if (loading) {
+//         return (
+//             <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+//                 <Spinner animation="border" variant="primary" />
+//             </div>
+//         );
+//     }
+
+//     return (
+//         <Container fluid>
+//             <Row className="mt-3">
+//                 <Col md={4}>
+//                     {/* Profile Card */}
+//                     <Card>
+//                         <Card.Body>
+//                             <Card.Title>{data.profile.username}</Card.Title>
+//                             <Card.Subtitle>{data.profile.team}</Card.Subtitle>
+//                             <Card.Text>Email: {data.profile.email}</Card.Text>
+//                             <Card.Text>Mentor: {data.mentor.name}</Card.Text>
+//                         </Card.Body>
+//                     </Card>
+//                 </Col>
+
+//                 <Col md={8}>
+//                     {/* Notifications Dropdown */}
+//                     <Dropdown>
+//                         <Dropdown.Toggle variant="info" id="dropdown-notifications">
+//                             <Bell size={20} />
+//                             Notifications
+//                         </Dropdown.Toggle>
+//                         <Dropdown.Menu show={showNotifications}>
+//                             <Dropdown.ItemText>
+//                                 <Button variant="link" onClick={markAllAsRead} className="w-100 text-left">
+//                                     Mark all as read
+//                                 </Button>
+//                             </Dropdown.ItemText>
+//                             {data.notifications.map((notification, index) => (
+//                                 <Dropdown.Item key={index} eventKey={notification.id} as="button">
+//                                     <span className={notification.read ? 'text-muted' : ''}>{notification.message}</span>
+//                                 </Dropdown.Item>
+//                             ))}
+//                         </Dropdown.Menu>
+//                     </Dropdown>
+//                 </Col>
+//             </Row>
+
+//             {/* Submissions Progress */}
+//             <Row className="mt-4">
+//                 <Col md={12}>
+//                     <Card>
+//                         <Card.Body>
+//                             <Card.Title>My Submissions</Card.Title>
+//                             {data.submissions.length > 0 ? (
+//                                 <ListGroup>
+//                                     {data.submissions.map((submission, index) => (
+//                                         <ListGroup.Item key={index} variant={getStatusColor(submission.status)}>
+//                                             <div className="d-flex justify-content-between align-items-center">
+//                                                 <div>
+//                                                     <strong>{submission.title}</strong>
+//                                                     <p>{submission.description}</p>
+//                                                 </div>
+//                                                 <Badge pill variant={getStatusColor(submission.status)}>
+//                                                     {submission.status}
+//                                                 </Badge>
+//                                             </div>
+//                                             <ProgressBar now={submission.progress} label={`${submission.progress}%`} />
+//                                         </ListGroup.Item>
+//                                     ))}
+//                                 </ListGroup>
+//                             ) : (
+//                                 <p>No submissions yet.</p>
+//                             )}
+//                         </Card.Body>
+//                     </Card>
+//                 </Col>
+//             </Row>
+
+//             {/* Leaderboard */}
+//             <Row className="mt-4">
+//                 <Col md={12}>
+//                     <Card>
+//                         <Card.Body>
+//                             <Card.Title>Leaderboard</Card.Title>
+//                             {data.leaderboard.length > 0 ? (
+//                                 <ListGroup>
+//                                     {data.leaderboard.map((entry, index) => (
+//                                         <ListGroup.Item key={index}>
+//                                             <div className="d-flex justify-content-between align-items-center">
+//                                                 <div>{entry.team}</div>
+//                                                 <div>{entry.score}</div>
+//                                             </div>
+//                                         </ListGroup.Item>
+//                                     ))}
+//                                 </ListGroup>
+//                             ) : (
+//                                 <p>No leaderboard data available.</p>
+//                             )}
+//                         </Card.Body>
+//                     </Card>
+//                 </Col>
+//             </Row>
+
+//             {/* Team Manager (if applicable) */}
+//             <Row className="mt-4">
+//                 <Col md={12}>
+//                     <TeamManager teamRequests={data.teamRequests} />
+//                 </Col>
+//             </Row>
+
+//             {/* Dynamic Chart for Participant Statistics */}
+//             <Row className="mt-4">
+//                 <Col md={12}>
+//                     <Card>
+//                         <Card.Body>
+//                             <Card.Title>Team Progress</Card.Title>
+//                             <DynamicChart data={data.submissions} />
+//                         </Card.Body>
+//                     </Card>
+//                 </Col>
+//             </Row>
+//         </Container>
+//     );
+// };
+
+// export default ParticipantDashboard;

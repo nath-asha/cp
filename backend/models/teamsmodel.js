@@ -25,10 +25,12 @@ const teamSchema = new mongoose.Schema({
     "uiScore": String,
     "dbdesign": String,
     "feedback": String,
-    "requests": [{
-        "name": String,
-        "approval": Boolean                                                                                                       
-    }],
+     requests: [
+    {
+      user_id: { type: mongoose.Schema.Types.ObjectId, ref: "Signup" },
+      status: { type: String, enum: ["pending", "approved", "rejected"], default: "pending" },
+    },
+  ],
     "status" : String,
     "isFull" : Boolean,
     chosen_challenge: {type: String, default: "none"},

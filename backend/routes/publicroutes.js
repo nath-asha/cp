@@ -9,6 +9,7 @@ const user = require("../models/userModel");
 const event = require("../models/eventmodel");
 const signuser = require("../models/signupmodel");
 const community = require("../models/communitymodel");
+const teamController = require('../controllers/teamController');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
@@ -110,6 +111,16 @@ router.get("/teams", async (req, res) => {
         res.status(500).send("Internal server error");
     }
 });
+// router.get('/teams', async (req, res) => {
+//   try {
+//     const teams = await Team.find()
+//       .populate('mentor', 'firstName lastName') // Populate mentor with specific fields
+//       .exec();
+//     res.json(teams);
+//   } catch (error) {
+//     res.status(500).send({ error: 'Error fetching teams' });
+//   }
+// });
 
 ////////////////////////////////////////////////////
 router.get('/teams/:teamId', async (req, res) => {
@@ -460,7 +471,7 @@ router.get('/mentors', async (req, res) => {
     }
   });
 
-  // POST route for bulk assigning a mentor to multiple teams
+  // POST route for bulk assigning a mentor to multiple teams this worksssssssssssss
 router.post('/assign-mentor', async (req, res) => {
     try {
       const { mentorId, teamIds } = req.body; // expecting mentorId and array of teamIds
@@ -470,7 +481,7 @@ router.post('/assign-mentor', async (req, res) => {
       }
   
       // Check if mentor exists
-      const mentor = await this.user.findById(mentorId);
+      const mentor = await user.findById(mentorId);
       if (!mentor) {
         return res.status(404).json({ message: "Mentor not found" });
       }
@@ -492,30 +503,68 @@ router.post('/assign-mentor', async (req, res) => {
     }
   });
   
-  // PUT route for assigning a mentor to a single team
-  router.put('/teams/:teamId', async (req, res) => {
-    const { teamId } = req.params;
-    const { mentor } = req.body;
+  // PUT route for assigning a mentor to a single team this workssssssssssssssssssssssssssssss
+//   router.put('/teams/:teamId', async (req, res) => {
+//     const { teamId } = req.params;
+//     const { mentor } = req.body;
   
-    try {
-      const team = await team.findByIdAndUpdate(
-        teamId,
-        { mentor: mentor || null }, // Allow unassigning by sending null
-        { new: true } // Return the updated document
-      );
+//     try {
+//       const team = await team.findByIdAndUpdate(
+//         teamId,
+//         { mentor: mentor || null }, // Allow unassigning by sending null
+//         { new: true } // Return the updated document
+//       );
   
-      if (!team) {
-        return res.status(404).json({ message: "Team not found" });
-      }
+//       if (!team) {
+//         return res.status(404).json({ message: "Team not found" });
+//       }
   
-      res.status(200).json({ message: "Team mentor updated successfully", team });
+//       res.status(200).json({ message: "Team mentor updated successfully", team });
   
-    } catch (error) {
-      console.error("Error updating team mentor:", error);
-      res.status(500).json({ message: "Internal Server Error" });
+//     } catch (error) {
+//       console.error("Error updating team mentor:", error);
+//       res.status(500).json({ message: "Internal Server Error" });
+//     }
+//   });
+//this worksssssssssssssssssss
+ router.put('/teams/:teamId', async (req, res) => {
+  const { teamId } = req.params;
+  const { mentor } = req.body;
+
+  try {
+    // Update the team's mentor field
+    const team = await team.findByIdAndUpdate(
+      teamId,
+      { mentor: mentor || null }, // Allow unassigning by sending null
+      { new: true } // Return the updated document
+    );
+
+    if (!team) {
+      return res.status(404).json({ message: "Team not found" });
     }
-  });
-  
+
+    // Fetch the mentor details if a mentor is assigned
+    let mentorDetails = null;
+    if (mentor) {
+      mentorDetails = await user.findById(mentor); // Assuming `user` is the model containing mentor details
+      if (!mentorDetails) {
+        return res.status(404).json({ message: "Mentor not found" });
+      }
+    }
+
+    // Respond with the updated team and mentor name (if available)
+    res.status(200).json({
+      message: "Team mentor updated successfully",
+      team,
+      mentorName: mentorDetails ? mentorDetails.firstName : null // Include mentor name if found
+    });
+  } catch (error) {
+    console.error("Error updating team mentor:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+
   // GET route to fetch all mentors
   router.get('/mentors', async (req, res) => {
     try {
@@ -1040,6 +1089,25 @@ router.post('/api/challenges', async (req, res) => {
     res.status(500).json({ message: 'Failed to add challenge', error: error.message });
   }
 });
+
+// router.post('/create-team', teamController.createTeam);
+router.post('/send-invitation/:teamId', teamController.sendInvitation);
+router.post('/accept-invitation/:teamId', teamController.acceptInvitation);
+router.post('/reject-invitation/:teamId', teamController.rejectInvitation);
+router.post('/leave-team/:teamId', teamController.leaveTeam);
+router.post('/remove-member/:teamId/:userId', teamController.removeMemberFromTeam);
+
+// Send a join request to a team
+router.post('/request-join/:teamId', teamController.sendJoinRequest);
+
+// Get all join requests for a team (only accessible to admins)
+router.get('/join-requests/:teamId', teamController.getJoinRequests);
+
+// Approve a join request (only accessible to admins)
+router.put('/approve-request/:teamId/:requestId', teamController.approveJoinRequest);
+
+// Reject a join request (only accessible to admins)
+router.put('/reject-request/:teamId/:requestId', teamController.rejectJoinRequest);
 
 //assign events to mentors
 
