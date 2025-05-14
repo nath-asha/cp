@@ -219,14 +219,14 @@ const Assignmentees = () => {
   //     alert('Failed to assign mentor (single).');
   //   }
   // };
-  const handleSingleAssign = async (teamId, mentorId) => {
-  console.log("Assigning mentor:", mentorId, "to team:", teamId); // Debugging line
+  const handleSingleAssign = async (team_id, mentorId) => {
+  console.log("Assigning mentor:", mentorId, "to team:", team_id); // Debugging line
   if (!mentorId) {
     alert('Please select a mentor.');
     return;
   }
   try {
-    const response = await axios.put(`http://localhost:5000/teams/${teamId}`, { mentor: mentorId });
+    const response = await axios.put(`http://localhost:5000/teams/${team_id}`, { mentor: mentorId });
     alert('Mentor assigned successfully!');
     fetchTeams();
   } catch (error) {
@@ -237,10 +237,10 @@ const Assignmentees = () => {
 
 
   // Unassign Handler
-  const handleUnassign = async (teamId) => {
+  const handleUnassign = async (team_id) => {
     if (!window.confirm('Are you sure you want to unassign this mentor?')) return;
     try {
-      const response = await axios.put(`http://localhost:5000/teams/${teamId}`, { mentor: null });
+      const response = await axios.put(`http://localhost:5000/teams/${team_id}`, { mentor: null });
       alert('Mentor unassigned successfully!');
       fetchTeams();
     } catch (error) {
@@ -324,13 +324,14 @@ const Assignmentees = () => {
                 <Card.Body>
                 <Card.Title className="text-primary">{team.name}</Card.Title>
                 <Card.Subtitle className="mb-2">
-                  Project: {team.project || 'N/A'}
+                  Project: {team.project}
                 </Card.Subtitle>
 
                 <Form.Group className="mb-3">
-                  <Form.Label>Current Mentor:</Form.Label>
+                  <Form.Label>Current Mentor Id:</Form.Label>
                   <div className="fw-bold">
-                  {currentMentor ? `${currentMentor.firstName} ${currentMentor.lastName}` : 'Not Assigned'}
+                  {/* {currentMentor ? `${currentMentor.firstName} ${currentMentor.lastName}` : 'Not Assigned'} */}
+                  {team.mentor || 'Not Assigned'}
                   </div>
                 </Form.Group>
 
@@ -352,18 +353,18 @@ const Assignmentees = () => {
                   </Form.Select>
                 </Form.Group>
 
-                <div className="d-flex justify-content-between">
+                <div className="justify-content-between">
                   <Button
                   variant="success"
-                  onClick={() => handleSingleAssign(team._id, selectedMentorId)}
+                  onClick={() => handleSingleAssign(team.team_id, selectedMentorId)}
                   disabled={!selectedMentorId || selectedMentorId === team.mentor}
                   >
                   {selectedMentorId === team.mentor ? 'Assigned' : 'Assign'}
                   </Button>
 
                   <Button
-                  variant="outline-danger"
-                  onClick={() => handleUnassign(team._id)}
+                  variant="danger"
+                  onClick={() => handleUnassign(team.team_id)}
                   disabled={!team.mentor}
                   >
                   Unassign

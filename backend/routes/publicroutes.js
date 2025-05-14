@@ -533,13 +533,13 @@ router.post('/assign-mentor', async (req, res) => {
 
   try {
     // Update the team's mentor field
-    const team = await team.findByIdAndUpdate(
+    const Team = await team.findByIdAndUpdate(
       teamId,
       { mentor: mentor || null }, // Allow unassigning by sending null
       { new: true } // Return the updated document
     );
 
-    if (!team) {
+    if (!Team) {
       return res.status(404).json({ message: "Team not found" });
     }
 
@@ -555,7 +555,7 @@ router.post('/assign-mentor', async (req, res) => {
     // Respond with the updated team and mentor name (if available)
     res.status(200).json({
       message: "Team mentor updated successfully",
-      team,
+      Team,
       mentorName: mentorDetails ? mentorDetails.firstName : null // Include mentor name if found
     });
   } catch (error) {
@@ -1109,6 +1109,134 @@ router.put('/approve-request/:teamId/:requestId', teamController.approveJoinRequ
 // Reject a join request (only accessible to admins)
 router.put('/reject-request/:teamId/:requestId', teamController.rejectJoinRequest);
 
+
+
+router.post('/create', async (req, res) => {
+    const { teamName, eventId } = req.body;
+
+    try {
+        // Create the new team
+        const newTeam = new Team({
+            name: teamName,
+            team_id: Math.floor(Math.random() * 10000), // Random team ID or you can have an auto-increment logic
+            eventId: eventId,
+            createdAt: new Date(),
+        });
+
+        // Add the team leader (logged-in user)
+        newTeam.members.push({
+            status: 'leader', 
+            user_id: req.user._id
+        });
+
+        // Save the new team
+        await newTeam.save();
+
+        // Update the user's signup document with the team details
+        await signuser.findByIdAndUpdate(req.user._id, {
+            team: teamName,
+            teamId: newTeam.team_id,
+            isTeam: true
+        });
+
+        res.status(201).json({ message: 'Team created successfully', team: newTeam });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to create team', error });
+    }
+});
+
+router.post('/join/:teamId', async (req, res) => {
+    const { teamId } = req.params;
+
+    try {
+        // Find the team by ID
+        const Team = await team.findOne({ team_id: teamId });
+
+        if (!Team || Team.isFull) {
+            return res.status(400).json({ message: 'Team is either full or does not exist' });
+        }
+
+        // Check if the team already has 4 members
+        if (Team.members.length >= 4) {
+            return res.status(400).json({ message: 'Team is full' });
+        }
+
+        // Add user to team requests
+        team.requests.push({
+            user_id: req.user._id,
+            status: 'pending',
+        });
+
+        // Save the updated team
+        await Team.save();
+
+        // Update the user's signup document with pending request
+        const user = await signuser.findById(req.user._id);
+        user.requests.push({
+            teamId: Team.team_id,
+            teamName: Team.name,
+            status: 'pending'
+        });
+        await signuser.save();
+
+        res.status(200).json({ message: 'Request to join the team sent' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error while sending request', error });
+    }
+});
+
+router.post('/request/:teamId/:userId', async (req, res) => {
+    const { teamId, userId } = req.params;
+    const { action } = req.body; // "accept" or "reject"
+
+    try {
+        // Find the team by ID
+        const Team = await team.findOne({ team_id: teamId });
+
+        if (!Team) {
+            return res.status(404).json({ message: 'Team not found' });
+        }
+
+        // Check if the logged-in user is the team leader
+        if (Team.members[0].user_id.toString() !== req.signuser._id.toString()) {
+            return res.status(403).json({ message: 'Only the team leader can approve/reject requests' });
+        }
+
+        // Find the request to accept/reject
+        const requestIndex = Team.requests.findIndex(request => request.user_id.toString() === userId);
+
+        if (requestIndex === -1) {
+            return res.status(404).json({ message: 'Request not found' });
+        }
+
+        // Accept or reject the request
+        if (action === 'accept') {
+            team.members.push({
+                status: 'member',
+                user_id: userId
+            });
+            Team.requests[requestIndex].status = 'approved';
+        } else if (action === 'reject') {
+            Team.requests[requestIndex].status = 'rejected';
+        }
+
+        // Save the updated team
+        await Team.save();
+
+        // Update the user's signup document
+        const user = await signuser.findById(userId);
+        if (action === 'accept') {
+            user.Team = Team.name;
+            user.TeamId = Team.team_id;
+            user.isTeam = true;
+        }
+        await user.save();
+
+        res.status(200).json({ message: `Request ${action}ed successfully` });
+    } catch (error) {
+        res.status(500).json({ message: 'Error while processing request', error });
+    }
+});
 //assign events to mentors
 
 module.exports = router;

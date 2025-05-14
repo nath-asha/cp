@@ -358,6 +358,8 @@ function TeamManager() {
     const userId = getUserId();
     const isRegisteredUser = !!userId; // Check if user is logged in
 
+    const MAX_TEAM_MEMBERS = 4; // Maximum team size
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -423,47 +425,27 @@ function TeamManager() {
         setTeamName(e.target.value);
     };
 
-    // --- MODIFIED SECTION ---
-    const MAX_TEAM_MEMBERS = 4;
-    const MAX_ADDITIONAL_PARTICIPANTS = MAX_TEAM_MEMBERS - 1; // Logged-in user + 3 others
+    const handleAddParticipant = (participant) => {
+        setSelectedParticipants(prev => {
+            // Check if the participant is already selected or if we've reached the max limit
+            if (prev.some(p => p.id === participant.id)) {
+                alert('This participant is already added.');
+                return prev;
+            }
 
-//    const handleAddParticipant = (participant) => {
-//     if (!selectedParticipants.some(p => p.id === participant.id) && selectedParticipants.length < MAX_ADDITIONAL_PARTICIPANTS) {
-//         setSelectedParticipants(prev => [...prev, participant]);
-//     }
+            if (prev.length < MAX_TEAM_MEMBERS - 1) {
+                // Add the participant to the list if not already added and not exceeding the max
+                return [...prev, participant];
+            } else {
+                alert(`A team can have a maximum of ${MAX_TEAM_MEMBERS} participants (including yourself). You cannot add more members.`);
+                return prev;
+            }
+        });
+    };
 
-
-//         if (selectedParticipants.length < MAX_ADDITIONAL_PARTICIPANTS) {
-//             setSelectedParticipants([...selectedParticipants, userToAdd]);
-//         } else {
-//             alert(`A team can have a maximum of ${MAX_TEAM_MEMBERS} participants (including yourself). You cannot add more members.`);
-//         }
-//     };
-const handleAddParticipant = (participant) => {
-    setSelectedParticipants(prev => {
-        // Check if the participant is already selected or if we've reached the max limit
-        if (prev.some(p => p.id === participant.id)) {
-            alert('This participant is already added.');
-            return prev;
-        }
-
-        if (prev.length < MAX_ADDITIONAL_PARTICIPANTS) {
-            // Add the participant to the list if not already added and not exceeding the max
-            return [...prev, participant];
-        } else {
-            alert(`A team can have a maximum of ${MAX_TEAM_MEMBERS} participants (including yourself). You cannot add more members.`);
-            return prev;
-        }
-    });
-};
-
-
-    // --- END OF MODIFIED SECTION ---
-
-   const handleRemoveParticipant = (id) => {
-    setSelectedParticipants(prev => prev.filter(p => p.id !== id));
-};
-
+    const handleRemoveParticipant = (id) => {
+        setSelectedParticipants(prev => prev.filter(p => p.id !== id));
+    };
 
     const handleSendRequestCreateTeam = async () => {
         if (!teamName.trim()) {
@@ -474,28 +456,26 @@ const handleAddParticipant = (participant) => {
         // The prompt implies adding others. If a leader can create a team alone, this check might change.
         // For now, let's keep the original logic: must invite at least one other.
         if (selectedParticipants.length === 0) {
-             alert('Please add at least one other participant to the team to send requests.');
-             return;
+            alert('Please add at least one other participant to the team to send requests.');
+            return;
         }
+
         // This check is redundant if UI disables button correctly, but good for safety.
-        if (selectedParticipants.length > MAX_ADDITIONAL_PARTICIPANTS) {
-            alert(`You can only select up to ${MAX_ADDITIONAL_PARTICIPANTS} additional participants.`);
+        if (selectedParticipants.length > MAX_TEAM_MEMBERS - 1) {
+            alert(`You can only select up to ${MAX_TEAM_MEMBERS - 1} additional participants.`);
             return;
         }
 
         const participantsToSendIds = selectedParticipants.map(p => p.id);
         const newTeamData = {
             name: teamName,
-            // team_id generation should ideally be backend's responsibility
-            // For frontend generation (if needed): team_id: Date.now().toString(), // Or a more robust UUID
             leader_id: currentUserId,
             members: [currentUserId, ...participantsToSendIds], // Storing IDs
-            eventId: eventId, // Include eventId if it's part of your team schema
-            // requests: [] // Server should initialize requests
+            eventId: eventId,
         };
 
         try {
-            const response = await fetch('http://localhost:5000/createteams', {
+            const response = await fetch('http://localhost:5000/send-invitation', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -504,23 +484,14 @@ const handleAddParticipant = (participant) => {
             });
 
             if (response.ok) {
-                const result = await response.json(); // Expect { message: "...", team: {...} } or similar
-                const createdTeam = result.team; // Assuming backend returns the created team object
+                const result = await response.json(); // Assuming backend returns the created team object
 
-                setTeams(prevTeams => [...prevTeams, createdTeam]); // Add new team to local state
+                setTeams(prevTeams => [...prevTeams, result.team]); // Add new team to local state
 
-                // Update user requests (this part depends heavily on your backend API for updating user profiles)
-                // Example:
-                // for (const participantId of participantsToSendIds) {
-                //     // await updateUserRequests(participantId, createdTeam.id, currentUserName, teamName);
-                // }
-
-                alert(result.message || `Team "${teamName}" creation request sent. Invited members will be notified.`);
+                alert(result.message || `Team "${teamName}" created and invites sent successfully!`);
                 setTeamName('');
                 setSelectedParticipants([]);
-                // setRequestsSentToTeam(createdTeam.requests || []); // If backend returns request statuses
                 setActiveTab(''); // Optionally switch tab or show a success message
-                // Force re-fetch or update user state if needed
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || 'Failed to create team. Please try again.');
@@ -536,25 +507,22 @@ const handleAddParticipant = (participant) => {
             alert("User data not loaded. Cannot send join request.");
             return;
         }
+
         const request = {
-            teamId: teamToJoin.id, // or teamToJoin.team_id
+            teamId: teamToJoin.id,
             fromUserId: currentUserId,
-            fromUserName: currentUserName, // For easier display in notifications
+            fromUserName: currentUserName,
             message: `${currentUserName} wants to join your team "${teamToJoin.name}".`,
             status: 'pending'
         };
 
         try {
-            // This request should ideally go to a specific endpoint like /teams/{teamId}/joinrequests
-            // Or notify team leader(s)
-            // The current implementation seems to try and update all team members' user objects, which can be complex.
-            // A simplified approach: send request to backend, backend handles notifications/logic.
-            const response = await fetch(`http://localhost:5000/teams/${teamToJoin.id}/join-requests`, {
+            const response = await fetch(`http://localhost:5000/request-join/${teamToJoin.id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userId: currentUserId, message: request.message }),
+                body: JSON.stringify(request),
             });
 
             if (response.ok) {
@@ -569,30 +537,6 @@ const handleAddParticipant = (participant) => {
             alert('Error sending join request.');
         }
     };
-    
-    // This useEffect for team status (isFull, etc.) is good.
-    // Consider if this logic should also be on the backend for consistency.
-    useEffect(() => {
-        if (currentUser) {
-            const userIsActuallyInTeam = teams.some(team => team.members && team.members.map(m => m.id || m).includes(currentUserId));
-            const updatedUsers = users.map(user =>
-                user.id === currentUserId ? { ...user, isTeam: userIsActuallyInTeam } : user
-            );
-            if (JSON.stringify(users) !== JSON.stringify(updatedUsers)) {
-                // setUsers(updatedUsers); // This can cause infinite loops if not careful.
-                                        // Prefer deriving isUserInTeam directly as done above.
-            }
-        }
-
-        const updatedTeams = teams.map(team => ({
-            ...team,
-            isFull: team.members && team.members.length >= MAX_TEAM_MEMBERS
-        }));
-        if (JSON.stringify(teams) !== JSON.stringify(updatedTeams)) {
-            setTeams(updatedTeams);
-        }
-    }, [teams, users, currentUserId, currentUser, MAX_TEAM_MEMBERS]);
-
 
     if (loading) return <div className="container mt-5"><p>Loading team data...</p></div>;
     if (error) return <div className="container mt-5 alert alert-danger">Error: {error.message}</div>;
@@ -613,7 +557,6 @@ const handleAddParticipant = (participant) => {
             {isUserInTeam ? (
                 <div className="alert alert-info" role="alert">
                     You are already part of a team. Manage your team or view details elsewhere.
-                    {/* You could show the user's current team details here */}
                 </div>
             ) : (
                 <>
@@ -650,8 +593,11 @@ const handleAddParticipant = (participant) => {
                                     placeholder="Enter team name"
                                 />
                             </div>
+
                             <div className="mb-3">
-                                <label htmlFor="participantSearchCreate" className="form-label">Add Participants (up to {MAX_ADDITIONAL_PARTICIPANTS} more):</label>
+                                <label htmlFor="participantSearchCreate" className="form-label">
+                                    Add Participants (up to {MAX_TEAM_MEMBERS - 1} more):
+                                </label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -659,82 +605,60 @@ const handleAddParticipant = (participant) => {
                                     placeholder="Search participants by name..."
                                     value={participantSearchCreate}
                                     onChange={(e) => setParticipantSearchCreate(e.target.value)}
-                                    disabled={selectedParticipants.length >= MAX_ADDITIONAL_PARTICIPANTS}
+                                    disabled={selectedParticipants.length >= MAX_TEAM_MEMBERS - 1}
                                 />
-                                {selectedParticipants.length >= MAX_ADDITIONAL_PARTICIPANTS && (
-                                    <small className="form-text text-danger">Maximum number of additional participants reached.</small>
-                                )}
-<ul className="list-group mt-2" style={{ maxHeight: '200px', overflowY: 'auto' }}>
-    {filteredParticipantsCreate.map(participant => (
-        <li key={participant.id} className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-            <span className="text-black">
-                {`${participant.firstName} ${participant.lastName}`}
-                {participant.USN && ` (${participant.USN})`}
-            </span>
-            <button
-                className="btn btn-sm btn-outline-primary"
-                onClick={() => handleAddParticipant(participant)}
-                disabled={selectedParticipants.some(p => p.id === participant.id) || selectedParticipants.length >= MAX_ADDITIONAL_PARTICIPANTS}
-            >
-                Add
-            </button>
-        </li>
-    ))}
-    {participantSearchCreate && filteredParticipantsCreate.length === 0 && (
-        <li className="list-group-item">No matching participants found or available.</li>
-    )}
-</ul>
-
-
+                                <ul className="list-group mt-2" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                                    {filteredParticipantsCreate.map(participant => (
+                                        <li key={participant.id} className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                            <span className="text-black">
+                                                {`${participant.firstName} ${participant.lastName}`}
+                                            </span>
+                                            <button
+                                                className="btn btn-sm btn-outline-primary"
+                                                onClick={() => handleAddParticipant(participant)}
+                                                disabled={selectedParticipants.some(p => p.id === participant.id) || selectedParticipants.length >= MAX_TEAM_MEMBERS - 1}
+                                            >
+                                                Add
+                                            </button>
+                                            {selectedParticipants.some(p => p.id === participant.id) && (
+                                                <span className="text-success">✔</span>
+                                            )}
+                                        </li>
+                                    ))}
+                                    {participantSearchCreate && filteredParticipantsCreate.length === 0 && (
+                                        <li className="list-group-item">No matching participants found or available.</li>
+                                    )}
+                                </ul>
                             </div>
 
                             <div className="mb-3">
-                            <h5>Selected Team Members ({selectedParticipants.length + 1}/{MAX_TEAM_MEMBERS}):</h5>
-<ul className="list-group">
-    <li className="list-group-item d-flex justify-content-between align-items-center active">
-        {`${currentUserName} (Team Leader)`}
-        <span>👑</span>
-    </li>
-    {selectedParticipants.map(participant => (
-        <li key={participant.id} className="list-group-item d-flex justify-content-between align-items-center">
-            {`${participant.firstName} ${participant.lastName}`}
-            <button
-                className="btn btn-sm btn-outline-danger"
-                onClick={() => handleRemoveParticipant(participant.id)}
-            >
-                Remove
-            </button>
-        </li>
-    ))}
-</ul>
-
-
+                                <h5>Selected Team Members ({selectedParticipants.length + 1}/{MAX_TEAM_MEMBERS}):</h5>
+                                <ul className="list-group">
+                                    <li className="list-group-item d-flex justify-content-between align-items-center active">
+                                        {`${currentUserName} (Team Leader)`}
+                                        <span>👑</span>
+                                    </li>
+                                    {selectedParticipants.map(participant => (
+                                        <li key={participant.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                            {`${participant.firstName} ${participant.lastName}`}
+                                            <button
+                                                className="btn btn-sm btn-outline-danger"
+                                                onClick={() => handleRemoveParticipant(participant.id)}
+                                            >
+                                                Remove
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
 
                             <button
                                 className="btn btn-primary w-100"
                                 onClick={handleSendRequestCreateTeam}
-                                disabled={!teamName.trim() || (selectedParticipants.length === 0 && MAX_TEAM_MEMBERS > 1) || selectedParticipants.length > MAX_ADDITIONAL_PARTICIPANTS }
+                                disabled={!teamName.trim() || selectedParticipants.length === 0 || selectedParticipants.length > MAX_TEAM_MEMBERS - 1 }
                             >
                                 Create Team & Send Invites
                             </button>
-
-                            {requestsSentToTeam.length > 0 && (
-                                <div className="mt-3">
-                                    <h5>Requests Sent:</h5>
-                                    <ul className="list-group text-black">
-                                        {requestsSentToTeam.map((request, index) => {
-                                            // Assuming request object has user info or userId
-                                            const user = users.find(u => u.id === request.userId);
-                                            return (
-                                                <li key={index} className="list-group-item">
-                                                    {user ? `${user.firstName} ${user.lastName}` : (request.userName || 'Unknown User')} - Status: {request.status}
-                                                </li>
-                                            );
-                                        })}
-                                    </ul>
-                                </div>
-                            )}
                         </div>
                     )}
 
@@ -755,27 +679,19 @@ const handleAddParticipant = (participant) => {
                             {filteredTeamsJoin.length > 0 ? (
                                 <ul className="list-group">
                                     {filteredTeamsJoin.map(team => (
-                                        <li
-                                            key={team.id || team.team_id}
-                                            className="list-group-item d-flex justify-content-between align-items-center"
-                                        >
-                                            <div>
-                                                <h5>{team.name}</h5>
-                                                {team.members && <small className="text-muted">Members: {team.members.length}/{MAX_TEAM_MEMBERS}</small>}
-                                                {team.isFull && <span className="badge bg-danger ms-2">Full</span>}
-                                            </div>
+                                        <li key={team.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                            {team.name}
                                             <button
-                                                className="btn btn-sm btn-outline-success"
+                                                className="btn btn-sm btn-outline-primary"
                                                 onClick={() => handleSendJoinRequest(team)}
-                                                disabled={team.isFull || team.members.length >= MAX_TEAM_MEMBERS}
                                             >
-                                                Send Join Request
+                                                Request to Join
                                             </button>
                                         </li>
                                     ))}
                                 </ul>
                             ) : (
-                                <p>No teams available to join currently, or matching your search.</p>
+                                <p>No available teams to join</p>
                             )}
                         </div>
                     )}

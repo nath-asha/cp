@@ -18,44 +18,6 @@ const Signup = require('../models/signup');
 const { isLoggedIn } = require('../middleware/auth'); // Middleware to check if user is logged in
 
 // Route to create a team
-router.post('/create', isLoggedIn, async (req, res) => {
-    const { teamName, eventId, projectName, mentorId } = req.body;
-
-    try {
-        // Create the new team
-        const newTeam = new Team({
-            name: teamName,
-            team_id: Math.floor(Math.random() * 10000), // Random team ID or you can have an auto-increment logic
-            project: projectName,
-            project_id: eventId, // From URL params
-            mentor: mentorId,
-            status: "active",
-            isFull: false,
-            eventId: eventId,
-            createdAt: new Date(),
-        });
-
-        // Add the team leader (logged-in user)
-        newTeam.members.push({
-            status: 'leader', 
-            user_id: req.user._id
-        });
-
-        // Save the new team
-        await newTeam.save();
-
-        // Update the user's signup document with the team details
-        await Signup.findByIdAndUpdate(req.user._id, {
-            team: teamName,
-            teamId: newTeam.team_id,
-            isTeam: true
-        });
-
-        res.status(201).json({ message: 'Team created successfully', team: newTeam });
-    } catch (error) {
-        res.status(500).json({ message: 'Failed to create team', error });
-    }
-});
 ```
 
 #### 1.2 Join Team Route
@@ -64,45 +26,7 @@ router.post('/create', isLoggedIn, async (req, res) => {
 // teamRoutes.js
 
 // Route to join a team
-router.post('/join/:teamId', isLoggedIn, async (req, res) => {
-    const { teamId } = req.params;
 
-    try {
-        // Find the team by ID
-        const team = await Team.findOne({ team_id: teamId });
-
-        if (!team || team.isFull) {
-            return res.status(400).json({ message: 'Team is either full or does not exist' });
-        }
-
-        // Check if the team already has 4 members
-        if (team.members.length >= 4) {
-            return res.status(400).json({ message: 'Team is full' });
-        }
-
-        // Add user to team requests
-        team.requests.push({
-            user_id: req.user._id,
-            status: 'pending',
-        });
-
-        // Save the updated team
-        await team.save();
-
-        // Update the user's signup document with pending request
-        const user = await Signup.findById(req.user._id);
-        user.requests.push({
-            teamId: team.team_id,
-            teamName: team.name,
-            status: 'pending'
-        });
-        await user.save();
-
-        res.status(200).json({ message: 'Request to join the team sent' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error while sending request', error });
-    }
-});
 ```
 
 #### 1.3 Accept/Reject Request by Team Leader
@@ -111,58 +35,7 @@ router.post('/join/:teamId', isLoggedIn, async (req, res) => {
 // teamRoutes.js
 
 // Route for team leader to accept/reject request
-router.post('/request/:teamId/:userId', isLoggedIn, async (req, res) => {
-    const { teamId, userId } = req.params;
-    const { action } = req.body; // "accept" or "reject"
 
-    try {
-        // Find the team by ID
-        const team = await Team.findOne({ team_id: teamId });
-
-        if (!team) {
-            return res.status(404).json({ message: 'Team not found' });
-        }
-
-        // Check if the logged-in user is the team leader
-        if (team.members[0].user_id.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ message: 'Only the team leader can approve/reject requests' });
-        }
-
-        // Find the request to accept/reject
-        const requestIndex = team.requests.findIndex(request => request.user_id.toString() === userId);
-
-        if (requestIndex === -1) {
-            return res.status(404).json({ message: 'Request not found' });
-        }
-
-        // Accept or reject the request
-        if (action === 'accept') {
-            team.members.push({
-                status: 'member',
-                user_id: userId
-            });
-            team.requests[requestIndex].status = 'approved';
-        } else if (action === 'reject') {
-            team.requests[requestIndex].status = 'rejected';
-        }
-
-        // Save the updated team
-        await team.save();
-
-        // Update the user's signup document
-        const user = await Signup.findById(userId);
-        if (action === 'accept') {
-            user.team = team.name;
-            user.teamId = team.team_id;
-            user.isTeam = true;
-        }
-        await user.save();
-
-        res.status(200).json({ message: `Request ${action}ed successfully` });
-    } catch (error) {
-        res.status(500).json({ message: 'Error while processing request', error });
-    }
-});
 ```
 
 ### Step 2: Frontend (Example)
@@ -172,40 +45,6 @@ Here's a simple front-end form to handle creating and joining teams. You can use
 ```jsx
 // CreateTeam.js
 
-import React, { useState } from 'react';
-
-const CreateTeam = () => {
-  const [teamName, setTeamName] = useState('');
-  const [eventId, setEventId] = useState('');
-  const [projectName, setProjectName] = useState('');
-  const [mentorId, setMentorId] = useState('');
-
-  const handleCreateTeam = async () => {
-    const response = await fetch('/api/team/create', {
-      method: 'POST',
-      body: JSON.stringify({ teamName, eventId, projectName, mentorId }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const data = await response.json();
-    if (data.message === 'Team created successfully') {
-      // Handle success (navigate to the team page, etc.)
-    } else {
-      // Handle error
-    }
-  };
-
-  return (
-    <div>
-      <input type="text" placeholder="Team Name" onChange={(e) => setTeamName(e.target.value)} />
-      <input type="text" placeholder="Event ID" onChange={(e) => setEventId(e.target.value)} />
-      <input type="text" placeholder="Project Name" onChange={(e) => setProjectName(e.target.value)} />
-      <input type="text" placeholder="Mentor ID" onChange={(e) => setMentorId(e.target.value)} />
-      <button onClick={handleCreateTeam}>Create Team</button>
-    </div>
-  );
-};
-
-export default CreateTeam;
 ```
 
 ### Step 3: Additional Considerations
