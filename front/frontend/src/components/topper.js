@@ -173,7 +173,7 @@ const Displayevent = () => {
                     <Tab.Content>
                         <Tab.Pane eventKey="overview">
                             <Row className="g-4">
-                                <CountdownTimer />
+                                <CountdownTimer EventName={selectedEvent.title} EventDate={selectedEvent.date} />
                                 
                                 <Col md={6}>
                                     <h3 className="text-blue">{selectedEvent.title}</h3>
@@ -198,36 +198,11 @@ const Displayevent = () => {
                                             )}
                                         </CardBody>
                                     </Card>
-                                    {/* <Card> */}
-                                        {/* <Card>
-                                        <CardBody>
-                                            {user && role === 'user' && selectedEvent.participants?.includes(userId) ? (
-                                                <a href='/createteams'>
-                                                    <button className="btn btn-primary btn-sm">Create Team</button>
-                                                </a>
-                                            ) : (
-                                                <p className="text-black mt-2">
-                                                    Please register for the event first.
-                                                </p>
-                                            )}
-                                        </CardBody>
-                                    </Card> */}
-                                  {/* Create Team card - only visible for registered users with role "user"
-                                    {isRegistered && role === 'user' && // Assuming participants is an array of objects like: [{ userId, eventId }]
-                                    selectedEvent.participants?.some(p => p.userId === userId && p.eventId === eventId)
-(
-                                        <Card>
-                                            <CardBody>
-                                                <a href='/createteams'>
-                                                    <button className="btn btn-primary btn-sm">Create Team</button>
-                                                </a>
-                                            </CardBody>
-                                        </Card>
-                                    )} */}
+                                    {/* {isRegistered && role === 'user' && selectedEvent.participants?.some(
+                                    p => p === userId */}
+                                    {isRegistered && role === 'user' && selectedEvent.participants?.includes(userId) && (
 
-                                    {isRegistered && role === 'user' && selectedEvent.participants?.some(
-                                    p => p.userId === userId && p.eventId === eventId
-                                ) && (
+                                // ) && (
                                     <Card>
                                         <CardBody>
                                             <a href='/createteams'>

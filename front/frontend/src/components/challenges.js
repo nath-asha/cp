@@ -7,6 +7,8 @@ import { getUserRole, getUserId } from './auth'; // Assuming getUserId() gets th
 function Challenges() {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [error, setError] = useState(null);
   const { eventId } = useParams(); // Get eventId from URL parameters
   const navigate = useNavigate();
@@ -32,6 +34,40 @@ function Challenges() {
 
     fetchData();
   }, [eventId]);
+     useEffect(() => {
+        const fetchEventDetails = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/events/${eventId}`);
+                const data = await response.json();
+                console.log(data);
+                if (Array.isArray(data) && data.length > 0) {
+                    setSelectedEvent(data[0]);
+                    
+                    // Check if the current user is registered for THIS SPECIFIC event
+                    // Reset registration status whenever event changes
+                    setIsRegistered(false);
+                    
+                    if (userId && data[0].participants) {
+                        // Convert to strings for safer comparison if needed
+                        const participantIds = data[0].participants.map(id => String(id));
+                        const currentUserId = String(userId);
+                        
+                        if (participantIds.includes(currentUserId)) {
+                            setIsRegistered(true);
+                        }
+                    }
+                } else {
+                    setSelectedEvent(null);
+                    setIsRegistered(false);
+                    console.warn("No event data found for this ID.");
+                }
+            } catch (err) {
+                console.error('Error fetching events data:', err);
+                setIsRegistered(false);
+            }
+        };
+        fetchEventDetails();
+    }, [eventId, userId]);
 
   const handleChoose = async (trackId) => {
     try {

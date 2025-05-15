@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from "react";
 import '../styles/countdown.css';
 
-const CountdownTimer = () => {
-  const [eventName, setEventName] = useState("hackafest");
-  const [eventDate, setEventDate] = useState("2025-03-30");
-  const [countdownStarted, setCountdownStarted] = useState(true); // Always start
+const CountdownTimer = ({ EventName = "", EventDate = "" }) => {
+  const [countdownStarted, setCountdownStarted] = useState(true);
   const [timeRemaining, setTimeRemaining] = useState(0);
 
   useEffect(() => {
-    if (countdownStarted && eventDate) {
+    if (countdownStarted && EventDate) {
       const countdownInterval = setInterval(() => {
         const currentTime = new Date().getTime();
-        const eventTime = new Date(eventDate).getTime();
+        const eventTime = new Date(EventDate).getTime();
         let remainingTime = eventTime - currentTime;
 
         if (remainingTime <= 0) {
           remainingTime = 0;
           clearInterval(countdownInterval);
-          alert("Countdown complete!");
-          setCountdownStarted(false); //stop the timer after completion.
+          setCountdownStarted(false);
         }
 
         setTimeRemaining(remainingTime);
@@ -26,15 +23,16 @@ const CountdownTimer = () => {
 
       return () => clearInterval(countdownInterval);
     }
-  }, [countdownStarted, eventDate, timeRemaining]);
+  }, [countdownStarted, EventDate, timeRemaining]);
 
   useEffect(() => {
     if (countdownStarted) {
-      document.title = eventName;
+      document.title = EventName;
     }
-  }, [countdownStarted, eventName]);
+  }, [countdownStarted, EventName]);
 
   const formatDate = (date) => {
+    if (!date) return "";
     const options = { month: "long", day: "numeric", year: "numeric" };
     return new Date(date).toLocaleDateString("en-US", options);
   };
@@ -66,14 +64,12 @@ const CountdownTimer = () => {
   return (
     <div className="countdown-timer-container">
       <h2 className="countdown-name">
-        {eventName}
+        {EventName}
       </h2>
       <p className="countdown-date">
-        {formatDate(eventDate)}
+        {formatDate(EventDate)}
       </p>
-
       {countdownStarted && formatTime(timeRemaining)}
-
     </div>
   );
 };

@@ -30,7 +30,8 @@ function Events() {
 
   useEffect(() => {
     const today = new Date();
-    const past = events.filter((event) => new Date(event.date) < today);
+    // const past = events.filter((event) => new Date(event.date) < today);
+    const past = events.filter((event) => new Date(event.date) < today && new Date(event.enddate) < today);
     const present = events.filter((event) => {
       const startDate = new Date(event.date);
       const endDate = new Date(event.enddate || event.date);
