@@ -1256,6 +1256,34 @@ router.post('/finalize-score', async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+router.get('/teams/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    
+    // Find the user in the Signup model to check their team ID
+    const user = await Signup.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // If user has a team ID, check the team in the Team model
+    if (user.teamId) {
+      const team = await Team.findOne({ team_id: user.teamId });
+
+      if (team) {
+        return res.status(200).json({ hasTeam: true, team });
+      }
+    }
+
+    // If user doesn't have a team ID
+    res.status(200).json({ hasTeam: false });
+  } catch (err) {
+    console.error('Error fetching team data:', err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 //assign events to mentors
 
 module.exports = router;
