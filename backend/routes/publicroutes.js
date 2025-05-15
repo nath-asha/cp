@@ -1237,6 +1237,25 @@ router.post('/request/:teamId/:userId', async (req, res) => {
         res.status(500).json({ message: 'Error while processing request', error });
     }
 });
+
+router.post('/finalize-score', async (req, res) => {
+  const { submissionId, score } = req.body;
+
+  try {
+    const submission = await Submission.findById(submissionId);
+    if (!submission) {
+      return res.status(404).send("Submission not found");
+    }
+
+    // Add score to the submission (or handle as needed)
+    submission.score = score;
+
+    await submission.save();
+    res.status(200).send("Score finalized");
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
 //assign events to mentors
 
 module.exports = router;

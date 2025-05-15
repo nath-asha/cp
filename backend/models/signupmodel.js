@@ -7,8 +7,6 @@ const signupSchema = new mongoose.Schema({
     role: {type: String, required: true, default : "user"},
     firstName: String,
     lastName: String,
-    email: String,
-    password: String,
     createdAt: Date,
     phone: Number,
     team: { type: String, default: "none" },

@@ -35,7 +35,7 @@ function Challenges() {
 
   const handleChoose = async (trackId) => {
     try {
-      const response = await fetch(`http://localhost:5000/choose-challenge/${teamId}`, {
+      const response = await fetch(`http://localhost:5000/choose-challenge/${userId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

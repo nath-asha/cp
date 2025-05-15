@@ -89,6 +89,7 @@ const MentorManager = () => {
                 onChange={(e) => setSearch(e.target.value)}
                 className="form-control mb-3"
             />
+            <button variant="outline-light" size="sm" onClick={() => window.location.href = '/assignmentees'}>Assign teams to Mentor</button>
             <table className="table table-striped">
                 <thead>
                     <tr>

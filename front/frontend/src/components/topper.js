@@ -18,6 +18,7 @@ const Displayevent = () => {
     const [isRegistered, setIsRegistered] = useState(false);
     const role = getUserRole();
     const userId = getUserId(); 
+    console.log("user id is",userId);
 
     useEffect(() => {
         const fetchEventDetails = async () => {

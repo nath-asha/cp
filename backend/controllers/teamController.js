@@ -12,7 +12,7 @@ exports.sendInvitation = async (req, res) => {
             return res.status(404).json({ status: "failed", message: "User not found" });
         }
 
-        const team = await team.findById(teamId); // Ensure variable consistency
+        const team = await team.findOne({ team_id: teamId });  // Corrected the query to match team_id field
         if (!team) {
             return res.status(404).json({ status: "failed", message: "Team not found" });
         }
@@ -22,11 +22,11 @@ exports.sendInvitation = async (req, res) => {
             return res.status(400).json({ status: "failed", message: "User is already a member of this team" });
         }
 
-        if (userToInvite.invitations.includes(team.id)) {  // Correct `team` reference
+        if (userToInvite.invitations.includes(team.team_id)) {  // Corrected the reference to team_id
             return res.status(400).json({ status: "failed", message: "Invitation already sent" });
         }
 
-        userToInvite.invitations.push(team.id);  // Correct `team` reference
+        userToInvite.invitations.push(team.team_id);  // Corrected the reference to team_id
         await userToInvite.save();
 
         return res.status(200).json({ status: "success", message: `Invitation sent to ${email}` });
@@ -34,6 +34,39 @@ exports.sendInvitation = async (req, res) => {
         return res.status(500).json({ status: "failed", message: error.message });
     }
 };
+
+// exports.sendInvitation = async (req, res) => {
+//     const { teamId } = req.params;
+//     const { email } = req.body;
+
+//     try {
+//         const userToInvite = await signuser.findOne({ email });
+//         if (!userToInvite) {
+//             return res.status(404).json({ status: "failed", message: "User not found" });
+//         }
+
+//         const Team = await team.findOne(teamId); // Ensure variable consistency
+//         if (!Team) {
+//             return res.status(404).json({ status: "failed", message: "Team not found" });
+//         }
+
+//         const memberExist = Team.members.some((member) => member.user_id.toString() === userToInvite.id.toString());
+//         if (memberExist) {
+//             return res.status(400).json({ status: "failed", message: "User is already a member of this team" });
+//         }
+
+//         if (userToInvite.invitations.includes(Team.team_id)) {  // Correct `team` reference
+//             return res.status(400).json({ status: "failed", message: "Invitation already sent" });
+//         }
+
+//         userToInvite.invitations.push(Team.team_id);  // Correct `team` reference
+//         await userToInvite.save();
+
+//         return res.status(200).json({ status: "success", message: `Invitation sent to ${email}` });
+//     } catch (error) {
+//         return res.status(500).json({ status: "failed", message: error.message });
+//     }
+// };
 
 
 // Accept invite

@@ -170,12 +170,11 @@
 // };
 
 // export default EvaluationRubrics;
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Card, Table, Button, Form, Modal } from 'react-bootstrap';
 import { useAuth } from '../provider/AuthProvider';
-import { useNavigate } from 'react-router-dom'; // Updated import
+import { useNavigate } from 'react-router-dom'; // Correct import for navigation
 
 const EvaluationPortal = () => {
   const { user } = useAuth();  // Fetch the logged-in user (judge)
@@ -183,7 +182,7 @@ const EvaluationPortal = () => {
   const [submissions, setSubmissions] = useState([]);
   const [rubrics, setRubrics] = useState([]);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
-  const [scores, setScores] = useState({});
+  const [scores, setScores] = useState({});  // To store the rubric scores
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -207,7 +206,14 @@ const EvaluationPortal = () => {
   }, []);
 
   const handleGrading = (submissionId) => {
-    setSelectedSubmission(submissions.find(sub => sub.id === submissionId));
+    const selected = submissions.find(sub => sub.id === submissionId);
+    setSelectedSubmission(selected);
+    // Initialize scores for the selected submission based on the rubric
+    const initialScores = {};
+    rubrics.forEach(rubric => {
+      initialScores[rubric.id] = null;  // or provide default scores if required
+    });
+    setScores(initialScores);
     setShowModal(true);
   };
 
@@ -220,10 +226,13 @@ const EvaluationPortal = () => {
 
   const handleFinalizeScore = () => {
     // Finalize the score for this submission
-    const finalScore = Object.values(scores).reduce((acc, score) => acc + score, 0);
+    const finalScore = Object.values(scores).reduce((acc, score) => acc + (score || 0), 0);
     console.log(`Final score for ${selectedSubmission.title}: ${finalScore}`);
 
     // You can send the score to the server here, e.g., axios.post('/finalize-score', { submissionId: selectedSubmission.id, score: finalScore });
+
+    // Optionally redirect after grading
+    // navigate(`/some-path-after-grading`);
 
     // Close modal
     setShowModal(false);
@@ -245,16 +254,16 @@ const EvaluationPortal = () => {
             </thead>
             <tbody>
               {submissions.map((submission) => (
-                <tr key={submission.id}>
+                <tr key={submission._id}>
                   <td>{submission.title}</td>
-                  <td>{submission.mentor.name}</td>
+                  <td>{submission.team_id}</td> {/* Assuming team_id is associated with mentor */}
                   <td>
-                    <Button variant="info" onClick={() => handleGrading(submission.id)}>
+                    <Button variant="info" onClick={() => handleGrading(submission._id)}>
                       View
                     </Button>
                   </td>
                   <td>
-                    <Button variant="primary" onClick={() => handleGrading(submission.id)}>
+                    <Button variant="primary" onClick={() => handleGrading(submission._id)}>
                       Grade
                     </Button>
                   </td>

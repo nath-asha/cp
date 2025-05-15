@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const teamSchema = new mongoose.Schema({
     "name": String,
-    "team_id": Number,
+    team_id: { type: Number, unique: true }, // team_id is now unique
     // "members": [String],
     members: {
         type: [
@@ -15,7 +15,7 @@ const teamSchema = new mongoose.Schema({
     },
     "project_id": Number,
     "project": String,
-    "createdAt": Date,
+    createdAt: { type: Date, default: Date.now },
     "mentor":{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

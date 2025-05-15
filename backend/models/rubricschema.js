@@ -9,7 +9,8 @@ const rubricSchema = new mongoose.Schema({
             maxScore: { type: Number, required: true },
             description: { type: String, required: true }
         }
-    ]
+    ],
+    eventId : String
 });
 
 module.exports = mongoose.model('Rubric', rubricSchema);
