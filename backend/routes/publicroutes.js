@@ -395,22 +395,44 @@ router.get('/challenges/:eventId', async (req, res) => {
     }
 });
 
+// router.post('/choose-challenge', async (req, res) => {
+//     const { user_id, track_id } = req.body;
+
+//     try {
+//         // Find the user and update their chosen challenge
+//         const updatedUser = await user.findOneAndUpdate(
+//             { _id: user_id },
+//             { $set: { chosen_challenge: track_id } },
+//             { new: true }
+//         );
+
+//         if (!updatedUser) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
+
+//         res.status(200).json({ message: 'Challenge chosen successfully', user: updatedUser });
+//     } catch (err) {
+//         console.error('Error saving challenge choice:', err);
+//         res.status(500).json({ error: 'Failed to choose challenge' });
+//     }
+// });
+//this worksssssssssssssss above one alsooooooooooooooooooo
 router.post('/choose-challenge', async (req, res) => {
-    const { user_id, track_id } = req.body;
+    const { team_id, track_id } = req.body;
 
     try {
-        // Find the user and update their chosen challenge
-        const updatedUser = await user.findOneAndUpdate(
-            { _id: user_id },
+        // Find the team using the custom team_id (not _id) and update their chosen challenge
+        const updatedTeam = await team.findOneAndUpdate(
+            { team_id: team_id },
             { $set: { chosen_challenge: track_id } },
             { new: true }
         );
 
-        if (!updatedUser) {
-            return res.status(404).json({ message: 'User not found' });
+        if (!updatedTeam) {
+            return res.status(404).json({ message: 'Team not found' });
         }
 
-        res.status(200).json({ message: 'Challenge chosen successfully', user: updatedUser });
+        res.status(200).json({ message: 'Challenge chosen successfully', team: updatedTeam });
     } catch (err) {
         console.error('Error saving challenge choice:', err);
         res.status(500).json({ error: 'Failed to choose challenge' });

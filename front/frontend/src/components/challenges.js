@@ -124,19 +124,28 @@ function Challenges() {
                 </h6>
                 <a href={`/displaychallenge/${challenge.track_id}`}>
                   <button className="btn btn-primary btn-sm">Know more</button>
+                  <br></br>
                 </a>
-                {role === 'user' ? (
-                  <button
-                    className="btn btn-success btn-sm"
-                    onClick={() => handleChoose(challenge.track_id)}
-                  >
-                    Choose
-                  </button>
-                ) : (
-                  <p className="text-black mt-2">
-                    Please register for the event first.
-                  </p>
-                )}
+               {role === 'user' && isRegistered ? (
+  new Date().toISOString().split('T')[0] <= selectedEvent?.teamFormationDeadline ? (
+    <button
+      className="btn btn-success btn-sm"
+      onClick={() => handleChoose(challenge.track_id)}
+    >
+      Choose
+    </button>
+    
+  ) : (
+    <span className="text-danger">
+      Team formation deadline has passed
+    </span>
+  )
+) : (
+  <p className="text-black mt-2">
+    Please register for the event first.
+  </p>
+)}
+
               </div>
             </div>
           </div>
