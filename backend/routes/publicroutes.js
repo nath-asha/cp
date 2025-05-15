@@ -416,7 +416,7 @@ router.get('/challenges/:eventId', async (req, res) => {
 //         res.status(500).json({ error: 'Failed to choose challenge' });
 //     }
 // });
-//this worksssssssssssssss above one alsooooooooooooooooooo
+//this worksssssssssssssss above one
 router.post('/choose-challenge', async (req, res) => {
     const { team_id, track_id } = req.body;
 
@@ -832,17 +832,48 @@ router.delete('/challenges/:id', async (req, res) => {
 
 
 // Event registration endpoint this is working adds event to user
+// router.post('/events/:eventId/register', async (req, res) => {
+//     const { eventId } = req.params;
+//     const { userId } = req.body;
+
+//     if (!userId) {
+//         return res.status(400).json({ message: 'User ID is required' });
+//     }
+
+//     try {
+//         // const Event = await event.findById(eventId);
+//         const Event = await event.findOne({ eventId }); // Query by eventId (custom string field)
+//         if (!Event) {
+//             return res.status(404).json({ message: 'Event not found' });
+//         }
+
+//         if (Event.participants.includes(userId)) {
+//             return res.status(400).json({ message: 'User is already registered for this event' });
+//         }
+
+//         Event.participants.push(userId);
+//         await Event.save();
+
+//         res.status(200).json({ message: 'Successfully registered for the event' });
+//     } catch (error) {
+//         console.error('Error registering user:', error);
+//         res.status(500).json({ message: 'Internal Server Error' });
+//     }
+    
+// });
+//this works but this logic has to be transfered to create teams/anything later for getting team name team id
+//else can be dangerous
 router.post('/events/:eventId/register', async (req, res) => {
     const { eventId } = req.params;
-    const { userId } = req.body;
+    const { userId, teamName, teamId } = req.body; // Accept teamName and teamId
 
     if (!userId) {
         return res.status(400).json({ message: 'User ID is required' });
     }
 
     try {
-        // const Event = await event.findById(eventId);
-        const Event = await event.findOne({ eventId }); // Query by eventId (custom string field)
+        // Find event by custom eventId field
+        const Event = await event.findOne({ eventId });
         if (!Event) {
             return res.status(404).json({ message: 'Event not found' });
         }
@@ -854,14 +885,23 @@ router.post('/events/:eventId/register', async (req, res) => {
         Event.participants.push(userId);
         await Event.save();
 
+        // Update teamName and teamId in signuser model for the user
+        await signuser.findByIdAndUpdate(
+            userId,
+            {
+                $set: {
+                    team: teamName || '', // Set to empty string if not provided
+                    teamId: teamId || ''
+                }
+            }
+        );
+
         res.status(200).json({ message: 'Successfully registered for the event' });
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
-    
-});
-
+}); 
 router.put('/events/:id', async (req, res) => {
     try {
         const eventId = req.params.id;
