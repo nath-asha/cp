@@ -830,7 +830,7 @@ router.post('/events/:eventId/register', async (req, res) => {
         }
 
         Event.participants.push(userId);
-        await event.save();
+        await Event.save();
 
         res.status(200).json({ message: 'Successfully registered for the event' });
     } catch (error) {
