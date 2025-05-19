@@ -10,34 +10,25 @@ import Challenges from "./challenges";
 import { useParams } from "react-router-dom";
 import { getUserRole, getUserId } from './auth';
 
-
 const Displayevent = () => {
     const { eventId } = useParams();
     const { user } = useAuth();
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [isRegistered, setIsRegistered] = useState(false);
     const role = getUserRole();
-    const userId = getUserId(); 
-    console.log("user id is",userId);
+    const userId = getUserId();
 
     useEffect(() => {
         const fetchEventDetails = async () => {
             try {
                 const response = await fetch(`http://localhost:5000/events/${eventId}`);
                 const data = await response.json();
-                console.log(data);
                 if (Array.isArray(data) && data.length > 0) {
                     setSelectedEvent(data[0]);
-                    
-                    // Check if the current user is registered for THIS SPECIFIC event
-                    // Reset registration status whenever event changes
                     setIsRegistered(false);
-                    
                     if (userId && data[0].participants) {
-                        // Convert to strings for safer comparison if needed
                         const participantIds = data[0].participants.map(id => String(id));
                         const currentUserId = String(userId);
-                        
                         if (participantIds.includes(currentUserId)) {
                             setIsRegistered(true);
                         }
@@ -45,10 +36,8 @@ const Displayevent = () => {
                 } else {
                     setSelectedEvent(null);
                     setIsRegistered(false);
-                    console.warn("No event data found for this ID.");
                 }
             } catch (err) {
-                console.error('Error fetching events data:', err);
                 setIsRegistered(false);
             }
         };
@@ -56,71 +45,22 @@ const Displayevent = () => {
     }, [eventId, userId]);
 
     if (!selectedEvent) {
-        return <p>Loading event details or event not found...</p>;
+        return (
+            <Container className="py-5">
+                <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "50vh" }}>
+                    <div className="spinner-border text-primary me-3" role="status"></div>
+                    <span>Loading event details or event not found...</span>
+                </div>
+            </Container>
+        );
     }
-    // const handleRegister = async () => {
-    //     if (!user || !user.id) {
-    //         alert("You must be logged in to register for an event.");
-    //         return;
-    //     }
-    
-    //     try {
-    //         const response = await fetch(`http://localhost:5000/events/${eventId}/register`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //            body: JSON.stringify({ userId: user.id }) // user.id is valid
-    //         });
-    
-    //         if (response.ok) {
-    //             alert('Successfully registered for the event!');
-    //         } else {
-    //             const errorData = await response.json();
-    //             alert(`Failed to register: ${errorData.message}`);
-    //         }
-    //     } catch (err) {
-    //         console.error('Error during registration:', err);
-    //         alert('An error occurred while trying to register.');
-    //     }
-    // };
+
     const handleRegister = async () => {
-    if (!user || !userId) { //this was changed for error on 13 may 12 am
-        alert("You must be logged in to register for an event.");
-        return;
-    }
-
-    console.log('Payload:', { userId: user.id }); // Debugging
-
-    // try {
-    //     const response = await fetch(`http://localhost:5000/events/${eventId}/register`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({ userId }),
-    //     });
-
-    //     if (response.ok) {
-    //         alert('Successfully registered for the event!');
-    //         setIsRegistered(true);
-    //         // Refresh event data to update participants list
-    //             const updatedEventResponse = await fetch(`http://localhost:5000/events/${eventId}`);
-    //             const updatedEventData = await updatedEventResponse.json();
-    //             if (Array.isArray(updatedEventData) && updatedEventData.length > 0) {
-    //                 setSelectedEvent(updatedEventData[0]);
-    //             }
-    //     } else {
-    //         const errorData = await response.json();
-    //         alert(`Failed to register: ${errorData.message}`);
-    //     }
-    //     console.log("Participants for this event:", selectedEvent.participants);
-
-    // } catch (err) {
-    //     console.error('Error during registration:', err);
-    //     alert('An error occurred while trying to register.');
-    // }
-     try {
+        if (!user || !userId) {
+            alert("You must be logged in to register for an event.");
+            return;
+        }
+        try {
             const response = await fetch(`http://localhost:5000/events/${eventId}/register`, {
                 method: 'POST',
                 headers: {
@@ -132,14 +72,10 @@ const Displayevent = () => {
             if (response.ok) {
                 alert('Successfully registered for the event!');
                 setIsRegistered(true);
-                
-                // Refresh event data to update participants list
                 const updatedEventResponse = await fetch(`http://localhost:5000/events/${eventId}`);
                 const updatedEventData = await updatedEventResponse.json();
                 if (Array.isArray(updatedEventData) && updatedEventData.length > 0) {
                     setSelectedEvent(updatedEventData[0]);
-                    
-                    // Double-check that we're actually registered in the updated data
                     const updatedParticipants = updatedEventData[0].participants?.map(id => String(id)) || [];
                     setIsRegistered(updatedParticipants.includes(String(userId)));
                 }
@@ -147,165 +83,223 @@ const Displayevent = () => {
                 const errorData = await response.json();
                 alert(`Failed to register: ${errorData.message}`);
             }
-            console.log("Participants for this event:", selectedEvent.participants);
-
         } catch (err) {
-            console.error('Error during registration:', err);
             alert('An error occurred while trying to register.');
         }
     };
+
     return (
-        <div>
-            <h2 className="mb-4">{selectedEvent.title || "Event Title"}</h2>
-            <Container>
-                <Tab.Container defaultActiveKey="overview">
-                    <Nav variant="tabs" className="mb-4">
-                        <Nav.Item><Nav.Link eventKey="overview">Overview</Nav.Link></Nav.Item>
-                        <Nav.Item><Nav.Link eventKey="prizes">Prizes</Nav.Link></Nav.Item>
-                        <Nav.Item><Nav.Link eventKey="schedule">Schedule</Nav.Link></Nav.Item>
-                        <Nav.Item><Nav.Link eventKey="importantdates">Important Dates</Nav.Link></Nav.Item>
-                        <Nav.Item><Nav.Link eventKey="challenges">Problem Statements</Nav.Link></Nav.Item>
-                        <Nav.Item><Nav.Link eventKey="results">Leaderboard</Nav.Link></Nav.Item>
-                        <Nav.Item><Nav.Link eventKey="Rules">Rules</Nav.Link></Nav.Item>
-                        <Nav.Item><Nav.Link eventKey="discuss">Discussions</Nav.Link></Nav.Item>
-                    </Nav>
+        <Container className="py-4">
+            <Card className="shadow mb-4">
+                <Card.Body>
+                    <Row className="align-items-center">
+                        <Col md={4}>
+                        <img
+                                src={selectedEvent.imgUrl}
+                                alt="Event"
+                                className="img-fluid rounded shadow-sm mb-2"
+                                style={{ maxHeight: "250px", objectFit: "cover" }}
+                            />
+                            {/* <h2 className="mb-2 fw-bold text-primary">{selectedEvent.title || "Event Title"}</h2> */}
+                            <div className="mb-2">
+                                <span className="badge bg-secondary me-2">Open to All</span>
+                                <span className="badge bg-success">
+                                    {selectedEvent.participants?.length || 0} Registered
+                                </span>
+                            </div>
+                            <p className="text-muted mb-1">{selectedEvent.venue}</p>
+                            <p className="mb-0">{selectedEvent.date}</p>
+                        </Col>
+                        <Col md={8} className="text-center">
+                            
+                            <CountdownTimer EventName={selectedEvent.title} EventDate={selectedEvent.date} />
+                        </Col>
+                    </Row>
+                </Card.Body>
+            </Card>
 
-                    <Tab.Content>
-                        <Tab.Pane eventKey="overview">
-                            <Row className="g-4">
-                                <CountdownTimer EventName={selectedEvent.title} EventDate={selectedEvent.date} />
-                                
-                                <Col md={6}>
-                                    <h3 className="text-blue">{selectedEvent.title}</h3>
-                                    <img src={selectedEvent.imgUrl} alt="Event" className="img-fluid" />
-                                    <h5>Open to All</h5>
-                                    <h5>Participants Registered: {selectedEvent.participants?.length || 0}</h5>
-                                </Col>
-                                <Col md={6}>
-                                
-                                    <Card className="mb-3">
-                                        <CardBody>
-                                            {new Date() <= new Date(selectedEvent.enddate) ? (
-                                                isRegistered ? (
-                                                    <p className="text-success">You are registered for this event!</p>
-                                                ) : (
-                                                    <button className="btn btn-primary btn-sm" onClick={handleRegister}>
-                                                        Register now!
-                                                    </button>
-                                                )
+            <Tab.Container defaultActiveKey="overview">
+                <Nav variant="tabs" className="mb-4">
+                    <Nav.Item><Nav.Link eventKey="overview">Overview</Nav.Link></Nav.Item>
+                    <Nav.Item><Nav.Link eventKey="prizes">Prizes</Nav.Link></Nav.Item>
+                    <Nav.Item><Nav.Link eventKey="schedule">Schedule</Nav.Link></Nav.Item>
+                    <Nav.Item><Nav.Link eventKey="importantdates">Important Dates</Nav.Link></Nav.Item>
+                    <Nav.Item><Nav.Link eventKey="challenges">Problem Statements</Nav.Link></Nav.Item>
+                    <Nav.Item><Nav.Link eventKey="results">Leaderboard</Nav.Link></Nav.Item>
+                    <Nav.Item><Nav.Link eventKey="Rules">Rules</Nav.Link></Nav.Item>
+                    <Nav.Item><Nav.Link eventKey="discuss">Discussions</Nav.Link></Nav.Item>
+                </Nav>
+
+                <Tab.Content>
+                    <Tab.Pane eventKey="overview">
+                        <Row>
+                            <Col md={8}>
+                                <Card className="mb-3 shadow-sm">
+                                    <Card.Body>
+                                        <h5 className="fw-bold mb-2">Description</h5>
+                                        <p>{selectedEvent.desc || "Description not available."}</p>
+                                        <h6 className="fw-bold mt-4">Requirements</h6>
+                                        <ul>
+                                            <li>GitHub link</li>
+                                            <li>Project repository</li>
+                                            <li>Video demo</li>
+                                        </ul>
+                                        <h6 className="fw-bold mt-4">Judging Criteria</h6>
+                                        <ul>
+                                            <li>Innovation</li>
+                                            <li>Technical Complexity</li>
+                                            <li>Presentation</li>
+                                        </ul>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col md={4}>
+                                <Card className="mb-3 shadow-sm">
+                                    <CardBody>
+                                        {new Date() <= new Date(selectedEvent.enddate) ? (
+                                            isRegistered ? (
+                                                <div className="alert alert-success mb-2 py-2 text-center">
+                                                    You are registered for this event!
+                                                </div>
                                             ) : (
-                                                <p className="text-danger">Registration closed.</p>
-                                            )}
-                                        </CardBody>
-                                    </Card>
-                                    {/* {isRegistered && role === 'user' && selectedEvent.participants?.some(
-                                    p => p === userId */}
-                                    {isRegistered && role === 'user' && selectedEvent.participants?.includes(userId) && (
-
-                                // ) && (
-                                    <Card>
-                                        <CardBody>
+                                                <button className="btn btn-primary w-100" onClick={handleRegister}>
+                                                    Register now!
+                                                </button>
+                                            )
+                                        ) : (
+                                            <div className="alert alert-danger mb-2 py-2 text-center">
+                                                Registration closed.
+                                            </div>
+                                        )}
+                                    </CardBody>
+                                </Card>
+                                {isRegistered && role === 'user' && selectedEvent.participants?.includes(userId) && (
+                                    <Card className="mb-3 shadow-sm">
+                                        <CardBody className="text-center">
                                             <a href='/createteams'>
-                                                <button className="btn btn-primary btn-sm">Create Team</button>
+                                                <button className="btn btn-primary">Create Team</button>
                                             </a>
                                         </CardBody>
                                     </Card>
                                 )}
+                                <Card className="mb-3 shadow-sm">
+                                    <Card.Body>
+                                        <h6 className="fw-bold">Getting started / To Dos</h6>
+                                        <ul className="mb-0">
+                                            <li>Create teams before the deadline</li>
+                                            <li>Choose a challenge</li>
+                                            <li>Join Whatsapp group</li>
+                                        </ul>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Tab.Pane>
 
-                                    <Card>
-                                        <Card.Body>
-                                            <h5>{selectedEvent.date}</h5>
-                                            <h5>{selectedEvent.venue}</h5>
-                                        </Card.Body>
-                                    </Card>
-                                    <Card>
-                                        <CardBody>
-                                            <h4>Getting started / To Dos</h4>
-                                            <p>Create teams before the deadline</p>
-                                            <p>Choose a challenge</p>
-                                            <p>Join Whatsapp group</p>
-                                        </CardBody>
-                                    </Card>
-                                </Col>
-                                <p>{selectedEvent.desc || "Description not available."}</p>
-                                <h4>Requirements</h4>
-                                <ul>
-                                    <li>GitHub link</li>
-                                    <li>Project repository</li>
-                                    <li>Video demo</li>
-                                </ul>
-                                <h4>Judging Criteria</h4>
-                            </Row>
-                        </Tab.Pane>
-
-                        <Tab.Pane eventKey="prizes">
-                            {selectedEvent.prizes && selectedEvent.prizes.length > 0 ? (
-                                <ul>
-                                    {selectedEvent.prizes.map((prize, index) => (
-                                        <h1 className="hero" key={index}><Trophy /> {index + 1} : {prize}</h1>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>No prizes listed for this event.</p>
-                            )}
-                        </Tab.Pane>
-
-                        <Tab.Pane eventKey="schedule">
-                            {selectedEvent.scheduleDetails && selectedEvent.scheduleDetails.length > 0 ? (
-                                <Table striped bordered hover>
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Time</th>
-                                            <th>Event</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {selectedEvent.scheduleDetails.map((item, index) => (
-                                            <tr key={index}>
-                                                <td>{item.date}</td>
-                                                <td>{item.time}</td>
-                                                <td>{item.event}</td>
-                                            </tr>
+                    <Tab.Pane eventKey="prizes">
+                        <Card className="shadow-sm">
+                            <Card.Body>
+                                <h4 className="mb-3 text-primary"><Trophy className="me-2" />Prizes</h4>
+                                {selectedEvent.prizes && selectedEvent.prizes.length > 0 ? (
+                                    <ul className="list-group">
+                                        {selectedEvent.prizes.map((prize, index) => (
+                                            <li className="list-group-item d-flex align-items-center" key={index}>
+                                                <span className={`badge bg-warning text-dark me-3 fs-5`}>{index + 1}</span>
+                                                <span className="fw-bold text-black">{prize}</span>
+                                            </li>
                                         ))}
-                                    </tbody>
-                                </Table>
-                            ) : (
-                                <p>No schedule details available.</p>
-                            )}
-                        </Tab.Pane>
+                                    </ul>
+                                ) : (
+                                    <div className="alert alert-warning mt-3" role="alert">
+                                        No prizes listed for this event.
+                                    </div>
+                                )}
+                            </Card.Body>
+                        </Card>
+                    </Tab.Pane>
 
-                        <Tab.Pane eventKey="importantdates">
-                            {selectedEvent.importantdates && selectedEvent.importantdates.length > 0 ? (
-                                <ul>
-                                    {selectedEvent.importantdates.map((date, index) => (
-                                        <li key={index}>{date}</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>No important dates listed.</p>
-                            )}
-                        </Tab.Pane>
+                    <Tab.Pane eventKey="schedule">
+                        <Card className="shadow-sm">
+                            <Card.Body>
+                                <h4 className="text-primary">Schedule</h4>
+                                {selectedEvent.scheduleDetails && selectedEvent.scheduleDetails.length > 0 ? (
+                                    <Table striped bordered hover responsive>
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Time</th>
+                                                <th>Event</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {selectedEvent.scheduleDetails.map((item, index) => (
+                                                <tr key={index}>
+                                                    <td>{item.date}</td>
+                                                    <td>{item.time}</td>
+                                                    <td>{item.event}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </Table>
+                                ) : (
+                                    <div className="alert alert-warning mt-3" role="alert">
+                                        No schedule details available.
+                                    </div>
+                                )}
+                            </Card.Body>
+                        </Card>
+                    </Tab.Pane>
 
-                        <Tab.Pane eventKey="challenges">
-                            <Challenges eventId={eventId} />
-                        </Tab.Pane>
+                    <Tab.Pane eventKey="importantdates">
+                        <Card className="shadow-sm">
+                            <Card.Body>
+                                <h4 className="mb-3 text-primary">
+                                    <i className="bi bi-calendar-event"></i> Important Dates
+                                </h4>
+                                {selectedEvent.importantdates && selectedEvent.importantdates.length > 0 ? (
+                                    <ul className="list-group list-group-flush shadow-sm">
+                                        {selectedEvent.importantdates.map((date, index) => (
+                                            <li
+                                                key={index}
+                                                className="list-group-item d-flex align-items-center"
+                                            >
+                                                <span className="badge bg-info text-black me-3">{index + 1}</span>
+                                                <span className="text-black">{date}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <div className="alert alert-warning mt-3" role="alert">
+                                        No important dates listed.
+                                    </div>
+                                )}
+                            </Card.Body>
+                        </Card>
+                    </Tab.Pane>
 
-                        <Tab.Pane eventKey="results">
-                            <Leaderboard eventId={eventId} />
-                        </Tab.Pane>
+                    <Tab.Pane eventKey="challenges">
+                        <Challenges eventId={eventId} />
+                    </Tab.Pane>
 
-                        <Tab.Pane eventKey="Rules">
-                            <p>Event rules will be displayed here.</p>
-                        </Tab.Pane>
+                    <Tab.Pane eventKey="results">
+                        <Leaderboard eventId={eventId} />
+                    </Tab.Pane>
 
-                        <Tab.Pane eventKey="discuss">
-                            <Community eventId={eventId} />
-                        </Tab.Pane>
-                    </Tab.Content>
-                </Tab.Container>
-            </Container>
-        </div>
+                    <Tab.Pane eventKey="Rules">
+                        <Card className="shadow-sm">
+                            <Card.Body>
+                                <h5 className="mb-2 text-primary">Event Rules</h5>
+                                <p>Event rules will be displayed here.</p>
+                            </Card.Body>
+                        </Card>
+                    </Tab.Pane>
+
+                    <Tab.Pane eventKey="discuss">
+                        <Community eventId={eventId} />
+                    </Tab.Pane>
+                </Tab.Content>
+            </Tab.Container>
+        </Container>
     );
 };
 

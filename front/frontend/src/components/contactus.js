@@ -1,61 +1,91 @@
 import React, { useState } from 'react';
-//the messages will be stored in contact or queries collection and shown in organiser dashboard
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const ContactUS = () => {
-    const [buttonText, setButtonText] = useState('Sign in');
-    const [buttonClass, setButtonClass] = useState(' text-black');
+    const [buttonText, setButtonText] = useState('Send Message');
+    const [buttonVariant, setButtonVariant] = useState('primary');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const originalText = buttonText;
-        setButtonText('Success!');
-        setButtonClass('text-black');
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     const originalText = buttonText;
+    //     setButtonText('Success!');
+    //     setButtonVariant('success');
 
-        setTimeout(() => {
-            setButtonText(originalText);
-            setButtonClass('w-full px-4 py-2 text-black');
-            e.target.reset();
-        }, 2000);
+    //     setTimeout(() => {
+    //         setButtonText(originalText);
+    //         setButtonVariant('primary');
+    //         e.target.reset();
+    //     }, 2000);
+    // };
+
+    // ...inside ContactUS component
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = {
+        firstName: form[0].value,
+        lastName: form[1].value,
+        email: form[2].value,
+        message: form[3].value,
     };
 
+    setButtonText('Sending...');
+    setButtonVariant('secondary');
+
+    try {
+        const response = await fetch('http://localhost:5000/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+        if (response.ok) {
+            setButtonText('Success!');
+            setButtonVariant('success');
+            form.reset();
+        } else {
+            setButtonText('Failed!');
+            setButtonVariant('danger');
+        }
+    } catch {
+        setButtonText('Error!');
+        setButtonVariant('danger');
+    }
+    setTimeout(() => {
+        setButtonText('Send Message');
+        setButtonVariant('primary');
+    }, 2000);
+};
+
     return (
-        <div className="min-h-screen bg-gray-100 p-8" id='contact'>
-               <div className="max-w-md mx-auto mb-8 overflow-hidden">
-        <div className="p-8">
-            <h2 className="mb-6 text-black">Contact Us</h2>
-            <form className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <label className="block text-sm text-black">First Name</label>
-                        <input type="text" 
-                               className="block w-full px-3 py-2 mt-1 bg-whitetext-black" />
+        <div className="container min-vh-100 d-flex align-items-center justify-content-center bg-light" id="contact">
+            <div className="col-md-6 col-lg-5 bg-white rounded shadow p-4">
+                <h2 className="mb-4 text-center text-primary">Contact Us</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label className="form-label">First Name</label>
+                            <input type="text" className="form-control" required />
+                        </div>
+                        <div className="col">
+                            <label className="form-label">Last Name</label>
+                            <input type="text" className="form-control" required />
+                        </div>
                     </div>
-                    <div>
-                        <label className="block text-sm text-black">Last Name</label>
-                        <input type="text" 
-                               className="block w-full px-3 py-2 mt-1 bg-white text-black" />
+                    <div className="mb-3">
+                        <label className="form-label">Email</label>
+                        <input type="email" className="form-control" required />
                     </div>
-                </div>
-                <div>
-                    <label className="block text-sm text-black">Email</label>
-                    <input type="email" 
-                           className="block w-full px-3 py-2 mt-1text-black"/>
-                </div>
-                <div>
-                    <label className="block text-sm text-black">Message</label>
-                    <br></br>
-                    <textarea className="form-control" style={{ minWidth: '100%' }}></textarea>
-                   
-                </div>
-                <button type="submit" 
-                        className="w-full px-4 py-2 text-black ">
-                    Send Message
-                </button>
-            </form>
-        </div>
-    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Message</label>
+                        <textarea className="form-control" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" className={`btn btn-${buttonVariant} w-100`}>
+                        {buttonText}
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };
 
 export default ContactUS;
-

@@ -13,7 +13,7 @@ const teamController = require('../controllers/teamController');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
-
+const Contact = require('../models/contactmodel');
 
 const router = express.Router();
 
@@ -1345,6 +1345,21 @@ router.get('/teams/:userId', async (req, res) => {
     console.error('Error fetching team data:', err);
     res.status(500).json({ message: 'Internal Server Error' });
   }
+});
+
+router.post('/contact', async (req, res) => {
+    try {
+        const { firstName, lastName, email, message } = req.body;
+        if (!firstName || !lastName || !email || !message) {
+            return res.status(400).json({ message: 'All fields are required.' });
+        }
+        const contact = new Contact({ firstName, lastName, email, message });
+        await contact.save();
+        res.status(201).json({ message: 'Message received!' });
+    } catch (err) {
+        console.error('Error saving contact message:', err);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
 });
 //assign events to mentors
 
