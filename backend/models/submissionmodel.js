@@ -10,8 +10,15 @@ const subSchema = new mongoose.Schema({
     preport: String,
     doc: String,
     vid: String,
-    "createdAt": Date,
-    team_id: String
+    createdAt: { type: Date, default: Date.now },
+    team_id: String,
+    // submissionPhases
+    phase: {
+        name: String,
+        startDate: Date,
+        endDate: Date,
+        description: String
+    }
 });
 
 module.exports = mongoose.model("Submission", subSchema);

@@ -1442,7 +1442,39 @@ router.post('/mentor-query', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
+router.post('/challenges', async (req, res) => {
+    try {
+        const { title, description, trackId, imgurl, eventId } = req.body;
+        if (!title || !description || !eventId) {
+            return res.status(400).json({ message: 'Title, description, and eventId are required.' });
+        }
+        const newChallenge = new Challenge({ title, description, trackId, imgurl, eventId });
+        await newChallenge.save();
+        res.status(201).json({ message: 'Challenge added successfully!', challenge: newChallenge });
+    } catch (err) {
+        console.error('Error adding challenge:', err);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 //assign events to mentors
+router.put('/challenges/:id', async (req, res) => {
+    try {
+        const challengeId = req.params.id;
+        const updatedChallenge = await Challenge.findByIdAndUpdate(
+            challengeId,
+            req.body,
+            { new: true }
+        );
+        if (!updatedChallenge) {
+            return res.status(404).json({ message: 'Challenge not found' });
+        }
+        res.status(200).json({ message: 'Challenge updated successfully', challenge: updatedChallenge });
+    } catch (err) {
+        console.error('Error updating challenge:', err);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 
 module.exports = router;
 

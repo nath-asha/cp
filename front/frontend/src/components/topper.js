@@ -128,6 +128,7 @@ const Displayevent = () => {
                     <Nav.Item><Nav.Link eventKey="results">Leaderboard</Nav.Link></Nav.Item>
                     <Nav.Item><Nav.Link eventKey="Rules">Rules</Nav.Link></Nav.Item>
                     <Nav.Item><Nav.Link eventKey="discuss">Discussions</Nav.Link></Nav.Item>
+                    <Nav.Item><Nav.Link eventKey="submission">Submission</Nav.Link></Nav.Item>
                 </Nav>
 
                 <Tab.Content>
@@ -290,6 +291,46 @@ const Displayevent = () => {
                             <Card.Body>
                                 <h5 className="mb-2 text-primary">Event Rules</h5>
                                 <p>Event rules will be displayed here.</p>
+                            </Card.Body>
+                        </Card>
+                    </Tab.Pane>
+                    
+                    {/* Submissions Tab.Pane for different phases */}
+                    <Tab.Pane eventKey="submission">
+                        <Card className="shadow-sm">
+                            <Card.Body>
+                                <h5 className="mb-3 text-primary">Submissions</h5>
+                                {selectedEvent.submissionPhases && selectedEvent.submissionPhases.length > 0 ? (
+                                    <div>
+                                        {selectedEvent.submissionPhases.map((phase, idx) => (
+                                            <Card className="mb-3" key={idx}>
+                                                <Card.Body>
+                                                    <h6 className="fw-bold">{phase.name}</h6>
+                                                    <p className="mb-1 text-muted">
+                                                        {phase.startDate} - {phase.endDate}
+                                                    </p>
+                                                    <p>{phase.description}</p>
+                                                    {/*  Show a submission form/button if phase is open */}
+                                                    {isRegistered && new Date() >= new Date(phase.startDate) && new Date() <= new Date(phase.endDate) ? (
+                                                        <button className="btn btn-success">
+                                                            Submit for {phase.name}
+                                                        </button>
+                                                    ) : (
+                                                        <div className="alert alert-info py-1 mb-0">
+                                                            {new Date() < new Date(phase.startDate)
+                                                                ? "Submission not started yet."
+                                                                : "Submission closed for this phase."}
+                                                        </div>
+                                                    )}
+                                                </Card.Body>
+                                            </Card>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="alert alert-warning" role="alert">
+                                        No submission phases defined for this event.
+                                    </div>
+                                )}
                             </Card.Body>
                         </Card>
                     </Tab.Pane>

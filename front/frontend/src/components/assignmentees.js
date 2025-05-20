@@ -275,21 +275,27 @@ const Assignmentees = () => {
 
       <div className="mb-3">
         <Form.Label>Select Teams (Unassigned Only):</Form.Label>
-        <Form.Select
-          multiple
-          value={selectedTeams}
-          onChange={(e) => {
-            const options = Array.from(e.target.selectedOptions, option => option.value);
-            setSelectedTeams(options);
-          }}
-        >
+        <div style={{ maxHeight: 200, overflowY: 'auto', border: '1px solid #ddd', borderRadius: 4, padding: 8 }}>
           {unassignedTeams.map(team => (
-            <option key={team._id} value={team._id}>
-              {team.name} (ID: {team.team_id})
-            </option>
+            <Form.Check
+              key={team._id}
+              type="checkbox"
+              id={`team-checkbox-${team._id}`}
+              label={`${team.name} (ID: ${team.team_id})`}
+              value={team._id}
+              checked={selectedTeams.includes(team._id)}
+              onChange={e => {
+                if (e.target.checked) {
+                  setSelectedTeams(prev => [...prev, team._id]);
+                } else {
+                  setSelectedTeams(prev => prev.filter(id => id !== team._id));
+                }
+              }}
+              className="mb-1"
+            />
           ))}
-        </Form.Select>
-        <small className="text-muted">Hold Ctrl (Windows) / Command (Mac) to select multiple.</small>
+        </div>
+        <small className="text-muted">Check teams to assign the selected mentor.</small>
       </div>
 
       <div className="mb-5">
