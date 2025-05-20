@@ -10,6 +10,7 @@ const subSchema = new mongoose.Schema({
     preport: String,
     doc: String,
     vid: String,
+    eventId: String,
     createdAt: { type: Date, default: Date.now },
     team_id: String,
     // submissionPhases

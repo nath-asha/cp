@@ -311,7 +311,8 @@ router.get("/api/stats", async (req, res) => {
         const problems = await Challenge.distinct('track_id').countDocuments();
         const submissions = await submission.distinct('ps').countDocuments();
         const eventcount = await event.distinct('event_id').countDocuments();
-        res.json({ participants, problems, submissions, eventcount });
+        const mentors = await user.distinct('email').countDocuments({ role: 'Mentor' });
+        res.json({ participants, problems, submissions, eventcount,mentors });
     } catch (err) {
         console.error('Error fetching stats:', err);
         res.status(500).json({ error: 'Internal server error' });

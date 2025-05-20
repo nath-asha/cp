@@ -1,11 +1,11 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { View } from "lucide-react";
-import { Card,CardBody } from "react-bootstrap";
+import { Card, Button, Row, Col, Form, Container, InputGroup } from "react-bootstrap";
 
 const Problemlist = () => {
     const [problems, setProblems] = useState([]);
-    const [search, setSearch] = useState('');
+    const [searchTitle, setSearchTitle] = useState('');
+    const [searchEventId, setSearchEventId] = useState('');
     const [currentChallenge, setCurrentChallenge] = useState(null);
 
     useEffect(() => {
@@ -25,71 +25,126 @@ const Problemlist = () => {
 
     const handleEdit = (problem) => {
         setCurrentChallenge(problem);
-    }
+    };
 
-    const filteredChallenges = problems.filter(problem => problem.title.toLowerCase().includes(search.toLowerCase()));
-    const filteredChallenge = problems.filter(problem => problem.eventId.toLowerCase().includes(search.toLowerCase()));
+    const filteredByTitle = problems.filter(problem =>
+        problem.title.toLowerCase().includes(searchTitle.toLowerCase())
+    );
+    const filteredByEventId = problems.filter(problem =>
+        problem.eventId && problem.eventId.toLowerCase().includes(searchEventId.toLowerCase())
+    );
 
-
-return(
-    <div className="container">
-        <h2 className="text-black">Problem Statements</h2>
-        <div className="row">
-            <div className="col">
-    
-    <input 
-        type="text"
-        placeholder="Search"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="search-input"
-    />
-    
-    <div className="row xl={2} md={2} sm={2} l={2} xs={1}">
-        {filteredChallenges.map((problem) => (
-            <div className="col-md-4 mb-4" key={problem._id}>
-                <Card>
-                    <CardBody>
-                        <h5 className="card-title">{problem.title}</h5>
-                        <p className="card-text">{problem.description}</p>
-                        <button><a onClick={() => handleEdit(problem)}>Edit</a></button>
-                        <button className='btn bg-danger text-white' onClick={() => { if (window.confirm(`Are you sure you want to delete ${problem.title}?`)) {
-                                            handleDelete(problem._id);
-                                        }}}><a>Delete</a></button>
-                    </CardBody>
-                </Card>
-            </div>
-        ))}
-    </div>
-</div>
-<div className="col">
-    <input 
-        type="text"
-        placeholder="search by Event ID"
-        value={search}
-        onChange={(e => setSearch(e.target.value))}
-        className="search-input"
-    />
-    <div className="row">
-        {filteredChallenge.map((problem) => (
-            <div className="col-md-4 mb-4" key={problem._id}>
-                <Card>
-                    <CardBody>
-                        <h5 className="card-title">{problem.title}</h5>
-                        <p className="card-text">{problem.description}</p>
-                        <button><a onClick={() => handleEdit(problem)}>Edit</a></button>
-                        <button className='btn bg-danger text-white' onClick={() => { if (window.confirm(`Are you sure you want to delete ${problem.title}?`)) {
-                                            handleDelete(problem._id);
-                                        }}}><a>Delete</a></button>
-                    </CardBody>
-                </Card>
-            </div>
-        ))}
-        </div>
-        </div>
-    </div>
-</div>
-)
+    return (
+        <Container className="my-4">
+            <h2 className="mb-4 text-primary">Problem Statements</h2>
+            <Row>
+                <Col md={6}>
+                    <Card className="mb-4 shadow-sm">
+                        <Card.Body>
+                            <Card.Title>Search by Title</Card.Title>
+                            <InputGroup className="mb-3">
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Search by Title"
+                                    value={searchTitle}
+                                    onChange={e => setSearchTitle(e.target.value)}
+                                />
+                            </InputGroup>
+                            <Row>
+                                {filteredByTitle.length === 0 && (
+                                    <Col>
+                                        <div className="text-muted">No problems found.</div>
+                                    </Col>
+                                )}
+                                {filteredByTitle.map(problem => (
+                                    <Col md={12} key={problem._id} className="mb-3">
+                                        <Card className="h-100">
+                                            <Card.Body>
+                                                <Card.Title>{problem.title}</Card.Title>
+                                                <Card.Text>{problem.description}</Card.Text>
+                                                <div className="d-flex gap-2">
+                                                    <Button
+                                                        variant="outline-primary"
+                                                        size="sm"
+                                                        onClick={() => handleEdit(problem)}
+                                                    >
+                                                        Edit
+                                                    </Button>
+                                                    <Button
+                                                        variant="danger"
+                                                        size="sm"
+                                                        onClick={() => {
+                                                            if (window.confirm(`Are you sure you want to delete ${problem.title}?`)) {
+                                                                handleDelete(problem._id);
+                                                            }
+                                                        }}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </div>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                ))}
+                            </Row>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col md={6}>
+                    <Card className="mb-4 shadow-sm">
+                        <Card.Body>
+                            <Card.Title>Search by Event ID</Card.Title>
+                            <InputGroup className="mb-3">
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Search by Event ID"
+                                    value={searchEventId}
+                                    onChange={e => setSearchEventId(e.target.value)}
+                                />
+                            </InputGroup>
+                            <Row>
+                                {filteredByEventId.length === 0 && (
+                                    <Col>
+                                        <div className="text-muted">No problems found.</div>
+                                    </Col>
+                                )}
+                                {filteredByEventId.map(problem => (
+                                    <Col md={12} key={problem._id} className="mb-3">
+                                        <Card className="h-100">
+                                            <Card.Body>
+                                                <Card.Title>{problem.title}</Card.Title>
+                                                <Card.Text>{problem.description}</Card.Text>
+                                                <div className="d-flex gap-2">
+                                                    <Button
+                                                        variant="outline-primary"
+                                                        size="sm"
+                                                        onClick={() => handleEdit(problem)}
+                                                    >
+                                                        Edit
+                                                    </Button>
+                                                    <Button
+                                                        variant="danger"
+                                                        size="sm"
+                                                        onClick={() => {
+                                                            if (window.confirm(`Are you sure you want to delete ${problem.title}?`)) {
+                                                                handleDelete(problem._id);
+                                                            }
+                                                        }}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </div>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                ))}
+                            </Row>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
+    );
 };
 
 export default Problemlist;

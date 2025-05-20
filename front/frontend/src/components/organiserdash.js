@@ -12,9 +12,11 @@ function Organiserdash() {
 
     useEffect(() => {
         axios.get("http://localhost:5000/api/stats")
-            .then(response => setStats(response.data))
+            .then(response => {
+            setStats(response.data);
+            console.log(response);
+            })
             .catch(error => console.error("Error fetching stats:", error));
-
         const fetchEvents = async () => {
             try {
                 const response = await fetch('http://localhost:5000/events');
@@ -104,7 +106,14 @@ function Organiserdash() {
                                         <Card.Text>
                                             <Users className="me-2" size={24} /> {stats.participants}
                                         </Card.Text>
-                                        <Button variant="outline-light" size="sm" onClick={() => window.location.href = '/participantlist'}>Manage Participants</Button>
+                                        <Button
+                                            variant="outline-light"
+                                            size="sm"
+                                            style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                            onClick={() => window.location.href = '/participantlist'}
+                                        >
+                                            Participants
+                                        </Button>
                                     </Card.Body>
                                 </Card>
                             </Col>
@@ -115,7 +124,64 @@ function Organiserdash() {
                                         <Card.Text>
                                             <Users className="me-2" size={24} /> {stats.mentors}
                                         </Card.Text>
-                                        <Button variant="outline-light" size="sm" onClick={() => window.location.href = '/mentorlist'}>Manage Mentors</Button>
+                                        <Button
+                                            variant="outline-light"
+                                            size="sm"
+                                            style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                            onClick={() => window.location.href = '/mentorlist'}
+                                        >
+                                            Manage Mentor
+                                        </Button>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col>
+                                <Card bg="success" text="white" className="shadow">
+                                    <Card.Body>
+                                        <Card.Title>Problem Statements</Card.Title>
+                                        <Card.Text>
+                                            <Users className="me-2" size={24} /> {stats.problems}
+                                        </Card.Text>
+                                        <Row>
+                                            <Col>
+                                                <Button
+                                                    variant="outline-light"
+                                                    size="sm"
+                                                    style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                                    onClick={() => window.location.href = '/problemlist'}
+                                                >
+                                                    Manage PS
+                                                </Button>
+                                            </Col>
+                                            <Col>
+                                                <Button
+                                                    variant="outline-light"
+                                                    size="sm"
+                                                    style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                                    onClick={() => window.location.href = '/addchallenge'}
+                                                >
+                                                    Add PS
+                                                </Button>
+                                            </Col>
+                                        </Row>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col>
+                                <Card bg="primary" text="white" className="shadow">
+                                    <Card.Body>
+                                        <Card.Title>Submissions</Card.Title>
+                                        <Card.Text>
+                                            <Users className="me-2" size={24} /> {stats.submissions}
+                                        </Card.Text>
+                                        <Button
+                                            variant="outline-light"
+                                            size="sm"
+                                            style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                            onClick={() => window.location.href = '/submissionlist'}
+                                        >
+                                            Submissions
+                                        </Button>
                                     </Card.Body>
                                 </Card>
                             </Col>
@@ -144,7 +210,14 @@ function Organiserdash() {
                                 value={newLogisticsItem}
                                 onChange={(e) => setNewLogisticsItem(e.target.value)}
                             />
-                            <Button variant="primary" onClick={handleAddLogistics}>Add</Button>
+                            <Button
+                                variant="primary"
+                                size="sm"
+                                style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                onClick={handleAddLogistics}
+                            >
+                                Add
+                            </Button>
                         </div>
                     </Tab.Pane>
                     <Tab.Pane eventKey="events">
@@ -170,10 +243,16 @@ function Organiserdash() {
                             ))}
                         </Row>
                         <div className="mt-3">
-                            <Button onClick={() => window.location.href = '/eventlist'}>Manage Events</Button>
+                            <Button
+                                size="sm"
+                                style={{ fontSize: "0.75rem", padding: "0.25rem 0.75rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                onClick={() => window.location.href = '/eventlist'}
+                            >
+                                Manage Events
+                            </Button>
                         </div>
                     </Tab.Pane>
-                     <Tab.Pane eventKey="problems">
+                    <Tab.Pane eventKey="problems">
                         <h4>Problems & Submissions Overview</h4>
                         <Row xs={1} md={2} className="g-4">
                             <Col>
@@ -183,7 +262,14 @@ function Organiserdash() {
                                         <Card.Text>
                                             <Puzzle className="me-2" size={24} /> Total: {stats.problems}
                                         </Card.Text>
-                                        <Button variant="outline-info" size="sm" onClick={() => window.location.href = '/problemlist'}>Manage Problems</Button>
+                                        <Button
+                                            variant="outline-info"
+                                            size="sm"
+                                            style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                            onClick={() => window.location.href = '/problemlist'}
+                                        >
+                                            Manage Problems
+                                        </Button>
                                     </Card.Body>
                                 </Card>
                             </Col>
@@ -194,41 +280,21 @@ function Organiserdash() {
                                         <Card.Text>
                                             <FileCode className="me-2" size={24} /> Total: {stats.submissions}
                                         </Card.Text>
-                                        <Button variant="outline-warning" size="sm" onClick={() => window.location.href = '/submissionlist'}>Manage Submissions</Button>
+                                        <Button
+                                            variant="outline-warning"
+                                            size="sm"
+                                            style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                            onClick={() => window.location.href = '/submissionlist'}
+                                        >
+                                            Manage Submissions
+                                        </Button>
                                     </Card.Body>
                                 </Card>
                             </Col>
                         </Row>
-                    </Tab.Pane> 
+                    </Tab.Pane>
                 </Tab.Content>
             </Tab.Container>
-            {/* <div id="problems">
-                        <h4>Problems & Submissions Overview</h4>
-                        <Row xs={1} md={2} className="g-4">
-                            <Col>
-                                <Card className="shadow">
-                                    <Card.Body>
-                                        <Card.Title>Problem Statements</Card.Title>
-                                        <Card.Text>
-                                            <Puzzle className="me-2" size={24} /> Total: {stats.problems}
-                                        </Card.Text>
-                                        <Button variant="outline-info" size="sm" onClick={() => window.location.href = '/problemlist'}>Manage Problems</Button>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                            <Col>
-                                <Card className="shadow">
-                                    <Card.Body>
-                                        <Card.Title>Submissions</Card.Title>
-                                        <Card.Text>
-                                            <FileCode className="me-2" size={24} /> Total: {stats.submissions}
-                                        </Card.Text>
-                                        <Button variant="outline-warning" size="sm" onClick={() => window.location.href = '/submissionlist'}>Manage Submissions</Button>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        </Row>
-                    </div> */}
         </Container>
     );
 }
