@@ -14,6 +14,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const Contact = require('../models/contactmodel');
+const Query = require('../models/mentorquery');
 
 const router = express.Router();
 
@@ -1358,6 +1359,86 @@ router.post('/contact', async (req, res) => {
         res.status(201).json({ message: 'Message received!' });
     } catch (err) {
         console.error('Error saving contact message:', err);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+//latestteamformation api
+router.post('/api/team/create', async (req, res) => {
+    const { userId, teamName, eventId } = req.body;
+    const user = await Signup.findById(userId);
+    if (!user) return res.status(404).send("User not found");
+
+    const teamCount = await Team.countDocuments();
+    const team = new Team({
+        name: teamName,
+        team_id: teamCount + 1,
+        eventId,
+        members: [{ user_id: user._id, status: "approved" }],
+    });
+
+    await team.save();
+    user.team = teamName;
+    user.teamId = team.team_id;
+    user.isTeam = true;
+    await user.save();
+
+    res.status(200).json(team);
+});
+
+//latestteamformation request api
+router.post('/api/team/request/:teamId', async (req, res) => {
+    const { userId } = req.body;
+    const team = await Team.findOne({ team_id: req.params.teamId });
+    if (!team) return res.status(404).send("Team not found");
+
+    team.requests.push({ user_id: userId });
+    await team.save();
+    res.send("Request sent");
+});
+
+//latestteamformation api
+router.get('/api/team/requests/:teamId', async (req, res) => {
+    const team = await Team.findOne({ team_id: req.params.teamId }).populate('requests.user_id');
+    res.json(team.requests);
+});
+
+//latestteamformation api accept reject request
+router.post('/api/team/request/handle', async (req, res) => {
+    const { teamId, requestId, decision } = req.body; // decision: 'approved' or 'rejected'
+    const team = await Team.findOne({ team_id: teamId });
+    if (!team) return res.status(404).send("Team not found");
+
+    const reqIndex = team.requests.findIndex(r => r._id.toString() === requestId);
+    const request = team.requests[reqIndex];
+
+    if (decision === 'approved') {
+        team.members.push({ user_id: request.user_id, status: "approved" });
+        await Signup.findByIdAndUpdate(request.user_id, {
+            team: team.name,
+            teamId: team.team_id,
+            isTeam: true,
+        });
+    }
+
+    team.requests[reqIndex].status = decision;
+    await team.save();
+    res.send("Request handled");
+});
+
+//mentorqueryform
+
+router.post('/mentor-query', async (req, res) => {
+    try {
+        const { email, query } = req.body;
+        if (!email || !query) {
+            return res.status(400).json({ message: 'Email and query are required.' });
+        }
+        const newQuery = new Query({ email, query });
+        await newQuery.save();
+        res.status(201).json({ message: 'Query submitted successfully.' });
+    } catch (err) {
+        console.error('Error saving mentor query:', err);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });

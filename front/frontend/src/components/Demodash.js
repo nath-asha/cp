@@ -166,7 +166,7 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                                 <div className="d-grid mt-3">
-                                    <Button variant="outline-primary" size="sm">Contact Mentor</Button>
+                                    <Button variant="outline-primary" size="sm"  onClick={() => window.location.href = '/mentorqueryform'}>Contact Mentor</Button>
                                 </div>
                             </Card.Body>
                         </Card>

@@ -317,6 +317,13 @@ span{
     color: white;
     text-align: center;
 }
+/* 
+.hoveroutline{
+    transition: outline 0.2s ease;
+}
+.hoveroutline:hover {
+    transform: scale(1.05);
+} */
 /* .homepage {
     font-family: sans-serif;
     line-height: 1.6;
