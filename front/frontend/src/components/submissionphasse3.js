@@ -7,13 +7,13 @@ import "../App.css";
 
 const token = sessionStorage.getItem("token");
 
-const MultiSubmissions = () => {
+const Submissionsphase3 = () => {
     const [submissions, setSubmissions] = useState({
-        gitrepo: "",
-        ppt: "",
-        preport: "",
-        doc: "",
-        vid: ""
+        title: "",
+        projectdesc: "",
+        ps: "",
+        thumbnail: "",
+        team_id: "",
     });
 
     const [currentStep, setCurrentStep] = useState(1);
@@ -21,16 +21,6 @@ const MultiSubmissions = () => {
     const [valid, setValid] = useState(false);
     const [deadline, setDeadline] = useState(null);
 
-    useEffect(() => {
-        // Set deadlines for each step
-        if (currentStep === 1) {
-            setDeadline(new Date(Date.now() + 2 * 60 * 60 * 1000)); // 2 hours from now
-        } else if (currentStep === 2) {
-            setDeadline(new Date(Date.now() + 4 * 60 * 60 * 1000)); // 4 hours from now
-        } else if (currentStep === 3) {
-            setDeadline(new Date(Date.now() + 6 * 60 * 60 * 1000)); // 6 hours from now
-        }
-    }, [currentStep]);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -81,6 +71,30 @@ const MultiSubmissions = () => {
         }
     };
 
+    // Fetch problem statements from backend
+    const [problemStatements, setProblemStatements] = useState([]);
+
+    useEffect(() => {
+        const fetchProblemStatements = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/challenges", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    setProblemStatements(data);
+                } else {
+                    setProblemStatements([]);
+                }
+            } catch (error) {
+                setProblemStatements([]);
+            }
+        };
+        fetchProblemStatements();
+    }, []);
+
     return (
         <div className="container mt-5">
             <h2 className="mb-4 text-center">Project Submission</h2>
@@ -91,7 +105,7 @@ const MultiSubmissions = () => {
                 </Alert>
             )}
 
-            {currentStep === 1 && (
+        
                 <Form>
                     <Form.Group className="mb-3">
                         <Form.Label>Project Title</Form.Label>
@@ -121,9 +135,9 @@ const MultiSubmissions = () => {
                         Next
                     </Button>
                 </Form>
-            )}
+            
 
-            {currentStep === 2 && (
+            
                 <Form>
                     <Form.Group className="mb-3">
                         <Form.Label>Description</Form.Label>
@@ -148,10 +162,11 @@ const MultiSubmissions = () => {
                             required
                         >
                             <option value="">Select problem statement</option>
-                            <option value="1">PS 1</option>
-                            <option value="2">PS 2</option>
-                            <option value="3">PS 3</option>
-                            <option value="4">PS 4</option>
+                            {problemStatements.map((ps) => (
+                                <option className="text-black" key={ps.track_id} value={ps.track_id}>
+                                    {ps.title}
+                                </option>
+                            ))}
                         </Form.Select>
                     </Form.Group>
 
@@ -159,9 +174,9 @@ const MultiSubmissions = () => {
                         Next
                     </Button>
                 </Form>
-            )}
+            
 
-            {currentStep === 3 && (
+            
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
                         <Form.Label>PPT / Link Upload</Form.Label>
@@ -222,7 +237,7 @@ const MultiSubmissions = () => {
                         Submit
                     </Button>
                 </Form>
-            )}
+            
 
             {deadline && (
                 <div className="mt-3">
@@ -235,4 +250,4 @@ const MultiSubmissions = () => {
     );
 };
 
-export default MultiSubmissions;
+export default Submissionsphase3;

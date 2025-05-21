@@ -339,6 +339,29 @@ router.post("/submissions", async (req, res) => {
     }
 });
 
+// Example: Secure submission endpoint with token authentication and saving to DB
+router.post('/submissions', async (req, res) => {
+    const { title, projectdesc, ps, thumbnail, team_id, gitrepo } = req.body;
+    if (!title || !projectdesc || !ps || !gitrepo) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+    try {
+        const newSubmission = new submission({
+            title,
+            projectdesc,
+            ps,
+            thumbnail,
+            team_id,
+            gitrepo
+        });
+        await newSubmission.save();
+        res.status(201).json({ message: 'Submission received', submission: newSubmission });
+    } catch (err) {
+        console.error('Error saving submission:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 //yet to created 
 router.get("/api/stats", async (req, res) => {
     try {
@@ -645,6 +668,22 @@ router.post('/assign-mentor', async (req, res) => {
       res.status(500).json({ message: "Internal Server Error" });
     }
   });
+
+router.delete('/submissions/:id', async (req, res) => {
+    try {
+        const submissionId = req.params.id;
+        const deletedSubmission = await submission.findByIdAndDelete(submissionId);
+
+        if (!deletedSubmission) {
+            return res.status(404).json({ message: 'Submission not found' });
+        }
+
+        res.status(200).json({ message: 'Submission deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting submission:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 // // PUT endpoint to assign a mentor to a team
 // router.put('/teams/:teamId/assign-mentor', async (req, res) => {
 //     const { mentorId } = req.body;

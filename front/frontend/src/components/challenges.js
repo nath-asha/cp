@@ -110,7 +110,7 @@ function Challenges() {
           <div className="col-md-4" key={challenge.track_id}>
             <div className="card mb-4">
               <div className="card-header">
-                Track ID: {challenge.trackId}
+                Track ID: {challenge.track_id}
               </div>
               <img
                 src={challenge.imgurl}
