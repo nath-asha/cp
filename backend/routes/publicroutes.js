@@ -289,7 +289,7 @@ router.get("/submissions", async (req, res) => {
 });
 
 
-
+//this workssssssssssssssss fineeeeeeeeeeeeeeeeeee but needed more specific phase based submissions
 router.post("/submissions", async (req, res) => {
     try {
         const newSubmission = new submission(req.body);
@@ -301,7 +301,43 @@ router.post("/submissions", async (req, res) => {
     }
 });
 
+//this is for first phase 
+router.post("/submissions", async (req, res) => {
+    try {
+        const { eventId } = req.body;
 
+        if (!eventId) return res.status(400).send("Event ID is required");
+
+        const events = await event.findOne({ eventId });
+        if (!events) return res.status(404).send("Event not found");
+
+        const now = new Date();
+
+        // Find the current active phase
+        const activePhase = events.submissionPhases.find(phase => {
+            const start = new Date(phase.startDate);
+            const end = new Date(phase.endDate);
+            return now >= start && now <= end;
+        });
+
+        if (!activePhase) {
+            return res.status(400).send("No active submission phase at this time.");
+        }
+
+        const submissionData = {
+            ...req.body,
+            phase: activePhase
+        };
+
+        const newSubmission = new submission(submissionData);
+        await newSubmission.save();
+
+        res.status(201).json(newSubmission);
+    } catch (err) {
+        console.error("Error adding submission:", err);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 //yet to created 
 router.get("/api/stats", async (req, res) => {

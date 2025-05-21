@@ -240,21 +240,27 @@ function TeamManager() {
                             onChange={(e) => setParticipantSearchCreate(e.target.value)}
                         />
                         <ul className="list-group mt-2">
-                            {filteredParticipantsCreate.map(participant => (
-                                <li
-                                    key={participant.id}
-                                    className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                                >
-                                    {`${participant.firstName} ${participant.lastName} (${participant.USN})`}
-                                    <button
-                                        className="btn btn-sm btn-outline-primary"
-                                        onClick={() => handleAddParticipant(participant)}
-                                        disabled={selectedParticipants.length >= 4}
+                            {filteredParticipantsCreate.length > 0 ? (
+                                filteredParticipantsCreate.map(participant => (
+                                    <li
+                                        key={participant.id}
+                                        className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                                     >
-                                        Add
-                                    </button>
-                                </li>
-                            ))}
+                                        {participant.firstName && participant.lastName
+                                            ? `${participant.firstName} ${participant.lastName} (${participant.USN})`
+                                            : participant.email || participant.id}
+                                        <button
+                                            className="btn btn-sm btn-outline-primary"
+                                            onClick={() => handleAddParticipant(participant)}
+                                            disabled={selectedParticipants.length >= 4}
+                                        >
+                                            Request
+                                        </button>
+                                    </li>
+                                ))
+                            ) : (
+                                <li className="list-group-item">No matching participants found.</li>
+                            )}
                         </ul>
                     </div>
 
@@ -267,7 +273,9 @@ function TeamManager() {
                                         key={participant.id}
                                         className="list-group-item d-flex justify-content-between align-items-center"
                                     >
-                                        {`${participant.firstName} ${participant.lastName}`}
+                                        {participant.firstName && participant.lastName
+                                            ? `${participant.firstName} ${participant.lastName}`
+                                            : participant.email || participant.id}
                                         <button
                                             className="btn btn-sm btn-outline-danger"
                                             onClick={() => handleRemoveParticipant(participant.id)}

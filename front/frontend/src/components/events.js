@@ -77,9 +77,11 @@ function Events() {
                     />
                     <CardText>
                       <h3 className='text-black'>{event.title}</h3>
-                      <p className='text-black'>{event.description && event.description.substring(0, 100)}...</p>
+                      <p className='text-black'>{event.desc && event.desc.substring(0, 100)}...</p>
                       <Link to={`/displayevent/${event.eventId}`}>
-                        <button className="btn btn-primary mt-2">Know more</button>
+                        <button className="btn btn-primary mt-2" 
+                        style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}>
+                          Know more</button>
                       </Link>
                     </CardText>
                   </CardBody>

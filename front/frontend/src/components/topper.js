@@ -163,7 +163,9 @@ const Displayevent = () => {
                                                     You are registered for this event!
                                                 </div>
                                             ) : (
-                                                <button className="btn btn-primary w-100" onClick={handleRegister}>
+                                                <button className="btn btn-primary w-100" 
+                                                style={{ margin: "15px",fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }} 
+                                                onClick={handleRegister}>
                                                     Register now!
                                                 </button>
                                             )
@@ -312,7 +314,8 @@ const Displayevent = () => {
                                                     <p>{phase.description}</p>
                                                     {/*  Show a submission form/button if phase is open */}
                                                     {isRegistered && new Date() >= new Date(phase.startDate) && new Date() <= new Date(phase.endDate) ? (
-                                                        <button className="btn btn-success">
+                                                        <button className="btn btn-success" onClick={() => window.location.href = '/submissionphase1' }
+                                                        style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}>
                                                             Submit for {phase.name}
                                                         </button>
                                                     ) : (

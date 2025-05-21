@@ -79,6 +79,7 @@ import Challenges1 from './components/challenges1';
 import Challenges2 from './components/challenges2';
 import TeamFormation from './components/latestteamformation';
 import MentorQueryForm from './components/mentorqueryform';
+import Submissionsphase1 from './components/submissionphasse1';
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
@@ -157,6 +158,7 @@ function App() {
           <Route path='/challenge2/:eventId' element={<Challenges2 />}/>
           <Route path='/teamformation' element={<TeamFormation />}/>
           <Route path='/mentorqueryform' element={<MentorQueryForm/>}/>
+          <Route path='/submissionphase1' element={<Submissionsphase1 />} />
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
            <ParticipantDashboard /></PrivateRoute>} />

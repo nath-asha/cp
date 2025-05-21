@@ -1,4 +1,3 @@
-// const { dark } = require('@material-ui/core/styles/createPalette');
 const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
@@ -6,9 +5,9 @@ const eventSchema = new mongoose.Schema({
     title: { type: String, required: true },
     desc: { type: String, required: true },
     imgUrl: { type: String, required: true },
-    date: { type: String, required: true }, // Renamed from startdate to date, and made required
+    date: { type: String, required: true },
     enddate: { type: String, required: true },
-    venue: { type: String, enum: ['online', 'offline', 'hybrid'], required: true }, // Added type with enum and required
+    venue: { type: String, enum: ['online', 'offline', 'hybrid'], required: true },
     prizes: { type: [String], default: [] },
     createdAt: Date,
     scheduleDetails: {
@@ -18,15 +17,57 @@ const eventSchema = new mongoose.Schema({
             time: { type: String, required: true },
         }],
         required: true,
-        default: [] // Added default value
+        default: []
     },
     logistics: String,
-    registrationDeadline: {type: String, required: true},
-    submissionDeadline: {type: String, required: true},
-    teamFormationDeadline: {type: String, required: true},
-    importantDates: { type: [String], required: true, default: [] }, // Added important dates and default value
-    participants: { type: [String], default: [] }, // Array of user IDs
+    registrationDeadline: { type: String, required: true },
+    submissionDeadline: { type: String, required: true },
+    teamFormationDeadline: { type: String, required: true },
+    importantDates: { type: [String], required: true, default: [] },
+    participants: { type: [String], default: [] },
+
+    
+    submissionPhases: {
+        type: [{
+            name: { type: String, required: true },
+            startDate: { type: String, required: true },
+            endDate: { type: String, required: true },
+            description: { type: String, required: true }
+        }],
+        default: []
+    }
 });
+
+module.exports = mongoose.model('event', eventSchema);
+
+// ================================================================================================================================
+// const eventSchema = new mongoose.Schema({
+//     eventId: { type: String, unique: true },
+//     title: { type: String, required: true },
+//     desc: { type: String, required: true },
+//     imgUrl: { type: String, required: true },
+//     date: { type: String, required: true }, // Renamed from startdate to date, and made required
+//     enddate: { type: String, required: true },
+//     venue: { type: String, enum: ['online', 'offline', 'hybrid'], required: true }, // Added type with enum and required
+//     prizes: { type: [String], default: [] },
+//     createdAt: Date,
+//     scheduleDetails: {
+//         type: [{
+//             date: { type: String, required: true },
+//             event: { type: String, required: true },
+//             time: { type: String, required: true },
+//         }],
+//         required: true,
+//         default: [] // Added default value
+//     },
+//     logistics: String,
+//     registrationDeadline: {type: String, required: true},
+//     submissionDeadline: {type: String, required: true},
+//     teamFormationDeadline: {type: String, required: true},
+//     importantDates: { type: [String], required: true, default: [] }, // Added important dates and default value
+//     participants: { type: [String], default: [] }, // Array of user IDs
+// });
+// ==========================================================================================================================
 // const eventSchema = new mongoose.Schema({
 //     eventId: {type: String,required:  true},
 //     title: {type: String,required: true},
