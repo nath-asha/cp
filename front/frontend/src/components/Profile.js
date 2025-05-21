@@ -42,7 +42,7 @@ const Profile = () => {
                 console.log('Fetched user data:', data);
     
                 if (data && Object.keys(data).length > 0) {
-                    setSelectedUser(data); // Assuming the backend returns a single user object
+                    setSelectedUser(data); // backend returns a single user object
                 } else {
                     setSelectedUser(null);
                     console.warn("No data found for this ID.");
@@ -82,6 +82,7 @@ const Profile = () => {
                                 <Button
                                     variant="primary"
                                     className="mb-3"
+                                    style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
                                     onClick={() => window.location.href = '/continueprofile'}
                                 >
                                     Edit Profile
@@ -89,6 +90,7 @@ const Profile = () => {
                                 <Button
                                     variant="outline-dark"
                                     size="sm"
+                                    tyle={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
                                     onClick={() =>
                                         navigator.share({
                                             url: shareProfileUrl,

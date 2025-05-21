@@ -79,7 +79,7 @@ const handleSubmit = async (e) => {
                         <label className="form-label">Message</label>
                         <textarea className="form-control" rows="4" required></textarea>
                     </div>
-                    <button type="submit" className={`btn btn-${buttonVariant} w-100`}>
+                    <button type="submit" style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }} className={`btn btn-${buttonVariant} w-100`}>
                         {buttonText}
                     </button>
                 </form>

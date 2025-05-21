@@ -178,7 +178,7 @@ const Displayevent = () => {
                                     <Card className="mb-3 shadow-sm">
                                         <CardBody className="text-center">
                                             <a href='/createteams'>
-                                                <button className="btn btn-primary">Create Team</button>
+                                                <button className="btn btn-primary" style={{ margin: "15px",fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}>Create Team</button>
                                             </a>
                                         </CardBody>
                                     </Card>
