@@ -179,7 +179,7 @@ const Displayevent = () => {
                                 {isRegistered && role === 'user' && selectedEvent.participants?.includes(userId) && (
                                     <Card className="mb-3 shadow-sm">
                                         <CardBody className="text-center">
-                                            <a href='/createteams'>
+                                            <a href={`/createteams/${eventId}`}>
                                                 <button className="btn btn-primary" style={{ margin: "15px",fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}>Create Team</button>
                                             </a>
                                         </CardBody>

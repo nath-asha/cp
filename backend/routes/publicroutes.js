@@ -1398,6 +1398,7 @@ router.post('/finalize-score', async (req, res) => {
   }
 });
 
+//this shows internal server error
 router.get('/teams/:userId', async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -1425,7 +1426,7 @@ router.get('/teams/:userId', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
-
+//this workssssssssss
 router.post('/contact', async (req, res) => {
     try {
         const { firstName, lastName, email, message } = req.body;
@@ -1442,29 +1443,57 @@ router.post('/contact', async (req, res) => {
 });
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 //latestteamformation api
-router.post('/api/team/create', async (req, res) => {
-    const { userId, teamName, eventId } = req.body;
-    const user = await signuser.findById(userId);
-    if (!user) return res.status(404).send("User not found");
+//thissssssssssssss worksssssssssssssssssssssssssssss
+//{"teamName": "The Debuggers","userIds": [  "6779d8312b29c161beddc4","67d9dce8d68663b9a28564","67b4387b4207eddf8d1cba"],"loggedInUserId": "6779d8312b29c161beddc4"}
+// Accept multiple members for team creation
+router.post('/api/team/create/:eventId', async (req, res) => {
+    const { userIds, teamName, loggedInUserId } = req.body; // loggedInUserId must be provided
+    const { eventId } = req.params;
 
-    const teamCount = await Team.countDocuments();
+    if (!Array.isArray(userIds) || userIds.length === 0) {
+        return res.status(400).json({ message: "userIds must be a non-empty array" });
+    }
+    if (!loggedInUserId || userIds[0] !== loggedInUserId) {
+        return res.status(400).json({ message: "First user in userIds must be the logged-in user" });
+    }
+
+    // Fetch all users to be added as members
+    const usersList = await user.find({userIds });
+    if (usersList.length !== userIds.length) {
+        return res.status(404).json({ message: "One or more users not found" });
+    }
+
+    const teamCount = await team.countDocuments();
+    const newTeamId = teamCount + 1;
+
+    // First user is the creator/leader, rest are members
+    const members = userIds.map((uid, idx) => ({
+        user_id: uid,
+        status: idx === 0 ? "approved" : "waiting"
+    }));
+
     const teams = new team({
         name: teamName,
-        team_id: teamCount + 1,
+        team_id: newTeamId,
         eventId,
-        members: [{ user_id: user._id, status: "approved" }],
+        members
     });
 
     await teams.save();
-    user.team = teamName;
-    user.teamId = team.team_id;
-    user.isTeam = true;
-    await user.save();
 
-    res.status(200).json(team);
+    // Update each user's team info
+    for (let i = 0; i < usersList.length; i++) {
+        usersList[i].team = teamName;
+        usersList[i].teamId = newTeamId;
+        usersList[i].isTeam = true;
+        await usersList[i].save();
+    }
+
+    res.status(200).json(teams);
 });
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //latestteamformation request api
+//this worksssssssssssssssssssssssssssss
 router.post('/api/team/request/:teamId', async (req, res) => {
     const { userId } = req.body;
     const teams = await team.findOne({ team_id: req.params.teamId });
@@ -1476,32 +1505,47 @@ router.post('/api/team/request/:teamId', async (req, res) => {
 });
 
 //latestteamformation api
+//crash
 router.get('/api/team/requests/:teamId', async (req, res) => {
     const teams = await team.findOne({ team_id: req.params.teamId }).populate('requests.user_id');
     res.json(teams.requests);
 });
 
 //latestteamformation api accept reject request
+//severe mistake
 router.post('/api/team/request/handle', async (req, res) => {
-    const { teamId, requestId, decision } = req.body; // decision: 'approved' or 'rejected'
+  const { teamId, requestId, status } = req.body;
+
+  try {
     const teams = await team.findOne({ team_id: teamId });
     if (!teams) return res.status(404).send("Team not found");
 
     const reqIndex = teams.requests.findIndex(r => r._id.toString() === requestId);
+    if (reqIndex === -1) return res.status(404).send("Request not found");
+
     const request = teams.requests[reqIndex];
 
-    if (decision === 'approved') {
+    if (status === 'approved') {
+      const alreadyMember = teams.members.some(m => m.user_id === request.user_id);
+      if (!alreadyMember) {
         teams.members.push({ user_id: request.user_id, status: "approved" });
-        await Signup.findByIdAndUpdate(request.user_id, {
-            team: teams.name,
-            teamId: teams.team_id,
-            isTeam: true,
+
+        await user.findByIdAndUpdate(request.user_id, {
+          team: teams.name,
+          teamId: teams.team_id,
+          isTeam: true,
         });
+      }
     }
 
     teams.requests[reqIndex].status = decision;
     await teams.save();
+
     res.send("Request handled");
+  } catch (error) {
+    console.error("Error handling team request:", error);
+    res.status(500).send("Server error");
+  }
 });
 
 //mentorqueryform
@@ -1581,6 +1625,8 @@ router.patch('/users/:userId', async (req, res) => {
     }
 });
 
+//    "message": "Team not found"
+//{"requests": [{  "team": "yunet","teamId": "8",  "status": "pending", "message": "You've been invited to join CodeForce by Jane Doe."}]}
 router.patch('/users/:memberId', async (req, res) => {
     const { memberId } = req.params;
     const { requests } = req.body;
@@ -1608,6 +1654,8 @@ router.patch('/users/:memberId', async (req, res) => {
 });
 ////////////////////////////////////////////////////THIS IS LATEST MAY 22
 // POST /api/teams/create
+//{"message": "Failed to create team","error": {}}
+//{"name": "The Debuggers","userId": "6651e61e52a7e674c2c60abc","eventId": "hack2025"}
 
 router.post("/create", async (req, res) => {
   try {
@@ -1622,6 +1670,13 @@ router.post("/create", async (req, res) => {
       team_id: teamId,
       members: [{ status: "approved", user_id: userId }],
       eventId,
+       requests: [{
+  userId: userId,
+  status: "pending",
+  message: `You have been invited to join team "${name}" by ${users.firstName} ${users.lastName}.`,
+  team_id: teamId
+}],
+
     });
 
     await newTeam.save();
@@ -1633,11 +1688,17 @@ router.post("/create", async (req, res) => {
 
     res.status(201).json(newTeam);
   } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  console.error("Error creating team:", err); // Log full error to console
+  res.status(500).json({
+    message: "Failed to create team",
+    error: err.message || err
+  });
+}
 });
 
 // POST /api/teams/request
+//    "error": "Cannot read properties of undefined (reading 'toString')"
+//{ "teamId": "2","userId" : "67efac620454ecb50f96c6c5"}
 router.post("/request", async (req, res) => {
   const { userId, teamId } = req.body;
   try {
@@ -1661,7 +1722,7 @@ router.post("/request", async (req, res) => {
   }
 });
 
-// GET /api/teams/list
+// GET /api/teams/list thisss workssssssssssssssss
 router.get("/list", async (req, res) => {
   try {
     const teams = await team.find({});
@@ -1672,6 +1733,8 @@ router.get("/list", async (req, res) => {
 });
 
 // PUT /api/teams/handle-request
+//    "error": "Cannot read properties of undefined (reading 'toString')"
+//{ "teamId": "2","userId" : "67efac620454ecb50f96c6c5","approve" : "accept"}
 router.put("/handle-request", async (req, res) => {
   const { teamId, userId, action } = req.body; // action = "approve" or "reject"
 
@@ -1706,7 +1769,7 @@ router.put("/handle-request", async (req, res) => {
   }
 });
 
-// GET /api/teams/:teamId/requests
+// GET /api/teams/:teamId/requests thisssssssss workssssssssssss
 router.get("/:teamId/requests", async (req, res) => {
   const { teamId } = req.params;
   try {

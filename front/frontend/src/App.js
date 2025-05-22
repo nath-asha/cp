@@ -151,7 +151,7 @@ function App() {
           <Route path='/gsigninsimpler' element={<Gsignsimpler />} />
           <Route path='/multisubmissions' element={<MultiSubmissions />}/>
           <Route path='/evaluationrubrics/:teamId' element={<EvaluationRubrics />} />
-          <Route path='/createteams' element={<Createteam />} />
+          <Route path='/createteams/:eventId' element={<Createteam />} />
           <Route path='/approveuserpage' element={<ApproveUserPage/>}/>
           <Route path='/addchallenge' element={<AddChallenge />}/>
           <Route path='/challenge1/:eventId' element={<Challenges1 />}/>
