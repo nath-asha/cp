@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require('cors');
+const notify = require("../models/notificationsmodel");
+const user = require("../models/userModel");
 const bodyparser = require('body-parser');
 const { registerUser, loginUser, signedupUser,profileUser,signinUser,googlesignin,googlesignup,gsigninlatest } = require("../controllers/authcontroller");
 
@@ -40,6 +42,12 @@ const requireRole = (role) => (req, res, next) => {
 
 router.get("/admin", verifyToken, requireRole("admin"), (req, res) => {
     res.send("Admin in");
+});
+
+// GET /api/users/notifications
+router.get("/notifications", verifyToken, async (req, res) => {
+  const users = await user.findById(req.user._id);
+  res.json(users.notifications.reverse()); // latest first
 });
 
 module.exports = router;

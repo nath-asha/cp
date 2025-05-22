@@ -517,7 +517,6 @@
 // };
 
 // export default EventManager;
-
 import React, { useState, useEffect } from 'react';
 import '../styles/buttons.css';
 import axios from 'axios';
@@ -537,13 +536,15 @@ const EventManager = () => {
         prizes: [],
         scheduleDetails: [],
         importantDates: [],
-        teamFormationDeadline: '', // New field
-        submissionDeadline: '',    
-        registrationDeadline: '',  
+        teamFormationDeadline: '',
+        submissionDeadline: '',
+        registrationDeadline: '',
+        submissionPhases: [],
     });
     const [newPrize, setNewPrize] = useState('');
     const [newScheduleDetail, setNewScheduleDetail] = useState({ date: '', event: '', time: '' });
     const [newImportantDate, setNewImportantDate] = useState('');
+    const [newSubmissionPhase, setNewSubmissionPhase] = useState({ name: '', startDate: '', endDate: '', description: '' });
 
     useEffect(() => {
         fetchEvents();
@@ -562,9 +563,10 @@ const EventManager = () => {
                 prizes: currentEvent.prizes || [],
                 scheduleDetails: currentEvent.scheduleDetails || [],
                 importantDates: currentEvent.importantDates || [],
-                teamFormationDeadline: currentEvent.teamFormationDeadline || '', 
-                submissionDeadline: currentEvent.submissionDeadline || '',   
-                registrationDeadline: currentEvent.registrationDeadline || '', 
+                teamFormationDeadline: currentEvent.teamFormationDeadline || '',
+                submissionDeadline: currentEvent.submissionDeadline || '',
+                registrationDeadline: currentEvent.registrationDeadline || '',
+                submissionPhases: currentEvent.submissionPhases || [],
             });
         } else {
             setFormData({
@@ -578,14 +580,16 @@ const EventManager = () => {
                 prizes: [],
                 scheduleDetails: [],
                 importantDates: [],
-                teamFormationDeadline: '', // setting deadlines
-                submissionDeadline: '',  
-                registrationDeadline: '', 
+                teamFormationDeadline: '',
+                submissionDeadline: '',
+                registrationDeadline: '',
+                submissionPhases: [],
             });
         }
         setNewPrize('');
         setNewScheduleDetail({ date: '', event: '', time: '' });
         setNewImportantDate('');
+        setNewSubmissionPhase({ name: '', startDate: '', endDate: '', description: '' });
     }, [currentEvent]);
 
     const fetchEvents = async () => {
@@ -649,102 +653,59 @@ const EventManager = () => {
         setFormData({ ...formData, importantDates: updatedImportantDates });
     };
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
+    const handleAddSubmissionPhase = () => {
+        if (newSubmissionPhase.name && newSubmissionPhase.startDate && newSubmissionPhase.endDate && newSubmissionPhase.description) {
+            setFormData({
+                ...formData,
+                submissionPhases: [...formData.submissionPhases, { ...newSubmissionPhase }]
+            });
+            setNewSubmissionPhase({ name: '', startDate: '', endDate: '', description: '' });
+        }
+    };
 
-    //     // Debugging: Log the formData to inspect the payload
-    //     console.log("Submitting formData:", formData);
+    const handleRemoveSubmissionPhase = (index) => {
+        const updatedPhases = [...formData.submissionPhases];
+        updatedPhases.splice(index, 1);
+        setFormData({ ...formData, submissionPhases: updatedPhases });
+    };
 
-    //     // Validate required fields (add the new ones here if they should also be required on creation)
-    //     if (!formData.title || !formData.desc || !formData.date || !formData.enddate || !formData.venue || !formData.teamFormationDeadline || !formData.submissionDeadline || !formData.registrationDeadline) {
-    //         alert("Please fill in all required fields, including the deadline dates.");
-    //         return;
-    //     }
-
-    //     try {
-    //         if (currentEvent) {
-    //             // Update existing event
-    //             await axios.put(`http://localhost:5000/events/${currentEvent._id}`, formData);
-    //             alert('Event updated successfully!');
-    //         } else {
-    //             // Create new event
-    //             await axios.post('http://localhost:5000/events', formData);
-    //             alert('Event created successfully!');
-    //         }
-
-    //         // Refresh the events list
-    //         fetchEvents();
-
-    //         // Reset the form
-    //         setCurrentEvent(null);
-    //         setFormData({
-    //             title: '',
-    //             desc: '',
-    //             imgUrl: '',
-    //             // eventId: '',
-    //             date: '',
-    //             enddate: '',
-    //             venue: '',
-    //             prizes: [],
-    //             scheduleDetails: [],
-    //             importantDates: [],
-    //             teamFormationDeadline: '', // Reset new field
-    //             submissionDeadline: '',    // Reset new field
-    //             registrationDeadline: '',  // Reset new field
-    //         });
-    //     } catch (error) {
-    //         console.error("Error saving event:", error);
-    //         alert('Error saving event.');
-    //     }
-    // };
-    
     const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Debugging: Log the formData to inspect the payload
-    console.log("Submitting formData:", formData);
-
-    // Validate required fields
-    if (!formData.title || !formData.desc || !formData.date || !formData.enddate || !formData.venue || !formData.teamFormationDeadline || !formData.submissionDeadline || !formData.registrationDeadline) {
-      alert("Please fill in all required fields, including the deadline dates.");
-      return;
-    }
-
-    try {
-      if (currentEvent) {
-        // Update existing event
-        await axios.put(`http://localhost:5000/events/${currentEvent._id}`, formData);
-        alert('Event updated successfully!');
-      } else {
-        // Create new event - eventId will be generated on the backend
-        await axios.post('http://localhost:5000/events', formData);
-        alert('Event created successfully!');
-      }
-
-      // Refresh the events list
-      fetchEvents();
-
-      // Reset the form
-      setCurrentEvent(null);
-      setFormData({
-        title: '',
-        desc: '',
-        imgUrl: '',
-        date: '',
-        enddate: '',
-        venue: '',
-        prizes: [],
-        scheduleDetails: [],
-        importantDates: [],
-        teamFormationDeadline: '',
-        submissionDeadline: '',
-        registrationDeadline: '',
-      });
-    } catch (error) {
-      console.error("Error saving event:", error);
-      alert('Error saving event.');
-    }
-  };
+        e.preventDefault();
+        if (!formData.title || !formData.desc || !formData.date || !formData.enddate || !formData.venue || !formData.teamFormationDeadline || !formData.submissionDeadline || !formData.registrationDeadline) {
+            alert("Please fill in all required fields, including the deadline dates.");
+            return;
+        }
+        try {
+            if (currentEvent) {
+                await axios.put(`http://localhost:5000/events/${currentEvent._id}`, formData);
+                alert('Event updated successfully!');
+            } else {
+                await axios.post('http://localhost:5000/events', formData);
+                alert('Event created successfully!');
+            }
+            fetchEvents();
+            setCurrentEvent(null);
+            setFormData({
+                title: '',
+                desc: '',
+                imgUrl: '',
+                eventId: '',
+                date: '',
+                enddate: '',
+                venue: '',
+                prizes: [],
+                scheduleDetails: [],
+                importantDates: [],
+                teamFormationDeadline: '',
+                submissionDeadline: '',
+                registrationDeadline: '',
+                submissionPhases: [],
+            });
+        } catch (error) {
+            console.error("Error saving event:", error);
+            alert('Error saving event.');
+        }
+    };
 
     const filteredEvents = events.filter(event =>
         event.title.toLowerCase().includes(search.toLowerCase())
@@ -791,16 +752,6 @@ const EventManager = () => {
                         required
                     />
                 </div>
-                {/* <div className="mb-3">
-                    <input
-                        type="text"
-                        placeholder="Event ID"
-                        value={formData.eventId}
-                        onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
-                        className="form-control"
-                        required
-                    />
-                </div> */}
                 <div className="mb-3">
                     <input
                         type="date"
@@ -821,11 +772,10 @@ const EventManager = () => {
                         required
                     />
                 </div>
-                {/* New Deadline Fields */}
                 <div className="mb-3">
                     <label className="form-label">Registration Deadline</label>
                     <input
-                        type="datetime-local" // Consider using datetime-local for more precision
+                        type="datetime-local"
                         value={formData.registrationDeadline}
                         onChange={(e) => setFormData({ ...formData, registrationDeadline: e.target.value })}
                         className="form-control"
@@ -895,7 +845,6 @@ const EventManager = () => {
                         </ul>
                     )}
                 </div>
-
                 <div className="mb-3">
                     <label className="form-label">Schedule Details</label>
                     {formData.scheduleDetails.map((detail, index) => (
@@ -949,7 +898,6 @@ const EventManager = () => {
                         </div>
                     </div>
                 </div>
-
                 <div className="mb-3">
                     <label className="form-label">Important Dates</label>
                     <div className="d-flex">
@@ -980,7 +928,69 @@ const EventManager = () => {
                         </ul>
                     )}
                 </div>
-
+                <div className="mb-3">
+                    <label className="form-label">Submission Phases</label>
+                    {formData.submissionPhases.map((phase, index) => (
+                        <div key={index} className="card mb-2">
+                            <div className="card-body">
+                                <h6 className="card-title">Phase #{index + 1}</h6>
+                                <p className="card-text">Name: {phase.name}</p>
+                                <p className="card-text">Start: {phase.startDate}</p>
+                                <p className="card-text">End: {phase.endDate}</p>
+                                <p className="card-text">Description: {phase.description}</p>
+                                <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() => handleRemoveSubmissionPhase(index)}
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                    <div className="card">
+                        <div className="card-body">
+                            <h6 className="card-title">Add New Submission Phase</h6>
+                            <div className="mb-2">
+                                <input
+                                    type="text"
+                                    placeholder="Phase Name"
+                                    value={newSubmissionPhase.name}
+                                    onChange={(e) => setNewSubmissionPhase({ ...newSubmissionPhase, name: e.target.value })}
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="mb-2">
+                                <input
+                                    type="datetime-local"
+                                    placeholder="Start Date"
+                                    value={newSubmissionPhase.startDate}
+                                    onChange={(e) => setNewSubmissionPhase({ ...newSubmissionPhase, startDate: e.target.value })}
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="mb-2">
+                                <input
+                                    type="datetime-local"
+                                    placeholder="End Date"
+                                    value={newSubmissionPhase.endDate}
+                                    onChange={(e) => setNewSubmissionPhase({ ...newSubmissionPhase, endDate: e.target.value })}
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="mb-2">
+                                <input
+                                    type="text"
+                                    placeholder="Description"
+                                    value={newSubmissionPhase.description}
+                                    onChange={(e) => setNewSubmissionPhase({ ...newSubmissionPhase, description: e.target.value })}
+                                    className="form-control"
+                                />
+                            </div>
+                            <button type="button" className="btn btn-outline-secondary" onClick={handleAddSubmissionPhase}>Add Phase</button>
+                        </div>
+                    </div>
+                </div>
                 <button type="submit" className="btn btn-primary">
                     {currentEvent ? 'Update' : 'Add'} Event
                 </button>
@@ -1011,7 +1021,7 @@ const EventManager = () => {
                                             handleDelete(event._id);
                                         }
                                     }}
-                                    
+                                    className="btn btn-danger"
                                 >
                                     Delete
                                 </button>

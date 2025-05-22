@@ -343,6 +343,39 @@ function TeamManager() {
 
 export default TeamManager;
 
+// import React, { useState } from 'react';
+// import axios from 'axios';
+
+// const CreateTeam = ({ userId }) => {
+//   const [name, setName] = useState('');
+//   const [project, setProject] = useState('');
+
+//   const handleCreateTeam = async () => {
+//     try {
+//       const response = await axios.post('/api/teams/create', {
+//         name,
+//         project,
+//         userId,
+//         eventId: 'event123', // Replace with actual event ID
+//       });
+//       alert(response.data.message);
+//     } catch (error) {
+//       alert(error.response.data.message || 'Error creating team');
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <h2>Create Team</h2>
+//       <input type="text" placeholder="Team Name" value={name} onChange={(e) => setName(e.target.value)} />
+//       <input type="text" placeholder="Project" value={project} onChange={(e) => setProject(e.target.value)} />
+//       <button onClick={handleCreateTeam}>Create</button>
+//     </div>
+//   );
+// };
+
+// export default CreateTeam;
+
 // import React, { useState, useEffect } from 'react';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import '../App.css'; // Assuming you have App.css for custom styles

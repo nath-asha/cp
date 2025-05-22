@@ -28,6 +28,14 @@ const signupSchema = new mongoose.Schema({
 required: true,
 default: [] },
  eventreg: { type: String, default: "none"},
+ notifications: [
+  {
+    message: String,
+    seen: { type: Boolean, default: false },
+    createdAt: { type: Date, default: Date.now },
+  }
+],
+
 //   eventreg: [ // Changed to an array of objects
 //     {
 //       eventId: { type: String, required: true },

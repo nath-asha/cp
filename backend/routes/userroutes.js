@@ -55,6 +55,16 @@ router.get("/notifications", authenticate, authorize(["user", "mentor", "admin"]
     res.json({ message: "Here are your notifications" });
 });
 
+// Get user notifications
+router.get('/notifications/:userId', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    res.status(200).json(user.notifications);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+});
+
 module.exports = router;
 
 // const express = require("express");

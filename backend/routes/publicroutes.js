@@ -1606,6 +1606,119 @@ router.patch('/users/:memberId', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+////////////////////////////////////////////////////THIS IS LATEST MAY 22
+// POST /api/teams/create
+
+router.post("/create", async (req, res) => {
+  try {
+    const { name, userId, eventId } = req.body;
+    const users = await user.findById(userId);
+
+    if (!users) return res.status(404).json({ message: "User not found" });
+
+    const teamId = Math.floor(Math.random() * 100000); // generate unique team ID
+    const newTeam = new team({
+      name,
+      team_id: teamId,
+      members: [{ status: "approved", user_id: userId }],
+      eventId,
+    });
+
+    await newTeam.save();
+
+    users.team = name;
+    users.teamId = teamId;
+    users.isTeam = true;
+    await users.save();
+
+    res.status(201).json(newTeam);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/teams/request
+router.post("/request", async (req, res) => {
+  const { userId, teamId } = req.body;
+  try {
+    const teams = await team.findOne({ team_id: teamId });
+    if (!teams) return res.status(404).json({ message: "Team not found" });
+
+    // Check if user already requested
+    const alreadyRequested = teams.requests.some(
+      (r) => r.user_id.toString() === userId
+    );
+    if (alreadyRequested) {
+      return res.status(400).json({ message: "Already requested" });
+    }
+
+    teams.requests.push({ user_id: userId, status: "pending" });
+    await teams.save();
+
+    res.json({ message: "Request sent" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/teams/list
+router.get("/list", async (req, res) => {
+  try {
+    const teams = await team.find({});
+    res.json(teams);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT /api/teams/handle-request
+router.put("/handle-request", async (req, res) => {
+  const { teamId, userId, action } = req.body; // action = "approve" or "reject"
+
+  try {
+    const teams = await team.findOne({ team_id: teamId });
+    if (!teams) return res.status(404).json({ message: "Team not found" });
+
+    const request = teams.requests.find(
+      (r) => r.user_id.toString() === userId
+    );
+    if (!request) return res.status(404).json({ message: "Request not found" });
+
+    request.status = action;
+
+    if (action === "approve") {
+      teams.members.push({ user_id: userId, status: "approved" });
+
+      // Also update the user schema
+      const users = await user.findById(userId);
+      if (users) {
+        users.team = teams.name;
+        users.teamId = teams.team_id;
+        users.isTeam = true;
+        await users.save();
+      }
+    }
+
+    await teams.save();
+    res.json({ message: `User ${action}ed` });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/teams/:teamId/requests
+router.get("/:teamId/requests", async (req, res) => {
+  const { teamId } = req.params;
+  try {
+    const teams = await team.findOne({ team_id: teamId }).populate("requests.user_id", "firstName lastName email");
+    if (!teams) return res.status(404).json({ message: "Team not found" });
+
+    res.json(teams.requests.filter(req => req.status === "pending"));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 module.exports = router;
 

@@ -51,6 +51,13 @@ const userSchema = new mongoose.Schema({
   // chosen_challenge: { type: String, default: "none" },
   venue: String,
   isTeam: Boolean,
+  notifications: [
+  {
+    message: String,
+    seen: { type: Boolean, default: false },
+    createdAt: { type: Date, default: Date.now },
+  }
+],
   requests: [],
 //pic: String,
 cred : String, 
