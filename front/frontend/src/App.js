@@ -70,7 +70,7 @@ import Sendteamreq from './components/sendteamreq';
 import Newgooglecred from './components/newgooglecred';
 import Gsignsimpler from './components/GoogleSigninLatest';
 import MultiSubmissions from './components/mutlisubmissions';
-import EvaluationRubrics from './components/evaluaterubrics';
+// import EvaluationRubrics from './components/evaluaterubrics';
 import Createteam from './components/CreateTeam';
 import ApproveUserPage from './components/approveuserpage';
 import AddChallenge from './components/Addchallenge';
@@ -152,7 +152,7 @@ function App() {
           <Route path='/newgooglecred' element={<Newgooglecred/>}/>
           <Route path='/gsigninsimpler' element={<Gsignsimpler />} />
           <Route path='/multisubmissions' element={<MultiSubmissions />}/>
-          <Route path='/evaluationrubrics/:teamId' element={<EvaluationRubrics />} />
+          {/* <Route path='/evaluationrubrics/:teamId' element={<EvaluationRubrics />} /> */}
           <Route path='/createteams/:eventId' element={<Createteam />} />
           <Route path='/approveuserpage' element={<ApproveUserPage/>}/>
           <Route path='/addchallenge' element={<AddChallenge />}/>

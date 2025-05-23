@@ -186,11 +186,13 @@ exports.removeMemberFromTeam = async (req, res) => {
     }
 };
 
-// Send a join request to a team
+// Send a join request to a team 
+//this workssssssssss 
+//{"teamId": "682ee7ec6cd028959c6d94eb","userId": "68073186a7b75103027913c3"}
 exports.sendJoinRequest = async (req, res) => {
-    const { teamId } = req.params;
-    const userId = req.user.id;
-
+    // const { teamId } = req.params;
+    const userId = req.body.userId || req.user.id; // Get userId from request body or from authenticated user
+    const teamId = req.body.teamId;
     try {
         const Team = await team.findById(teamId);
 

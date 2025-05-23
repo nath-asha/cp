@@ -143,8 +143,8 @@ router.get('/teams/:teamId', async (req, res) => {
 
 router.get("/submissions/:teamId", async (req, res) => {
     try {
-        const teamId = req.params.teamId;
-        const submissions = await submission.find({ team_id: teamId });
+        const { teamId } = req.params;
+        const submissions = await submission.find({ team_id: teamId});
         res.json(submissions);
     } catch (err) {
         console.error('Error fetching submissions:', err);
@@ -1247,8 +1247,8 @@ router.post('/reject-invitation/:teamId', teamController.rejectInvitation);
 router.post('/leave-team/:teamId', teamController.leaveTeam);
 router.post('/remove-member/:teamId/:userId', teamController.removeMemberFromTeam);
 
-// Send a join request to a team
-router.post('/request-join/:teamId', teamController.sendJoinRequest);
+// Send a join request to a team this workssssssssssssss
+router.post('/request-join', teamController.sendJoinRequest);
 
 // Get all join requests for a team (only accessible to admins)
 router.get('/join-requests/:teamId', teamController.getJoinRequests);
@@ -1782,7 +1782,7 @@ router.post("/request", async (req, res) => {
 
     // Check if user already requested
     const alreadyRequested = teams.requests.some(
-      (r) => r.user_id.toString() === userId
+      (r) => r.user_id === userId
     );
     if (alreadyRequested) {
       return res.status(400).json({ message: "Already requested" });
