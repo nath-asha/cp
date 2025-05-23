@@ -377,21 +377,17 @@ function TeamManager() {
             setLoading(true);
             setError(null);
             try {
-                const teamsResponse = await fetch('http://localhost:5000/teams');
-                if (!teamsResponse.ok) {
-                    throw new Error(`HTTP error! Status: ${teamsResponse.status}`);
-                }
-                const teamsData = await teamsResponse.json();
+                const [teamsRes, usersRes] = await Promise.all([
+                    fetch('http://localhost:5000/teams'),
+                    fetch('http://localhost:5000/users')
+                ]);
+                if (!teamsRes.ok || !usersRes.ok) throw new Error('Failed to fetch data');
+                const teamsData = await teamsRes.json();
+                const usersData = await usersRes.json();
                 setTeams(teamsData);
-
-                const usersResponse = await fetch('http://localhost:5000/users');
-                if (!usersResponse.ok) {
-                    throw new Error(`HTTP error! Status: ${usersResponse.status}`);
-                }
-                const usersData = await usersResponse.json();
                 setUsers(usersData);
             } catch (err) {
-                console.error('Error fetching data:', err);
+                console.error('Error:', err);
                 setError(err);
             } finally {
                 setLoading(false);
@@ -401,84 +397,78 @@ function TeamManager() {
         fetchData();
     }, []);
 
-    const currentUser = users.find(user => user.id === currentUserId);
-    const currentUserName = currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : '';
+// Find current user
+const currentUser = users.find(user => user._id === currentUserId);
+const currentUserName = currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : '';
 
-    const filteredParticipantsCreate = users.filter(participant =>
-        participant.id !== currentUserId &&
-        participant.firstName &&
-        participant.firstName.toLowerCase().includes(participantSearchCreate.toLowerCase())
-    );
+// Inside filteredParticipantsCreate
+const filteredParticipantsCreate = users.filter(participant =>
+    participant._id !== currentUserId &&
+    `${participant.firstName} ${participant.lastName}`.toLowerCase().includes(participantSearchCreate.toLowerCase())
+);
 
     const filteredTeamsJoin = teams.filter(team =>
-        team.members && team.members.length <= 4 &&
-        team.name && team.name.toLowerCase().includes(teamSearchJoin.toLowerCase())
+        team.name.toLowerCase().includes(teamSearchJoin.toLowerCase()) &&
+        team.members.length < 4 &&
+        !team.members.includes(currentUserId)
     );
 
-    const handleTabChange = (tab) => {
-        setActiveTab(tab);
-    };
-
-    const handleInputChange = (e) => {
-        setTeamName(e.target.value);
-    };
+    const handleTabChange = (tab) => setActiveTab(tab);
+    const handleInputChange = (e) => setTeamName(e.target.value);
 
     const handleAddParticipant = (user) => {
-        if (selectedParticipants.length < 3 && !selectedParticipants.some(p => p.id === user.id)) {
-            setSelectedParticipants([...selectedParticipants, user]);
-        } else if (selectedParticipants.length >= 4) {
-            alert('Team size cannot exceed 4 participants (including yourself).');
+        // if (selectedParticipants.find(p => p.id === user.id)) return;
+        if (selectedParticipants.find(p => p._id === user._id)) return;   
+             setSelectedParticipants(prev => [...prev, user]);
+
+        if (selectedParticipants.length >= 3) {
+            alert('You can select up to 3 participants (max team size is 4 including yourself).');
+            return;
         }
     };
 
     const handleRemoveParticipant = (userId) => {
-        setSelectedParticipants(selectedParticipants.filter(p => p.id !== userId));
+setSelectedParticipants(prev => prev.filter(p => p._id !== userId));
     };
-
+console.log("Selected Participants:", selectedParticipants);
+    console.log("Sending create request with userIds:", users);
     const handleSendRequestCreateTeam = async () => {
-        if (!teamName.trim()) {
-            alert('Please enter a team name.');
-            return;
-        }
+        const trimmedName = teamName.trim();
+        if (!trimmedName) return alert('Please enter a valid team name.');
 
-        // Team size: current user + up to 4 others
         const userIds = [currentUserId, ...selectedParticipants.map(p => p.id)];
-
-        if (userIds.length < 2) {
-            alert('Please add at least one participant to the team.');
-            return;
-        }
+        if (userIds.length < 2) return alert('Add at least one participant to create a team.');
 
         try {
-            const response = await fetch(`http://localhost:5000/api/team/create/${eventId}`, {
+            const res = await fetch(`http://localhost:5000/api/team/create/${eventId}`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    teamName,
-                    userIds,
-                    loggedInUserId: currentUserId
-                }),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ teamName: trimmedName, userIds, loggedInUserId: currentUserId })
             });
 
-            if (response.ok) {
-                const createdTeam = await response.json();
-                setTeams([...teams, createdTeam]);
-                alert(`Team "${teamName}" created. Requests sent to participants.`);
-                setTeamName('');
-                setSelectedParticipants([]);
-            } else {
-                const errorData = await response.json();
-                alert(errorData.message || 'Failed to create team.');
+            if (!res.ok) {
+                const errData = await res.json();
+                return alert(errData.message || 'Failed to create team.');
             }
-        } catch (error) {
-            console.error('Error creating team:', error);
-            alert('Error creating team.');
+
+            const newTeam = await res.json();
+            setTeams([...teams, newTeam]);
+            alert(`Team "${trimmedName}" created and invitations sent.`);
+            setTeamName('');
+            setSelectedParticipants([]);
+
+        } catch (err) {
+            console.error('Create team error:', err);
+            alert('An error occurred while creating the team.');
         }
     };
 
     const handleSendJoinRequest = async (team) => {
+        if (team.members.includes(currentUserId)) {
+            alert('You are already a member of this team.');
+            return;
+        }
+
         const request = {
             teamId: team.id,
             from: currentUserId,
@@ -487,58 +477,44 @@ function TeamManager() {
         };
 
         try {
-            // Send request to all members of the team
-            team.members.forEach(async (memberId) => {
-                if (memberId !== currentUserId) {
-                    await fetch(`http://localhost:5000/users/${memberId}`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            requests: [
-                                ...(users.find(u => u.id === memberId)?.requests || []),
-                                request
-                            ]
-                        }),
-                    });
-                }
-            });
+            await Promise.all(
+                team.members
+                    .filter(id => id !== currentUserId)
+                    .map(async memberId => {
+                        const member = users.find(u => u.id === memberId);
+                        const prevRequests = member?.requests || [];
+                        await fetch(`http://localhost:5000/users/${memberId}`, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ requests: [...prevRequests, request] })
+                        });
+                    })
+            );
             alert(`Request sent to join team "${team.name}".`);
-        } catch (error) {
-            console.error('Error sending join request:', error);
+        } catch (err) {
+            console.error('Join request error:', err);
             alert('Error sending join request.');
         }
-    };    
+    };
+    
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
 
     return (
         <div className="container mt-5">
             <h2 className="mb-4">Team Management</h2>
             <ul className="nav nav-tabs mb-3">
-                <li className="nav-item">
-                    <button
-                        className={`nav-link ${activeTab === 'create' ? 'active' : ''}`}
-                        onClick={() => handleTabChange('create')}
-                    >
-                        Create Team
-                    </button>
-                </li>
-                <li className="nav-item">
-                    <button
-                        className={`nav-link ${activeTab === 'join' ? 'active' : ''}`}
-                        onClick={() => handleTabChange('join')}
-                    >
-                        Join Team
-                    </button>
-                </li>
+                {['create', 'join'].map(tab => (
+                    <li className="nav-item" key={tab}>
+                        <button
+                            className={`nav-link ${activeTab === tab ? 'active' : ''}`}
+                            onClick={() => handleTabChange(tab)}
+                        >
+                            {tab === 'create' ? 'Create Team' : 'Join Team'}
+                        </button>
+                    </li>
+                ))}
             </ul>
 
             {activeTab === 'create' && (
@@ -556,31 +532,28 @@ function TeamManager() {
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="participantSearchCreate" className="form-label">Add Participants:</label>
+                        <label className="form-label">Search Participants:</label>
                         <input
                             type="text"
                             className="form-control"
-                            id="participantSearchCreate"
-                            placeholder="Search participants by name..."
                             value={participantSearchCreate}
-                            onChange={(e) => setParticipantSearchCreate(e.target.value)}
+                            onChange={e => setParticipantSearchCreate(e.target.value)}
+                            placeholder="Search by name..."
                         />
                         <ul className="list-group mt-2">
-                            {filteredParticipantsCreate.length > 0 ? (
+                            {filteredParticipantsCreate.length ? (
                                 filteredParticipantsCreate.map(participant => (
                                     <li
                                         key={participant.id}
-                                        className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                                        className="list-group-item d-flex justify-content-between align-items-center"
                                     >
-                                        {participant.firstName && participant.lastName
-                                            ? `${participant.firstName} ${participant.lastName} (${participant.USN})`
-                                            : participant.email || participant.id}
+                                        {participant.firstName} {participant.lastName} ({participant.USN})
                                         <button
                                             className="btn btn-sm btn-outline-primary"
                                             onClick={() => handleAddParticipant(participant)}
                                             disabled={selectedParticipants.length >= 3}
                                         >
-                                            Request
+                                            Add
                                         </button>
                                     </li>
                                 ))
@@ -599,9 +572,7 @@ function TeamManager() {
                                         key={participant.id}
                                         className="list-group-item d-flex justify-content-between align-items-center"
                                     >
-                                        {participant.firstName && participant.lastName
-                                            ? `${participant.firstName} ${participant.lastName}`
-                                            : participant.email || participant.id}
+                                        {participant.firstName} {participant.lastName}
                                         <button
                                             className="btn btn-sm btn-outline-danger"
                                             onClick={() => handleRemoveParticipant(participant.id)}
@@ -617,7 +588,7 @@ function TeamManager() {
                     <button
                         className="btn btn-primary"
                         onClick={handleSendRequestCreateTeam}
-                        disabled={selectedParticipants.length === 0 || selectedParticipants.length > 3 || !teamName.trim()}
+                        disabled={!teamName.trim() || selectedParticipants.length === 0}
                     >
                         Send Request
                     </button>
@@ -628,17 +599,16 @@ function TeamManager() {
                 <div className="card p-4">
                     <h3>Join a Team</h3>
                     <div className="mb-3">
-                        <label htmlFor="teamSearchJoin" className="form-label">Search Teams:</label>
+                        <label className="form-label">Search Teams:</label>
                         <input
                             type="text"
                             className="form-control"
-                            id="teamSearchJoin"
-                            placeholder="Search teams by name..."
                             value={teamSearchJoin}
-                            onChange={(e) => setTeamSearchJoin(e.target.value)}
+                            onChange={e => setTeamSearchJoin(e.target.value)}
+                            placeholder="Search by team name..."
                         />
                     </div>
-                    {filteredTeamsJoin.length > 0 ? (
+                    {filteredTeamsJoin.length ? (
                         <ul className="list-group">
                             {filteredTeamsJoin.map(team => (
                                 <li
@@ -647,7 +617,7 @@ function TeamManager() {
                                 >
                                     <div>
                                         <h5>{team.name}</h5>
-                                        {team.members && <small className="text-muted">Members: {team.members.length}/4</small>}
+                                        <small className="text-muted">Members: {team.members.length}/4</small>
                                     </div>
                                     <button
                                         className="btn btn-sm btn-outline-success"

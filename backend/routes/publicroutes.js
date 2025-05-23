@@ -1050,6 +1050,9 @@ router.post('/choose-challenge/:teamId', async (req, res) => {
     }
 });
 //// TRIAL 1 SAMPLE 1 
+//    "members": "67c7d9dce8d68663b9a2855d"
+//    "error": "Internal Server Error"
+
 router.post('/createteams', async (req, res) => {
     const { name, team_id, members } = req.body; // Expecting team name, team_id, and members array in the request body
     try {
@@ -1072,6 +1075,8 @@ router.post('/createteams', async (req, res) => {
     }
 });
 
+//    "members": "6651e61e52a7e674c2c60abc"
+//    "error": "Internal Server Error"
 router.put('/approve-member/:teamId', async (req, res) => {
     const { teamId } = req.params;
     const { user_id } = req.body; // Expecting user_id to approve
@@ -1117,7 +1122,8 @@ router.put('/approve-member/:teamId', async (req, res) => {
 // });
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!=================================---------%%%%%%%%%%%%%%%%%%%%%%%%%%
 //// TRIAL 2 SAMPLE 2
-
+//{"name": "buga","members": ["6651e61e52a7e674c2c60abc","680f4fd37670c38b40286d5e","681463d86181f6028b5bca0c"],"teamId": "25"}
+//    "message": "Team with the same name or ID already exists"
 router.post('/createteams', async (req, res) => {
     const { name, team_id, members } = req.body; // Expecting team name, team_id, and members array
     try {
@@ -1286,6 +1292,7 @@ router.post('/create', async (req, res) => {
     }
 });
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//need to change body parameters
 router.post('/join/:teamId', async (req, res) => {
     const { teamId } = req.params;
 
@@ -1325,7 +1332,8 @@ router.post('/join/:teamId', async (req, res) => {
         res.status(500).json({ message: 'Error while sending request', error });
     }
 });
-
+//{"action": "accept"}
+//{ "message": "Error while processing request", "error": {}}
 router.post('/request/:teamId/:userId', async (req, res) => {
     const { teamId, userId } = req.params;
     const { action } = req.body; // "accept" or "reject"
@@ -1352,7 +1360,7 @@ router.post('/request/:teamId/:userId', async (req, res) => {
 
         // Accept or reject the request
         if (action === 'accept') {
-            team.members.push({
+            Team.members.push({
                 status: 'member',
                 user_id: userId
             });
@@ -1365,13 +1373,13 @@ router.post('/request/:teamId/:userId', async (req, res) => {
         await Team.save();
 
         // Update the user's signup document
-        const user = await signuser.findById(userId);
+        const users = await signuser.findById(userId);
         if (action === 'accept') {
-            user.team = Team.name;
-            user.teamId = Team.team_id;
-            user.isTeam = true;
+            users.team = Team.name;
+            users.teamId = Team.team_id;
+            users.isTeam = true;
         }
-        await user.save();
+        await users.save();
 
         res.status(200).json({ message: `Request ${action}ed successfully` });
     } catch (error) {
