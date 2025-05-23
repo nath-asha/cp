@@ -436,7 +436,7 @@ console.log("Selected Participants:", selectedParticipants);
         const trimmedName = teamName.trim();
         if (!trimmedName) return alert('Please enter a valid team name.');
 
-        const userIds = [currentUserId, ...selectedParticipants.map(p => p.id)];
+        const userIds = [currentUserId, ...selectedParticipants.map(p => p._id)];
         if (userIds.length < 2) return alert('Add at least one participant to create a team.');
 
         try {
@@ -575,7 +575,7 @@ console.log("Selected Participants:", selectedParticipants);
                                         {participant.firstName} {participant.lastName}
                                         <button
                                             className="btn btn-sm btn-outline-danger"
-                                            onClick={() => handleRemoveParticipant(participant.id)}
+                                            onClick={() => handleRemoveParticipant(participant._id)}
                                         >
                                             Remove
                                         </button>

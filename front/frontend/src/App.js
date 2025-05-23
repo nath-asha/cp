@@ -80,6 +80,8 @@ import Challenges2 from './components/challenges2';
 import TeamFormation from './components/latestteamformation';
 import MentorQueryForm from './components/mentorqueryform';
 import Submissionsphase1 from './components/submissionphasse1';
+import ScoreRubric from './components/Scorerubric';
+import CreateRubricTemplate from './components/CreateRubricTemplate';
 //Protected Route Component
 const ProtectedRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
@@ -159,6 +161,8 @@ function App() {
           <Route path='/teamformation' element={<TeamFormation />}/>
           <Route path='/mentorqueryform' element={<MentorQueryForm/>}/>
           <Route path='/submissionphase1' element={<Submissionsphase1 />} />
+          <Route path='/scorerubric/:eventId/team/:teamId' element={<ScoreRubric/>} />
+          <Route path='/createrubrictemplate/:eventId' element={<CreateRubricTemplate />} />
 
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
            <ParticipantDashboard /></PrivateRoute>} />
