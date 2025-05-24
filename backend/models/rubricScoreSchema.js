@@ -13,6 +13,7 @@ const rubricScoreSchema = new mongoose.Schema({
   comments: String,
   totalScore: Number,
   submittedAt: { type: Date, default: Date.now },
+  eventId: String,
 });
 
 module.exports = mongoose.model("RubricScore", rubricScoreSchema);

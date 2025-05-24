@@ -302,3 +302,32 @@ exports.rejectJoinRequest = async (req, res) => {
         return res.status(500).json({ status: "failed", message: error.message });
     }
 };
+
+// router.post('/request-join', teamController.sendJoinRequest);
+// exports.sendJoinRequest = async (req, res) => {
+//     // const { teamId } = req.params;
+//     const userId = req.body.userId || req.user.id; // Get userId from request body or from authenticated user
+//     const teamId = req.body.teamId;
+//     try {
+//         const Team = await team.findById(teamId);
+//         if (!Team) {
+//             return res.status(404).json({ status: "failed", message: "Team not found" });
+//         }
+//         if (Team.members.length >= 4) {
+//             return res.status(400).json({ status: "failed", message: "Team is already full" });
+//         }
+//         const isAlreadyMember = Team.members.some((member) => member.user_id.toString() === userId);
+//         if (isAlreadyMember) {
+//             return res.status(400).json({ status: "failed", message: "You are already a member of this team" });
+//         }
+//         const existingRequest = Team.requests.find((req) => req.user_id.toString() === userId);
+//         if (existingRequest) {
+//             return res.status(400).json({ status: "failed", message: "Join request already sent" });
+//         }
+//         Team.requests.push({ user_id: userId, status: "pending" });
+//         await Team.save();
+//         return res.status(200).json({ status: "success", message: "Join request sent successfully" });
+//     } catch (error) {
+//         return res.status(500).json({ status: "failed", message: error.message });
+//     }
+// };

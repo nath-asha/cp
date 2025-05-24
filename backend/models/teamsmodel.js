@@ -35,6 +35,14 @@ const teamSchema = new mongoose.Schema({
     "isFull" : Boolean,
     chosen_challenge: {type: String, default: "none"},
     eventId : String,
+     scores: [
+    {
+      criterion: { type: String, required: true },
+      score: { type: Number, required: true },
+    },
+  ],
+    comments: String,
+      totalScore: Number,
 },{ timestamps: true });
 module.exports = mongoose.model("teams",teamSchema);
 

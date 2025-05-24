@@ -463,73 +463,77 @@ console.log("Selected Participants:", selectedParticipants);
         }
     };
 
+    // const handleSendJoinRequest = async (team) => {
+    //     if (team.members.includes(currentUserId)) {
+    //         alert('You are already a member of this team.');
+    //         return;
+    //     }
+
+    //     const request = {
+    //         teamId: team.id,
+    //         from: currentUserId,
+    //         message: `${currentUserName} wants to join your team "${team.name}".`,
+    //         status: 'pending'
+    //     };
+
+    //     try {
+    //         // Send join request to backend (POST /request-join)
+    //         const response = await fetch('http://localhost:5000/request-join', {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({
+    //             teamId: team.id,
+    //             userId: currentUserId
+    //         })
+    //         });
+
+    //         const result = await response.json();
+    //         if (response.ok) {
+    //         alert(result.message || `Request sent to join team "${team.name}".`);
+    //         } else {
+    //         alert(result.message || 'Failed to send join request.');
+    //         }
+    //         //its not patch it is post for now
+    //     } catch (err) {
+    //         console.error('Join request error:', err);
+    //         alert('Error sending join request.');
+    //     }
+    // };
     const handleSendJoinRequest = async (team) => {
-        if (team.members.includes(currentUserId)) {
-            alert('You are already a member of this team.');
-            return;
+    // Normalize member id for comparison
+    const isAlreadyMember = team.members.some(member => {
+        if (typeof member === "string") return member === currentUserId;
+        if (typeof member === "object" && member !== null) {
+            return (member.user_id === currentUserId) || (member._id === currentUserId);
         }
+        return false;
+    });
+    if (isAlreadyMember) {
+        alert('You are already a member of this team.');
+        return;
+    }
 
-        const request = {
-            teamId: team.id,
-            from: currentUserId,
-            message: `${currentUserName} wants to join your team "${team.name}".`,
-            status: 'pending'
-        };
-//router.post('/request-join', teamController.sendJoinRequest);
-// exports.sendJoinRequest = async (req, res) => {
-//     // const { teamId } = req.params;
-//     const userId = req.body.userId || req.user.id; // Get userId from request body or from authenticated user
-//     const teamId = req.body.teamId;
-//     try {
-//         const Team = await team.findById(teamId);
+    try {
+        const response = await fetch('http://localhost:5000/request-join', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                teamId: team._id || team.id,
+                userId: currentUserId
+            })
+        });
 
-//         if (!Team) {
-//             return res.status(404).json({ status: "failed", message: "Team not found" });
-//         }
-
-//         if (Team.members.length >= 4) {
-//             return res.status(400).json({ status: "failed", message: "Team is already full" });
-//         }
-
-//         const isAlreadyMember = Team.members.some((member) => member.user_id.toString() === userId);
-//         if (isAlreadyMember) {
-//             return res.status(400).json({ status: "failed", message: "You are already a member of this team" });
-//         }
-
-//         const existingRequest = Team.requests.find((req) => req.user_id.toString() === userId);
-//         if (existingRequest) {
-//             return res.status(400).json({ status: "failed", message: "Join request already sent" });
-//         }
-
-//         Team.requests.push({ user_id: userId, status: "pending" });
-//         await Team.save();
-
-//         return res.status(200).json({ status: "success", message: "Join request sent successfully" });
-//     } catch (error) {
-//         return res.status(500).json({ status: "failed", message: error.message });
-//     }
-// };
-        try {
-            await Promise.all(
-                team.members
-                    .filter(id => id !== currentUserId)
-                    .map(async memberId => {
-                        const member = users.find(u => u.id === memberId);
-                        const prevRequests = member?.requests || [];
-                        await fetch(`http://localhost:5000/users/${memberId}`, {
-                            method: 'PATCH',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ requests: [...prevRequests, request] })
-                        });
-                    })
-            );
-            alert(`Request sent to join team "${team.name}".`);
-        } catch (err) {
-            console.error('Join request error:', err);
-            alert('Error sending join request.');
+        const result = await response.json();
+        if (response.ok && result.status === "success") {
+            alert(result.message || `Request sent to join team "${team.name}".`);
+        } else {
+            alert(result.message || 'Failed to send join request.');
         }
-    };
-    
+    } catch (err) {
+        console.error('Join request error:', err);
+        alert('Error sending join request.');
+    }
+};
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;

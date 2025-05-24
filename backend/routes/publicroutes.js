@@ -1625,20 +1625,58 @@ router.post('/api/team/request/handle', async (req, res) => {
 
 //mentorqueryform
 
+// router.post('/mentor-query', async (req, res) => {
+//     try {
+//         const { email, mentorName, query } = req.body;
+//         if (!email || !mentorName || !query) {
+//             return res.status(400).json({ message: 'Email, mentor name, and query are required.' });
+//         }
+//         const newQuery = new Query({ email, mentorName, query });
+//         await newQuery.save();
+//         res.status(201).json({ message: 'Query submitted successfully.' });
+//     } catch (err) {
+//         console.error('Error saving mentor query:', err);
+//         res.status(500).json({ message: 'Internal Server Error' });
+//     }
+// });
+
 router.post('/mentor-query', async (req, res) => {
     try {
-        const { email, query } = req.body;
-        if (!email || !query) {
-            return res.status(400).json({ message: 'Email and query are required.' });
+        const { query } = req.body;
+        const userId = req.user._id;
+
+        if (!query) {
+            return res.status(400).json({ message: 'Query is required.' });
         }
-        const newQuery = new Query({ email, query });
+
+        // Find team where this user is a member
+        const teams = await team.findOne({ 'members.user_id': userId }).populate('mentor');
+        if (!teams) {
+            return res.status(403).json({ message: 'User is not part of any team.' });
+        }
+
+        if (!teams.mentor) {
+            return res.status(400).json({ message: 'Team does not have an assigned mentor.' });
+        }
+
+        const mentorName = teams.mentor.name || 'Unknown';
+        // const mentorEmail = teams.mentor.email || 'N/A'; // Assuming email exists in User schema
+        const userEmail = req.user.email;
+
+        const newQuery = new Query({
+            email: userEmail,
+            mentorName,
+            query,
+        });
+
         await newQuery.save();
-        res.status(201).json({ message: 'Query submitted successfully.' });
+        res.status(201).json({ message: 'Query submitted successfully.', mentorName });
     } catch (err) {
         console.error('Error saving mentor query:', err);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 
 router.post('/challenges', async (req, res) => {
     try {

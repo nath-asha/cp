@@ -5,6 +5,7 @@ import { Calendar, User, BookOpen, Users, Award, Bell } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DynamicChart from './charts';
 import Teammanager from './teammanager';
+import { getEmail } from './auth';
 import { useAuth } from '../provider/AuthProvider';
 
 const Dashboard = () => {
@@ -166,7 +167,9 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                                 <div className="d-grid mt-3">
-                                    <Button variant="outline-primary" size="sm"  onClick={() => window.location.href = '/mentorqueryform'}>Contact Mentor</Button>
+                                    <Button variant="outline-primary" size="sm" 
+                                    style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                     onClick={() => window.location.href = '/mentorqueryform'}>Contact Mentor</Button>
                                 </div>
                             </Card.Body>
                         </Card>

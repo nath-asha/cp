@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 function CreateRubricTemplate() {
   const { eventId } = useParams();
   const [criteria, setCriteria] = useState([
-    { name: "", weight: 0.25, maxScore: 25 }
+    { name: "", weight: 0.25, maxScore: 25 ,description: ""}
   ]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -18,7 +18,7 @@ function CreateRubricTemplate() {
   };
 
   const handleAddCriteria = () => {
-    setCriteria([...criteria, { name: "", weight: 0, maxScore: 25 }]);
+    setCriteria([...criteria, { name: "", weight: 0, maxScore: 25, description: ""}]);
   };
 
   const handleSubmit = async (method) => {
@@ -47,7 +47,7 @@ function CreateRubricTemplate() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Delete failed");
-      setCriteria([{ name: "", weight: 0.25, maxScore: 25 }]);
+      setCriteria([{ name: "", weight: 0.25, maxScore: 25, description: ""}]);
       setMessage("Deleted successfully.");
     } catch (err) {
       setMessage("Error: " + err.message);
