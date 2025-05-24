@@ -16,7 +16,9 @@
 }
 
 .navbar {
-  background-color: rgb(26, 18, 137);
+  /* background-color: rgb(26, 18, 137); */
+    background: linear-gradient(to right, #1e3a8a, #2563eb);
+
   overflow: visible;
   position:fixed;
   top: 0;

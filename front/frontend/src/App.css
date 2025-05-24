@@ -155,7 +155,8 @@ h4{
 } */
 
 footer{ 
-  background-color: #038a7f;
+  /* background-color: #038a7f; */
+    background: linear-gradient(to right, #1e3a8a, #2563eb);
   color: white;
   padding: 20px;
   text-align: center;

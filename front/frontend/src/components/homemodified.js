@@ -1,186 +1,161 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Carousel, Badge } from 'react-bootstrap';
-import Timeline from 'react-timeline-animation';
-import {User,Users,Calendar,Group} from 'lucide-react';
+import axios from 'axios';
 import CountUp from 'react-countup';
-import '../App.css';
+import { Carousel, Badge } from 'react-bootstrap';
+import { User, Users, Calendar, Group } from 'lucide-react';
 import './homemodified.css';
 
 const HackaFestHome = () => {
-    const [stats, setStats] = useState({ participants: 0, problems: 0, submissions: 0 });
-    const [events, setEvents] = useState([]);
-    const timelineRef = useRef(null);
+  const [stats, setStats] = useState({ participants: 0, problems: 0, submissions: 0 });
+  const [events, setEvents] = useState([]);
 
-    useEffect(() => {
-        axios.get("http://localhost:5000/api/stats")
-            .then(response => setStats(response.data))
-            .catch(error => console.error(error));
+  useEffect(() => {
+    axios.get("http://localhost:5000/api/stats")
+      .then(res => setStats(res.data))
+      .catch(console.error);
 
-        axios.get("http://localhost:5000/events")
-            .then(response => setEvents(response.data))
-            .catch(error => console.error(error));
-    }, []);
+    axios.get("http://localhost:5000/events")
+      .then(res => setEvents(res.data))
+      .catch(console.error);
+  }, []);
 
-    const animation = [
-        {
-            target: timelineRef,
-            duration: 1,
-            keyframes: {
-                opacity: [0, 1],
-                transform: ['translateY(-20px)', 'translateY(0px)'],
-            },
-            easing: 'easeOutQuad',
-        },
-        {
-            target: timelineRef,
-            duration: 0.5,
-            keyframes: {
-                backgroundColor: ['#f8f9fa', '#e9ecef'],
-            },
-        },
-    ];
+  return (
+    <div className="hackafest-home">
 
-    return (
-        <div className="hackafest-home">
-            <section className="hero">
-                <div className="hero-content">
-                    <h1>HackaFest :Ignite Innovation, Build the Future</h1>
-                    {/* <h1>HackaFest: Your Digital Hackathon Hub</h1> */}
-
-                    <p>Effortlessly register, form teams, and join exciting hackathons from anywhere.</p>
-                    <div className="hero-buttons">
-                        {/* <Link to="/lay" className="btn btn-primary">Register Now</Link> */}
-                        <Link to="/events" className="btn btn-outline-primary">Explore Events</Link>
-                    </div>
-                </div>
-            </section>
-
-              {/* Stats Section */}
-              <section className="stats">
-                <div className="container">
-                    <h2 className="section-title">HackaFest Stats</h2>
-                    <div className="stats-grid">
-                        <div className="stat-item">
-                            <h3>
-                                <CountUp start={0} end={stats.participants} duration={3} />+
-                            </h3>
-                            <p>Participants</p>
-                        </div>
-                        <div className="stat-item">
-                            <h3>
-                                <CountUp start={0} end={stats.problems} duration={3} />+
-                            </h3>
-                            <p>Problem Statements</p>
-                        </div>
-                        <div className="stat-item">
-                            <h3>
-                                <CountUp start={0} end={stats.submissions} duration={3} />+
-                            </h3>
-                            <p>Projects</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-          
-            {/* How It Works Section */}
-            <section ref={timelineRef} className="how-it-works">
-                <div className="container">
-                    <h2 className="section-title text-black">How It Works</h2>
-                    <div className="steps">
-                        <div className="step">
-                            <span className="step-number">1</span>
-                            <h3>Register</h3>
-                            <p>Create your HackaFest account and complete your profile.</p>
-                        </div>
-                        <div className="step">
-                            <span className="step-number">2</span>
-                            <h3>Find an Event</h3>
-                            <p>Explore upcoming hackathons and choose the one that excites you.</p>
-                        </div>
-                        <div className="step">
-                            <span className="step-number">3</span>
-                            <h3>Join a Team</h3>
-                            <p>Form a team or join an existing one to collaborate on your project.</p>
-                        </div>
-                        <div className="step">
-                            <span className="step-number">4</span>
-                            <h3>Hack!</h3>
-                            <p>Participate in the hackathon, create amazing projects, and have fun.</p>
-                        </div>
-                    </div>
-                </div>
-                <Timeline animation={animation} repeat={0} />
-            </section>
-
-            {/* Event Slideshow Section */}
-            <section className="event-slideshow">
-                <div className="container">
-                    <h3 className="section-title">Upcoming Events</h3>
-                    <Carousel indicators={false} interval={3000} className="mini-carousel">
-                        {events.map((event, index) => (
-                            <Carousel.Item key={index}>
-                                <div className="event-card">
-                                    <img
-                                        src={event.imgUrl}
-                                        alt={event.title}
-                                        className="event-thumbnail"
-                                    />
-                                    <h5 className="event-title">{event.title}</h5>
-                                    <a href={`/displayevent/${event.eventId}`}>
-                                        <Badge pill bg="primary">Know More</Badge>
-                                    </a>
-                                </div>
-                            </Carousel.Item>
-                        ))}
-                    </Carousel>
-                </div>
-            </section>
-
-            {/* Call to Action Section */}
-            <section className="call-to-action">
-                <div className="container">
-                    <h3>Ready to Join a Hackathon?</h3>
-                    <p>Start your journey with HackaFest and unleash your creativity.</p>
-                    <Link to="/register" className="btn btn-primary">Get Started</Link>
-                </div>
-            </section>
-
-            
-            {/* Features Section */}
-            <section className="features">
-                <div className="container">
-                    <h2 className="section-title">Key Features</h2>
-                    <div className="feature-grid">
-                        <div className="feature-item">
-                            <User className="fas fa-user-plus feature-icon" />
-                            <h3>Easy Registration</h3>
-                            <p>Quickly sign up and join hackathons with a few clicks.</p>
-                        </div>
-                        <div className="feature-item">
-                            <Users className="fas fa-users feature-icon" />
-                            <h3>Team Formation</h3>
-                            <p>Find teammates or create your own team.</p>
-                        </div>
-                        <div className="feature-item">
-                            <Calendar className="fas fa-calendar-alt feature-icon" />
-                            <h3>Event Listings</h3>
-                            <p>Browse a wide range of hackathons and find the perfect fit for your skills.</p>
-                        </div>
-                        <div className="feature-item">
-                            <Group className="fas fa-comments feature-icon" />
-                            <h3>Real-time Communication</h3>
-                            <p>Stay connected with your team and organizers through integrated chat.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+      {/* Hero Section */}
+      {/* <section className="hero-section">
+        <div className="container text-center text-white">
+          <h1 className="hero-title">HackaFest</h1>
+          <p className="hero-subtitle">Ignite Innovation. Build the Future.</p>
+          <Link to="/events" className="btn btn-outline-light mt-3">Explore Events</Link>
         </div>
-    );
+      </section> */}
+    <section className="hero-section"><div className="floating-code">
+  <span>{`<div>`}</span>
+  <span>{`console.log("HackaFest");`}</span>
+  <span>{`function hack() {}`}</span>
+  <span>{`<h1>Hack the Future</h1>`}</span>
+  <span>{`{ code && chill }`}</span>
+  <span>{`useEffect(() => {}, []);`}</span>
+</div>
+{/* 
+  <div className="waves-bg">
+    <div className="wave wave1"></div>
+    <div className="wave wave2"></div>
+    <div className="wave wave3"></div>
+  </div> */}
+  <div className="container hero-content text-center text-light position-relative z-1">
+    <h1 className="hero-title">HackaFest</h1>
+    <p className="hero-subtitle">Ignite Innovation. Build the Future.</p>
+    <Link to="/events" className="btn btn-outline-light mt-3">Explore Events</Link>
+  </div>
+</section>
+
+
+
+      {/* Stats */}
+      <section className="stats-section py-5">
+        <div className="container text-center">
+          <h2 className="text-black mb-4">Platform Stats</h2>
+          <div className="row">
+            {[
+              { label: 'Participants', value: stats.participants },
+              { label: 'Problems', value: stats.problems },
+              { label: 'Projects', value: stats.submissions }
+            ].map((item, index) => (
+              <div className="col-md-4 mb-3" key={index}>
+                <div className="stat-card">
+                  <h3><CountUp end={item.value} duration={3} />+</h3>
+                  <p>{item.label}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="how-it-works-section py-5 bg-light">
+        <div className="container text-center">
+          <h2 className="mb-5 text-black">How It Works</h2>
+          <div className="row">
+            {[
+              { step: 'Register', text: 'Sign up and set up your profile' },
+              { step: 'Find an Event', text: 'Pick a hackathon that suits you' },
+              { step: 'Join a Team', text: 'Collaborate or find team members' },
+              { step: 'Hack!', text: 'Build, compete, and innovate' }
+            ].map((item, idx) => (
+              <div className="col-md-3 mb-4" key={idx}>
+                <div className="how-step">
+                  <span className="step-badge">{idx + 1}</span>
+                  <h5 className="mt-3">{item.step}</h5>
+                  <p>{item.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Events */}
+      <section className="events-section py-5">
+        <div className="container text-center">
+          <h2 className="mb-4  text-black">Upcoming Events</h2>
+          <Carousel indicators={false} interval={3500} className="event-carousel">
+            {events.map((event, idx) => (
+              <Carousel.Item key={idx}>
+                <div className="event-card mx-auto">
+                  <img src={event.imgUrl} alt={event.title} className="event-img" />
+                  <h5 className="mt-2">{event.title}</h5>
+                  <a href={`/displayevent/${event.eventId}`}>
+                    <Badge pill bg="primary">Know More</Badge>
+                  </a>
+                </div>
+              </Carousel.Item>
+            ))}
+          </Carousel>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="features-section py-5 bg-light">
+        <div className="container text-center">
+          <h2 className="mb-4 text-black">Features</h2>
+          <div className="row">
+            {[
+              { icon: <User />, title: 'Easy Registration', desc: 'Quick sign-up & onboarding' },
+              { icon: <Users />, title: 'Team Building', desc: 'Find or form your squad' },
+              { icon: <Calendar />, title: 'Event Listings', desc: 'Discover great hackathons' },
+              { icon: <Group />, title: 'Real-time Chat', desc: 'Stay synced with your team' }
+            ].map((item, i) => (
+              <div className="col-md-3 mb-4" key={i}>
+                <div className="feature-card">
+                  <div className="icon mb-2">{item.icon}</div>
+                  <h5>{item.title}</h5>
+                  <p>{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="cta-section py-5 text-white">
+        <div className="container text-center">
+          <h3>Ready to Hack?</h3>
+          <p>Sign up now and dive into the innovation space</p>
+          <Link to="/register" className="btn btn-light mt-3">Get Started</Link>
+        </div>
+      </section>
+    </div>
+  );
 };
 
 export default HackaFestHome;
+
+
 // import React from 'react';
 // import '../App.css';
 // import './homemodified.css'; // Import homepage-specific styles
