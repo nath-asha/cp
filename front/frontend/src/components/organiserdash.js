@@ -250,6 +250,28 @@ function Organiserdash() {
                             >
                                 Manage Events
                             </Button>
+                            <Button
+                                size="sm"
+                                style={{ fontSize: "0.75rem", padding: "0.25rem 0.75rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                onClick={() => window.location.href = '/addchallenge'}
+                            >
+                                Manage PS
+                            </Button>
+                             <Button
+                                size="sm"
+                                style={{ fontSize: "0.75rem", padding: "0.25rem 0.75rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                onClick={() => window.location.href = '/scorerubric/E041/team/12'}
+                            >
+                                Score teams
+                            </Button>
+                                 <Button
+                                size="sm"
+                                style={{ fontSize: "0.75rem", padding: "0.25rem 0.75rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                onClick={() => window.location.href = '/createrubrictemplate/E003'}
+                            >
+                                Create Rubric
+                            </Button>
+                         
                         </div>
                     </Tab.Pane>
                     <Tab.Pane eventKey="problems">
@@ -270,6 +292,23 @@ function Organiserdash() {
                                         >
                                             Manage Problems
                                         </Button>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col>
+                                <Card className="shadow">
+                                    <Card.Body>
+                                        <Card.Title>Registration Graphs</Card.Title>
+                                        <Card.Text>
+                                            <Button
+                                                variant="outline-primary"
+                                                size="sm"
+                                                style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", minWidth: "fit-content", whiteSpace: "nowrap" }}
+                                                onClick={() => window.location.href = '/registration-graphs'}
+                                            >
+                                                View Registration Graphs
+                                            </Button>
+                                        </Card.Text>
                                     </Card.Body>
                                 </Card>
                             </Col>

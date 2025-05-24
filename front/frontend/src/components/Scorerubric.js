@@ -126,7 +126,7 @@ function ScoreRubric() {
   const [teams, setTeams] = useState([]);
   const [rubric, setRubric] = useState([]);
   const [scores, setScores] = useState([]);
-  const [evaluatorName, setEvaluatorName] = useState("");
+  const [evaluatorName, setEvaluatorName] = useState("evaluator");
   const [comments, setComments] = useState("");
   const [submissions, setSubmissions] = useState([]);
   const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
