@@ -74,6 +74,7 @@ import MultiSubmissions from './components/mutlisubmissions';
 import Createteam from './components/CreateTeam';
 import ApproveUserPage from './components/approveuserpage';
 import AddChallenge from './components/Addchallenge';
+import PhaseLeaderboard from './components/phaseleaderboard';
 
 import Challenges1 from './components/challenges1';
 import Challenges2 from './components/challenges2';
@@ -163,7 +164,7 @@ function App() {
           <Route path='/submissionphase1' element={<Submissionsphase1 />} />
           <Route path='/scorerubric/:eventId/team/:teamId' element={<ScoreRubric/>} />
           <Route path='/createrubrictemplate/:eventId' element={<CreateRubricTemplate />} />
-
+          <Route path='/phaseleaderbo' element={<PhaseLeaderboard/>}/>
           <Route path="/dash1" element={<PrivateRoute allowedRoles={['user', 'organizer']}>
            <ParticipantDashboard /></PrivateRoute>} />
            <Route path="/dash2" element={<PrivateRoute allowedRoles={['user', 'organizer']}>

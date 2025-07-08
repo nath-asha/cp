@@ -2026,6 +2026,48 @@ router.post("/api/rubric-score/:eventId/team/:teamId", async (req, res) => {
   }
 });
 
+router.post('/api/rubric-score/:eventId/team/:teamId', async (req, res) => {
+  const { scores, evaluatorName, comments, totalScore } = req.body;
+  const { eventId, teamId } = req.params;
+
+  try {
+    // Save rubric score
+    const rubricScore = new RubricScore({
+      eventId,
+      teamId,
+      scores,
+      evaluatorName,
+      comments,
+      totalScore
+    });
+    await rubricScore.save();
+
+    // Upsert into Scoremodel
+    await Scoremodel.findOneAndUpdate(
+      { eventId, teamId },
+      { $set: { totalScore } },
+      { upsert: true, new: true }
+    );
+
+    res.status(200).json({ message: "Score submitted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Error saving score", error: err.message });
+  }
+});
+
+router.get('/api/leaderboard/:eventId/:phase', async (req, res) => {
+  const { eventId, phase } = req.params;
+  // Assuming Scoremodel has a phase field, otherwise filter by eventId only
+  const scores = await Scoremodel.find({ eventId, phase }).sort({ totalScore: -1 });
+  res.json(scores);
+});
+
+router.get('/api/leaderboard/:eventId/:phase/:n', async (req, res) => {
+  const { eventId, phase, n } = req.params;
+  const scores = await Scoremodel.find({ eventId, phase }).sort({ totalScore: -1 }).limit(Number(n));
+  res.json(scores);
+});
+
 // Get all scores for an event
 router.get("/api/rubric-score/event/:eventId", async (req, res) => {
   try {
